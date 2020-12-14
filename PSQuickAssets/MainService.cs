@@ -10,11 +10,18 @@ namespace PSQuickAssets
         private const int ERR_NO_SUCH_ELEMENT = -2147212704;
         private const int ERR_RETRY_LATER = -2147417846;
 
-        public static void PlaceImage(string filePath)
+        /// <summary>
+        /// Attempts to add given image (filepath) to open document in PS.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns><see langword="true"/> if placed successfully.</returns>
+        public static bool PlaceImage(string filePath)
         {
             if (IsPSRunning() == false)
-                return;
+                return false;
 
+
+            //TODO: validate filepath.
             try
             {
                 var ps = new ApplicationClass();
@@ -32,15 +39,20 @@ namespace PSQuickAssets
             catch (Exception ex) when (ex.HResult == ERR_NO_SUCH_ELEMENT)
             {
                 MessageBox.Show("No documents open.", "PSQuickAssets", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return false;
             }
             catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
             {
                 MessageBox.Show("Photoshop is busy. Make sure PS is idle and try again.", "PSQuickAssets", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString() + $"\n\n {filePath}" + "\n\n" + ex.HResult);
+                return false;
             }
+
+            return true;
         }
 
         private static bool IsPSRunning()

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +64,13 @@ namespace PSQuickAssets
 
         #endregion
 
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         readonly string[] validTypes = new string[] { ".jpg", ".png" };
         const string folderPath = "F:/Work/Replacement/In Use";
 
@@ -86,7 +95,6 @@ namespace PSQuickAssets
             }
             catch (Exception)
             {
-                //MessageBox.Show(ex.ToString());
                 return fileRecords;
             }
 
@@ -123,13 +131,34 @@ namespace PSQuickAssets
             this.Visibility = Visibility.Hidden;
         }
 
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+                this.Visibility = Visibility.Hidden;
+        }
+
         private void OnGlobalHotkeyPressed()
         {
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             if (this.Visibility == Visibility.Visible)
                 this.Visibility = Visibility.Hidden;
             else
                 this.Visibility = Visibility.Visible;
         }
+
+        //private bool IsPhotoshopOnForeground()
+        //{
+        //    IntPtr handle = GetForegroundWindow();
+
+        //    foreach (var process in Process.GetProcesses())
+        //    {
+        //        if (process.Handle == handle)
+        //            return true;
+        //    }
+
+        //    return false;
+        //}
 
         private void ImageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -143,13 +172,27 @@ namespace PSQuickAssets
         private void PlaceClickedImage(string filePath)
         {
             this.Visibility = Visibility.Hidden;
-            MainService.PlaceImage(filePath);
+
+            bool isSuccessful = MainService.PlaceImage(filePath);
+
+            if (isSuccessful)
+            {
+                // Bring PS to foreground.
+                Process[] proc = Process.GetProcessesByName("photoshop");
+
+                if (proc.Length > 0)
+                    SetForegroundWindow(proc[0].MainWindowHandle);
+            }
+            else
+            {
+                this.Visibility = Visibility.Visible;
+            }
         }
 
         private void Close_Down(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             e.Handled = true;
-            this.Close();
+            this.Visibility = Visibility.Hidden;
         }
 
         private void ChangeFolder_Down(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -165,5 +208,7 @@ namespace PSQuickAssets
                 ConfigManager.Write();
             }
         }
+
+        
     }
 }

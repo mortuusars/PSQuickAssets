@@ -15,8 +15,9 @@
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
-        ShowInTaskbar="False">
-    
+        ShowInTaskbar="False"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
     <Border Margin="16"
             Background="#404040"
             CornerRadius="2"
@@ -77,23 +78,31 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Image Source="/Resources/Images/close_24.png"
-               Width="14"
-               Height="14"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Right"
-               Margin="6"
-               Opacity="0.5"
-               MouseLeftButtonDown="Close_Down"/>
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right">
 
-            <Image Source="/Resources/Images/folder_24.png"
-               Width="16"
-               Height="16"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Right"
-               Margin="0 5 26 0"
-               Opacity="0.5"
-               MouseLeftButtonDown="ChangeFolder_Down"/>
-        </Grid>        
+                <Image Source="/Resources/Images/folder_24.png"
+                       Margin="2 1"
+                       Width="16"
+                       Height="16"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Right"
+                       Opacity="0.5"
+                       MouseLeftButtonDown="ChangeFolder_Down"/>
+
+                <Image Source="/Resources/Images/close_24.png"
+                       Margin="2"
+                       Width="14"
+                       Height="14"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Right"
+                       Opacity="0.5"
+                       MouseLeftButtonDown="Close_Down"/>
+
+            </StackPanel>
+
+
+        </Grid>
     </Border>
 </Window>
