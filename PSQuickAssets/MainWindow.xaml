@@ -30,12 +30,13 @@
             <ListBox Name="ImageList" 
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 Margin="4"
+                 Margin="2"
                  BorderThickness="0"
                  Background="Transparent">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True"/>
+                        <WrapPanel IsItemsHost="True"
+                                   Margin="1"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
@@ -66,7 +67,7 @@
                                    VerticalAlignment="Top"
                                    TextAlignment="Center"
                                    Width="80"
-                                   Height="34"
+                                   Height="48"
                                    TextWrapping="WrapWithOverflow"
                                    Margin="0 12 0 6"
                                    FontSize="12"
