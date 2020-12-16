@@ -8,10 +8,10 @@
         Topmost="True"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" 
-        Width="300" Height="100"
-        MaxWidth="1000" MaxHeight="430"
-        MinWidth="200" MinHeight="80"
-        SizeToContent="WidthAndHeight"
+        Width="1000" 
+        Height="100"
+        MaxHeight="500"
+        SizeToContent="Height"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
@@ -19,15 +19,24 @@
         PreviewKeyDown="Window_PreviewKeyDown">
 
     <Border Margin="16"
-            Background="#404040"
+            Background="#272829"
             CornerRadius="2"
-            BorderThickness="1.5"
-            BorderBrush="#303030">
+            BorderThickness="1"
+            BorderBrush="#101010"
+            Width="auto"
+            MinWidth="200"
+            Height="auto"
+            MinHeight="40"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center">
         <Border.Effect>
-            <DropShadowEffect x:Name="DropShadow" BlurRadius="10" Direction="-90" ShadowDepth="1" Opacity="0.6"/>
+            <DropShadowEffect x:Name="DropShadow" BlurRadius="16" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
         </Border.Effect>
 
-        <Grid Background="{x:Null}">
+        <Grid Background="{x:Null}"
+              VerticalAlignment="Top"
+              HorizontalAlignment="Right">
+            
             <ListBox Name="ImageList" 
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -55,7 +64,7 @@
                                HorizontalAlignment="Center">
 
                                 <Image.Effect>
-                                    <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="-90" Opacity="0.4"/>
+                                    <DropShadowEffect BlurRadius="16" ShadowDepth="3" Direction="-90" Opacity="0.6"/>
                                 </Image.Effect>
                                 <Image.Source>
                                     <BitmapImage UriSource="{Binding FilePath}"
@@ -64,15 +73,15 @@
                             </Image>
 
                             <TextBlock Grid.Row="1"
-                                   Text="{Binding FileName}"
-                                   VerticalAlignment="Top"
-                                   TextAlignment="Center"
-                                   Width="80"
-                                   Height="48"
-                                   TextWrapping="WrapWithOverflow"
-                                   Margin="0 12 0 6"
-                                   FontSize="12"
-                                   Foreground="#dddddd"/>
+                                       Text="{Binding FileName}"
+                                       VerticalAlignment="Top"
+                                       TextAlignment="Center"
+                                       Width="80"
+                                       Height="34"
+                                       TextWrapping="WrapWithOverflow"
+                                       Margin="0 12 0 6"
+                                       FontSize="12"
+                                       Foreground="#dddddd"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -80,15 +89,16 @@
 
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Top"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Margin="4">
 
                 <Image Source="/Resources/Images/folder_24.png"
-                       Margin="2 1"
+                       Margin="4 1"
                        Width="16"
                        Height="16"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Right"
-                       Opacity="0.5"
+                       Opacity="0.15"
                        MouseLeftButtonDown="ChangeFolder_Down"/>
 
                 <Image Source="/Resources/Images/close_24.png"
@@ -97,7 +107,7 @@
                        Height="14"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Right"
-                       Opacity="0.5"
+                       Opacity="0.15"
                        MouseLeftButtonDown="Close_Down"/>
 
             </StackPanel>

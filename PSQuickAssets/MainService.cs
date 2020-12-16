@@ -20,7 +20,6 @@ namespace PSQuickAssets
             if (IsPSRunning() == false)
                 return false;
 
-
             //TODO: validate filepath.
             try
             {

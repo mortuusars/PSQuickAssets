@@ -72,7 +72,6 @@ namespace PSQuickAssets
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         readonly string[] validTypes = new string[] { ".jpg", ".png" };
-        const string folderPath = "F:/Work/Replacement/In Use";
 
         public MainWindow()
         {
@@ -139,12 +138,14 @@ namespace PSQuickAssets
 
         private void OnGlobalHotkeyPressed()
         {
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
             if (this.Visibility == Visibility.Visible)
                 this.Visibility = Visibility.Hidden;
             else
+            {
+                //this.Top += this.Height / 2;
                 this.Visibility = Visibility.Visible;
+            }
+                
         }
 
         //private bool IsPhotoshopOnForeground()
@@ -199,7 +200,7 @@ namespace PSQuickAssets
         {
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-            dialog.InitialDirectory = "C:\\Users";
+            dialog.InitialDirectory = ConfigManager.Config.Folder;
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
@@ -208,7 +209,5 @@ namespace PSQuickAssets
                 ConfigManager.Write();
             }
         }
-
-        
     }
 }
