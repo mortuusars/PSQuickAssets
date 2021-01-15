@@ -75,6 +75,8 @@ namespace PSQuickAssets
 
         public MainWindow()
         {
+            ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(800));
+
             InitializeComponent();
 
             var folderPath = ConfigManager.GetFolder();

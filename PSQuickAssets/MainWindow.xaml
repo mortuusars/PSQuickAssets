@@ -51,7 +51,11 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="2">
+                        <Grid Margin="2"
+                              Background="Transparent">
+                            <Grid.ToolTip>
+                                <TextBlock Text="{Binding FileName}"/>
+                            </Grid.ToolTip>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="60"/>
                                 <RowDefinition Height="auto"/>
