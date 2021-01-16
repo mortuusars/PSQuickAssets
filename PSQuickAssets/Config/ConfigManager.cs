@@ -11,9 +11,9 @@ namespace PSQuickAssets
 
         public static Config Config { get; set; } = Read();
 
-        public static string GetFolder()
+        public static string GetFilesDirectory()
         {
-            return Config.Folder;
+            return Config.Directory;
         }
 
         public static void Write()

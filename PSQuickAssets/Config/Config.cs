@@ -2,6 +2,6 @@
 {
     public record Config
     {
-        public string Folder { get; init; }
+        public string Directory { get; init; }
     }
 }

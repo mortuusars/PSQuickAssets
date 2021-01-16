@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace PSQuickAssets
+﻿namespace PSQuickAssets.Models
 {
-    public record FileRecord
+    public record ImageFileInfo
     {
         public string FilePath { get; init; }
         public string FileName { get; init; }

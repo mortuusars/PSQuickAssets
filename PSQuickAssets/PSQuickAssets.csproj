@@ -1,38 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Images\psquickassets-size.ico</ApplicationIcon>
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net5.0-windows</TargetFramework>
+	<UseWPF>true</UseWPF>
+	<ApplicationIcon>Resources\Images\psquickassets-size.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Images\close_24.png" />
-    <None Remove="Resources\Images\folder_24.png" />
-    <None Remove="Resources\Images\psquickassets-size.ico" />
+	<None Remove="Resources\Images\close_24.png" />
+	<None Remove="Resources\Images\folder_24.png" />
+	<None Remove="Resources\Images\psquickassets-size.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <COMReference Include="Photoshop.dll">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>e891ee9a-d0ae-4cb4-8871-f92c0109f18e</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-    </COMReference>
+	<COMReference Include="Photoshop.dll">
+	  <WrapperTool>tlbimp</WrapperTool>
+	  <VersionMinor>0</VersionMinor>
+	  <VersionMajor>1</VersionMajor>
+	  <Guid>e891ee9a-d0ae-4cb4-8871-f92c0109f18e</Guid>
+	  <Lcid>0</Lcid>
+	  <Isolated>false</Isolated>
+	</COMReference>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
-    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+	<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+	  <PackageReference Include="PropertyChanged.Fody" Version="3.3.1">
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
+	<PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+	<PackageReference Include="WpfScreenHelper" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\close_24.png" />
-    <Resource Include="Resources\Images\folder_24.png" />
-    <Resource Include="Resources\Images\psquickassets-size.ico" />
+	<Resource Include="Resources\Images\close_24.png" />
+	<Resource Include="Resources\Images\folder_24.png" />
+	<Resource Include="Resources\Images\psquickassets-size.ico" />
   </ItemGroup>
 
 </Project>

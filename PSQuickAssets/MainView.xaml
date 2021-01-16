@@ -1,0 +1,191 @@
+﻿<Window x:Class="PSQuickAssets.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" 
+        Width="1000" 
+        Height="100"
+        MaxHeight="500"
+        SizeToContent="Height"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+
+        <sys:Double x:Key="ButtonsRestOpacity">0.2</sys:Double>
+        <sys:Double x:Key="ButtonsActiveOpacity">0.65</sys:Double>
+        
+        <Style x:Key="ImageButtons" TargetType="Image">
+            <Setter Property="Opacity" Value="0.2"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.15"
+                                                 From="{StaticResource ButtonsRestOpacity}" 
+                                                 To="{StaticResource ButtonsActiveOpacity}"
+                                                 Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.3"
+                                                 From="{StaticResource ButtonsActiveOpacity}"
+                                                 To="{StaticResource ButtonsRestOpacity}" 
+                                                 Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+        <Grid Background="{x:Null}"
+              Margin="16"
+              VerticalAlignment="Top"
+              HorizontalAlignment="Center"
+              MinWidth="160" MinHeight="60">
+
+            <Border Background="#313233"
+                    CornerRadius="2"
+                    BorderThickness="1"
+                    BorderBrush="#141414"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="16" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
+                </Border.Effect>
+            </Border>
+
+            <ListBox Name="FileList" 
+                     ItemsSource="{Binding FilesList}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     Margin="2"
+                     BorderThickness="0"
+                     Background="Transparent">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True"
+                                   Margin="1"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0"
+                              Background="Transparent">
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick"
+                                              Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                            AncestorType={x:Type ListBox}},
+                                                        Path=DataContext.PlaceImageCommand}"
+                                              CommandParameter="{Binding FilePath}"/>
+                            </Grid.InputBindings>
+
+                            <Grid.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="-90" Opacity="0.65"/>
+                            </Grid.Effect>
+                            
+                            <Grid.ToolTip>
+                                <TextBlock Text="{Binding FileName}"/>
+                            </Grid.ToolTip>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Image Grid.Row="0"
+                               Width="60"
+                               Height="60"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Center">                                
+                                <Image.Source>
+                                    <BitmapImage UriSource="{Binding FilePath}"
+                                             DecodePixelWidth="60"/>
+                                </Image.Source>
+                            </Image>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding FileName}"
+                                       VerticalAlignment="Top"
+                                       TextAlignment="Center"
+                                       Width="80"
+                                       Height="34"
+                                       TextWrapping="WrapWithOverflow"
+                                       Margin="0 12 0 6"
+                                       FontSize="12"
+                                       Foreground="#dddddd"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid x:Name="NoItemsPanel"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FilesList.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+                
+                <TextBlock Text="No images"
+                           Foreground="Gray"/>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Margin="4"
+                        Background="Transparent">
+
+                <Image Source="/Resources/Images/folder_24.png"
+                       Margin="5 1"
+                       Width="18"
+                       Height="18"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Right"
+                       Style="{StaticResource ImageButtons}">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ChangeFolderCommand}"/>
+                    </Image.InputBindings>
+                </Image>
+
+                <Image Source="/Resources/Images/close_24.png"
+                       Margin="2"
+                       Width="16"
+                       Height="16"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Right"
+                       Style="{StaticResource ImageButtons}">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
+                    </Image.InputBindings>
+                </Image>
+
+            </StackPanel>
+
+
+        </Grid>
+</Window>

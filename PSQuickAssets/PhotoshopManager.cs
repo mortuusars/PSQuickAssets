@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using Photoshop;
 
 namespace PSQuickAssets
 {
-    public static class MainService
+    public static class PhotoshopManager
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         private const int ERR_NO_SUCH_ELEMENT = -2147212704;
         private const int ERR_RETRY_LATER = -2147417846;
+
+        public static async Task<bool> PlaceImageAcync(string filePath)
+        {
+            return await Task.Run(() => PlaceImage(filePath));
+        }
 
         /// <summary>
         /// Attempts to add given image (filepath) to open document in PS.
@@ -50,6 +60,12 @@ namespace PSQuickAssets
                 MessageBox.Show(ex.ToString() + $"\n\n {filePath}" + "\n\n" + ex.HResult);
                 return false;
             }
+
+            // Bring PS to foreground.
+            Process[] proc = Process.GetProcessesByName("photoshop");
+
+            if (proc.Length > 0)
+                SetForegroundWindow(proc[0].MainWindowHandle);
 
             return true;
         }
