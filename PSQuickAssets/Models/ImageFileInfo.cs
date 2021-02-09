@@ -4,5 +4,6 @@
     {
         public string FilePath { get; init; }
         public string FileName { get; init; }
+        public string ShortFileName { get; set; }
     }
 }

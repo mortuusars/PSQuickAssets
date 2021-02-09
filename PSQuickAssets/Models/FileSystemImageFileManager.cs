@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using PSQuickAssets.Infrastructure;
 
 namespace PSQuickAssets.Models
 {
@@ -20,6 +18,8 @@ namespace PSQuickAssets.Models
             List<ImageFileInfo> fileRecords = new List<ImageFileInfo>();
             string[] validTypes = new string[] { ".jpg", ".png" };
 
+            StringFormatter stringFormatter = new StringFormatter();
+
             foreach (string filePath in GetDirectoryFiles(directoryPath))
             {
                 if (Array.Exists(validTypes, type => type == Path.GetExtension(filePath)))
@@ -27,7 +27,8 @@ namespace PSQuickAssets.Models
                     fileRecords.Add(new ImageFileInfo()
                     {
                         FilePath = filePath,
-                        FileName = Path.GetFileName(filePath)
+                        FileName = Path.GetFileName(filePath),
+                        ShortFileName = stringFormatter.CutStart(Path.GetFileName(filePath), 26)
                     });
                 }
             }
@@ -40,16 +41,14 @@ namespace PSQuickAssets.Models
             if (string.IsNullOrWhiteSpace(directoryPath))
                 return Array.Empty<string>();
 
-            return Directory.GetFiles(directoryPath);
-
-            //try
-            //{
-            //    return Directory.GetFiles(directoryPath);
-            //}
-            //catch (Exception)
-            //{
-            //    return Array.Empty<string>();
-            //}
+            try
+            {
+                return Directory.GetFiles(directoryPath);
+            }
+            catch (Exception)
+            {
+                return Array.Empty<string>();
+            }
         }
 
     }
