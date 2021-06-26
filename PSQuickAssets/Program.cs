@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PSQuickAssets.Infrastructure;
+﻿using PSQuickAssets.Infrastructure;
 
 namespace PSQuickAssets
 {
@@ -16,6 +11,5 @@ namespace PSQuickAssets
             ViewManager = new ViewManager();
             ViewManager.CreateAndShowMainView();
         }
-
     }
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
         mc:Ignorable="d"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
@@ -57,19 +58,19 @@
     </Window.Resources>
 
         <Grid Background="{x:Null}"
-              Margin="16"
+              Margin="20"
               VerticalAlignment="Top"
               HorizontalAlignment="Center"
               MinWidth="160" MinHeight="60">
 
             <Border Background="#313233"
-                    CornerRadius="2"
-                    BorderThickness="1"
+                    CornerRadius="8"
+                    BorderThickness="0"
                     BorderBrush="#141414"
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="16" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
+                    <DropShadowEffect BlurRadius="30" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
                 </Border.Effect>
             </Border>
 
