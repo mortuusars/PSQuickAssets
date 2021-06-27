@@ -11,6 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+            <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
 
         </ResourceDictionary>
     </Application.Resources>

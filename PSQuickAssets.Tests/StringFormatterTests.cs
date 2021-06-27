@@ -6,18 +6,17 @@ namespace PSQuickAssets.Tests
 {
     public class StringFormatterTests
     {
-        StringFormatter formatter = new StringFormatter();
 
         [Fact]
         public void ShortenThrowsIfInputIsNull()
         {
-            Assert.Throws<ArgumentException>(() => formatter.CutMiddle(null, 5));
+            Assert.Throws<ArgumentException>(() => StringFormatter.CutMiddle(null, 5));
         }
 
         [Fact]
         public void ShortenReturnsSameIfShorter()
         {
-            var result = formatter.CutMiddle("asd", 5);
+            var result = StringFormatter.CutMiddle("asd", 5);
 
             Assert.Equal("asd", result);
         }
@@ -25,7 +24,7 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void ShortenReturnsSameIfLengthIsSame()
         {
-            var result = formatter.CutMiddle("asddf", 5);
+            var result = StringFormatter.CutMiddle("asddf", 5);
 
             Assert.Equal("asddf", result);
         }
@@ -33,7 +32,7 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void ShortenReturnsEmptyStringWhenPassedEmptyString()
         {
-            var result = formatter.CutMiddle("", 123);
+            var result = StringFormatter.CutMiddle("", 123);
 
             Assert.Equal("", result);
         }
@@ -41,8 +40,8 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void ShortenReturnsShortenedString()
         {
-            var result = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 5);
-            var result2 = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 7);
+            var result = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 5);
+            var result2 = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 7);
 
             Assert.Equal("...s.", result);
             Assert.Equal("...sts.", result2);
@@ -51,9 +50,9 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void ShortenReturnsShortenedStringWithDotsInMiddle()
         {
-            var result = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 12);
-            var result2 = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 10);
-            var result3 = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 22);
+            var result = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 12);
+            var result2 = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 10);
+            var result3 = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 22);
 
             Assert.Equal("Test...ests.", result);
             Assert.Equal("Tes...sts.", result2);
@@ -63,8 +62,8 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void ShortenReturnsCorrectLength()
         {
-            var result = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 12);
-            var result2 = formatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 20);
+            var result = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 12);
+            var result2 = StringFormatter.CutMiddle("Test run finished in 1.1 sec. 5 total tests.", 20);
 
             Assert.Equal(12, result.Length);
             Assert.Equal(20, result2.Length);
@@ -75,7 +74,7 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void CutStartReturnsProperLength()
         {
-            var result = formatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 12);
+            var result = StringFormatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 12);
 
             Assert.Equal(12, result.Length);
         }
@@ -83,8 +82,8 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void CutStartReturnsProperString()
         {
-            var result = formatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 7, numberOfPeriods: 3);
-            var result2 = formatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 12, numberOfPeriods: 3);
+            var result = StringFormatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 7, numberOfPeriods: 3);
+            var result2 = StringFormatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 12, numberOfPeriods: 3);
 
             Assert.Equal("...al tests.", result2);
         }
@@ -92,7 +91,7 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void CutStartReturnsProperNumberOfDots()
         {
-            var result = formatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 10, numberOfPeriods: 6);
+            var result = StringFormatter.CutStart("Test run finished in 1.1 sec. 5 total tests.", 10, numberOfPeriods: 6);
 
             Assert.Equal("......sts.", result);
         }
@@ -100,7 +99,7 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void CutEndReturnsProperString()
         {
-            var result = formatter.CutEnd("Test run finished in 1.1 sec. 5 total tests.", 10, numberOfPeriods: 3);
+            var result = StringFormatter.CutEnd("Test run finished in 1.1 sec. 5 total tests.", 10, numberOfPeriods: 3);
 
             Assert.Equal("Test ru...", result);
         }

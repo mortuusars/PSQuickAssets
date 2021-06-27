@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace PSQuickAssets.Infrastructure
+namespace PSQuickAssets
 {
-    public class StringFormatter
+    public static class StringFormatter
     {
         /// <summary>
         /// Shortens input string to number of chars. Replacing middle portion with periods.
@@ -14,8 +11,7 @@ namespace PSQuickAssets.Infrastructure
         /// <param name="input"></param>
         /// <param name="numberOfChars"></param>
         /// <param name="numberOfPeriods"></param>
-        /// <returns></returns>
-        public string CutMiddle(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutMiddle(string input, uint numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");
@@ -31,7 +27,7 @@ namespace PSQuickAssets.Infrastructure
 
         
 
-        public string CutStart(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutStart(string input, uint numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");
@@ -51,7 +47,7 @@ namespace PSQuickAssets.Infrastructure
             return sb.ToString();
         }
 
-        public string CutEnd(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutEnd(string input, uint numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");

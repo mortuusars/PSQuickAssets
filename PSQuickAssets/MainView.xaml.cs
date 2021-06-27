@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using PSQuickAssets.ViewModels;
 using WpfScreenHelper;
 
 namespace PSQuickAssets
@@ -92,23 +93,34 @@ namespace PSQuickAssets
         private void OnGlobalHotkeyPressed()
         {
             if (this.Visibility == Visibility.Visible)
-                this.Visibility = Visibility.Hidden;
+                this.Visibility = Visibility.Collapsed;
             else
             {
                 this.Visibility = Visibility.Visible;
-                RecalculateXPosition();
+                RecalculatePosition();
             }
         }
 
-        private void RecalculateXPosition()
+        private void RecalculatePosition()
         {
             Point mousePos = MouseHelper.MousePosition;
             Screen activeScreen = Screen.FromPoint(mousePos);
+
+            this.MaxHeight = activeScreen.Bounds.Height * 0.7;
             
             if (mousePos.X < 0)
                 Left = ((activeScreen.Bounds.Width/2) * -1) - this.ActualWidth/2;
             else
-             Left = activeScreen.Bounds.Width/2 - this.ActualWidth/2;
+                Left = activeScreen.Bounds.Width/2 - this.ActualWidth/2;
+
+            Top = (activeScreen.Bounds.Height - (activeScreen.Bounds.Height * 0.1)) - this.ActualHeight;
+
+            //TODO: Fix position when clicked from taskbar
+        }
+
+        private void ItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RecalculatePosition();
         }
     }
 }

@@ -11,22 +11,23 @@
         Title="MainWindow" 
         Width="1200" 
         Height="100"
-        MaxHeight="500"
         SizeToContent="Height"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         ShowInTaskbar="False"
+        TextOptions.TextFormattingMode="Display" FontWeight="SemiBold"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
+
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
     </Window.InputBindings>
 
     <Window.Resources>
 
-        <sys:Double x:Key="ButtonsRestOpacity">0.2</sys:Double>
-        <sys:Double x:Key="ButtonsActiveOpacity">0.65</sys:Double>
-        
+        <sys:Double x:Key="ButtonsRestOpacity">0.1</sys:Double>
+        <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
+
         <Style x:Key="ImageButtons" TargetType="Image">
             <Setter Property="Opacity" Value="0.2"/>
 
@@ -57,136 +58,168 @@
         </Style>
     </Window.Resources>
 
-        <Grid Background="{x:Null}"
-              Margin="20"
-              VerticalAlignment="Top"
-              HorizontalAlignment="Center"
-              MinWidth="160" MinHeight="60">
+    <Grid Background="{x:Null}"
+          Margin="20"
+          VerticalAlignment="Top"
+          HorizontalAlignment="Center"
+          MinWidth="160" MinHeight="60">
 
-            <Border Background="#313233"
-                    CornerRadius="8"
-                    BorderThickness="0"
-                    BorderBrush="#141414"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
-                </Border.Effect>
-            </Border>
+        <Border Background="#282829" CornerRadius="8" BorderThickness="0" BorderBrush="#141414"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Direction="-90" ShadowDepth="3" Opacity="0.6"/>
+            </Border.Effect>
+        </Border>
 
-            <ListBox Name="FileList" 
-                     ItemsSource="{Binding FilesList}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                     Margin="2"
-                     BorderThickness="0"
-                     Background="Transparent">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True"
-                                   Margin="1"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0"
-                              Background="Transparent">
-                            <Grid.InputBindings>
-                                <MouseBinding Gesture="LeftClick"
+        <ItemsControl ItemsSource="{Binding Folders}" Margin="10 4 10 4"
+                      MaxWidth="1000" Background="Transparent" BorderThickness="0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      SizeChanged="ItemsControl_SizeChanged">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
+                            <!-- Folder Name -->
+                            <TextBlock Foreground="#999999" FontSize="14"
+                                       Text="{Binding FilePath, Converter={StaticResource PathToFolderName}}"/>
+                            <!-- Remove Folder Button -->
+                            <Image Source="/Resources/Images/close_24.png"
+                                   Margin="6 2 2 2" Width="16" Height="16"
+                                   VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Style="{StaticResource ImageButtons}">
+                                <Image.InputBindings>
+                                    <MouseBinding Gesture="LeftClick" 
+                                                  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                            AncestorType={x:Type Window}},
+                                                            Path=DataContext.RemoveFolderCommand}"
+                                                  CommandParameter="{Binding}"/>
+                                </Image.InputBindings>
+                            </Image>
+                        </StackPanel>
+
+                        <ListBox Name="FileList" 
+                                     ItemsSource="{Binding}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     VirtualizingStackPanel.VirtualizationMode="Recycling">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" Margin="1"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <!-- Image Panel -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent">
+                                        <Grid.InputBindings>
+                                            <MouseBinding Gesture="LeftClick"
                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                            AncestorType={x:Type ListBox}},
+                                                            AncestorType={x:Type Window}},
                                                         Path=DataContext.PlaceImageCommand}"
                                               CommandParameter="{Binding FilePath}"/>
-                            </Grid.InputBindings>
+                                        </Grid.InputBindings>
 
-                            <Grid.Effect>
-                                <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="-90" Opacity="0.65"/>
-                            </Grid.Effect>
-                            
-                            <Grid.ToolTip>
-                                <TextBlock Text="{Binding FileName}"/>
-                            </Grid.ToolTip>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
+                                        <Grid.Effect>
+                                            <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="-90" Opacity="0.65"/>
+                                        </Grid.Effect>
 
-                            <Image Grid.Row="0"
-                               Width="60"
-                               Height="60"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center">                                
-                                <Image.Source>
-                                    <BitmapImage UriSource="{Binding FilePath}"
-                                             DecodePixelWidth="60"/>
-                                </Image.Source>
-                            </Image>
+                                        <Grid.ToolTip>
+                                            <TextBlock Text="{Binding FileName}"/>
+                                        </Grid.ToolTip>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="60"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="1"
-                                       Text="{Binding ShortFileName}"
-                                       VerticalAlignment="Top"
-                                       TextAlignment="Center"
-                                       Width="80"
-                                       Height="34"
-                                       TextWrapping="WrapWithOverflow"
-                                       Margin="0 12 0 6"
-                                       FontSize="12"
-                                       Foreground="#dddddd"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                                        <!-- Thumbnail -->
+                                        <Image Grid.Row="0" Width="70" Height="70"
+                                                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                                   Source="{Binding Thumbnail}"/>
 
-            <Grid x:Name="NoItemsPanel"
+                                        <!-- Label (Filename) -->
+                                        <TextBlock Text="{Binding ShortFileName}"
+                                                       Grid.Row="1" VerticalAlignment="Top"
+                                                       TextAlignment="Center"
+                                                       Width="70" Height="34"
+                                                       TextWrapping="Wrap"
+                                                       Margin="0 6 0 6"
+                                                       FontSize="12"
+                                                       Foreground="#cdcdcd"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Style.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="4"/>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.ItemContainerStyle>                            
+                        </ListBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Grid x:Name="NoItemsPanel"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Center">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding FilesList.Count}" Value="0">
+                        <DataTrigger Binding="{Binding Folders.Count}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-                
-                <TextBlock Text="No images"
-                           Foreground="Gray"/>
-            </Grid>
 
-            <StackPanel Orientation="Horizontal"
+            <TextBlock Text="No images"
+                           Foreground="Gray"/>
+        </Grid>
+
+
+        <!--Buttons-->
+        <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Right"
                         Margin="4"
                         Background="Transparent">
 
-                <Image Source="/Resources/Images/folder_24.png"
+            <Image Source="/Resources/Images/folder_24.png"
                        Margin="5 1"
                        Width="18"
                        Height="18"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Right"
                        Style="{StaticResource ImageButtons}">
-                    <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding ChangeFolderCommand}"/>
-                    </Image.InputBindings>
-                </Image>
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick" Command="{Binding ChangeFolderCommand}"/>
+                </Image.InputBindings>
+            </Image>
 
-                <Image Source="/Resources/Images/close_24.png"
+            <Image Source="/Resources/Images/close_24.png"
                        Margin="2"
                        Width="16"
                        Height="16"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Right"
                        Style="{StaticResource ImageButtons}">
-                    <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
-                    </Image.InputBindings>
-                </Image>
+                <Image.InputBindings>
+                    <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
+                </Image.InputBindings>
+            </Image>
 
-            </StackPanel>
-
-
-        </Grid>
+        </StackPanel>
+    </Grid>
 </Window>

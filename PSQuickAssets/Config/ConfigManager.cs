@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
@@ -11,9 +12,9 @@ namespace PSQuickAssets
 
         public static Config Config { get; set; } = Read();
 
-        public static string GetFilesDirectory()
+        public static List<string> GetCurrentDirectories()
         {
-            return Config.Directory;
+            return Config.Directories;
         }
 
         public static void Write()
@@ -31,7 +32,7 @@ namespace PSQuickAssets
             }
             catch (Exception)
             {
-                return new Config();
+                return new Config() { Directories = new List<string>() };
             }
         }
 

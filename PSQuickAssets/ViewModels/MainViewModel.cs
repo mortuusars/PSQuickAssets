@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 using PropertyChanged;
 using PSQuickAssets.Infrastructure;
@@ -10,32 +12,48 @@ namespace PSQuickAssets.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainViewModel
     {
-        public List<ImageFileInfo> FilesList { get; private set; }
+        public ObservableCollection<List<ImageFile>> Folders { get; set; }
 
-        public int FilesCount { get; set; }
         public bool IsWindowShowing { get; set; }
-        public string CurrentDirectoryPath { get; set; }
+        public List<string> CurrentDirectories { get; set; }
 
         public ICommand PlaceImageCommand { get; }
         public ICommand ChangeFolderCommand { get; }
         public ICommand HideCommand { get; }
+        public ICommand RemoveFolderCommand { get; }
 
-        private IFileImageFileManager _fileRecordManager;
+        private IImagesLoader _imagesLoader;
 
-        public MainViewModel(IFileImageFileManager fileRecordManager)
+        public MainViewModel(IImagesLoader imagesLoader)
         {
-            _fileRecordManager = fileRecordManager;
+            _imagesLoader = imagesLoader;
 
-            CurrentDirectoryPath = ConfigManager.GetFilesDirectory();
+            CurrentDirectories = ConfigManager.GetCurrentDirectories();
 
-            PlaceImageCommand = new RelayCommand(path => OnPlaceImageCommand((string)path));
+            PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
             ChangeFolderCommand = new RelayCommand(_ => ChangeDirectory());
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
+            RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
 
-            GetImagesAsync();
+            Folders = new ObservableCollection<List<ImageFile>>();
+
+            foreach (var path in CurrentDirectories)
+            {
+                LoadImages(path);
+            }
         }
 
-        private async void OnPlaceImageCommand(string filePath)
+        private void RemoveFolder(List<ImageFile> folder)
+        {
+            Folders.Remove(folder);
+
+            // Remove folderpath from stored directories
+            var dir = Path.GetDirectoryName(folder[0].FilePath);
+            CurrentDirectories.Remove(dir);
+            UpdateConfig();
+        }
+
+        private async void PlaceImage(string filePath)
         {
             IsWindowShowing = false;
 
@@ -45,9 +63,9 @@ namespace PSQuickAssets.ViewModels
                 IsWindowShowing = true;
         }
 
-        private async void GetImagesAsync()
+        private void LoadImages(string path)
         {
-            FilesList = await _fileRecordManager.GetFilesAsync(CurrentDirectoryPath);
+            Folders.Add(_imagesLoader.LoadImages(path));
         }
 
         private void ChangeDirectory()
@@ -57,10 +75,14 @@ namespace PSQuickAssets.ViewModels
             if (string.IsNullOrWhiteSpace(newDirectory))
                 return;
 
-            CurrentDirectoryPath = newDirectory;
-            GetImagesAsync();
+            CurrentDirectories.Add(newDirectory);
+            LoadImages(newDirectory);
+            UpdateConfig();
+        }
 
-            ConfigManager.Config = ConfigManager.Config with { Directory = CurrentDirectoryPath };
+        private void UpdateConfig()
+        {
+            ConfigManager.Config = ConfigManager.Config with { Directories = CurrentDirectories };
             ConfigManager.Write();
         }
     }

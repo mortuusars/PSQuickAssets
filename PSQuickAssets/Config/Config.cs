@@ -1,7 +1,9 @@
-﻿namespace PSQuickAssets
+﻿using System.Collections.Generic;
+
+namespace PSQuickAssets
 {
     public record Config
     {
-        public string Directory { get; init; }
+        public List<string> Directories { get; init; }
     }
 }
