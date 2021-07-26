@@ -34,15 +34,9 @@ namespace PSQuickAssets
             ImageFile img = new ImageFile();
             img.Thumbnail = LoadThumbnail(filePath, 50);
             img.FilePath = filePath;
-            img.FileName = ExtractFilename(filePath);
+            img.FileName = Path.GetFileNameWithoutExtension(filePath);
             img.ShortFileName = StringFormatter.CutStart(img.FileName, 20);
             return img;
-        }
-
-        private string ExtractFilename(string filePath)
-        {
-            var extension = Path.GetExtension(filePath);
-            return Path.GetFileName(filePath).Replace(extension, "");
         }
 
         private string[] GetDirectoryFiles(string directoryPath)

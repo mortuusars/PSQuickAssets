@@ -59,19 +59,20 @@
     </Window.Resources>
 
     <Grid Background="{x:Null}"
+          x:Name="MainContainer"
           Margin="20"
           VerticalAlignment="Top"
           HorizontalAlignment="Center"
           MinWidth="160" MinHeight="60">
 
-        <Border Background="#282829" CornerRadius="8" BorderThickness="0" BorderBrush="#141414"
+        <Border Background="#282829" CornerRadius="8" BorderThickness="2" BorderBrush="#353535"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="30" Direction="-90" ShadowDepth="3" Opacity="0.6"/>
             </Border.Effect>
         </Border>
 
-        <ItemsControl ItemsSource="{Binding Folders}" Margin="10 4 10 4"
+        <ItemsControl ItemsSource="{Binding Folders}" Margin="16 4"
                       MaxWidth="1000" Background="Transparent" BorderThickness="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -98,13 +99,13 @@
                             </Image>
                         </StackPanel>
 
-                        <ListBox Name="FileList" 
-                                     ItemsSource="{Binding}"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                     BorderThickness="0"
-                                     Background="Transparent"
-                                     VirtualizingStackPanel.VirtualizationMode="Recycling">
+                        <ListBox x:Name="FileList" 
+                                 ItemsSource="{Binding}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel IsItemsHost="True" Margin="1"/>
@@ -163,7 +164,7 @@
                                         </Style>
                                     </Style.Resources>
                                 </Style>
-                            </ListBox.ItemContainerStyle>                            
+                            </ListBox.ItemContainerStyle>
                         </ListBox>
                     </StackPanel>
                 </DataTemplate>
@@ -186,6 +187,25 @@
 
             <TextBlock Text="No images"
                            Foreground="Gray"/>
+        </Grid>
+
+        <Grid x:Name="ErrorsPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Error.Length}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Border Background="#222" CornerRadius="5" BorderThickness="1.5" BorderBrush="#e03d31"
+                    Margin="10" Padding="6">
+                <TextBlock Text="{Binding Error}" d:Text="Photoshop is not running" Foreground="#e03d31"
+                           FontSize="18" MaxWidth="400" TextWrapping="Wrap"/>
+
+            </Border>
         </Grid>
 
 
