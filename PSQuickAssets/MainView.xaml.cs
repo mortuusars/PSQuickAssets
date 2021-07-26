@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Windows.Media.Imaging;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using PSQuickAssets.ViewModels;
 using WpfScreenHelper;
 
 namespace PSQuickAssets

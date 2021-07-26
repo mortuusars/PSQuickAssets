@@ -20,14 +20,14 @@ namespace PSQuickAssets.ViewModels
 
         public string Error { get; set; } = "";
         public bool IsWindowShowing { get; set; }
-        private Timer _errorShowingTimer = new Timer();
+        private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
         public ICommand ChangeFolderCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand RemoveFolderCommand { get; }
 
-        private IImagesLoader _imagesLoader;
+        private readonly IImagesLoader _imagesLoader;
 
         public MainViewModel(IImagesLoader imagesLoader)
         {

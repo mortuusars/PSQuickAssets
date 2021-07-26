@@ -1,15 +1,22 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
+using PSQuickAssets.Infrastructure;
 using PSQuickAssets.ViewModels;
 
 namespace PSQuickAssets
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public static readonly Version Version = new Version("1.0.0");
+        public static readonly ViewManager ViewManager = new ViewManager();
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            ViewManager.CreateAndShowMainView();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             ((TaskbarIcon)FindResource("TaskBarIcon")).DataContext = new TaskBarViewModel();
@@ -25,15 +32,10 @@ namespace PSQuickAssets
             ConfigManager.Write();
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            Program program = new Program();
-            program.Startup();
-        }
-
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show($"PSQuickAssets has crashed.\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace}");
+            Shutdown();
         }
     }
 }
