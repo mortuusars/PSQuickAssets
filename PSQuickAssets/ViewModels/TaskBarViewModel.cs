@@ -9,7 +9,7 @@ namespace PSQuickAssets.ViewModels
 
         public TaskBarViewModel()
         {
-            ShowWindowCommand = new RelayCommand(_ => Program.ViewManager.ChangeWindowVisibility());
+            ShowWindowCommand = new RelayCommand(_ => App.ViewManager.ChangeWindowVisibility());
             ExitCommand = new RelayCommand(_ => App.Current.Shutdown());
         }
     }

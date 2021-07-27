@@ -20,6 +20,8 @@ namespace PSQuickAssets.ViewModels
 
         public string Error { get; set; } = "";
         public bool IsWindowShowing { get; set; }
+        public double ThumbnailSize { get; } = 55;
+
         private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
@@ -27,9 +29,9 @@ namespace PSQuickAssets.ViewModels
         public ICommand HideCommand { get; }
         public ICommand RemoveFolderCommand { get; }
 
-        private readonly IImagesLoader _imagesLoader;
+        private readonly IImageFileLoader _imagesLoader;
 
-        public MainViewModel(IImagesLoader imagesLoader)
+        public MainViewModel(IImageFileLoader imagesLoader)
         {
             _imagesLoader = imagesLoader;
 
@@ -75,7 +77,7 @@ namespace PSQuickAssets.ViewModels
 
         private List<ImageFile> LoadImages(string path)
         {
-            return _imagesLoader.LoadImages(path);
+            return _imagesLoader.Load(path, (int)ThumbnailSize, ConstrainTo.Height);
         }
 
         private void AddNewDirectory()

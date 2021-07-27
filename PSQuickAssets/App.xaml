@@ -7,10 +7,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Fonts.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/TaskBarIcon.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+            <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth"/>
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
 
         </ResourceDictionary>

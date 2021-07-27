@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<None Remove="Resources\Fonts\Lexend-Light.ttf" />
+	<None Remove="Resources\Fonts\Lexend-Medium.ttf" />
+	<None Remove="Resources\Fonts\Lexend-Regular.ttf" />
+	<None Remove="Resources\Fonts\Lexend-Thin.ttf" />
 	<None Remove="Resources\Images\close_24.png" />
 	<None Remove="Resources\Images\folder_24.png" />
 	<None Remove="Resources\Images\psquickassets-size.ico" />
@@ -36,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Resource Include="Resources\Fonts\Lexend-Light.ttf" />
+	<Resource Include="Resources\Fonts\Lexend-Medium.ttf" />
+	<Resource Include="Resources\Fonts\Lexend-Regular.ttf" />
+	<Resource Include="Resources\Fonts\Lexend-Thin.ttf" />
 	<Resource Include="Resources\Images\close_24.png" />
 	<Resource Include="Resources\Images\folder_24.png" />
 	<Resource Include="Resources\Images\psquickassets-size.ico" />

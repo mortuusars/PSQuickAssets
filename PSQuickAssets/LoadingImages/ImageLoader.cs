@@ -8,14 +8,19 @@ using PSQuickAssets.Models;
 
 namespace PSQuickAssets
 {
-    public class ImagesLoader : IImagesLoader
+    public enum ConstrainTo
     {
-        public async Task<List<ImageFile>> LoadImagesAsync(string directoryPath)
+        Width, Height
+    }
+
+    public class ImageFileLoader : IImageFileLoader
+    {
+        public async Task<List<ImageFile>> LoadAsync(string directoryPath, int imageSize, ConstrainTo constrainTo)
         {
-            return await Task.Run(() => LoadImages(directoryPath));
+            return await Task.Run(() => Load(directoryPath, imageSize, constrainTo));
         }
 
-        public List<ImageFile> LoadImages(string directoryPath)
+        public List<ImageFile> Load(string directoryPath, int imageSize, ConstrainTo constrainTo)
         {
             string[] validFormats = new string[] { ".jpg", "jpeg", ".png", "bmp" };
             List<ImageFile> images = new List<ImageFile>();
@@ -23,23 +28,33 @@ namespace PSQuickAssets
             foreach (var filePath in GetDirectoryFiles(directoryPath))
             {
                 if (Array.Exists(validFormats, type => type == Path.GetExtension(filePath)))
-                    images.Add(CreateImageFile(filePath));
+                    images.Add(CreateImageFile(filePath, imageSize, constrainTo));
             }
 
             return images;
         }
 
-        private ImageFile CreateImageFile(string filePath)
+        private static ImageFile CreateImageFile(string filePath, int imageSize, ConstrainTo constrainTo)
         {
-            ImageFile img = new ImageFile();
-            img.Thumbnail = LoadThumbnail(filePath, 50);
-            img.FilePath = filePath;
-            img.FileName = Path.GetFileNameWithoutExtension(filePath);
-            img.ShortFileName = StringFormatter.CutStart(img.FileName, 20);
-            return img;
+            var imageFile =  new ImageFile
+            {
+                Thumbnail = constrainTo == ConstrainTo.Width ? CreateThumbnailToWidth(filePath, imageSize) : CreateThumbnailToHeight(filePath, imageSize),
+                FilePath = filePath,
+                FileName = Path.GetFileNameWithoutExtension(filePath)
+            };
+            
+            imageFile.ShortFileName = StringFormatter.CutStart(input: Path.GetFileNameWithoutExtension(filePath), 
+                                                               numberOfChars: imageFile.Thumbnail.PixelWidth);
+
+            return imageFile;
         }
 
-        private string[] GetDirectoryFiles(string directoryPath)
+        private static int CalculateCharsNumber(int pixelWidth)
+        {
+            return (int)Math.Max(20, Math.Min(160, (pixelWidth / 3.5) * 1.2));
+        }
+
+        private static string[] GetDirectoryFiles(string directoryPath)
         {
             try
             {
@@ -51,15 +66,23 @@ namespace PSQuickAssets
             }
         }
 
-        private static BitmapImage LoadThumbnail(string filepath, int width = 45)
+        private static BitmapImage CreateThumbnailToWidth(string filepath, int width = 60)
         {
-            Image img = new Image();
-            img.Width = 200;
-
             var bmp = new BitmapImage();
             bmp.BeginInit();
             bmp.UriSource = new Uri(filepath);
             bmp.DecodePixelWidth = width;
+            bmp.EndInit();
+
+            return bmp;
+        }
+
+        private static BitmapImage CreateThumbnailToHeight(string filepath, int height = 60)
+        {
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.UriSource = new Uri(filepath);
+            bmp.DecodePixelHeight = height;
             bmp.EndInit();
 
             return bmp;

@@ -16,7 +16,8 @@
         Background="Transparent"
         AllowsTransparency="True"
         ShowInTaskbar="False"
-        TextOptions.TextFormattingMode="Display" FontWeight="SemiBold"
+        TextOptions.TextFormattingMode="Display"
+        FontFamily="{StaticResource FontMedium}"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
 
     <Window.InputBindings>
@@ -60,22 +61,24 @@
 
     <Grid Background="{x:Null}"
           x:Name="MainContainer"
-          Margin="20"
+          Margin="30"
           VerticalAlignment="Top"
           HorizontalAlignment="Center"
           MinWidth="160" MinHeight="60">
 
-        <Border Background="#282829" CornerRadius="8" BorderThickness="2" BorderBrush="#353535"
+        <Border Background="#ee292929" CornerRadius="8" BorderThickness="2" BorderBrush="#353535"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Direction="-90" ShadowDepth="3" Opacity="0.6"/>
+                <DropShadowEffect BlurRadius="35" Direction="-90" ShadowDepth="6" Opacity="0.6"/>
             </Border.Effect>
         </Border>
 
-        <ItemsControl ItemsSource="{Binding Folders}" Margin="16 4"
+
+        <ItemsControl ItemsSource="{Binding Folders}" Margin="16 6"
                       MaxWidth="1000" Background="Transparent" BorderThickness="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.CanContentScroll="True"
                       SizeChanged="ItemsControl_SizeChanged">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -102,7 +105,7 @@
                         <ListBox x:Name="FileList" 
                                  ItemsSource="{Binding}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                 ScrollViewer.VerticalScrollBarVisibility="auto"
                                  BorderThickness="0"
                                  Background="Transparent"
                                  VirtualizingStackPanel.VirtualizationMode="Recycling">
@@ -115,7 +118,7 @@
                             <!-- Image Panel -->
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="Transparent">
+                                    <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
                                         <Grid.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -125,31 +128,38 @@
                                         </Grid.InputBindings>
 
                                         <Grid.Effect>
-                                            <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="-90" Opacity="0.65"/>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="-90" Opacity="0.6"/>
                                         </Grid.Effect>
 
                                         <Grid.ToolTip>
                                             <TextBlock Text="{Binding FileName}"/>
                                         </Grid.ToolTip>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="60"/>
+                                            <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
 
                                         <!-- Thumbnail -->
-                                        <Image Grid.Row="0" Width="70" Height="70"
-                                                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                                   Source="{Binding Thumbnail}"/>
+                                        <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
+                                                Width="{Binding Thumbnail.PixelWidth}" MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                                                    AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
+                                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                                                    AncestorType=Window}, Path=DataContext.ThumbnailSize}">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding Thumbnail}" Stretch="UniformToFill"/>
+                                            </Border.Background>
+                                        </Border>
 
                                         <!-- Label (Filename) -->
                                         <TextBlock Text="{Binding ShortFileName}"
-                                                       Grid.Row="1" VerticalAlignment="Top"
-                                                       TextAlignment="Center"
-                                                       Width="70" Height="34"
-                                                       TextWrapping="Wrap"
-                                                       Margin="0 6 0 6"
-                                                       FontSize="12"
-                                                       Foreground="#cdcdcd"/>
+                                                   Grid.Row="1" VerticalAlignment="Top"
+                                                   TextAlignment="Center"
+                                                   MaxWidth="70" 
+                                                   Height="32"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0 6 0 4"
+                                                   FontSize="12"
+                                                   Foreground="#aaa"/>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -157,14 +167,24 @@
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Focusable" Value="False"/>
-                                    <Setter Property="BorderThickness" Value="1"/>
-                                    <Style.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="4"/>
-                                        </Style>
-                                    </Style.Resources>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border Name="_Border" CornerRadius="5" Padding="4">
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="_Border" Property="Background" Value="#383838"/>
+                                                        <Setter TargetName="_Border" Property="BorderBrush" Value="#555"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
                             </ListBox.ItemContainerStyle>
+                            
                         </ListBox>
                     </StackPanel>
                 </DataTemplate>

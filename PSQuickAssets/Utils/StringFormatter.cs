@@ -11,7 +11,7 @@ namespace PSQuickAssets
         /// <param name="input"></param>
         /// <param name="numberOfChars"></param>
         /// <param name="numberOfPeriods"></param>
-        public static string CutMiddle(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutMiddle(string input, int numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");
@@ -27,7 +27,7 @@ namespace PSQuickAssets
 
         
 
-        public static string CutStart(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutStart(string input, int numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");
@@ -47,7 +47,7 @@ namespace PSQuickAssets
             return sb.ToString();
         }
 
-        public static string CutEnd(string input, uint numberOfChars, uint numberOfPeriods = 3)
+        public static string CutEnd(string input, int numberOfChars, uint numberOfPeriods = 3)
         {
             if (input == null)
                 throw new ArgumentException("Input cannot be null");
@@ -67,7 +67,7 @@ namespace PSQuickAssets
             return sb.ToString();
         }
 
-        private static string ShortenMiddle(string input, uint numberOfChars, uint numberOfPeriods)
+        private static string ShortenMiddle(string input, int numberOfChars, uint numberOfPeriods)
         {
             int numberMinusDots = (int)(numberOfChars - numberOfPeriods);
 

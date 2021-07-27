@@ -10,7 +10,7 @@ namespace PSQuickAssets.Infrastructure
 
         public void CreateAndShowMainView()
         {
-            _mainViewModel = new MainViewModel(new ImagesLoader());
+            _mainViewModel = new MainViewModel(new ImageFileLoader());
 
             _mainView ??= new MainView() { DataContext = _mainViewModel };
             _mainView.Show();
