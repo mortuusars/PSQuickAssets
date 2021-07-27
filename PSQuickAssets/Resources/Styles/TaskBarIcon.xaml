@@ -3,9 +3,9 @@
                     xmlns:tb="http://www.hardcodet.net/taskbar">
 
     <tb:TaskbarIcon x:Key="TaskBarIcon"
-                    x:Name="TaskBarIcon" 
                     IconSource="../Images/psquickassets-size.ico"
-                    ToolTipText="PSQuickAssets">
+                    ToolTipText="PSQuickAssets"
+                    LeftClickCommand="{Binding ShowWindowCommand}">
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
