@@ -4,4 +4,9 @@
     <FontFamily x:Key="FontLight">/Resources/Fonts/#Lexend Light</FontFamily>
     <FontFamily x:Key="FontRegular">/Resources/Fonts/#Lexend Regular</FontFamily>
     <FontFamily x:Key="FontMedium">/Resources/Fonts/#Lexend Medium</FontFamily>
+    <FontFamily x:Key="FontSemiBold">/Resources/Fonts/#Lexend SemiBold</FontFamily>
+    <FontFamily x:Key="FontBold">/Resources/Fonts/#Lexend Bold</FontFamily>
+    <FontFamily x:Key="FontExtraBold">/Resources/Fonts/#Lexend ExtraBold</FontFamily>
+
+    <FontFamily x:Key="FontSans">/Resources/Fonts/#PT Sans Bold</FontFamily>
 </ResourceDictionary>
