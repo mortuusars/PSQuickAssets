@@ -17,7 +17,8 @@
         AllowsTransparency="True"
         ShowInTaskbar="False"
         TextOptions.TextFormattingMode="Display"
-        FontFamily="{StaticResource FontMedium}"
+        FontFamily="{StaticResource FontSans}"
+        FontWeight="Bold"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
 
     <Window.InputBindings>
@@ -128,7 +129,7 @@
                                         </Grid.InputBindings>
 
                                         <Grid.Effect>
-                                            <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="-90" Opacity="0.6"/>
+                                            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
                                         </Grid.Effect>
 
                                         <Grid.ToolTip>
@@ -154,12 +155,11 @@
                                         <TextBlock Text="{Binding ShortFileName}"
                                                    Grid.Row="1" VerticalAlignment="Top"
                                                    TextAlignment="Center"
-                                                   MaxWidth="70" 
-                                                   Height="32"
+                                                   Height="32" MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
                                                    TextWrapping="Wrap"
                                                    Margin="0 6 0 4"
                                                    FontSize="12"
-                                                   Foreground="#aaa"/>
+                                                   Foreground="#999"/>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
