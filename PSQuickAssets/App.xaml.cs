@@ -15,6 +15,19 @@ namespace PSQuickAssets
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ViewManager.CreateAndShowMainView();
+
+            CheckUpdates();
+        }
+
+        private async void CheckUpdates()
+        {
+            var update = await new Update.UpdateChecker().CheckAsync();
+            if (update.updateAvailable)
+            {
+                string message = $"New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
+                    $"Version: {update.versionInfo.Version}\nChangelog: {update.versionInfo.Description}";
+                MessageBox.Show(message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
