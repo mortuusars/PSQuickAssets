@@ -61,7 +61,7 @@ namespace PSQuickAssets.ViewModels
         {
             IsWindowShowing = false;
 
-            PSResult callResult = await new PhotoshopManager().AddImageToDocAsync(filePath);
+            PSResult callResult = new PhotoshopManager().AddImageToDoc(filePath);
 
             if (callResult.CallResult != PSCallResult.Success)
             {
