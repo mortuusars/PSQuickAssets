@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows;
-using Photoshop;
-using PSQuickAssets.PS;
 using PSQuickAssets.Utils;
 
 namespace PSQuickAssets
@@ -40,60 +35,55 @@ namespace PSQuickAssets
             if (WindowControl.IsProcessRunning("Photoshop") == false)
                 return new PSResult(PSCallResult.NotRunning, filePath, "Photoshop is not running");
 
-            Debug.WriteLine("Ps is running");
-
             try
             {
                 dynamic ps = CreatePhotoshopCOMInstance();
-                Debug.WriteLine("Created PS instance.");
                 PlaceImage(filePath, ps);
                 return new PSResult(PSCallResult.Success, filePath, "");
             }
             catch (Exception ex) when (ex.HResult == ERR_NO_SUCH_ELEMENT)
             {
-                Debug.WriteLine("No documents open.");
                 return new PSResult(PSCallResult.NoDocumentsOpen, filePath, "No documents open");
             }
             catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
             {
-                Debug.WriteLine("Photoshop is busy.");
                 return new PSResult(PSCallResult.Busy, filePath, "Photoshop is busy");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                //MessageBox.Show(ex.Message);
                 return new PSResult(PSCallResult.Failed, filePath, ex.Message);
             }
         }
 
         private static dynamic CreatePhotoshopCOMInstance()
         {
-            //var guid = new Guid("{0e9aaf8c-058b-433d-a42b-5b98325fa81c}");
-            //var guid = new Guid("{e891ee9a-d0ae-4cb4-8871-f92c0109f18e}");
-
-            //var type = Type.GetTypeFromProgID("Photoshop.Application");
-            //var typeOld = Type.GetTypeFromCLSID(guid);
-
-            //dynamic instance = Activator.CreateInstance(typeOld);
-
-            //return Activator.CreateInstance(Type.GetTypeFromCLSID(guid));
-            //return COMMarshal.GetActiveObject("Photoshop.Application");
-            //var instance = Activator.CreateInstance(Type.get)
             return Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.Application"));
         }
 
-        private static void PlaceImage(string filePath, dynamic ps)
+        private static void PlaceImage(string filepath, dynamic ps)
         {
             var idPlc = ps.CharIDToTypeID("Plc ");
-            var desc3 = new ActionDescriptor();
+            dynamic descriptor = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionDescriptor"));
             var idnull = ps.CharIDToTypeID("null");
-            desc3.PutPath(idnull, filePath);
+            descriptor.PutPath(idnull, filepath);
             var idFTcs = ps.CharIDToTypeID("FTcs");
             var idQCSt = ps.CharIDToTypeID("QCSt");
             var idQcsa = ps.CharIDToTypeID("Qcsa");
-            desc3.PutEnumerated(idFTcs, idQCSt, idQcsa);
-            ps.ExecuteAction(idPlc, desc3, PsDialogModes.psDisplayNoDialogs);
+            descriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
+            ps.ExecuteAction(idPlc, descriptor, PS.PsDialogModes.psDisplayNoDialogs);
         }
+
+        //private static void PlaceImage(string filePath, dynamic ps)
+        //{
+        //var idPlc = ps.CharIDToTypeID("Plc ");
+        //var descriptor = new ActionDescriptor();
+        //var idnull = ps.CharIDToTypeID("null");
+        //descriptor.PutPath(idnull, filePath);
+        //var idFTcs = ps.CharIDToTypeID("FTcs");
+        //var idQCSt = ps.CharIDToTypeID("QCSt");
+        //var idQcsa = ps.CharIDToTypeID("Qcsa");
+        //descriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
+        //ps.ExecuteAction(idPlc, descriptor, PS.PsDialogModes.psDisplayNoDialogs);
+        //}
     }
 }
