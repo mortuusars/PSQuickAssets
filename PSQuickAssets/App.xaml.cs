@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -14,8 +15,8 @@ namespace PSQuickAssets
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            ShutdownIfAlreadyRunning();
             ViewManager.CreateAndShowMainView();
-
             CheckUpdates();
         }
 
@@ -27,6 +28,20 @@ namespace PSQuickAssets
                 string message = $"New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
                     $"Version: {update.versionInfo.Version}\nChangelog: {update.versionInfo.Description}";
                 MessageBox.Show(message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void ShutdownIfAlreadyRunning()
+        {
+            var current = Process.GetCurrentProcess();
+
+            foreach (var process in Process.GetProcessesByName(current.ProcessName))
+            {
+                if (process.Id != current.Id && process.MainModule.FileName == current.MainModule.FileName)
+                {
+                    MessageBox.Show("Another instance of PSQuickAssets is already running", "PSQuickAssets", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Shutdown();
+                }
             }
         }
 
