@@ -4,14 +4,14 @@ using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using PSQuickAssets.Infrastructure;
-using PSQuickAssets.ViewModels;
 
 namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static readonly Version Version = new Version("1.0.0");
-        public static readonly ViewManager ViewManager = new ViewManager();
+        public static Version Version { get; private set; } = new Version("1.0.0");
+        public static ViewManager ViewManager { get; private set; } = new ViewManager();
+        public static TaskbarIcon TaskBarIcon { get; private set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -47,9 +47,7 @@ namespace PSQuickAssets
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var taskbaricon = (TaskbarIcon)FindResource("TaskBarIcon");
-            taskbaricon.DataContext = new TaskBarViewModel();
-            //taskbaricon.ShowBalloonTip("PSQuickAssets", "Running", BalloonIcon.Info);
+            TaskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
             ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(650));
             base.OnStartup(e);
         }

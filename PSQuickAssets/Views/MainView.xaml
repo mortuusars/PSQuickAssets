@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+        xmlns:views="clr-namespace:PSQuickAssets.Views"
         mc:Ignorable="d"
         Title="MainWindow" 
         Topmost="True" WindowStartupLocation="Manual"
@@ -24,7 +24,7 @@
     <Window.Resources>
 
         <sys:Double x:Key="ButtonsRestOpacity">0.1</sys:Double>
-        <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
+        <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>        
 
         <Style x:Key="ImageButtons" TargetType="Image">
             <Setter Property="Opacity" Value="0.2"/>
@@ -80,15 +80,19 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    Margin="4" Background="Transparent">
                             <!-- Folder Name -->
-                            <TextBlock Foreground="#999999" FontSize="14"
+                            <TextBlock Foreground="{StaticResource TextColorBrush}" FontSize="14" Height="16" Padding="2"
+                                       VerticalAlignment="Top"
                                        Text="{Binding FilePath, Converter={StaticResource PathToFolderName}}"/>
                             <!-- Remove Folder Button -->
-                            <Image Source="/Resources/Images/close_24.png"
-                                   Margin="6 2 2 2" Width="16" Height="16"
-                                   VerticalAlignment="Top" HorizontalAlignment="Right"
-                                   Style="{StaticResource ImageButtons}">
+                            <Image Source="/Resources/Images/close_24.png" Width="16" Height="16"
+                                   Margin="3 3 0 0" VerticalAlignment="Top"
+                                   Style="{StaticResource ImageButtons}"
+                                   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                    AncestorType={x:Type StackPanel}}, Path=IsMouseOver, 
+                                                    Converter={StaticResource BoolToVisibilityHidden}}">
                                 <Image.InputBindings>
                                     <MouseBinding Gesture="LeftClick" 
                                                   Command="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -99,89 +103,9 @@
                             </Image>
                         </StackPanel>
 
-                        <ListBox x:Name="FileList" 
-                                 ItemsSource="{Binding}"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 ScrollViewer.VerticalScrollBarVisibility="auto"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel IsItemsHost="True" Margin="1"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
+                        <!-- ITEMS LIST BOX -->
+                        <views:FolderListBox/>
 
-                            <!-- Image Panel -->
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
-                                        <Grid.InputBindings>
-                                            <MouseBinding Gesture="LeftClick"
-                                              Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                            AncestorType={x:Type Window}},
-                                                        Path=DataContext.PlaceImageCommand}"
-                                              CommandParameter="{Binding FilePath}"/>
-                                        </Grid.InputBindings>
-
-                                        <Grid.Effect>
-                                            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
-                                        </Grid.Effect>
-
-                                        <Grid.ToolTip>
-                                            <TextBlock Text="{Binding FileName}"/>
-                                        </Grid.ToolTip>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <!-- Thumbnail -->
-                                        <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
-                                                Width="{Binding Thumbnail.PixelWidth}" MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                                                    AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
-                                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                                                    AncestorType=Window}, Path=DataContext.ThumbnailSize}">
-                                            <Border.Background>
-                                                <ImageBrush ImageSource="{Binding Thumbnail}" Stretch="UniformToFill"/>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <!-- Label (Filename) -->
-                                        <TextBlock Text="{Binding ShortFileName}"
-                                                   Grid.Row="1" VerticalAlignment="Top"
-                                                   TextAlignment="Center"
-                                                   Height="32" MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
-                                                   TextWrapping="Wrap"
-                                                   Margin="0 6 0 4"
-                                                   FontSize="12"
-                                                   Foreground="#999"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Focusable" Value="False"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <Border Name="_Border" CornerRadius="5" Padding="4">
-                                                    <ContentPresenter />
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter TargetName="_Border" Property="Background" Value="#383838"/>
-                                                        <Setter TargetName="_Border" Property="BorderBrush" Value="#555"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            
-                        </ListBox>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -257,11 +181,13 @@
             </Image>
 
         </StackPanel>
-
-        <Rectangle x:Name="CornerResize" Fill="Transparent" Height="14" Width="14" 
-                   HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                   MouseDown="CornerResize_MouseDown" MouseMove="CornerResize_MouseMove"
-                   MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"/>
-
+        
+        <!-- RESIZE -->
+        <Image x:Name="CornerResize" Height="20" Width="20" Margin="2"
+               HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+               MouseDown="CornerResize_MouseDown" MouseMove="CornerResize_MouseMove"
+               MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"
+               Source="../Resources/Images/corner_resize_128.png"
+               Style="{StaticResource ImageButtons}"/>
     </Grid>
 </Window>

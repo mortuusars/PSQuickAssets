@@ -34,7 +34,7 @@ namespace PSQuickAssets.Infrastructure
 
         public void SaveMainViewState()
         {
-            var state = new MainViewState()
+            var state = new ViewState()
             {
                 Left = _mainView.Left,
                 Top = _mainView.Top,
@@ -54,16 +54,16 @@ namespace PSQuickAssets.Infrastructure
             }
         }
 
-        private MainViewState ReadMainViewState()
+        private static ViewState ReadMainViewState()
         {
             try
             {
                 var json = File.ReadAllText(_MAIN_VIEW_STATE_FILE);
-                return JsonSerializer.Deserialize<MainViewState>(json);
+                return JsonSerializer.Deserialize<ViewState>(json);
             }
             catch (System.Exception)
             {
-                return new MainViewState()
+                return new ViewState()
                 {
                     Left = (WpfScreenHelper.Screen.PrimaryScreen.Bounds.Right / 2) - 200,
                     Top = (WpfScreenHelper.Screen.PrimaryScreen.Bounds.Bottom / 2) - 200,

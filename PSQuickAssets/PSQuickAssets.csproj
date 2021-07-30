@@ -24,6 +24,7 @@
 	<None Remove="Resources\Fonts\PTSans-BoldItalic.ttf" />
 	<None Remove="Resources\Fonts\PTSans-Regular.ttf" />
 	<None Remove="Resources\Images\close_24.png" />
+	<None Remove="Resources\Images\corner_resize_128.png" />
 	<None Remove="Resources\Images\folder_24.png" />
 	<None Remove="Resources\Images\psquickassets-size.ico" />
   </ItemGroup>
@@ -50,6 +51,7 @@
 	<Resource Include="Resources\Fonts\PTSans-BoldItalic.ttf" />
 	<Resource Include="Resources\Fonts\PTSans-Regular.ttf" />
 	<Resource Include="Resources\Images\close_24.png" />
+	<Resource Include="Resources\Images\corner_resize_128.png" />
 	<Resource Include="Resources\Images\folder_24.png" />
 	<Resource Include="Resources\Images\psquickassets-size.ico" />
   </ItemGroup>
