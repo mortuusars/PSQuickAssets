@@ -7,8 +7,9 @@
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Topmost="True" WindowStartupLocation="CenterScreen"
+        Topmost="True" WindowStartupLocation="Manual"
         Width="1200" Height="500"
+        MinWidth="300" MinHeight="200"
         SizeToContent="Manual" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True"
         ShowInTaskbar="False"
@@ -59,7 +60,8 @@
     <Grid x:Name="MainContainer"
           Margin="30" MinWidth="160" MinHeight="60"
           VerticalAlignment="Top" HorizontalAlignment="Center"          
-          Background="{x:Null}">
+          Background="{x:Null}"
+          MouseDown="BG_MouseDown">
 
         <Border Background="#ee292929" CornerRadius="8" BorderThickness="2" BorderBrush="#353535"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -255,5 +257,11 @@
             </Image>
 
         </StackPanel>
+
+        <Rectangle x:Name="CornerResize" Fill="Transparent" Height="14" Width="14" 
+                   HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                   MouseDown="CornerResize_MouseDown" MouseMove="CornerResize_MouseMove"
+                   MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"/>
+
     </Grid>
 </Window>

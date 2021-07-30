@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using WpfScreenHelper;
 
 namespace PSQuickAssets.Views
@@ -88,7 +91,7 @@ namespace PSQuickAssets.Views
             else
             {
                 this.Visibility = Visibility.Visible;
-                RecalculatePosition();
+                //RecalculatePosition();
             }
         }
 
@@ -111,7 +114,68 @@ namespace PSQuickAssets.Views
 
         private void ItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            RecalculatePosition();
+            //RecalculatePosition();
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private enum ResizeDirection { Left = 61441, Right = 61442, Top = 61443, Bottom = 61446, BottomRight = 61448, }
+
+        private bool _isDragging;
+        private Point _prevMousePos;
+
+        private void CornerResize_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //_isDragging = true;
+            //_prevMousePos = Mouse.GetPosition(this);
+            //DragResize(e);
+
+            var hwndSource = PresentationSource.FromVisual((Visual)sender) as HwndSource;
+            SendMessage(hwndSource.Handle, 0x112, (IntPtr)ResizeDirection.BottomRight, IntPtr.Zero);
+        }
+
+        private void CornerResize_MouseMove(object sender, MouseEventArgs e)
+        {
+            //DragResize(e);
+        }
+
+        //Manual Resizing
+        private void DragResize(MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                _isDragging = false;
+                Mouse.Capture(null);
+                return;
+            }
+
+            if (_isDragging)
+            {
+                Mouse.Capture(CornerResize);
+
+                Point currMousePos = Mouse.GetPosition(this);
+                if (currMousePos.X == 0 && currMousePos.Y == 0)
+                    return;
+
+                this.Width = this.ActualWidth + (currMousePos.X - _prevMousePos.X);
+                this.Height = this.ActualHeight + (currMousePos.Y - _prevMousePos.Y);
+
+                _prevMousePos = currMousePos;
+            }
+        }
+
+        private void CornerResize_MouseEnter(object sender, MouseEventArgs e) => Mouse.OverrideCursor = Cursors.SizeNWSE;
+
+        private void CornerResize_MouseLeave(object sender, MouseEventArgs e) => Mouse.OverrideCursor = Cursors.Arrow;
+
+        private void BG_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                this.DragMove();
         }
     }
 }
