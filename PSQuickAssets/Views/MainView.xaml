@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Topmost="True" WindowStartupLocation="CenterScreen"
-        Width="1200" Height="100"
-        SizeToContent="Height" WindowStyle="None"
+        Width="1200" Height="500"
+        SizeToContent="Manual" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True"
         ShowInTaskbar="False"
         TextOptions.TextFormattingMode="Display"
@@ -70,7 +70,7 @@
 
 
         <ItemsControl ItemsSource="{Binding Folders}" Margin="16 6"
-                      MaxWidth="1000" Background="Transparent" BorderThickness="0"
+                      Background="Transparent" BorderThickness="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.CanContentScroll="True"

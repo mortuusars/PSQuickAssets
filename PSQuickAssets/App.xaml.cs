@@ -56,10 +56,11 @@ namespace PSQuickAssets
 
         protected override void OnExit(ExitEventArgs e)
         {
-            base.OnExit(e);
+            ViewManager.SaveMainViewState();
             ((TaskbarIcon)FindResource("TaskBarIcon")).Dispose();
-
             ConfigManager.Write();
+
+            base.OnExit(e);
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
