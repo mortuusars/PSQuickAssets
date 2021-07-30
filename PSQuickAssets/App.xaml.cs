@@ -32,7 +32,9 @@ namespace PSQuickAssets
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ((TaskbarIcon)FindResource("TaskBarIcon")).DataContext = new TaskBarViewModel();
+            var taskbaricon = (TaskbarIcon)FindResource("TaskBarIcon");
+            taskbaricon.DataContext = new TaskBarViewModel();
+            //taskbaricon.ShowBalloonTip("PSQuickAssets", "Running", BalloonIcon.Info);
             ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(650));
             base.OnStartup(e);
         }

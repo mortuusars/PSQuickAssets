@@ -15,7 +15,13 @@ namespace PSQuickAssets
         Failed
     }
 
-    public class PhotoshopManager
+    public interface IPhotoshopManager
+    {
+        PSResult AddImageToDoc(string filePath);
+        Task<PSResult> AddImageToDocAsync(string filePath);
+    }
+
+    public class PhotoshopManager : IPhotoshopManager
     {
         private const int ERR_NO_SUCH_ELEMENT = -2147212704;
         private const int ERR_RETRY_LATER = -2147417846;
@@ -72,18 +78,5 @@ namespace PSQuickAssets
             descriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
             ps.ExecuteAction(idPlc, descriptor, PS.PsDialogModes.psDisplayNoDialogs);
         }
-
-        //private static void PlaceImage(string filePath, dynamic ps)
-        //{
-        //var idPlc = ps.CharIDToTypeID("Plc ");
-        //var descriptor = new ActionDescriptor();
-        //var idnull = ps.CharIDToTypeID("null");
-        //descriptor.PutPath(idnull, filePath);
-        //var idFTcs = ps.CharIDToTypeID("FTcs");
-        //var idQCSt = ps.CharIDToTypeID("QCSt");
-        //var idQcsa = ps.CharIDToTypeID("Qcsa");
-        //descriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
-        //ps.ExecuteAction(idPlc, descriptor, PS.PsDialogModes.psDisplayNoDialogs);
-        //}
     }
 }

@@ -10,27 +10,29 @@ namespace PSQuickAssets.Utils
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public static void FocusPSWindow()
+        public static bool FocusWindow(string processName)
         {
-            Process[] processes = Process.GetProcessesByName("photoshop");
+            Process[] processes = Process.GetProcessesByName(processName);
 
             if (processes.Length > 0)
             {
                 try
                 {
                     SetForegroundWindow(processes[0].MainWindowHandle);
+                    return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show($"Failed to bring PS to foreground:\n{ex.Message}");
+                    return false;
                 }
             }
-                
+            else
+                return false;
         }
 
         public static bool IsProcessRunning(string processName)
         {
-            return Array.Exists(Process.GetProcesses(), p => p.ProcessName == processName);
+            return Process.GetProcessesByName(processName).Length > 0;
         }
     }
 }

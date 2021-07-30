@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Timers;
 using System.Windows.Input;
 using PropertyChanged;
@@ -22,7 +24,7 @@ namespace PSQuickAssets.ViewModels
         public bool IsWindowShowing { get; set; }
         public double ThumbnailSize { get; } = 55;
 
-        private readonly Timer _errorShowingTimer = new Timer();
+        private readonly System.Timers.Timer _errorShowingTimer = new System.Timers.Timer();
 
         public ICommand PlaceImageCommand { get; }
         public ICommand ChangeFolderCommand { get; }
@@ -30,10 +32,12 @@ namespace PSQuickAssets.ViewModels
         public ICommand RemoveFolderCommand { get; }
 
         private readonly IImageFileLoader _imagesLoader;
+        private readonly IPhotoshopManager _photoshopManager;
 
-        public MainViewModel(IImageFileLoader imagesLoader)
+        public MainViewModel(IImageFileLoader imagesLoader, IPhotoshopManager photoshopManager)
         {
             _imagesLoader = imagesLoader;
+            _photoshopManager = photoshopManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
             ChangeFolderCommand = new RelayCommand(_ => AddNewDirectory());
@@ -61,17 +65,17 @@ namespace PSQuickAssets.ViewModels
         {
             IsWindowShowing = false;
 
-            PSResult callResult = await new PhotoshopManager().AddImageToDocAsync(filePath);
+            PSResult psResult = await _photoshopManager.AddImageToDocAsync(filePath);
 
-            if (callResult.CallResult != PSCallResult.Success)
+            if (psResult.CallResult != PSCallResult.Success)
             {
-                IsWindowShowing = true;
-                SetError(callResult.Message);
+                SetError(psResult.Message);
                 Sound.Error();
+                IsWindowShowing = true;
             }
             else
             {
-                WindowControl.FocusPSWindow();
+                WindowControl.FocusWindow("photoshop");
             }
         }
 

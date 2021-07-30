@@ -1,4 +1,4 @@
-﻿<Window x:Class="PSQuickAssets.MainView"
+﻿<Window x:Class="PSQuickAssets.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,19 +6,14 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
         mc:Ignorable="d"
-        Topmost="True"
-        WindowStartupLocation="CenterScreen"
         Title="MainWindow" 
-        Width="1200" 
-        Height="100"
-        SizeToContent="Height"
-        WindowStyle="None"
-        Background="Transparent"
-        AllowsTransparency="True"
+        Topmost="True" WindowStartupLocation="CenterScreen"
+        Width="1200" Height="100"
+        SizeToContent="Height" WindowStyle="None"
+        Background="Transparent" AllowsTransparency="True"
         ShowInTaskbar="False"
         TextOptions.TextFormattingMode="Display"
-        FontFamily="{StaticResource FontSans}"
-        FontWeight="Bold"
+        FontFamily="{StaticResource FontSans}" FontWeight="Bold"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}">
 
     <Window.InputBindings>
@@ -57,15 +52,14 @@
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>        
+        
     </Window.Resources>
 
-    <Grid Background="{x:Null}"
-          x:Name="MainContainer"
-          Margin="30"
-          VerticalAlignment="Top"
-          HorizontalAlignment="Center"
-          MinWidth="160" MinHeight="60">
+    <Grid x:Name="MainContainer"
+          Margin="30" MinWidth="160" MinHeight="60"
+          VerticalAlignment="Top" HorizontalAlignment="Center"          
+          Background="{x:Null}">
 
         <Border Background="#ee292929" CornerRadius="8" BorderThickness="2" BorderBrush="#353535"
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -79,7 +73,7 @@
                       MaxWidth="1000" Background="Transparent" BorderThickness="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                          ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.CanContentScroll="True"
                       SizeChanged="ItemsControl_SizeChanged">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

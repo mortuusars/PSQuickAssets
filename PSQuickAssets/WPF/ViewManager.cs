@@ -1,5 +1,6 @@
 ﻿using Ookii.Dialogs.Wpf;
 using PSQuickAssets.ViewModels;
+using PSQuickAssets.Views;
 
 namespace PSQuickAssets.Infrastructure
 {
@@ -10,7 +11,7 @@ namespace PSQuickAssets.Infrastructure
 
         public void CreateAndShowMainView()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader());
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager());
 
             _mainView ??= new MainView() { DataContext = _mainViewModel };
             _mainView.Show();

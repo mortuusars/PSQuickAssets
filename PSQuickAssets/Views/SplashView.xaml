@@ -1,0 +1,31 @@
+﻿<Window x:Class="PSQuickAssets.Views.SplashView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+        mc:Ignorable="d"
+        Title="Splash" Height="300" Width="500"
+        AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize" UseLayoutRounding="True" Focusable="False" ShowActivated="False"
+        ShowInTaskbar="False"
+        Background="{x:Null}"
+        FontFamily="{StaticResource FontLight}"
+        FontSize="16">
+
+    <Window.DataContext>
+        <vm:SplashViewModel/>
+    </Window.DataContext>
+    
+    <Grid Margin="40">
+        <Border x:Name="Container" Background="#444" CornerRadius="16">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="35" Direction="-90" ShadowDepth="6" Opacity="0.6" RenderingBias="Quality"/>
+            </Border.Effect>
+
+            <TextBlock Margin="10" Text="{Binding Version}"/>
+
+        </Border>
+    </Grid>
+    
+</Window>
