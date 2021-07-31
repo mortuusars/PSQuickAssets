@@ -20,10 +20,10 @@
                                     Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}">
                 <Image.InputBindings>
                     <MouseBinding Gesture="LeftClick" 
-                                                  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                            AncestorType={x:Type Window}},
-                                                            Path=DataContext.RemoveFolderCommand}"
-                                                  CommandParameter="{Binding}"/>
+                                  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type Window}},
+                                            Path=DataContext.RemoveFolderCommand}"
+                                  CommandParameter="{Binding}"/>
                 </Image.InputBindings>
             </Image>
         </StackPanel>
@@ -80,11 +80,18 @@
                             </Border>
 
                             <!-- Label (Filename) -->
-                            <TextBlock Text="{Binding ShortFileName}" Grid.Row="1" Margin="0 6 0 4" Height="32"
-                               VerticalAlignment="Top" TextAlignment="Center"
-                               MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
-                               TextWrapping="Wrap" FontSize="12"
-                               Foreground="{StaticResource TextColorBrush}"/>
+                            <TextBlock Grid.Row="1" Margin="0 6 0 4" Height="32"
+                                       VerticalAlignment="Top" TextAlignment="Center"
+                                       MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
+                                       TextWrapping="Wrap" FontSize="12"
+                                       Foreground="{StaticResource TextColorBrush}">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource FilenameToShort}">
+                                        <Binding Path="FileName" />
+                                        <Binding Path="Thumbnail.PixelWidth" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

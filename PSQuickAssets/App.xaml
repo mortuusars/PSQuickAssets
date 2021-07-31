@@ -16,6 +16,7 @@
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
             <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityHidden"/>
             <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth"/>
+            <conv:FilenameToShortConverter x:Key="FilenameToShort"/>
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
             
             <SolidColorBrush Color="#8f8f8f" x:Key="TextColorBrush"/>
