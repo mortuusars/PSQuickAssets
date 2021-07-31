@@ -70,6 +70,7 @@ namespace PSQuickAssets.Views
         public MainView()
         {
             InitializeComponent();
+
         }
 
         // Registering Global hotkey
