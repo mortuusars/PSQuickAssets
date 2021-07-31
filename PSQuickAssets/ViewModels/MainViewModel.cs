@@ -39,7 +39,7 @@ namespace PSQuickAssets.ViewModels
             _photoshopManager = photoshopManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            AddFolderCommand = new RelayCommand(_ => AddNewDirectory());
+            AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
 
@@ -49,22 +49,9 @@ namespace PSQuickAssets.ViewModels
         private async void LoadSavedDirs()
         {
             foreach (var path in ConfigManager.GetCurrentDirectories())
-            {
                 await LoadDirectory(path);
-            }
         }
-
-        private void RemoveFolder(List<ImageFile> folder)
-        {
-            Folders.Remove(folder);
-
-            // Remove folderpath from stored directories
-            var dir = Path.GetDirectoryName(folder[0].FilePath);
-            CurrentDirectories.Remove(dir);
-            UpdateConfig();
-            Sound.Click();
-        }
-
+        
         private async void PlaceImage(string filePath)
         {
             IsWindowShowing = false;
@@ -73,14 +60,11 @@ namespace PSQuickAssets.ViewModels
 
             if (psResult.CallResult != PSCallResult.Success)
             {
-                SetError(psResult.Message);
-                SystemSounds.Asterisk.Play();
                 IsWindowShowing = true;
+                ShowError(psResult.Message);
             }
             else
-            {
                 WindowControl.FocusWindow("photoshop");
-            }
         }
 
         private async Task<List<ImageFile>> LoadImages(string path)
@@ -88,11 +72,17 @@ namespace PSQuickAssets.ViewModels
             return await _imagesLoader.LoadAsync(path, (int)ThumbnailSize, ConstrainTo.Height);
         }
 
-        private async void AddNewDirectory()
+        private async void AddNewDirectoryAsync()
         {
             string newDirectoryPath = ViewManager.ShowSelectDirectoryDialog();
             if (string.IsNullOrWhiteSpace(newDirectoryPath))
                 return;
+
+            if (CurrentDirectories.Contains(newDirectoryPath))
+            {
+                ShowError($"\"{new DirectoryInfo(newDirectoryPath).Name}\" is already added");
+                return;
+            }
 
             if (await LoadDirectory(newDirectoryPath))
                 Sound.Click();
@@ -111,10 +101,20 @@ namespace PSQuickAssets.ViewModels
             }
             else
             {
-                SetError("No valid images in a folder");
-                SystemSounds.Asterisk.Play();
+                ShowError("No valid images in a folder");
                 return false;
             }
+        }
+
+        private void RemoveFolder(List<ImageFile> folder)
+        {
+            Folders.Remove(folder);
+
+            // Remove folderpath from stored directories
+            var dir = Path.GetDirectoryName(folder[0].FilePath);
+            CurrentDirectories.Remove(dir);
+            UpdateConfig();
+            Sound.Click();
         }
 
         private void UpdateConfig()
@@ -123,13 +123,14 @@ namespace PSQuickAssets.ViewModels
             ConfigManager.Write();
         }
 
-        private void SetError(string errorMessage)
+        private void ShowError(string errorMessage)
         {
             _errorShowingTimer.Stop();
             _errorShowingTimer.Interval = 3000;
             Error = errorMessage;
             _errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); };
             _errorShowingTimer.Start();
+            SystemSounds.Asterisk.Play();
         }
     }
 }

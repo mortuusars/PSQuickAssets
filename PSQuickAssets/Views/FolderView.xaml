@@ -32,7 +32,7 @@
         <ListBox x:Name="FileList" ItemsSource="{Binding}"
              Background="{x:Null}" BorderThickness="0" Focusable="False"
              VirtualizingStackPanel.IsVirtualizing="True"
-             VirtualizingStackPanel.VirtualizationMode="Recycling">
+             VirtualizingStackPanel.VirtualizationMode="Standard">
 
                 <ListBox.Template>
                     <ControlTemplate>

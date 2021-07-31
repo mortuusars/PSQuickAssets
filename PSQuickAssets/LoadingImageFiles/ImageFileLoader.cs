@@ -25,6 +25,7 @@ namespace PSQuickAssets
             string[] validFormats = new string[] { ".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif"};
             List<ImageFile> images = new List<ImageFile>();
 
+
             foreach (var filePath in GetDirectoryFiles(directoryPath))
             {
                 string extension = Path.GetExtension(filePath);
