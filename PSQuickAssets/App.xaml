@@ -9,6 +9,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Fonts.xaml"/>
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
@@ -16,7 +18,7 @@
             <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth"/>
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
             
-            <SolidColorBrush Color="#a2a2a2" x:Key="TextColorBrush"/>
+            <SolidColorBrush Color="#8f8f8f" x:Key="TextColorBrush"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

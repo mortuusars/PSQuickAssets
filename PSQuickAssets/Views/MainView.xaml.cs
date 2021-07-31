@@ -95,27 +95,22 @@ namespace PSQuickAssets.Views
             }
         }
 
-        private void RecalculatePosition()
-        {
-            Point mousePos = MouseHelper.MousePosition;
-            Screen activeScreen = Screen.FromPoint(mousePos);
+        //private void RecalculatePosition()
+        //{
+        //    Point mousePos = MouseHelper.MousePosition;
+        //    Screen activeScreen = Screen.FromPoint(mousePos);
 
-            this.MaxHeight = activeScreen.Bounds.Height * 0.7;
+        //    this.MaxHeight = activeScreen.Bounds.Height * 0.7;
             
-            if (mousePos.X < 0)
-                Left = ((activeScreen.Bounds.Width/2) * -1) - this.ActualWidth/2;
-            else
-                Left = activeScreen.Bounds.Width/2 - this.ActualWidth/2;
+        //    if (mousePos.X < 0)
+        //        Left = ((activeScreen.Bounds.Width/2) * -1) - this.ActualWidth/2;
+        //    else
+        //        Left = activeScreen.Bounds.Width/2 - this.ActualWidth/2;
 
-            Top = (activeScreen.Bounds.Height - (activeScreen.Bounds.Height * 0.1)) - this.ActualHeight;
+        //    Top = (activeScreen.Bounds.Height - (activeScreen.Bounds.Height * 0.1)) - this.ActualHeight;
 
-            //TODO: Fix position when clicked from taskbar
-        }
-
-        private void ItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //RecalculatePosition();
-        }
+        //    //TODO: Fix position when clicked from taskbar
+        //}
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -175,7 +170,17 @@ namespace PSQuickAssets.Views
         private void BG_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 this.DragMove();
+                e.Handled = true;
+            }
+        }
+
+        private void Scroll_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            e.Handled = false;
+            MessageBox.Show(sender.GetType().ToString());
         }
     }
 }

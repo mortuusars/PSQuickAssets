@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
-using System.Timers;
+using System.Media;
 using System.Windows.Input;
 using PropertyChanged;
 using PSQuickAssets.Infrastructure;
 using PSQuickAssets.Models;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
+using System.Timers;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -24,10 +22,10 @@ namespace PSQuickAssets.ViewModels
         public bool IsWindowShowing { get; set; }
         public double ThumbnailSize { get; } = 55;
 
-        private readonly System.Timers.Timer _errorShowingTimer = new System.Timers.Timer();
+        private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
-        public ICommand ChangeFolderCommand { get; }
+        public ICommand AddFolderCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand RemoveFolderCommand { get; }
 
@@ -40,7 +38,7 @@ namespace PSQuickAssets.ViewModels
             _photoshopManager = photoshopManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            ChangeFolderCommand = new RelayCommand(_ => AddNewDirectory());
+            AddFolderCommand = new RelayCommand(_ => AddNewDirectory());
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
 
@@ -70,7 +68,7 @@ namespace PSQuickAssets.ViewModels
             if (psResult.CallResult != PSCallResult.Success)
             {
                 SetError(psResult.Message);
-                Sound.Error();
+                SystemSounds.Asterisk.Play();
                 IsWindowShowing = true;
             }
             else
@@ -90,11 +88,11 @@ namespace PSQuickAssets.ViewModels
             if (string.IsNullOrWhiteSpace(newDirectoryPath))
                 return;
 
-            LoadDirectory(newDirectoryPath);
-            Sound.Click();
+            if (LoadDirectory(newDirectoryPath))
+                Sound.Click();
         }
 
-        private void LoadDirectory(string directory)
+        private bool LoadDirectory(string directory)
         {
             List<ImageFile> images = LoadImages(directory);
 
@@ -103,11 +101,13 @@ namespace PSQuickAssets.ViewModels
                 Folders.Add(images);
                 CurrentDirectories.Add(directory);
                 UpdateConfig();
+                return true;
             }
             else
             {
                 SetError("No valid images in a folder");
-                Sound.Error();
+                SystemSounds.Asterisk.Play();
+                return false;
             }
         }
 
