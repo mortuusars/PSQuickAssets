@@ -9,6 +9,7 @@ using PSQuickAssets.Models;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
 using System.Timers;
+using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -42,9 +43,14 @@ namespace PSQuickAssets.ViewModels
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
 
+            LoadSavedDirs();
+        }
+
+        private async void LoadSavedDirs()
+        {
             foreach (var path in ConfigManager.GetCurrentDirectories())
             {
-                LoadDirectory(path);
+                await LoadDirectory(path);
             }
         }
 
@@ -77,24 +83,24 @@ namespace PSQuickAssets.ViewModels
             }
         }
 
-        private List<ImageFile> LoadImages(string path)
+        private async Task<List<ImageFile>> LoadImages(string path)
         {
-            return _imagesLoader.Load(path, (int)ThumbnailSize, ConstrainTo.Height);
+            return await _imagesLoader.LoadAsync(path, (int)ThumbnailSize, ConstrainTo.Height);
         }
 
-        private void AddNewDirectory()
+        private async void AddNewDirectory()
         {
             string newDirectoryPath = ViewManager.ShowSelectDirectoryDialog();
             if (string.IsNullOrWhiteSpace(newDirectoryPath))
                 return;
 
-            if (LoadDirectory(newDirectoryPath))
+            if (await LoadDirectory(newDirectoryPath))
                 Sound.Click();
         }
 
-        private bool LoadDirectory(string directory)
+        private async Task<bool> LoadDirectory(string directory)
         {
-            List<ImageFile> images = LoadImages(directory);
+            List<ImageFile> images = await LoadImages(directory);
 
             if (images.Count > 0)
             {

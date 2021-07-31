@@ -5,27 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
         mc:Ignorable="d"
-        Title="Splash" Height="300" Width="500"
+        Title="Splash" x:Name="SplashWindow"
+        Height="300" Width="450"
+        Topmost="True"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize" UseLayoutRounding="True" Focusable="False" ShowActivated="False"
-        ShowInTaskbar="False"
-        Background="{x:Null}"
-        FontFamily="{StaticResource FontLight}"
-        FontSize="16">
-
-    <Window.DataContext>
-        <vm:SplashViewModel/>
-    </Window.DataContext>
+        ShowInTaskbar="False" Background="{x:Null}"
+        FontFamily="{StaticResource FontLight}" FontSize="16" DataContext="{Binding RelativeSource={RelativeSource Self}}">
     
-    <Grid Margin="40">
-        <Border x:Name="Container" Background="#444" CornerRadius="16">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="35" Direction="-90" ShadowDepth="6" Opacity="0.6" RenderingBias="Quality"/>
-            </Border.Effect>
+    <Window.Resources>
 
-            <TextBlock Margin="10" Text="{Binding Version}"/>
+        <PowerEase EasingMode="EaseIn" x:Key="Easing" Power="4"/>
 
-        </Border>
+        <Storyboard x:Key="ContainerAnimation" x:Name="ContainerAnimation" Completed="ContainerAnimation_Completed">
+            <DoubleAnimation Duration="0:0:.8" To="0" 
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 EasingFunction="{StaticResource Easing}"/>
+            <DoubleAnimation Duration="0:0:.8" From="0" To="25" 
+                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                 EasingFunction="{StaticResource Easing}"/>
+        </Storyboard>
+
+        <Style x:Key="ContainerStyle" TargetType="{x:Type Grid}">
+            <Setter Property="Opacity" Value="1"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsClosing}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource ContainerAnimation}"/>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="Container" Margin="10" VerticalAlignment="Center" Style="{StaticResource ContainerStyle}"
+          d:Opacity="1">
+        <Grid.RenderTransform>
+            <TranslateTransform/>
+        </Grid.RenderTransform>
+        
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="-90" Opacity="0.35"/>
+        </Grid.Effect>
+        
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <Image Height="50" Margin="8" Source="../Resources/Images/psquickassets-size.ico"/>
+            <TextBlock Text="PSQuickAssets" Foreground="White" FontSize="40"
+                       VerticalAlignment="Center"/>
+
+        </StackPanel>
+
     </Grid>
-    
+
 </Window>

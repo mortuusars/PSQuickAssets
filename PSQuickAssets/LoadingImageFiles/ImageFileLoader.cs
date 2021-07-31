@@ -91,6 +91,7 @@ namespace PSQuickAssets
             bmp.UriSource = new Uri(filepath);
             bmp.DecodePixelWidth = width;
             bmp.EndInit();
+            bmp.Freeze();
 
             return bmp;
         }
@@ -102,6 +103,7 @@ namespace PSQuickAssets
             bmp.UriSource = new Uri(filepath);
             bmp.DecodePixelHeight = height;
             bmp.EndInit();
+            bmp.Freeze();
 
             return bmp;
         }
@@ -113,6 +115,7 @@ namespace PSQuickAssets
             bmp.UriSource = new Uri(uri);
             bmp.DecodePixelWidth = width;
             bmp.EndInit();
+            bmp.Freeze();
             return bmp;
         }
 
@@ -123,6 +126,7 @@ namespace PSQuickAssets
             bmp.UriSource = new Uri(uri);
             bmp.DecodePixelHeight = height;
             bmp.EndInit();
+            bmp.Freeze();
             return bmp;
         }
     }

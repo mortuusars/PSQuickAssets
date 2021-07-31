@@ -17,6 +17,7 @@ namespace PSQuickAssets
         {
             ShutdownIfAlreadyRunning();
             ViewManager.CreateAndShowMainView();
+            ViewManager.ShowSplash();
             CheckUpdates();
         }
 

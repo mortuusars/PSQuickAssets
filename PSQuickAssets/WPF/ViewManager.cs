@@ -14,6 +14,11 @@ namespace PSQuickAssets.Infrastructure
         private MainViewModel _mainViewModel;
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
+        public void ShowSplash()
+        {
+            new SplashView().Show();
+        }
+
         public void CreateAndShowMainView()
         {
             _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager());

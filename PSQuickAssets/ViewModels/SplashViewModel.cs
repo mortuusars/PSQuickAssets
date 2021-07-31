@@ -2,6 +2,6 @@
 {
     public class SplashViewModel
     {
-        public string Version { get; set; } = App.Version.ToString();
+        public string Version { get; set; } = $"Version {App.Version}";
     }
 }
