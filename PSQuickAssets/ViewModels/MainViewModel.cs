@@ -27,8 +27,9 @@ namespace PSQuickAssets.ViewModels
 
         public ICommand PlaceImageCommand { get; }
         public ICommand AddFolderCommand { get; }
-        public ICommand HideCommand { get; }
         public ICommand RemoveFolderCommand { get; }
+        public ICommand HideCommand { get; }
+        public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
 
         private readonly IImageFileLoader _imagesLoader;
         private readonly IPhotoshopManager _photoshopManager;
@@ -40,8 +41,8 @@ namespace PSQuickAssets.ViewModels
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
-            HideCommand = new RelayCommand(_ => IsWindowShowing = false);
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
+            HideCommand = new RelayCommand(_ => IsWindowShowing = false);
 
             LoadSavedDirs();
         }

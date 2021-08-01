@@ -57,9 +57,10 @@
                    VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
                     <Image.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
+                        <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
                     </Image.InputBindings>
                     <Image.ToolTip>
-                        <TextBlock Text="Hide"/>
+                        <TextBlock Text="Hide / Ctrl: Close"/>
                     </Image.ToolTip>
                 </Image>
             </StackPanel>

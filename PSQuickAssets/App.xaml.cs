@@ -12,7 +12,7 @@ namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static Version Version { get; private set; } = new Version("1.0.0");
+        public static Version Version { get; private set; } = new Version("0.5.0");
 
         public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
         public static ViewManager ViewManager { get; private set; } = new ViewManager();
@@ -76,10 +76,11 @@ namespace PSQuickAssets
 
         protected override void OnExit(ExitEventArgs e)
         {
+            ConfigManager.Save();
+
             GlobalHotkey.Dispose();
             ViewManager.CloseMainView();
             TaskBarIcon.Dispose();
-            ConfigManager.Save();
 
             base.OnExit(e);
         }

@@ -27,7 +27,7 @@ namespace PSQuickAssets.Update
             {
                 return JsonSerializer.Deserialize<VersionInfo>(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new VersionInfo() { Description = string.Empty, Version = "0.0.0" };
             }
@@ -39,7 +39,7 @@ namespace PSQuickAssets.Update
             {
                 using (var client = new HttpClient())
                 {
-                    var response = await client.GetAsync("https://raw.githubusercontent.com/mortuusars/PhotoshopTimeTracker/master/PSQuickAssets/version.json");
+                    var response = await client.GetAsync("https://raw.githubusercontent.com/mortuusars/PSQuickAssets/dev/PSQuickAssets/version.json");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         return await response.Content.ReadAsStringAsync();
