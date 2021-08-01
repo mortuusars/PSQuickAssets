@@ -9,7 +9,6 @@ namespace PSQuickAssets.WPF
     {
         public MainView MainView { get; private set; }
         private MainViewModel _mainViewModel;
-        private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
         public static void ShowSplashView()
         {
@@ -31,7 +30,7 @@ namespace PSQuickAssets.WPF
             _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager());
 
             MainView ??= new MainView() { DataContext = _mainViewModel };
-            MainView.RestoreState(_MAIN_VIEW_STATE_FILE);
+            MainView.RestoreState();
             MainView.Show();
         }
 
@@ -39,7 +38,7 @@ namespace PSQuickAssets.WPF
 
         public void CloseMainView()
         {
-            MainView?.SaveState(_MAIN_VIEW_STATE_FILE);
+            MainView?.SaveState();
             MainView?.Close();
         }
 

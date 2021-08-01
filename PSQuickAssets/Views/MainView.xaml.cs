@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using PSQuickAssets.Views.State;
+using PSQuickAssets.WPF;
 
 namespace PSQuickAssets.Views
 {
@@ -16,28 +17,31 @@ namespace PSQuickAssets.Views
     /// </summary>
     public partial class MainView : Window
     {
+        private const string _MAIN_VIEW_STATE_FILE = "state.json";
+
         public MainView()
         {
             InitializeComponent();
+            IsVisibleChanged += (_, _) => SaveState();
         }
 
         #region STATE
 
-        public void SaveState(string filepath)
+        public void SaveState()
         {
             var state = new ViewState()
             {
                 Left = this.Left,
                 Top = this.Top,
-                Width = this.ActualWidth,
-                Height = this.ActualHeight,
+                Width = this.Width,
+                Height = this.Height,
             };
 
             var json = JsonSerializer.Serialize(state, new JsonSerializerOptions() { WriteIndented = true });
 
             try
             {
-                File.WriteAllText(filepath, json);
+                File.WriteAllText(_MAIN_VIEW_STATE_FILE, json);
             }
             catch (Exception ex)
             {
@@ -45,9 +49,9 @@ namespace PSQuickAssets.Views
             }
         }
 
-        public void RestoreState(string filepath)
+        public void RestoreState()
         {
-            var state = ReadStateFromFile(filepath);
+            var state = ReadStateFromFile(_MAIN_VIEW_STATE_FILE);
 
             this.Left = state.Left;
             this.Top = state.Top;
