@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using WpfScreenHelper;
 
 namespace PSQuickAssets.Views
 {
@@ -90,28 +88,8 @@ namespace PSQuickAssets.Views
             if (this.Visibility == Visibility.Visible)
                 this.Visibility = Visibility.Collapsed;
             else
-            {
                 this.Visibility = Visibility.Visible;
-                //RecalculatePosition();
-            }
         }
-
-        //private void RecalculatePosition()
-        //{
-        //    Point mousePos = MouseHelper.MousePosition;
-        //    Screen activeScreen = Screen.FromPoint(mousePos);
-
-        //    this.MaxHeight = activeScreen.Bounds.Height * 0.7;
-            
-        //    if (mousePos.X < 0)
-        //        Left = ((activeScreen.Bounds.Width/2) * -1) - this.ActualWidth/2;
-        //    else
-        //        Left = activeScreen.Bounds.Width/2 - this.ActualWidth/2;
-
-        //    Top = (activeScreen.Bounds.Height - (activeScreen.Bounds.Height * 0.1)) - this.ActualHeight;
-
-        //    //TODO: Fix position when clicked from taskbar
-        //}
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -121,47 +99,10 @@ namespace PSQuickAssets.Views
 
         private enum ResizeDirection { Left = 61441, Right = 61442, Top = 61443, Bottom = 61446, BottomRight = 61448, }
 
-        private bool _isDragging;
-        private Point _prevMousePos;
-
-        private void CornerResize_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CornerResize_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //_isDragging = true;
-            //_prevMousePos = Mouse.GetPosition(this);
-            //DragResize(e);
-
             var hwndSource = PresentationSource.FromVisual((Visual)sender) as HwndSource;
             SendMessage(hwndSource.Handle, 0x112, (IntPtr)ResizeDirection.BottomRight, IntPtr.Zero);
-        }
-
-        private void CornerResize_MouseMove(object sender, MouseEventArgs e)
-        {
-            //DragResize(e);
-        }
-
-        //Manual Resizing
-        private void DragResize(MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-            {
-                _isDragging = false;
-                Mouse.Capture(null);
-                return;
-            }
-
-            if (_isDragging)
-            {
-                Mouse.Capture(CornerResize);
-
-                Point currMousePos = Mouse.GetPosition(this);
-                if (currMousePos.X == 0 && currMousePos.Y == 0)
-                    return;
-
-                this.Width = this.ActualWidth + (currMousePos.X - _prevMousePos.X);
-                this.Height = this.ActualHeight + (currMousePos.Y - _prevMousePos.Y);
-
-                _prevMousePos = currMousePos;
-            }
         }
 
         private void CornerResize_MouseEnter(object sender, MouseEventArgs e) => Mouse.OverrideCursor = Cursors.SizeNWSE;
@@ -177,11 +118,32 @@ namespace PSQuickAssets.Views
             }
         }
 
-        private void Scroll_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-            e.Handled = false;
-            MessageBox.Show(sender.GetType().ToString());
-        }
+        //private bool _isDragging;
+        //private Point _prevMousePos;
+
+        ////Manual Resizing
+        //private void DragResize(MouseEventArgs e)
+        //{
+        //    if (e.LeftButton == MouseButtonState.Released)
+        //    {
+        //        _isDragging = false;
+        //        Mouse.Capture(null);
+        //        return;
+        //    }
+
+        //    if (_isDragging)
+        //    {
+        //        Mouse.Capture(CornerResize);
+
+        //        Point currMousePos = Mouse.GetPosition(this);
+        //        if (currMousePos.X == 0 && currMousePos.Y == 0)
+        //            return;
+
+        //        this.Width = this.ActualWidth + (currMousePos.X - _prevMousePos.X);
+        //        this.Height = this.ActualHeight + (currMousePos.Y - _prevMousePos.Y);
+
+        //        _prevMousePos = currMousePos;
+        //    }
+        //}
     }
 }

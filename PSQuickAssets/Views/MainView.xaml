@@ -142,7 +142,7 @@
         <!-- CORNER RESIZE -->
         <Image Grid.Row="1" x:Name="CornerResize" Height="16" Width="16" Margin="4"
                HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-               MouseDown="CornerResize_MouseDown" MouseMove="CornerResize_MouseMove"
+               MouseDown="CornerResize_MouseDown"
                MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"
                Source="../Resources/Images/corner_resize_24.png"
                Style="{StaticResource ImageButtons}"/>
