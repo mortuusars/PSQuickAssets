@@ -1,19 +1,26 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:tb="http://www.hardcodet.net/taskbar"
-                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels">
+                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels">    
 
     <tb:TaskbarIcon x:Key="TaskBarIcon"
                     IconSource="Images/psquickassets-size.ico"
-                    ToolTipText="PSQuickAssets"
                     LeftClickCommand="{Binding ShowWindowCommand}">
-        
         <tb:TaskbarIcon.DataContext>
             <vm:TaskBarViewModel/>
         </tb:TaskbarIcon.DataContext>
         
+        <tb:TaskbarIcon.TrayToolTip>
+            <TextBlock Text="{Binding AppName}" Foreground="#bbb" FontSize="14"/>
+        </tb:TaskbarIcon.TrayToolTip>
+        
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
+                <MenuItem Header="Settings" Command="{Binding SettingsCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Images/settings.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>

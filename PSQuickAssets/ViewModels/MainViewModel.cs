@@ -4,12 +4,12 @@ using System.IO;
 using System.Media;
 using System.Windows.Input;
 using PropertyChanged;
-using PSQuickAssets.Infrastructure;
 using PSQuickAssets.Models;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
 using System.Timers;
 using System.Threading.Tasks;
+using PSQuickAssets.WPF;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -26,6 +26,7 @@ namespace PSQuickAssets.ViewModels
         private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
+        public ICommand SettingsCommand { get; }
         public ICommand AddFolderCommand { get; }
         public ICommand RemoveFolderCommand { get; }
         public ICommand HideCommand { get; }
@@ -40,11 +41,17 @@ namespace PSQuickAssets.ViewModels
             _photoshopManager = photoshopManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
+            SettingsCommand = new RelayCommand(_ => OpenSettings());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
 
             LoadSavedDirs();
+        }
+
+        private void OpenSettings()
+        {
+            ViewManager.ShowSettingsView();
         }
 
         private async void LoadSavedDirs()

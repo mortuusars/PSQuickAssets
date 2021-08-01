@@ -10,7 +10,7 @@
         Width="600" Height="400" MinWidth="400" MinHeight="300" 
         WindowStyle="None" Background="Transparent" AllowsTransparency="True"
         ShowInTaskbar="False"
-        TextOptions.TextFormattingMode="Display" FontFamily="{StaticResource FontSans}" FontWeight="Bold"
+        TextOptions.TextFormattingMode="Ideal" FontFamily="{StaticResource FontSans}" FontWeight="Bold"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}"
         UseLayoutRounding="True">
 
@@ -18,7 +18,7 @@
         <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
     </Window.InputBindings>
 
-    <Grid x:Name="MainContainer" Margin="35 30 35 40" MinWidth="260" MinHeight="100"
+    <Grid x:Name="MainContainer" Margin="40" MinWidth="260" MinHeight="100"
           Height="Auto"
           VerticalAlignment="Stretch" HorizontalAlignment="Stretch"          
           Background="{x:Null}">
@@ -29,41 +29,53 @@
         </Grid.RowDefinitions>
 
         <!-- BACKGROUND -->
-        <Border Grid.RowSpan="2" Background="#ee292929" CornerRadius="8" BorderThickness="2" 
-                BorderBrush="#343434" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>
-            </Border.Effect>
-        </Border>
-        
+        <Border Grid.RowSpan="2" CornerRadius="8" BorderThickness="2" 
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                Background="{StaticResource MainBackground}" 
+                BorderBrush="{StaticResource MainBorder}" 
+                Effect="{StaticResource WindowDropShadow}"/>
+
         <!-- HEADER -->
         <Border Grid.Row="0" Margin="2 2 2 0" x:Name="HeaderContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                 CornerRadius="6 6 0 0" Background="#343434" MouseDown="BG_MouseDown">
-            
-            <!-- HEADER BUTTONS -->
-            <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <!-- ADD FOLDER BTN -->
-                <Image Source="/Resources/Images/folder_24.png" Margin="5 0" Width="20" Height="20" 
-                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+
+            <Grid>
+                <Image Source="/Resources/Images/settings.png"
+                       Margin="5 5 0 0" Width="16"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"
+                       Style="{StaticResource ImageButtons}">
                     <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}"/>
                     </Image.InputBindings>
                     <Image.ToolTip>
-                        <TextBlock Text="Add Folder"/>
+                        <TextBlock Text="Settings" Style="{StaticResource TextLight}"/>
                     </Image.ToolTip>
                 </Image>
-                <!-- CLOSE BTN -->
-                <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
+                <!-- HEADER BUTTONS -->
+                <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <!-- ADD FOLDER BTN -->
+                    <Image Source="/Resources/Images/folder_24.png" Margin="5 0" Width="20" Height="20" 
                    VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
-                    <Image.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
-                        <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
-                    </Image.InputBindings>
-                    <Image.ToolTip>
-                        <TextBlock Text="Hide / Ctrl: Close"/>
-                    </Image.ToolTip>
-                </Image>
-            </StackPanel>
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
+                        </Image.InputBindings>
+                        <Image.ToolTip>
+                            <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
+                        </Image.ToolTip>
+                    </Image>
+                    <!-- CLOSE BTN -->
+                    <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
+                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
+                            <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
+                        </Image.InputBindings>
+                        <Image.ToolTip>
+                            <TextBlock Text="Hide / Ctrl: Close" Style="{StaticResource TextLight}"/>
+                        </Image.ToolTip>
+                    </Image>
+                </StackPanel>
+            </Grid>
         </Border>
         
         <!-- ITEMS CONTAINER -->

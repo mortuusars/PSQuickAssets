@@ -6,15 +6,19 @@
              xmlns:local="clr-namespace:PSQuickAssets.WPF"
              mc:Ignorable="d" 
              x:Name="HotkeyControl"
-             d:DesignHeight="450" 
-             d:DesignWidth="800">
+             d:DesignHeight="200" 
+             d:DesignWidth="300">
     
     <TextBox x:Name="HotkeyTextBox"
              HorizontalContentAlignment="Center" 
              VerticalContentAlignment="Center"
              IsReadOnly="True" IsReadOnlyCaretVisible="False"
+             Background="Transparent"
              IsUndoEnabled="False"
              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
+             d:Text="Ctrl + Alt + F8"
+             Foreground="#8f8f8f"
+             BorderThickness="0"
              Text="{Binding Hotkey, ElementName=HotkeyControl, Mode=OneWay, 
                                                     TargetNullValue=&lt; not set &gt;}">
         <TextBox.ContextMenu>

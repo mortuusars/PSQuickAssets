@@ -61,7 +61,7 @@
                             </Grid.Effect>
 
                             <Grid.ToolTip>
-                                <TextBlock Text="{Binding FileName}"/>
+                            <TextBlock Text="{Binding FileName}" Style="{StaticResource TextLight}"/>
                             </Grid.ToolTip>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>

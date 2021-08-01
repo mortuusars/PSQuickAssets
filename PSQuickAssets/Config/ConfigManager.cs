@@ -36,7 +36,8 @@ namespace PSQuickAssets
                 return new Config()
                 {
                     Directories = new List<string>(),
-                    Hotkey = "Ctrl + Alt + F8"
+                    Hotkey = "Ctrl + Alt + F8",
+                    CheckUpdates = true
                 };
             }
         }

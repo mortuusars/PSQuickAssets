@@ -3,9 +3,8 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Data;
-using PSQuickAssets.Models;
 
-namespace PSQuickAssets.Infrastructure.Converters
+namespace PSQuickAssets.WPF.Converters
 {
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class FilenameToShortConverter : IMultiValueConverter

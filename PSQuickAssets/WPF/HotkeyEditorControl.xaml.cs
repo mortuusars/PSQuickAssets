@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PSQuickAssets.WPF
 {
@@ -10,8 +11,8 @@ namespace PSQuickAssets.WPF
     public partial class HotkeyEditorControl : UserControl
     {
         public static readonly DependencyProperty HotkeyProperty =
-        DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey), typeof(HotkeyEditorControl), new FrameworkPropertyMetadata(default(Hotkey),
-                                                                                       FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey), typeof(HotkeyEditorControl), 
+            new FrameworkPropertyMetadata(default(Hotkey), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public Hotkey Hotkey
         {

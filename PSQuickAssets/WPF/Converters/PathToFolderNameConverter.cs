@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Windows;
 using System.Windows.Data;
 
-namespace PSQuickAssets.Infrastructure.Converters
+namespace PSQuickAssets.WPF.Converters
 {
     [ValueConversion(typeof(string), typeof(string))]
     public class PathToFolderNameConverter : IValueConverter

@@ -30,6 +30,7 @@
 	<None Remove="Resources\Images\psb_90.png" />
 	<None Remove="Resources\Images\psd_90.png" />
 	<None Remove="Resources\Images\psquickassets-size.ico" />
+	<None Remove="Resources\Images\settings.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,7 @@
 	<Resource Include="Resources\Images\psb_90.png" />
 	<Resource Include="Resources\Images\psd_90.png" />
 	<Resource Include="Resources\Images\psquickassets-size.ico" />
+	<Resource Include="Resources\Images\settings.png" />
   </ItemGroup>
 
   <ItemGroup>

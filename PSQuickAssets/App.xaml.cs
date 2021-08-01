@@ -2,11 +2,10 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
-using PSQuickAssets.Infrastructure;
 using PSQuickAssets.Services;
+using PSQuickAssets.WPF;
 
 namespace PSQuickAssets
 {
@@ -26,9 +25,8 @@ namespace PSQuickAssets
             ViewManager.CreateAndShowMainView();
             RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
 
-            ViewManager.ShowSettingView();
-
-            CheckUpdates();
+            if (ConfigManager.Config.CheckUpdates)
+                CheckUpdates();
         }
 
         public void RegisterGlobalHotkey(string hotkey)

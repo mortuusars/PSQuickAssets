@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
+﻿using System.Linq;
 using Ookii.Dialogs.Wpf;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Views;
-using PSQuickAssets.Views.State;
 
-namespace PSQuickAssets.Infrastructure
+namespace PSQuickAssets.WPF
 {
     public class ViewManager
     {
@@ -14,14 +11,19 @@ namespace PSQuickAssets.Infrastructure
         private MainViewModel _mainViewModel;
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
-        public void ShowSplashView()
+        public static void ShowSplashView()
         {
             new SplashView().Show();
         }
 
-        public void ShowSettingView()
+        public static void ShowSettingsView()
         {
-            new SettingsView().Show();
+            var settingsView = App.Current.Windows.OfType<SettingsView>().FirstOrDefault();
+
+            if (settingsView is null)
+                new SettingsView().Show();
+            else
+                settingsView.Activate();
         }
 
         public void CreateAndShowMainView()
