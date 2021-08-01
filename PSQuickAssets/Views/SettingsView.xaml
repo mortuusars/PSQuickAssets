@@ -72,7 +72,7 @@
 
                     <Grid.ToolTip>
                         <TextBlock Style="{StaticResource TextLight}">
-                        Press a key combination to assign<LineBreak/>Esc, Del, Backspace to clear"
+                        Press a key combination to assign.<LineBreak/>Esc, Del, Backspace to clear.
                         </TextBlock>
                     </Grid.ToolTip>
 
@@ -98,10 +98,16 @@
             </StackPanel>
 
 
-            <Button Grid.Row="1" Content="Save" Width="70"
-                    HorizontalAlignment="Right"
-                    Command="{Binding SaveCommand}"
-                    Foreground="{StaticResource TextColorBrush}"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding SavedMessage}" Style="{StaticResource TextLight}"
+                           d:Text="Saved" Margin="8 0"
+                           VerticalAlignment="Center"/>
+
+                <Button Content="Save" Width="70"
+                        HorizontalAlignment="Right"
+                        Command="{Binding SaveCommand}"
+                        Foreground="{StaticResource TextColorBrush}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
