@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Data;
 
-namespace PSQuickAssets.Infrastructure.Converters
+namespace PSQuickAssets.WPF.Converters
 {
-    [ValueConversion(typeof(string), typeof(string))]
-    public class PathToFolderNameConverter : IValueConverter
+    [ValueConversion(typeof(bool), typeof(Visibility))]
+    public class BoolToVisibilityHiddenConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new DirectoryInfo(Path.GetDirectoryName((string)value)).Name;
+            return (bool)value ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            return (Visibility)value == Visibility.Visible;
         }
     }
 }

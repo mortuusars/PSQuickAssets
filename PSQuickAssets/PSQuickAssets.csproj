@@ -5,7 +5,7 @@
 	<TargetFramework>net5.0-windows</TargetFramework>
 	<UseWPF>true</UseWPF>
 	<ApplicationIcon>Resources\Images\psquickassets-size.ico</ApplicationIcon>
-	<Version>1.0.0</Version>
+	<Version>1.1.0</Version>
 	<StartupObject>PSQuickAssets.App</StartupObject>
 	<Authors>Mortuusars</Authors>
 	<PackageProjectUrl>https://github.com/mortuusars/PSQuickAssets</PackageProjectUrl>
@@ -24,28 +24,22 @@
 	<None Remove="Resources\Fonts\PTSans-BoldItalic.ttf" />
 	<None Remove="Resources\Fonts\PTSans-Regular.ttf" />
 	<None Remove="Resources\Images\close_24.png" />
+	<None Remove="Resources\Images\corner_resize_128.png" />
+	<None Remove="Resources\Images\corner_resize_24.png" />
 	<None Remove="Resources\Images\folder_24.png" />
+	<None Remove="Resources\Images\psb_90.png" />
+	<None Remove="Resources\Images\psd_90.png" />
 	<None Remove="Resources\Images\psquickassets-size.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<COMReference Include="Photoshop.dll">
-	  <WrapperTool>tlbimp</WrapperTool>
-	  <VersionMinor>0</VersionMinor>
-	  <VersionMajor>1</VersionMajor>
-	  <Guid>e891ee9a-d0ae-4cb4-8871-f92c0109f18e</Guid>
-	  <Lcid>0</Lcid>
-	  <Isolated>false</Isolated>
-	</COMReference>
+	<None Remove="Resources\Images\settings.png" />
   </ItemGroup>
 
   <ItemGroup>
 	<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
-	  <PackageReference Include="PropertyChanged.Fody" Version="3.3.1">
+	<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+	  <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
-	  <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-	<PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+	  <PackageReference Include="SharpHotkeys.WPF" Version="1.0.0" />
 	<PackageReference Include="WpfScreenHelper" Version="1.0.0" />
   </ItemGroup>
 
@@ -61,22 +55,20 @@
 	<Resource Include="Resources\Fonts\PTSans-BoldItalic.ttf" />
 	<Resource Include="Resources\Fonts\PTSans-Regular.ttf" />
 	<Resource Include="Resources\Images\close_24.png" />
+	<Resource Include="Resources\Images\corner_resize_24.png" />
 	<Resource Include="Resources\Images\folder_24.png" />
+	<Resource Include="Resources\Images\psb_90.png" />
+	<Resource Include="Resources\Images\psd_90.png" />
 	<Resource Include="Resources\Images\psquickassets-size.ico" />
+	<Resource Include="Resources\Images\settings.png" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Resources\Sounds\click.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Sounds\done.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Sounds\done_2.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Sounds\error.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="version.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

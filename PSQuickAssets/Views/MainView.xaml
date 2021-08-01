@@ -1,0 +1,163 @@
+﻿<Window x:Class="PSQuickAssets.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:PSQuickAssets.Views"
+        mc:Ignorable="d"
+        Title="PSQuickAssets" 
+        Topmost="True" WindowStartupLocation="Manual"
+        Width="600" Height="400" MinWidth="400" MinHeight="300" 
+        WindowStyle="None" Background="Transparent" AllowsTransparency="True"
+        ShowInTaskbar="False"
+        TextOptions.TextFormattingMode="Ideal" FontFamily="{StaticResource FontSans}" FontWeight="Bold"
+        Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}"
+        UseLayoutRounding="True">
+
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
+    </Window.InputBindings>
+
+    <Grid x:Name="MainContainer" Margin="40" MinWidth="260" MinHeight="100"
+          Height="Auto"
+          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"          
+          Background="{x:Null}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- BACKGROUND -->
+        <Border Grid.RowSpan="2" CornerRadius="8" BorderThickness="2" 
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                Background="{StaticResource MainBackground}" 
+                BorderBrush="{StaticResource MainBorder}" 
+                Effect="{StaticResource WindowDropShadow}"/>
+
+        <!-- HEADER -->
+        <Border Grid.Row="0" Margin="2 2 2 0" x:Name="HeaderContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                CornerRadius="6 6 0 0" Background="#343434" MouseDown="BG_MouseDown">
+
+            <Grid>
+                <Image Source="/Resources/Images/settings.png"
+                       Margin="5 5 0 0" Width="16"
+                       VerticalAlignment="Top" HorizontalAlignment="Left"
+                       Style="{StaticResource ImageButtons}">
+                    <Image.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}"/>
+                    </Image.InputBindings>
+                    <Image.ToolTip>
+                        <TextBlock Text="Settings" Style="{StaticResource TextLight}"/>
+                    </Image.ToolTip>
+                </Image>
+                <!-- HEADER BUTTONS -->
+                <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <!-- ADD FOLDER BTN -->
+                    <Image Source="/Resources/Images/folder_24.png" Margin="5 0" Width="20" Height="20" 
+                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
+                        </Image.InputBindings>
+                        <Image.ToolTip>
+                            <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
+                        </Image.ToolTip>
+                    </Image>
+                    <!-- CLOSE BTN -->
+                    <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
+                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
+                            <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
+                        </Image.InputBindings>
+                        <Image.ToolTip>
+                            <TextBlock Text="Hide / Ctrl: Close" Style="{StaticResource TextLight}"/>
+                        </Image.ToolTip>
+                    </Image>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- ITEMS CONTAINER -->
+        <ItemsControl Grid.Row="1" x:Name="ItemsContainer" ItemsSource="{Binding Folders}" 
+                      Margin="8 0 8 0" Background="{x:Null}" BorderThickness="0" Focusable="False"
+                      VerticalAlignment="Top">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer x:Name="ItemsScrollViewer"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <!-- ITEMS LIST BOX -->
+                    <views:FolderView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+        <!-- NO ITEMS -->
+        <Grid  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding AddFolderCommand}"/>
+            </Grid.InputBindings>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Opacity" Value=".4"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value=".8"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBlock Text="CLICK TO ADD ASSETS" Foreground="{StaticResource TextColorBrush}"
+                        FontSize="16">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Folders.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>        
+
+
+        <!-- ERRORS -->
+        <Border Grid.Row="1" x:Name="ErrorsPanel" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Background="#222" CornerRadius="5" BorderThickness="1.5" BorderBrush="#e03d31"
+                Margin="10" Padding="6">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Error.Length}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <TextBlock Text="{Binding Error}" d:Text="Photoshop is not running" Foreground="#e03d31"
+                       FontSize="18" MaxWidth="400" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- CORNER RESIZE -->
+        <Image Grid.Row="1" x:Name="CornerResize" Height="16" Width="16" Margin="4"
+               HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+               MouseDown="CornerResize_MouseDown"
+               MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"
+               Source="../Resources/Images/corner_resize_24.png"
+               Style="{StaticResource ImageButtons}"/>
+    </Grid>
+</Window>

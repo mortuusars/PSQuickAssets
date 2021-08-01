@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
-namespace PSQuickAssets.Infrastructure.Converters
+namespace PSQuickAssets.WPF.Converters
 {
     [ValueConversion(typeof(int), typeof(double))]
     public class CountToMaxWidthConverter : IValueConverter

@@ -1,48 +1,86 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
-using PSQuickAssets.Infrastructure;
-using PSQuickAssets.ViewModels;
+using PSQuickAssets.Services;
+using PSQuickAssets.WPF;
 
 namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static readonly Version Version = new Version("1.0.0");
-        public static readonly ViewManager ViewManager = new ViewManager();
+        public static Version Version { get; private set; } = new Version("1.1.0");
+
+        public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
+        public static ViewManager ViewManager { get; private set; } = new ViewManager();
+        public static TaskbarIcon TaskBarIcon { get; private set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ViewManager.CreateAndShowMainView();
+            ShutdownIfAlreadyRunning();
+            ViewManager.ShowSplashView();
 
-            CheckUpdates();
+            ViewManager.CreateAndShowMainView();
+            RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
+
+            if (ConfigManager.Config.CheckUpdates)
+                CheckUpdates();
         }
+
+        public void RegisterGlobalHotkey(string hotkey)
+        {
+            IntPtr handle = new WindowInteropHelper(ViewManager.MainView).Handle;
+            if (GlobalHotkey.RegisterHotkey(new WPF.Hotkey(hotkey), handle, OnGlobalHotkey, out string errMessage))
+                GlobalHotkey.WriteToConfig();
+            else
+                MessageBox.Show(errMessage);
+        }
+
+        private void OnGlobalHotkey() => ViewManager.ToggleMainView();
 
         private async void CheckUpdates()
         {
             var update = await new Update.UpdateChecker().CheckAsync();
             if (update.updateAvailable)
             {
-                string message = $"New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
-                    $"Version: {update.versionInfo.Version}\nChangelog: {update.versionInfo.Description}";
+                string message = "New version available.\nVisit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
+                    $"Version: {update.versionInfo.Version}\nChangelog:\n{update.versionInfo.Description}";
                 MessageBox.Show(message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void ShutdownIfAlreadyRunning()
+        {
+            var current = Process.GetCurrentProcess();
+
+            foreach (var process in Process.GetProcessesByName(current.ProcessName))
+            {
+                if (process.Id != current.Id && process.MainModule.FileName == current.MainModule.FileName)
+                {
+                    MessageBox.Show("Another instance of PSQuickAssets is already running", "PSQuickAssets", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Shutdown();
+                }
             }
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ((TaskbarIcon)FindResource("TaskBarIcon")).DataContext = new TaskBarViewModel();
+            TaskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
             ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(650));
             base.OnStartup(e);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            base.OnExit(e);
-            ((TaskbarIcon)FindResource("TaskBarIcon")).Dispose();
+            ConfigManager.Save();
 
-            ConfigManager.Write();
+            GlobalHotkey.Dispose();
+            ViewManager.CloseMainView();
+            TaskBarIcon.Dispose();
+
+            base.OnExit(e);
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

@@ -39,7 +39,7 @@ namespace PSQuickAssets.Update
             {
                 using (var client = new HttpClient())
                 {
-                    var response = await client.GetAsync("https://raw.githubusercontent.com/mortuusars/PhotoshopTimeTracker/master/PSQuickAssets/version.json");
+                    var response = await client.GetAsync("https://raw.githubusercontent.com/mortuusars/PSQuickAssets/master/PSQuickAssets/version.json");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         return await response.Content.ReadAsStringAsync();
