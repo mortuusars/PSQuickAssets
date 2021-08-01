@@ -45,8 +45,8 @@ namespace PSQuickAssets
             var update = await new Update.UpdateChecker().CheckAsync();
             if (update.updateAvailable)
             {
-                string message = "New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
-                    $"Version: {update.versionInfo.Version}\nChangelog: {update.versionInfo.Description}";
+                string message = "New version available.\nVisit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
+                    $"Version: {update.versionInfo.Version}\nChangelog:\n{update.versionInfo.Description}";
                 MessageBox.Show(message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

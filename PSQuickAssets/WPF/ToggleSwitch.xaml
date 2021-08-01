@@ -89,7 +89,7 @@
 
         <Border Margin="0" Width="40" Height="20" CornerRadius="10"
                 Style="{StaticResource BorderStyle}">
-        <Ellipse x:Name="MovingCircle" Width="16" Height="16" Style="{StaticResource Circle}">
+        <Ellipse x:Name="MovingCircle" Width="13" Height="13" Style="{StaticResource Circle}">
             <Ellipse.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="-90" Opacity="0.3"/>
             </Ellipse.Effect>

@@ -26,20 +26,27 @@ namespace PSQuickAssets
 
         private static Config Read()
         {
+            Config config;
+            
             try
             {
                 string jsonString = File.ReadAllText(configFilePath);
-                return JsonSerializer.Deserialize<Config>(jsonString);
+                config = JsonSerializer.Deserialize<Config>(jsonString);
             }
             catch (Exception)
             {
-                return new Config()
+                config = new Config()
                 {
                     Directories = new List<string>(),
                     Hotkey = "Ctrl + Alt + F8",
                     CheckUpdates = true
                 };
             }
+
+            if (config.Hotkey is null)
+                config = config with { Hotkey = "Ctrl + Alt + F8" };
+
+            return config;
         }
 
     }
