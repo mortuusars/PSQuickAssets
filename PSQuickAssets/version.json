@@ -1,8 +1,9 @@
 ﻿{
 	"version": "1.1.0",
-	"description": "- Added support for PSD, PSB and Tiff formats.
-				\n- Visual overhaul.
-				\nWindow can now be resized and moved around.
-				\n- Added check if app is already running.
-				\n- Should now work on all recent PS versions."
+	"description": "- Added support for PSD, PSB and Tiff formats.\n
+					- Visual overhaul.\n
+					- Window can now be resized and moved.\n
+					- Added check if app is already running.\n
+					- Ctrl + Click on hide button will exit the app.\n
+					- App should now work with all recent Photoshop versions."
 }

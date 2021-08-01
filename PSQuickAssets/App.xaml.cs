@@ -76,10 +76,11 @@ namespace PSQuickAssets
 
         protected override void OnExit(ExitEventArgs e)
         {
+            ConfigManager.Save();
+
             GlobalHotkey.Dispose();
             ViewManager.CloseMainView();
             TaskBarIcon.Dispose();
-            ConfigManager.Save();
 
             base.OnExit(e);
         }
