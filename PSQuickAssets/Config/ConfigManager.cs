@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 namespace PSQuickAssets
 {
@@ -12,14 +14,13 @@ namespace PSQuickAssets
 
         public static Config Config { get; set; } = Read();
 
-        public static List<string> GetCurrentDirectories()
+        public static void Save()
         {
-            return Config.Directories;
-        }
-
-        public static void Write()
-        {
-            string jsonString = JsonSerializer.Serialize(Config);
+            string jsonString = JsonSerializer.Serialize(Config, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
             File.WriteAllText(configFilePath, jsonString);
         }
 
@@ -32,7 +33,11 @@ namespace PSQuickAssets
             }
             catch (Exception)
             {
-                return new Config() { Directories = new List<string>() };
+                return new Config()
+                {
+                    Directories = new List<string>(),
+                    Hotkey = "Ctrl + Alt + F8"
+                };
             }
         }
 

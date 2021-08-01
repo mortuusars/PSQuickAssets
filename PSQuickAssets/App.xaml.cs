@@ -2,31 +2,52 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
 using PSQuickAssets.Infrastructure;
+using PSQuickAssets.Services;
 
 namespace PSQuickAssets
 {
     public partial class App : Application
     {
         public static Version Version { get; private set; } = new Version("1.0.0");
+
+        public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
         public static ViewManager ViewManager { get; private set; } = new ViewManager();
         public static TaskbarIcon TaskBarIcon { get; private set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ShutdownIfAlreadyRunning();
+            ViewManager.ShowSplashView();
+
             ViewManager.CreateAndShowMainView();
-            ViewManager.ShowSplash();
+            RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
+
+            ViewManager.ShowSettingView();
+
             CheckUpdates();
         }
+
+        public void RegisterGlobalHotkey(string hotkey)
+        {
+            IntPtr handle = new WindowInteropHelper(ViewManager.MainView).Handle;
+            if (GlobalHotkey.RegisterHotkey(new WPF.Hotkey(hotkey), handle, OnGlobalHotkey, out string errMessage))
+                GlobalHotkey.WriteToConfig();
+            else
+                MessageBox.Show(errMessage);
+        }
+
+        private void OnGlobalHotkey() => ViewManager.ToggleMainView();
 
         private async void CheckUpdates()
         {
             var update = await new Update.UpdateChecker().CheckAsync();
             if (update.updateAvailable)
             {
-                string message = $"New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
+                string message = "New version available. Visit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
                     $"Version: {update.versionInfo.Version}\nChangelog: {update.versionInfo.Description}";
                 MessageBox.Show(message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -55,9 +76,10 @@ namespace PSQuickAssets
 
         protected override void OnExit(ExitEventArgs e)
         {
-            ViewManager.SaveMainViewState();
-            ((TaskbarIcon)FindResource("TaskBarIcon")).Dispose();
-            ConfigManager.Write();
+            GlobalHotkey.Dispose();
+            ViewManager.CloseMainView();
+            TaskBarIcon.Dispose();
+            ConfigManager.Save();
 
             base.OnExit(e);
         }

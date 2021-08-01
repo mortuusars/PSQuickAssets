@@ -48,7 +48,7 @@ namespace PSQuickAssets.ViewModels
 
         private async void LoadSavedDirs()
         {
-            foreach (var path in ConfigManager.GetCurrentDirectories())
+            foreach (var path in ConfigManager.Config.Directories)
                 await LoadDirectory(path);
         }
         
@@ -120,7 +120,7 @@ namespace PSQuickAssets.ViewModels
         private void UpdateConfig()
         {
             ConfigManager.Config = ConfigManager.Config with { Directories = CurrentDirectories };
-            ConfigManager.Write();
+            ConfigManager.Save();
         }
 
         private void ShowError(string errorMessage)

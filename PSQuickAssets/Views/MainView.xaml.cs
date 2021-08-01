@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using PSQuickAssets.Views.State;
 
 namespace PSQuickAssets.Views
 {
@@ -12,90 +16,70 @@ namespace PSQuickAssets.Views
     /// </summary>
     public partial class MainView : Window
     {
-        #region Global Hotkey
-
-        //Modifiers:
-        private const uint MOD_NONE = 0x0000; //[NONE]
-        private const uint MOD_ALT = 0x0001; //ALT
-        private const uint MOD_CONTROL = 0x0002; //CTRL
-        private const uint MOD_SHIFT = 0x0004; //SHIFT
-
-        //Keys
-        private const uint HOME = 0x24;
-        private const uint F8 = 0x77;
-
-        private const int HOTKEY_ID = 1;
-
-
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-
-        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        public MainView()
         {
-            const int WM_HOTKEY = 0x0312;
-            switch (msg)
+            InitializeComponent();
+        }
+
+        #region STATE
+
+        public void SaveState(string filepath)
+        {
+            var state = new ViewState()
             {
-                case WM_HOTKEY:
-                    switch (wParam.ToInt32())
-                    {
-                        case HOTKEY_ID:
-                            int vkey = (((int)lParam >> 16) & 0xFFFF);
-                            if (vkey == F8)
-                            {
-                                OnGlobalHotkeyPressed();
-                            }
-                            handled = true;
-                            break;
-                    }
-                    break;
+                Left = this.Left,
+                Top = this.Top,
+                Width = this.ActualWidth,
+                Height = this.ActualHeight,
+            };
+
+            var json = JsonSerializer.Serialize(state, new JsonSerializerOptions() { WriteIndented = true });
+
+            try
+            {
+                File.WriteAllText(filepath, json);
             }
-            return IntPtr.Zero;
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to save window state: " + ex.Message);
+            }
+        }
+
+        public void RestoreState(string filepath)
+        {
+            var state = ReadStateFromFile(filepath);
+
+            this.Left = state.Left;
+            this.Top = state.Top;
+            this.Width = state.Width;
+            this.Height = state.Height;
+        }
+
+        private static ViewState ReadStateFromFile(string filepath)
+        {
+            try
+            {
+                var json = File.ReadAllText(filepath);
+                return JsonSerializer.Deserialize<ViewState>(json);
+            }
+            catch (Exception)
+            {
+                return new ViewState()
+                {
+                    Left = (WpfScreenHelper.Screen.PrimaryScreen.Bounds.Right / 2) - 200,
+                    Top = (WpfScreenHelper.Screen.PrimaryScreen.Bounds.Bottom / 2) - 200,
+                    Width = 600,
+                    Height = 500
+                };
+            }
         }
 
         #endregion
 
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        public MainView()
-        {
-            InitializeComponent();
-
-        }
-
-        // Registering Global hotkey
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            // Global Hotkey registering
-            IntPtr handle = new WindowInteropHelper(this).Handle;
-            HwndSource source = HwndSource.FromHwnd(handle);
-            source.AddHook(HwndHook);
-            RegisterHotKey(handle, HOTKEY_ID, MOD_CONTROL + MOD_ALT, F8);
-        }
-
-        private void OnGlobalHotkeyPressed()
-        {
-            if (this.Visibility == Visibility.Visible)
-                this.Visibility = Visibility.Collapsed;
-            else
-                this.Visibility = Visibility.Visible;
-        }
+        #region RESIZE
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
 
         private enum ResizeDirection { Left = 61441, Right = 61442, Top = 61443, Bottom = 61446, BottomRight = 61448, }
 
@@ -118,32 +102,6 @@ namespace PSQuickAssets.Views
             }
         }
 
-        //private bool _isDragging;
-        //private Point _prevMousePos;
-
-        ////Manual Resizing
-        //private void DragResize(MouseEventArgs e)
-        //{
-        //    if (e.LeftButton == MouseButtonState.Released)
-        //    {
-        //        _isDragging = false;
-        //        Mouse.Capture(null);
-        //        return;
-        //    }
-
-        //    if (_isDragging)
-        //    {
-        //        Mouse.Capture(CornerResize);
-
-        //        Point currMousePos = Mouse.GetPosition(this);
-        //        if (currMousePos.X == 0 && currMousePos.Y == 0)
-        //            return;
-
-        //        this.Width = this.ActualWidth + (currMousePos.X - _prevMousePos.X);
-        //        this.Height = this.ActualHeight + (currMousePos.Y - _prevMousePos.Y);
-
-        //        _prevMousePos = currMousePos;
-        //    }
-        //}
+        #endregion
     }
 }
