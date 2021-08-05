@@ -1,9 +1,8 @@
 <h1 align="center">
     <img src="Images/PSQuickAssets_Logo.png" width="360">
-
-    [![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version)](https://github.com/mortuusars/PSQuickAssets/releases/latest)
-
 </h1>
+
+[![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version)](https://github.com/mortuusars/PSQuickAssets/releases/latest)
 
 <br>
 
