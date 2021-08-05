@@ -1,6 +1,6 @@
 <div align="center">
     
-[![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version "Version")](https://github.com/mortuusars/PSQuickAssets/releases/latest)
+[![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version)](https://github.com/mortuusars/PSQuickAssets/releases/latest)
 [![Requires .Net Core 5.0](https://img.shields.io/badge/Requires-.NET%205.0%20Runtime-orange)](https://dotnet.microsoft.com/download)
 </div>
 
