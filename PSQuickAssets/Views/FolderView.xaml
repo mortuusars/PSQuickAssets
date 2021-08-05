@@ -34,89 +34,89 @@
              VirtualizingStackPanel.IsVirtualizing="True"
              VirtualizingStackPanel.VirtualizationMode="Standard">
 
-                <ListBox.Template>
-                    <ControlTemplate>
-                        <ItemsPresenter />
-                    </ControlTemplate>
-                </ListBox.Template>
+            <ListBox.Template>
+                <ControlTemplate>
+                    <ItemsPresenter />
+                </ControlTemplate>
+            </ListBox.Template>
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Background="{x:Null}" Orientation="Horizontal" IsItemsHost="True" Margin="1"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Background="{x:Null}" Orientation="Horizontal" IsItemsHost="True" Margin="1"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
-                <!-- Image Panel -->
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
-                            <Grid.InputBindings>
-                                <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
+            <!-- Image Panel -->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
+                        <Grid.InputBindings>
+                            <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
                                       Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
-                            </Grid.InputBindings>
+                        </Grid.InputBindings>
 
-                            <Grid.Effect>
-                                <DropShadowEffect BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
-                            </Grid.Effect>
+                        <Grid.Effect>
+                            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
+                        </Grid.Effect>
 
-                            <Grid.ToolTip>
+                        <Grid.ToolTip>
                             <TextBlock Text="{Binding FileName}" Style="{StaticResource TextLight}"/>
-                            </Grid.ToolTip>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
+                        </Grid.ToolTip>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- Thumbnail -->
 
-                            <!-- Thumbnail -->
-                            <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
-                            Width="{Binding Thumbnail.PixelWidth}" MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                        <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
+                                    Width="{Binding Thumbnail.PixelWidth}" 
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                                 AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
-                            Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                                 AncestorType=Window}, Path=DataContext.ThumbnailSize}">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Thumbnail}" Stretch="UniformToFill"/>
-                                </Border.Background>
-                            </Border>
-
-                            <!-- Label (Filename) -->
-                            <TextBlock Grid.Row="1" Margin="0 6 0 4" Height="32"
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneWay, IsAsync=True}" Stretch="UniformToFill"/>
+                            </Border.Background>
+                        </Border>
+                        <!-- Label (Filename) -->
+                        <TextBlock Grid.Row="1" Margin="0 6 0 4" Height="32"
                                        VerticalAlignment="Top" TextAlignment="Center"
                                        MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
                                        TextWrapping="Wrap" FontSize="12"
                                        Foreground="{StaticResource TextColorBrush}">
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource FilenameToShort}">
-                                        <Binding Path="FileName" />
-                                        <Binding Path="Thumbnail.PixelWidth" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource FilenameToShort}">
+                                    <Binding Path="FileName" />
+                                    <Binding Path="Thumbnail.PixelWidth" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Focusable" Value="False"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <Border Name="_Border" CornerRadius="5" Padding="4">
-                                        <ContentPresenter />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter TargetName="_Border" Property="Background" Value="#555"/>
-                                            <Setter TargetName="_Border" Property="BorderBrush" Value="#555"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Name="_Border" CornerRadius="5" Padding="4">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="_Border" Property="Background" Value="#555"/>
+                                        <Setter TargetName="_Border" Property="BorderBrush" Value="#555"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
 
-            </ListBox>
-        </StackPanel>
+        </ListBox>
+    </StackPanel>
 </UserControl>

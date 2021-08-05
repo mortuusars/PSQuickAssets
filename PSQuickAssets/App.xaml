@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="Resources/Styles/Tooltip.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
             <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityHidden"/>
             <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth"/>
             <conv:FilenameToShortConverter x:Key="FilenameToShort"/>
