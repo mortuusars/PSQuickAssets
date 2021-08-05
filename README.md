@@ -2,13 +2,17 @@
     <img src="Images/PSQuickAssets_Logo.png" width="360">
 </h1>
 
-[![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version)](https://github.com/mortuusars/PSQuickAssets/releases/latest)
+<div align="center">
+    [![Version](https://img.shields.io/github/v/release/mortuusars/PsQuickAssets?label=Latest%20Version)](https://github.com/mortuusars/PSQuickAssets/releases/latest)
+</div>
 
 <br>
 
 <div align="center">
-    <h2>Simple app to quickly add images as new layer to Photoshop document</h2>
-    <h2>No more searching for files - just click on image and you're done!</h2>
+    ## Simple app to quickly add images as new layer to Photoshop document  
+    
+    ## No more searching for files - just click on image and you're done!
+    
 </div>
 
 <br>
