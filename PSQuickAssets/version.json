@@ -1,4 +1,4 @@
 ﻿{
 	"version": "1.1.1",
-	"description": "- Fixed images with smal widths displaying too thin. And if one of the sides of an image is too big (in relation to other side) - it will now display fully, witout cropping.\n- Added basic drag and drop. For now only folders are supported. It will add all nested folders too."
+	"description": "\n- Fixed images with smal widths displaying too thin. And if one of the sides of an image is too big (in relation to other side) - it will now display fully, witout cropping.\n\n- Added basic drag and drop. For now only folders are supported. It will add all nested folders too."
 }
