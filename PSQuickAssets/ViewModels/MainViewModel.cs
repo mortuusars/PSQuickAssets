@@ -10,11 +10,13 @@ using PSQuickAssets.Utils;
 using System.Timers;
 using System.Threading.Tasks;
 using PSQuickAssets.WPF;
+using GongSolutions.Wpf.DragDrop;
+using System.Windows;
 
 namespace PSQuickAssets.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class MainViewModel
+    public class MainViewModel : IDropTarget
     {
         public ObservableCollection<List<ImageFile>> Folders { get; set; } = new();
         public List<string> CurrentDirectories { get; set; } = new();
@@ -59,7 +61,7 @@ namespace PSQuickAssets.ViewModels
             foreach (var path in ConfigManager.Config.Directories)
                 await LoadDirectory(path);
         }
-        
+
         private async void PlaceImage(string filePath)
         {
             IsWindowShowing = false;
@@ -109,7 +111,7 @@ namespace PSQuickAssets.ViewModels
             }
             else
             {
-                ShowError("No valid images in a folder");
+                //ShowError("No valid images in a folder");
                 return false;
             }
         }
@@ -139,6 +141,60 @@ namespace PSQuickAssets.ViewModels
             _errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); };
             _errorShowingTimer.Start();
             SystemSounds.Asterisk.Play();
+        }
+
+        public void DragOver(IDropInfo dropInfo)
+        {
+            DataObject dataObject = dropInfo.Data as DataObject;
+            string[] paths = dataObject.GetData(DataFormats.FileDrop) as string[];
+
+            if (paths != null)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+            }
+            else
+                dropInfo.Effects = DragDropEffects.None;
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            DataObject dataObject = dropInfo.Data as DataObject;
+            string[] paths = dataObject.GetData(DataFormats.FileDrop) as string[];
+
+            LoadDroppedDirectories(paths);
+        }
+
+        private void LoadDroppedDirectories(string[] paths)
+        {
+            if (paths == null || paths.Length == 0)
+                return;
+
+            List<string> files = new();
+            List<string> folders = new();
+
+            foreach (string path in paths)
+            {
+                if (Path.HasExtension(path))
+                    files.Add(path);
+                else
+                    folders.Add(path);
+            }
+
+            //AddAssetsFromFiles(files);
+            AddAssetsFromFolders(folders);
+        }
+
+        private async void AddAssetsFromFolders(IEnumerable<string> folders)
+        {
+            foreach (string folder in folders)
+            {
+                if (!CurrentDirectories.Contains(folder))
+                    await LoadDirectory(folder);
+
+                string[] nestedDirs = Directory.GetDirectories(folder);
+                LoadDroppedDirectories(nestedDirs);
+            }
         }
     }
 }

@@ -20,6 +20,7 @@
             <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth"/>
             <conv:FilenameToShortConverter x:Key="FilenameToShort"/>
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
+            <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter"/>
 
             <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>
 

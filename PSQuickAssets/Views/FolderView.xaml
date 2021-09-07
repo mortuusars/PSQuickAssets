@@ -17,12 +17,12 @@
             <Image Width="16" Margin="3 3 0 0" VerticalAlignment="Top" 
                    Source="/Resources/Images/close_24.png" Style="{StaticResource ImageButtons}"
                    Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}, 
-                                    Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}">
+                   Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}">
                 <Image.InputBindings>
                     <MouseBinding Gesture="LeftClick" 
                                   Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                            AncestorType={x:Type Window}},
-                                            Path=DataContext.RemoveFolderCommand}"
+                                  AncestorType={x:Type Window}},
+                                  Path=DataContext.RemoveFolderCommand}"
                                   CommandParameter="{Binding}"/>
                 </Image.InputBindings>
             </Image>
@@ -30,9 +30,9 @@
 
 
         <ListBox x:Name="FileList" ItemsSource="{Binding}"
-             Background="{x:Null}" BorderThickness="0" Focusable="False"
-             VirtualizingStackPanel.IsVirtualizing="True"
-             VirtualizingStackPanel.VirtualizationMode="Standard">
+                 Background="{x:Null}" BorderThickness="0" Focusable="False"
+                 VirtualizingStackPanel.IsVirtualizing="True"
+                 VirtualizingStackPanel.VirtualizationMode="Standard">
 
             <ListBox.Template>
                 <ControlTemplate>
@@ -52,8 +52,8 @@
                     <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
-                                      Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
+                                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
                         </Grid.InputBindings>
 
                         <Grid.Effect>
@@ -67,31 +67,34 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
+                        
                         <!-- Thumbnail -->
-
                         <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
-                                    Width="{Binding Thumbnail.PixelWidth}" 
-                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                                AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
-                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                                AncestorType=Window}, Path=DataContext.ThumbnailSize}">
+                                Width="{Binding Thumbnail.PixelWidth}" 
+                                MinWidth="90"
+                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
+                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                                AncestorType=Window}, Path=DataContext.ThumbnailSize}">
                             <Border.Background>
-                                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneWay, IsAsync=True}" Stretch="UniformToFill"/>
+                                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneWay, IsAsync=True}" 
+                                            Stretch="{Binding Thumbnail, 
+                                                Converter={StaticResource ThumbnailSizeToImageStretchConverter}}"/>
                             </Border.Background>
                         </Border>
-                        <!-- Label (Filename) -->
-                        <TextBlock Grid.Row="1" Margin="0 6 0 4" Height="32"
-                                       VerticalAlignment="Top" TextAlignment="Center"
-                                       MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
-                                       TextWrapping="Wrap" FontSize="12"
-                                       Foreground="{StaticResource TextColorBrush}">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource FilenameToShort}">
-                                    <Binding Path="FileName" />
-                                    <Binding Path="Thumbnail.PixelWidth" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
+                        
+                        <!-- FILENAME -->
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0 6 0 4" 
+                                   Height="32"
+                                   Foreground="{StaticResource TextColorBrush}"
+                                   VerticalAlignment="Top" 
+                                   TextAlignment="Center"
+                                   MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
+                                   TextWrapping="Wrap" 
+                                   FontSize="13"
+                                   Text="{Binding FileName}"
+                                   FontFamily="{StaticResource FontRegular}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

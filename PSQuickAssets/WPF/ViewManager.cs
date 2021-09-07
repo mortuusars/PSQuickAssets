@@ -32,6 +32,11 @@ namespace PSQuickAssets.WPF
             MainView ??= new MainView() { DataContext = _mainViewModel };
             MainView.RestoreState();
             MainView.Show();
+
+#if DEBUG
+            _mainViewModel.IsWindowShowing = true;
+#endif
+
         }
 
         public void ToggleMainView() => _mainViewModel.IsWindowShowing = !_mainViewModel.IsWindowShowing;
