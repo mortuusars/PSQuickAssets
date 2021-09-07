@@ -11,7 +11,7 @@ namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static Version Version { get; private set; } = new Version("1.1.0");
+        public static Version Version { get; private set; } = new Version("1.1.1");
 
         public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
         public static ViewManager ViewManager { get; private set; } = new ViewManager();
