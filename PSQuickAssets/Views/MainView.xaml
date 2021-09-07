@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSQuickAssets.Views"
+        xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
         Title="PSQuickAssets" 
+        x:Name="window"
         Topmost="True" WindowStartupLocation="Manual"
         Width="600" Height="400" MinWidth="400" MinHeight="300" 
         WindowStyle="None" Background="Transparent" AllowsTransparency="True"
@@ -21,7 +23,10 @@
     <Grid x:Name="MainContainer" Margin="40" MinWidth="260" MinHeight="100"
           Height="Auto"
           VerticalAlignment="Stretch" HorizontalAlignment="Stretch"          
-          Background="{x:Null}">
+          Background="{x:Null}"
+          dd:DragDrop.IsDropTarget="True"
+          dd:DragDrop.DragHandler="{Binding}"
+          dd:DragDrop.DropHandler="{Binding}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -37,7 +42,10 @@
 
         <!-- HEADER -->
         <Border Grid.Row="0" Margin="2 2 2 0" x:Name="HeaderContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                CornerRadius="6 6 0 0" Background="#343434" MouseDown="BG_MouseDown">
+                CornerRadius="6 6 0 0" Background="#343434" MouseDown="BG_MouseDown"
+                dd:DragDrop.IsDropTarget="True"
+          dd:DragDrop.DragHandler="{Binding}"
+          dd:DragDrop.DropHandler="{Binding}">
 
             <Grid>
                 <Image Source="/Resources/Images/settings.png"
@@ -55,7 +63,7 @@
                 <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <!-- ADD FOLDER BTN -->
                     <Image Source="/Resources/Images/folder_24.png" Margin="5 0" Width="20" Height="20" 
-                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+                           VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
                         <Image.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
                         </Image.InputBindings>
@@ -65,7 +73,7 @@
                     </Image>
                     <!-- CLOSE BTN -->
                     <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
-                   VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
+                           VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
                         <Image.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
                             <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
@@ -117,7 +125,7 @@
                 </Style>
             </Grid.Style>
             <TextBlock Text="CLICK TO ADD ASSETS" Foreground="{StaticResource TextColorBrush}"
-                        FontSize="16">
+                       FontSize="16">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>

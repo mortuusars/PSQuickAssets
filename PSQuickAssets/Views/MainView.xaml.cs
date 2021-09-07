@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSQuickAssets.Views.State;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -7,8 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using PSQuickAssets.Views.State;
-using PSQuickAssets.WPF;
 
 namespace PSQuickAssets.Views
 {
@@ -107,5 +106,6 @@ namespace PSQuickAssets.Views
         }
 
         #endregion
+
     }
 }
