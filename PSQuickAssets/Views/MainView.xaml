@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSQuickAssets.Views"
-        xmlns:dd="urn:gong-wpf-dragdrop"
+        xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
         mc:Ignorable="d"
         Title="PSQuickAssets" 
         x:Name="window"
@@ -14,7 +14,9 @@
         ShowInTaskbar="False"
         TextOptions.TextFormattingMode="Ideal" FontFamily="{StaticResource FontSans}" FontWeight="Bold"
         Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}"
-        UseLayoutRounding="True">
+        UseLayoutRounding="True"
+        PreviewKeyDown="window_KeyDown"
+        PreviewKeyUp="window_KeyUp">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
@@ -48,44 +50,59 @@
         <Border Grid.Row="0" Margin="2 2 2 0" x:Name="HeaderContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                 CornerRadius="6 6 0 0" Background="#343434" MouseDown="BG_MouseDown"
                 dd:DragDrop.IsDropTarget="True"
-          dd:DragDrop.DragHandler="{Binding}"
-          dd:DragDrop.DropHandler="{Binding}">
+                dd:DragDrop.DragHandler="{Binding}"
+                dd:DragDrop.DropHandler="{Binding}">
 
+            <!-- HEADER BUTTONS -->
             <Grid>
-                <Image Source="/Resources/Images/settings.png"
-                       Margin="5 5 0 0" Width="16"
-                       VerticalAlignment="Top" HorizontalAlignment="Left"
-                       Style="{StaticResource ImageButtons}">
-                    <Image.InputBindings>
+
+                <!-- SETTINGS -->
+                <controls:ImageButton Source="/Resources/Images/settings.png"
+                                      Margin="5 0 0 0"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      Width="17">
+                    <controls:ImageButton.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}"/>
-                    </Image.InputBindings>
-                    <Image.ToolTip>
+                    </controls:ImageButton.InputBindings>
+                    <controls:ImageButton.ToolTip>
                         <TextBlock Text="Settings" Style="{StaticResource TextLight}"/>
-                    </Image.ToolTip>
-                </Image>
-                <!-- HEADER BUTTONS -->
-                <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                    </controls:ImageButton.ToolTip>
+                </controls:ImageButton>
+                
+                
+                <StackPanel Margin="3"
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Right">
+                    
                     <!-- ADD FOLDER BTN -->
-                    <Image Source="/Resources/Images/folder_24.png" Margin="5 0" Width="20" Height="20" 
-                           VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
-                        <Image.InputBindings>
+                    <controls:ImageButton Source="/Resources/Images/folder_24.png"
+                                          Margin="5 0" 
+                                          Width="20">
+                        <controls:ImageButton.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
-                        </Image.InputBindings>
-                        <Image.ToolTip>
+                        </controls:ImageButton.InputBindings>
+                        <controls:ImageButton.ToolTip>
                             <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
-                        </Image.ToolTip>
-                    </Image>
+                        </controls:ImageButton.ToolTip>
+                    </controls:ImageButton>
+                    
                     <!-- CLOSE BTN -->
-                    <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
-                           VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtons}">
-                        <Image.InputBindings>
+                    <controls:ImageButton x:Name="CloseButton"
+                                          Source="/Resources/Images/close_24.png"
+                                          AlternativeSource="/Resources/Images/close_red_24.png"
+                                          Width="18"
+                                          Margin="1">
+                        <controls:ImageButton.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
                             <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
-                        </Image.InputBindings>
-                        <Image.ToolTip>
+                        </controls:ImageButton.InputBindings>
+
+                        <controls:ImageButton.ToolTip>
                             <TextBlock Text="Hide / Ctrl: Close" Style="{StaticResource TextLight}"/>
-                        </Image.ToolTip>
-                    </Image>
+                        </controls:ImageButton.ToolTip>
+                    </controls:ImageButton>
                 </StackPanel>
             </Grid>
         </Border>

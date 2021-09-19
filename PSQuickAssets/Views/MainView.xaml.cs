@@ -1,5 +1,6 @@
 ﻿using PSQuickAssets.Views.State;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.Views
 {
@@ -107,5 +109,19 @@ namespace PSQuickAssets.Views
 
         #endregion
 
+        private void window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftCtrl)
+            {
+                CloseButton.ActivateAlternativeStyle = true;
+            }
+        }
+
+        private void window_KeyUp(object sender, KeyEventArgs e)
+        {
+            {
+                CloseButton.ActivateAlternativeStyle = false;
+            }
+        }
     }
 }
