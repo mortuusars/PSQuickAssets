@@ -7,7 +7,7 @@
 <br>
 
 <div align="center">
-    <img src="Images/PSQuickAssets_Logo.png" width="320">
+    <a href="https://github.com/mortuusars/PSQuickAssets/releases/"><img src="Images/PSQuickAssets-Logo-400.png" width="400"><a>
 </div>
 
 <br>
