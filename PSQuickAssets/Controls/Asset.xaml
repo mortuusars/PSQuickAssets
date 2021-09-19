@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="PSQuickAssets.Controls.Asset"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PSQuickAssets.Views"
+             mc:Ignorable="d" 
+             d:DesignWidth="160"
+             d:DesignHeight="120" >
+
+    <UserControl.Resources>
+        <DropShadowEffect x:Key="AssetShadow" BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
+    </UserControl.Resources>
+    
+    <Grid Background="Transparent"
+          VerticalAlignment="Top"
+          HorizontalAlignment="Center"
+          Effect="{StaticResource AssetShadow}">
+        <Grid.InputBindings>
+            <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
+                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
+        </Grid.InputBindings>
+
+        <Grid.ToolTip>
+            <TextBlock Text="{Binding FileName}" Style="{StaticResource TextLight}"/>
+        </Grid.ToolTip>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- THUMBNAIL -->
+        <Border x:Name="ThumbContainer" 
+                VerticalAlignment="Top" 
+                CornerRadius="3" 
+                BorderThickness="0" 
+                Width="{Binding Thumbnail.PixelWidth}" d:Width="128"
+                MinWidth="80" MaxWidth="200"
+                Height="60">
+            <Border.Background>
+                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneTime, IsAsync=True}"
+                            d:ImageSource="../Resources/Images/image.png"
+                            Stretch="{Binding Thumbnail, Converter={StaticResource ThumbnailSizeToImageStretchConverter}}"
+                            d:Stretch="UniformToFill"/>
+            </Border.Background>
+        </Border>
+
+        <!-- FILENAME -->
+        <TextBlock Text="{Binding FileName}"
+                   d:Text="Batch 1421 - Daytime - No Tv Inserts"
+                   Grid.Row="1" 
+                   Margin="0 6 0 0" 
+                   Height="32"
+                   Foreground="{StaticResource TextColorBrush}"
+                   VerticalAlignment="Top" 
+                   TextAlignment="Center"
+                   MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
+                   TextWrapping="Wrap" 
+                   FontSize="13"
+                   FontFamily="{StaticResource FontRegular}"/>
+    </Grid>
+</UserControl>

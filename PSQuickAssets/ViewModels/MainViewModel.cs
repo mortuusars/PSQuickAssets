@@ -48,7 +48,12 @@ namespace PSQuickAssets.ViewModels
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
             HideCommand = new RelayCommand(_ => IsWindowShowing = false);
 
+#if DEBUG
+            string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
+            LoadDroppedDirectories(new string[] { testFolderPath });
+#else
             LoadSavedDirs();
+#endif
         }
 
         private void OpenSettings()

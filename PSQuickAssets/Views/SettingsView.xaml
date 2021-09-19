@@ -15,6 +15,10 @@
         <vm:SettingsViewModel/>
     </Window.DataContext>
 
+    <Window.Resources>
+        <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}"/>
+    </Window.Resources>
+
     <Grid x:Name="MainContainer" Margin="40" Background="{x:Null}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

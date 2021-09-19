@@ -20,6 +20,10 @@
         <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
     </Window.InputBindings>
 
+    <Window.Resources>
+        <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}"/>
+    </Window.Resources>
+    
     <Grid x:Name="MainContainer" Margin="40" MinWidth="260" MinHeight="100"
           Height="Auto"
           VerticalAlignment="Stretch" HorizontalAlignment="Stretch"          

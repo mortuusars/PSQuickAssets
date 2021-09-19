@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PSQuickAssets.Views"
+             xmlns:local="clr-namespace:PSQuickAssets.Views" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -46,56 +46,10 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
-            <!-- Image Panel -->
+            <!-- ASSET -->
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="Transparent" Margin="2" VerticalAlignment="Top">
-                        <Grid.InputBindings>
-                            <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
-                                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
-                        </Grid.InputBindings>
-
-                        <Grid.Effect>
-                            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
-                        </Grid.Effect>
-
-                        <Grid.ToolTip>
-                            <TextBlock Text="{Binding FileName}" Style="{StaticResource TextLight}"/>
-                        </Grid.ToolTip>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        
-                        <!-- Thumbnail -->
-                        <Border x:Name="ThumbContainer" CornerRadius="3" BorderThickness="0" VerticalAlignment="Top" 
-                                Width="{Binding Thumbnail.PixelWidth}" 
-                                MinWidth="90"
-                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                AncestorType=ListBox}, Path=ItemsSource.Count, Converter={StaticResource CountToMaxWidth}}"
-                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                                AncestorType=Window}, Path=DataContext.ThumbnailSize}">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneWay, IsAsync=True}" 
-                                            Stretch="{Binding Thumbnail, 
-                                                Converter={StaticResource ThumbnailSizeToImageStretchConverter}}"/>
-                            </Border.Background>
-                        </Border>
-                        
-                        <!-- FILENAME -->
-                        <TextBlock Grid.Row="1" 
-                                   Margin="0 6 0 4" 
-                                   Height="32"
-                                   Foreground="{StaticResource TextColorBrush}"
-                                   VerticalAlignment="Top" 
-                                   TextAlignment="Center"
-                                   MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
-                                   TextWrapping="Wrap" 
-                                   FontSize="13"
-                                   Text="{Binding FileName}"
-                                   FontFamily="{StaticResource FontRegular}"/>
-                    </Grid>
+                    <controls:Asset/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
