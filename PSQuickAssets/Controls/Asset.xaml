@@ -48,7 +48,7 @@
         </Border>
 
         <!-- FILENAME -->
-        <TextBlock Text="{Binding FileName}"
+        <TextBlock Text="{Binding Name}"
                    d:Text="Batch 1421 - Daytime - No Tv Inserts"
                    Grid.Row="1" 
                    Margin="0 6 0 0" 

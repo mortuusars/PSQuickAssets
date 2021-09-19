@@ -62,7 +62,8 @@ namespace PSQuickAssets
             {
                 Thumbnail = ThumbnailCreator.FromFile(filePath, imageSize, constrainTo),
                 FilePath = filePath,
-                FileName = Path.GetFileName(filePath)
+                FileName = Path.GetFileName(filePath),
+                Name = Path.GetFileNameWithoutExtension(filePath)
             };
         }
 
