@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using PSQuickAssets.WPF;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -16,7 +15,7 @@ namespace PSQuickAssets.ViewModels
             AppName = "PSQuickAssets " + App.Version.ToString();
 
             ShowWindowCommand = new RelayCommand(_ => App.ViewManager.ToggleMainView());
-            SettingsCommand = new RelayCommand(_ => ViewManager.ShowSettingsView());
+            SettingsCommand = new RelayCommand(_ => App.ViewManager.ShowSettingsView());
             ExitCommand = new RelayCommand(_ => App.Current.Shutdown());
         }
     }

@@ -47,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<Resource Include="Resources\Fonts\Lexend-Bold.ttf" />
 	<Resource Include="Resources\Fonts\Lexend-ExtraBold.ttf" />
 	<Resource Include="Resources\Fonts\Lexend-Light.ttf" />

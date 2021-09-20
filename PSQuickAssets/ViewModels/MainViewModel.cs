@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using PSQuickAssets.WPF;
 using GongSolutions.Wpf.DragDrop;
 using System.Windows;
+using PSQuickAssets.PSInterop;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -34,17 +35,15 @@ namespace PSQuickAssets.ViewModels
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
 
         private readonly IImageFileLoader _imagesLoader;
-        private readonly IPhotoshopManager _photoshopManager;
         private readonly ViewManager _viewManager;
 
-        public MainViewModel(IImageFileLoader imagesLoader, IPhotoshopManager photoshopManager, ViewManager viewManager)
+        public MainViewModel(IImageFileLoader imagesLoader, ViewManager viewManager)
         {
             _imagesLoader = imagesLoader;
-            _photoshopManager = photoshopManager;
             _viewManager = viewManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            SettingsCommand = new RelayCommand(_ => OpenSettings());
+            SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsView());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
             HideCommand = new RelayCommand(_ => _viewManager.HideMainView());
@@ -57,30 +56,31 @@ namespace PSQuickAssets.ViewModels
 #endif
         }
 
-        private void OpenSettings()
+        private async void PlaceImage(string filePath)
         {
-            ViewManager.ShowSettingsView();
+            _viewManager.ToggleMainView();
+
+            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
+
+            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
+
+            if (psResult.Status == PSStatus.NoDocumentsOpen)
+                psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
+                        
+            if (psResult.Status != PSStatus.Success)
+            {
+                _viewManager.ToggleMainView();
+                //TODO: localize / decouple errors
+                ShowError(psResult.ResultMessage);
+            }
+            else
+                WindowControl.FocusWindow("photoshop");
         }
 
         private async void LoadSavedDirs()
         {
             foreach (var path in ConfigManager.Config.Directories)
                 await LoadDirectory(path);
-        }
-
-        private async void PlaceImage(string filePath)
-        {
-            _viewManager.ToggleMainView();
-
-            PSResult psResult = await _photoshopManager.AddImageToDocAsync(filePath);
-
-            if (psResult.CallResult != PSCallResult.Success)
-            {
-                _viewManager.ToggleMainView();
-                ShowError(psResult.Message);
-            }
-            else
-                WindowControl.FocusWindow("photoshop");
         }
 
         private async Task<List<ImageFile>> LoadImages(string path)

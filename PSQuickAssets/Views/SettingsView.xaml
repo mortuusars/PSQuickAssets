@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="360"
         Topmost="True"
@@ -82,7 +81,7 @@
 
                     <TextBlock Text="Opening hotkey" Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
-                    <wpf:HotkeyEditorControl Grid.Column="1" Hotkey="{Binding GlobalHotkey}"/>
+                    <controls:HotkeyEditorControl Grid.Column="1" Hotkey="{Binding GlobalHotkey}"/>
                 </Grid>
 
                 <Rectangle Margin="0 4" Height="1" Fill="{StaticResource TextColorBrush}"/>
@@ -95,7 +94,7 @@
 
                     <TextBlock Text="Check for updates" Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
-                    <wpf:ToggleSwitch x:Name="Toggle" Grid.Column="1"
+                    <controls:ToggleSwitch x:Name="Toggle" Grid.Column="1"
                                       IsOn="{Binding CheckUpdates, Mode=TwoWay}" 
                                       HorizontalAlignment="Right"/>
                 </Grid>

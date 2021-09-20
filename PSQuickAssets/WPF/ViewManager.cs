@@ -15,7 +15,7 @@ namespace PSQuickAssets.WPF
             new SplashView().Show();
         }
 
-        public static void ShowSettingsView()
+        public void ShowSettingsView()
         {
             var settingsView = App.Current.Windows.OfType<SettingsView>().FirstOrDefault();
 
@@ -27,7 +27,7 @@ namespace PSQuickAssets.WPF
 
         public void CreateAndShowMainView()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager(), this);
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), this);
 
             MainView ??= new MainView() { DataContext = _mainViewModel };
             MainView.RestoreState();

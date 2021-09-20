@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using PSQuickAssets.WPF;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
-namespace PSQuickAssets.WPF
+namespace PSQuickAssets.Controls
 {
     /// <summary>
     /// Interaction logic for HotkeyEditorControl.xaml
