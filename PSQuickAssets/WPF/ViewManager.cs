@@ -10,11 +10,6 @@ namespace PSQuickAssets.WPF
         public MainView MainView { get; private set; }
         private MainViewModel _mainViewModel;
 
-        public void ShowSplashView()
-        {
-            new SplashView().Show();
-        }
-
         public void ShowSettingsView()
         {
             var settingsView = App.Current.Windows.OfType<SettingsView>().FirstOrDefault();
@@ -61,7 +56,7 @@ namespace PSQuickAssets.WPF
             MainView?.Close();
         }
 
-        public static string ShowSelectDirectoryDialog()
+        public string ShowSelectDirectoryDialog()
         {
             var dialog = new VistaFolderBrowserDialog();
 

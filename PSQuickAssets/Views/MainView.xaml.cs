@@ -23,9 +23,8 @@ namespace PSQuickAssets.Views
     {
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
-        //public bool IsShown { get; set; }
-
-
+        public static readonly DependencyProperty IsShownProperty =
+            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainView), new PropertyMetadata(false));
 
         public bool IsShown
         {
@@ -33,29 +32,22 @@ namespace PSQuickAssets.Views
             set { SetValue(IsShownProperty, value); }
         }
 
-        public static readonly DependencyProperty IsShownProperty =
-            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainView), new PropertyMetadata(false));
-
-
-
         public MainView()
         {
             InitializeComponent();
-            //this.Visibility = Visibility.Collapsed;
             IsVisibleChanged += OnVisibilityChanged;
         }
-
-        private void OnVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is Visibility && (Visibility)e.NewValue == Visibility.Collapsed)
-                SaveState();
-        }
-
 
         public new void Show()
         {
             base.Show();
             this.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsVisible)
+                SaveState();
         }
 
         #region STATE

@@ -36,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<PackageReference Include="gong-wpf-dragdrop" Version="2.4.0" />
 	<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
 	<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />

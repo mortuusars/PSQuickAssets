@@ -90,7 +90,7 @@ namespace PSQuickAssets.ViewModels
 
         private async void AddNewDirectoryAsync()
         {
-            string newDirectoryPath = ViewManager.ShowSelectDirectoryDialog();
+            string newDirectoryPath = _viewManager.ShowSelectDirectoryDialog();
             if (string.IsNullOrWhiteSpace(newDirectoryPath))
                 return;
 
