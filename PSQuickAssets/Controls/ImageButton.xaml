@@ -24,7 +24,7 @@
                         <Trigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="0:0:0.15"                                                 
+                                    <DoubleAnimation Duration="0:0:0.05"                                                 
                                                      To="{StaticResource ButtonsActiveOpacity}"
                                                      Storyboard.TargetProperty="Opacity"/>
                                 </Storyboard>
@@ -33,7 +33,7 @@
                         <Trigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="0:0:0.3"
+                                    <DoubleAnimation Duration="0:0:0.25"
                                                      To="{StaticResource ButtonsDefaultOpacity}" 
                                                      FillBehavior="Stop"
                                                      Storyboard.TargetProperty="Opacity"/>

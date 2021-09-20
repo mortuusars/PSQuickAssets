@@ -24,7 +24,7 @@
 
             <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>
 
-            <SolidColorBrush Color="#ee292929" x:Key="MainBackground"/>
+            <SolidColorBrush Color="#292929" x:Key="MainBackground"/>
             <SolidColorBrush Color="#343434" x:Key="MainBorder"/>
             <SolidColorBrush Color="#9f9f9f" x:Key="TextColorBrush"/>
         </ResourceDictionary>

@@ -10,7 +10,7 @@ namespace PSQuickAssets.WPF
         public MainView MainView { get; private set; }
         private MainViewModel _mainViewModel;
 
-        public static void ShowSplashView()
+        public void ShowSplashView()
         {
             new SplashView().Show();
         }
@@ -27,19 +27,33 @@ namespace PSQuickAssets.WPF
 
         public void CreateAndShowMainView()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager());
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), new PhotoshopManager(), this);
 
             MainView ??= new MainView() { DataContext = _mainViewModel };
             MainView.RestoreState();
             MainView.Show();
 
-#if DEBUG
-            _mainViewModel.IsWindowShowing = true;
-#endif
-
+            MainView.FadeIn();
         }
 
-        public void ToggleMainView() => _mainViewModel.IsWindowShowing = !_mainViewModel.IsWindowShowing;
+        public void ToggleMainView()
+        {
+            if (MainView.IsShown)
+                HideMainView();
+            else
+                ShowMainView();
+        }
+
+        public void ShowMainView()
+        {
+            MainView.FadeIn();
+            MainView.Activate();
+        }
+
+        public void HideMainView()
+        {
+            MainView.FadeOut();
+        }
 
         public void CloseMainView()
         {

@@ -6,10 +6,13 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using PSQuickAssets.WPF.Converters;
 
 namespace PSQuickAssets.Views
 {
@@ -20,10 +23,39 @@ namespace PSQuickAssets.Views
     {
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
+        //public bool IsShown { get; set; }
+
+
+
+        public bool IsShown
+        {
+            get { return (bool)GetValue(IsShownProperty); }
+            set { SetValue(IsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsShownProperty =
+            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainView), new PropertyMetadata(false));
+
+
+
         public MainView()
         {
             InitializeComponent();
-            IsVisibleChanged += (_, _) => SaveState();
+            //this.Visibility = Visibility.Collapsed;
+            IsVisibleChanged += OnVisibilityChanged;
+        }
+
+        private void OnVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is Visibility && (Visibility)e.NewValue == Visibility.Collapsed)
+                SaveState();
+        }
+
+
+        public new void Show()
+        {
+            base.Show();
+            this.Visibility = Visibility.Collapsed;
         }
 
         #region STATE
@@ -111,17 +143,34 @@ namespace PSQuickAssets.Views
 
         private void window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftCtrl)
-            {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
                 CloseButton.ActivateAlternativeStyle = true;
-            }
         }
 
         private void window_KeyUp(object sender, KeyEventArgs e)
         {
+            CloseButton.ActivateAlternativeStyle = false;
+        }
+
+        public void FadeIn()
+        {
+            if (!IsShown)
             {
-                CloseButton.ActivateAlternativeStyle = false;
+                IsShown = true;
+                this.Visibility = Visibility.Visible;
             }
+        }
+
+        public void FadeOut()
+        {
+            if (IsShown)
+                IsShown = false;
+        }
+
+        private void FadeOut_Completed(object sender, EventArgs e)
+        {
+            if (!IsShown)
+                this.Visibility = Visibility.Collapsed;
         }
     }
 }

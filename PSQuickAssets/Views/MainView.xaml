@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSQuickAssets.Views"
-        xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+        xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="PSQuickAssets" 
         x:Name="window"
@@ -12,27 +12,74 @@
         Width="600" Height="400" MinWidth="400" MinHeight="300" 
         WindowStyle="None" Background="Transparent" AllowsTransparency="True"
         ShowInTaskbar="False"
-        TextOptions.TextFormattingMode="Ideal" FontFamily="{StaticResource FontSans}" FontWeight="Bold"
-        Visibility="{Binding IsWindowShowing, Mode=TwoWay, Converter={StaticResource BoolToVisibility}}"
+        TextOptions.TextFormattingMode="Ideal" 
+        FontFamily="{StaticResource FontSans}" 
+        FontWeight="Bold"
         UseLayoutRounding="True"
         PreviewKeyDown="window_KeyDown"
         PreviewKeyUp="window_KeyUp">
-
+        
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}"/>
     </Window.InputBindings>
 
     <Window.Resources>
         <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}"/>
+
+
+        <Duration x:Key="FadeInDuration">0:0:0.08</Duration>
+        <Duration x:Key="FadeOutDuration">0:0:0.15</Duration>
+
+        <SineEase EasingMode="EaseOut" x:Key="EasingOut"/>
+
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0"
+                             To="1"
+                             Duration="{StaticResource FadeInDuration}"
+                             EasingFunction="{StaticResource EasingOut}"/>
+        </Storyboard>
+
+        <Storyboard x:Key="FadeOut">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             To="0"
+                             Duration="{StaticResource FadeOutDuration}"
+                             FillBehavior="Stop"
+                             AccelerationRatio="0.5" DecelerationRatio="0.5"/>
+            <DoubleAnimation BeginTime="0:0:0.5"
+                             Duration="0:0:0"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0"
+                             To="0"
+                             Completed="FadeOut_Completed"/>
+        </Storyboard>
+
     </Window.Resources>
     
     <Grid x:Name="MainContainer" Margin="40" MinWidth="260" MinHeight="100"
           Height="Auto"
-          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"          
           Background="{x:Null}"
+          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
           dd:DragDrop.IsDropTarget="True"
           dd:DragDrop.DragHandler="{Binding}"
-          dd:DragDrop.DropHandler="{Binding}">
+          dd:DragDrop.DropHandler="{Binding}"
+          d:Opacity="1">
+        
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Opacity" Value="0"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsShown, ElementName=window}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeIn}"/>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard Storyboard="{StaticResource FadeOut}"/>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

@@ -20,11 +20,9 @@ namespace PSQuickAssets
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ShutdownIfAlreadyRunning();
-            ViewManager.ShowSplashView();
-
+            //ViewManager.ShowSplashView();
             ViewManager.CreateAndShowMainView();
             RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
-
 
             CheckUpdates();
         }

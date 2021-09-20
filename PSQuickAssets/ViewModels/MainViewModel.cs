@@ -22,7 +22,6 @@ namespace PSQuickAssets.ViewModels
         public List<string> CurrentDirectories { get; set; } = new();
 
         public string Error { get; set; } = "";
-        public bool IsWindowShowing { get; set; }
         public double ThumbnailSize { get; } = 55;
 
         private readonly Timer _errorShowingTimer = new Timer();
@@ -36,17 +35,19 @@ namespace PSQuickAssets.ViewModels
 
         private readonly IImageFileLoader _imagesLoader;
         private readonly IPhotoshopManager _photoshopManager;
+        private readonly ViewManager _viewManager;
 
-        public MainViewModel(IImageFileLoader imagesLoader, IPhotoshopManager photoshopManager)
+        public MainViewModel(IImageFileLoader imagesLoader, IPhotoshopManager photoshopManager, ViewManager viewManager)
         {
             _imagesLoader = imagesLoader;
             _photoshopManager = photoshopManager;
+            _viewManager = viewManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
             SettingsCommand = new RelayCommand(_ => OpenSettings());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
-            HideCommand = new RelayCommand(_ => IsWindowShowing = false);
+            HideCommand = new RelayCommand(_ => _viewManager.HideMainView());
 
 #if DEBUG
             string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
@@ -69,13 +70,13 @@ namespace PSQuickAssets.ViewModels
 
         private async void PlaceImage(string filePath)
         {
-            IsWindowShowing = false;
+            _viewManager.ToggleMainView();
 
             PSResult psResult = await _photoshopManager.AddImageToDocAsync(filePath);
 
             if (psResult.CallResult != PSCallResult.Success)
             {
-                IsWindowShowing = true;
+                _viewManager.ToggleMainView();
                 ShowError(psResult.Message);
             }
             else
