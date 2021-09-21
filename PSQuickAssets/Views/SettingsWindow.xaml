@@ -7,8 +7,12 @@
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="360"
         Topmost="True"
-        Background="{x:Null}" AllowsTransparency="True" WindowStyle="None"
-        FontFamily="{StaticResource FontRegular}" FontSize="14">
+        Background="{x:Null}" 
+        WindowStyle="None"
+        AllowsTransparency="True" 
+        WindowStartupLocation="CenterOwner"
+        FontFamily="{StaticResource FontRegular}" 
+        FontSize="14">
 
     <Window.DataContext>
         <vm:SettingsViewModel/>

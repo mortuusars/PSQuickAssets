@@ -48,12 +48,18 @@ namespace PSQuickAssets.WPF
 
         public void ShowSettingsWindow()
         {
-            var settingsView = App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+            var settingsWindow = App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
 
-            if (settingsView is null)
-                new SettingsWindow().Show();
+            if (settingsWindow is null)
+            {
+                settingsWindow = new SettingsWindow();
+                settingsWindow.Owner = MainView;
+                settingsWindow.Show();
+                //settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X - 200;
+                //settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 300;
+            }
             else
-                settingsView.Activate();
+                settingsWindow.Close();
         }
 
         public string ShowSelectDirectoryDialog()
