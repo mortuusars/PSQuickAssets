@@ -1,30 +1,25 @@
 ﻿using PSQuickAssets.Views.State;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using PSQuickAssets.WPF.Converters;
 
 namespace PSQuickAssets.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class MainWindow : Window
     {
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
 
         public static readonly DependencyProperty IsShownProperty =
-            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainView), new PropertyMetadata(false));
+            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 
         public bool IsShown
         {
@@ -32,7 +27,7 @@ namespace PSQuickAssets.Views
             set { SetValue(IsShownProperty, value); }
         }
 
-        public MainView()
+        public MainWindow()
         {
             InitializeComponent();
             IsVisibleChanged += OnVisibilityChanged;

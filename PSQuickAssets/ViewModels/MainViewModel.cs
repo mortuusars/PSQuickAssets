@@ -43,10 +43,10 @@ namespace PSQuickAssets.ViewModels
             _viewManager = viewManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsView());
+            SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsWindow());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
-            HideCommand = new RelayCommand(_ => _viewManager.HideMainView());
+            HideCommand = new RelayCommand(_ => _viewManager.HideMainWindow());
 
 #if DEBUG
             string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
@@ -58,7 +58,7 @@ namespace PSQuickAssets.ViewModels
 
         private async void PlaceImage(string filePath)
         {
-            _viewManager.ToggleMainView();
+            _viewManager.ToggleMainWindow();
 
             IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
 
@@ -69,7 +69,7 @@ namespace PSQuickAssets.ViewModels
                         
             if (psResult.Status != PSStatus.Success)
             {
-                _viewManager.ToggleMainView();
+                _viewManager.ToggleMainWindow();
                 //TODO: localize / decouple errors
                 ShowError(psResult.ResultMessage);
             }

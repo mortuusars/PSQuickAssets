@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
 using PSQuickAssets.Services;
+using PSQuickAssets.ViewModels;
+using PSQuickAssets.Views;
 using PSQuickAssets.WPF;
 
 namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static Version Version { get; private set; } = new Version("1.1.1");
+        public static Version Version { get; } = new Version("1.2.0");
 
         public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
         public static ViewManager ViewManager { get; private set; } = new ViewManager();
@@ -21,10 +24,10 @@ namespace PSQuickAssets
         {
             ShutdownIfAlreadyRunning();
 
-            ViewManager.CreateAndShowMainView();
+            ViewManager.CreateAndShowMainWindow();
             RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
 
-            CheckUpdates();
+            new Update.Update().CheckUpdatesAsync();
         }
 
         public void RegisterGlobalHotkey(string hotkey)
@@ -36,21 +39,7 @@ namespace PSQuickAssets
                 MessageBox.Show(errMessage);
         }
 
-        private void OnGlobalHotkey() => ViewManager.ToggleMainView();
-
-        private async void CheckUpdates()
-        {
-            if (!ConfigManager.Config.CheckUpdates)
-                return;
-
-            var update = await new Update.UpdateChecker().CheckAsync();
-            if (update.updateAvailable)
-            {
-                string message = "New version available.\nVisit https://github.com/mortuusars/PSQuickAssets/releases/latest to download.\n\n" +
-                    $"Version: {update.versionInfo.Version}\nChangelog:\n{update.versionInfo.Description}";
-                MessageBox.Show(ViewManager.MainView, message, "PSQuickAssets Update", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
+        private void OnGlobalHotkey() => ViewManager.ToggleMainWindow();
 
         private void ShutdownIfAlreadyRunning()
         {
@@ -78,7 +67,7 @@ namespace PSQuickAssets
             ConfigManager.Save();
 
             GlobalHotkey.Dispose();
-            ViewManager.CloseMainView();
+            ViewManager.CloseMainWindow();
             TaskBarIcon.Dispose();
 
             base.OnExit(e);

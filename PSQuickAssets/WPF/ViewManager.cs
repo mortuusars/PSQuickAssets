@@ -7,53 +7,53 @@ namespace PSQuickAssets.WPF
 {
     public class ViewManager
     {
-        public MainView MainView { get; private set; }
+        public MainWindow MainView { get; private set; }
         private MainViewModel _mainViewModel;
 
-        public void ShowSettingsView()
-        {
-            var settingsView = App.Current.Windows.OfType<SettingsView>().FirstOrDefault();
-
-            if (settingsView is null)
-                new SettingsView().Show();
-            else
-                settingsView.Activate();
-        }
-
-        public void CreateAndShowMainView()
+        public void CreateAndShowMainWindow()
         {
             _mainViewModel = new MainViewModel(new ImageFileLoader(), this);
 
-            MainView ??= new MainView() { DataContext = _mainViewModel };
+            MainView ??= new MainWindow() { DataContext = _mainViewModel };
             MainView.RestoreState();
             MainView.Show();
 
             MainView.FadeIn();
         }
 
-        public void ToggleMainView()
+        public void ToggleMainWindow()
         {
             if (MainView.IsShown)
-                HideMainView();
+                HideMainWindow();
             else
-                ShowMainView();
+                ShowMainWindow();
         }
 
-        public void ShowMainView()
+        public void ShowMainWindow()
         {
             MainView.FadeIn();
             MainView.Activate();
         }
 
-        public void HideMainView()
+        public void HideMainWindow()
         {
             MainView.FadeOut();
         }
 
-        public void CloseMainView()
+        public void CloseMainWindow()
         {
             MainView?.SaveState();
             MainView?.Close();
+        }
+
+        public void ShowSettingsWindow()
+        {
+            var settingsView = App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+
+            if (settingsView is null)
+                new SettingsWindow().Show();
+            else
+                settingsView.Activate();
         }
 
         public string ShowSelectDirectoryDialog()
