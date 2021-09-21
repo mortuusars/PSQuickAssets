@@ -1,8 +1,8 @@
-### 1.2 - 2021-09-20
+### 1.2.0 - 2021-09-20
 
 Added:
 - Asset opens as a new document if none are open
-- Close turns red when CTRL is pressed
+- Close button turns red when CTRL is pressed
 - Window Show/Hide fading animations
 - Beautiful new version notification
 
