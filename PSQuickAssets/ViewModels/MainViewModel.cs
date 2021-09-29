@@ -42,7 +42,7 @@ namespace PSQuickAssets.ViewModels
 
         public MainViewModel(IImageFileLoader imagesLoader, ViewManager viewManager)
         {
-            AssetsViewModel = new AssetsViewModel(new AssetLoader(), viewManager);
+            AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), viewManager);
 
             _imagesLoader = imagesLoader;
             _viewManager = viewManager;

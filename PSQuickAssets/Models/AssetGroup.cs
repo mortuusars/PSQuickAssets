@@ -1,4 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -6,8 +8,9 @@ namespace PSQuickAssets.Models
 {
     public class AssetGroup : ObservableObject
     {
-        public string Name { get; private set; }
+        public event Action GroupStateChanged;
 
+        public string Name { get; private set; }
         public ObservableCollection<Asset> Assets { get; }
 
         public AssetGroup(string name)
@@ -22,7 +25,19 @@ namespace PSQuickAssets.Models
                 return false;
 
             Assets.Add(asset);
+            GroupStateChanged?.Invoke();
             return true;
+        }
+
+        public void AddMultipleAssets(IEnumerable<Asset> assets, bool allowDuplicates = false)
+        {
+            foreach (var asset in assets)
+            {
+                if (asset is not null && (allowDuplicates || !IsInGroup(asset)))
+                    Assets.Add(asset);
+            }
+
+            GroupStateChanged?.Invoke();
         }
 
         public bool IsInGroup(Asset asset)
@@ -36,6 +51,7 @@ namespace PSQuickAssets.Models
             {
                 Name = name;
                 OnPropertyChanged(nameof(Name));
+                GroupStateChanged?.Invoke();
                 return true;
             }
 

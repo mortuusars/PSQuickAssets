@@ -20,13 +20,35 @@ namespace PSQuickAssets.Assets
             string extension = Path.GetExtension(filePath);
 
             return IsFormatSupported(Path.GetExtension(filePath))
-                ? CreateAsset(filePath, extension)
+                ? CreateAsset(filePath)
                 : throw new NotSupportedException($"Loading {extension} files is not supported.");
         }
 
-        public IEnumerable<Asset> Load(string[] filePaths)
+        public bool TryLoad(string filePath, out Asset asset)
         {
-            throw new NotImplementedException();
+            try
+            {
+                asset = CreateAsset(filePath);
+                return true;
+            }
+            catch (Exception)
+            {
+                asset = null;
+                return false;
+            }
+        }
+
+        public IEnumerable<Asset> Load(IEnumerable<string> filePaths)
+        {
+            List<Asset> assets = new();
+
+            foreach (string filePath in filePaths)
+            {
+                if (TryLoad(filePath, out  Asset asset))
+                    assets.Add(asset);
+            }
+
+            return assets;
         }
 
         public bool IsFormatSupported(string fileExtension)
@@ -34,7 +56,7 @@ namespace PSQuickAssets.Assets
             return fileExtension is ".jpg" or ".jpeg" or ".png" or ".bmp" or ".tiff" or ".tif" or ".psd" or ".psb";
         }
 
-        private Asset CreateAsset(string filePath, string extension)
+        private Asset CreateAsset(string filePath)
         {
             return new Asset
             {
