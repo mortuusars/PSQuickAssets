@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using PSQuickAssets.Services;
+using PSQuickAssets.WPF;
+using System;
 using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using Hardcodet.Wpf.TaskbarNotification;
-using PSQuickAssets.Services;
-using PSQuickAssets.ViewModels;
-using PSQuickAssets.Views;
-using PSQuickAssets.WPF;
 
 namespace PSQuickAssets
 {
@@ -17,7 +14,7 @@ namespace PSQuickAssets
         public static Version Version { get; } = new Version("1.2.0");
 
         public static GlobalHotkey GlobalHotkey { get; set; } = new GlobalHotkey();
-        public static ViewManager ViewManager { get; private set; } = new ViewManager();
+        public static ViewManager ViewManager { get; private set; } = new ViewManager(new OpenDialogService());
         public static TaskbarIcon TaskBarIcon { get; private set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)

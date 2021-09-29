@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSQuickAssets.Views"
+        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
         xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="PSQuickAssets" 
@@ -25,7 +26,6 @@
 
     <Window.Resources>
         <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}"/>
-
 
         <Duration x:Key="FadeInDuration">0:0:0.08</Duration>
         <Duration x:Key="FadeOutDuration">0:0:0.15</Duration>
@@ -108,13 +108,11 @@
                                       Margin="5 0 0 0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Center"
-                                      Width="17">
+                                      Width="17"
+                                      ToolTip="Settings">
                     <controls:ImageButton.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}"/>
                     </controls:ImageButton.InputBindings>
-                    <controls:ImageButton.ToolTip>
-                        <TextBlock Text="Settings" Style="{StaticResource TextLight}"/>
-                    </controls:ImageButton.ToolTip>
                 </controls:ImageButton>
                 
                 
@@ -124,44 +122,47 @@
                             HorizontalAlignment="Right">
                     
                     <!-- ADD FOLDER BTN -->
-                    <controls:ImageButton Source="/Resources/Images/folder_24.png"
+                    <!--<controls:ImageButton Source="/Resources/Images/folder_24.png"
                                           Margin="5 0" 
                                           Width="20">
                         <controls:ImageButton.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding AddFolderCommand}"/>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddAssetsCommand}"/>
                         </controls:ImageButton.InputBindings>
                         <controls:ImageButton.ToolTip>
                             <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
                         </controls:ImageButton.ToolTip>
-                    </controls:ImageButton>
+                    </controls:ImageButton>-->
                     
                     <!-- CLOSE BTN -->
                     <controls:ImageButton x:Name="CloseButton"
                                           Source="/Resources/Images/close_24.png"
                                           AlternativeSource="/Resources/Images/close_red_24.png"
                                           Width="18"
-                                          Margin="1">
+                                          Margin="1"
+                                          ToolTip="Hide / Ctrl: Close">
                         <controls:ImageButton.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding HideCommand}"/>
                             <MouseBinding Gesture="Control+LeftClick" Command="{Binding ShutdownCommand}"/>
                         </controls:ImageButton.InputBindings>
-
-                        <controls:ImageButton.ToolTip>
-                            <TextBlock Text="Hide / Ctrl: Close" Style="{StaticResource TextLight}"/>
-                        </controls:ImageButton.ToolTip>
                     </controls:ImageButton>
                 </StackPanel>
             </Grid>
         </Border>
         
         <!-- ITEMS CONTAINER -->
-        <ItemsControl Grid.Row="1" x:Name="ItemsContainer" ItemsSource="{Binding Folders}" 
-                      Margin="8 0 8 0" Background="{x:Null}" BorderThickness="0" Focusable="False"
-                      VerticalAlignment="Top">
+        <ItemsControl x:Name="ItemsContainer" 
+                      Grid.Row="1" 
+                      d:DataContext="{d:DesignInstance Type=vm:TestAssetsViewModel, IsDesignTimeCreatable=True}"
+                      d:ItemsSource="{Binding AssetGroups}"
+                      ItemsSource="{Binding AssetsViewModel.AssetGroups}" 
+                      Background="{x:Null}" 
+                      BorderThickness="0" 
+                      VerticalAlignment="Top"
+                      Margin="8 0 8 8" 
+                      Focusable="False">
             <ItemsControl.Template>
                 <ControlTemplate>
-                    <ScrollViewer x:Name="ItemsScrollViewer"
-                                  HorizontalScrollBarVisibility="Disabled"
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
                         <ItemsPresenter/>
                     </ScrollViewer>
@@ -170,15 +171,17 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <!-- ITEMS LIST BOX -->
-                    <views:FolderView/>
+                    <views:AssetGroupView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
 
         <!-- NO ITEMS -->
-        <Grid  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+        <!--<Grid  Grid.Row="1" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Background="Transparent">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftClick" Command="{Binding AddFolderCommand}"/>
             </Grid.InputBindings>
@@ -206,13 +209,75 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-        </Grid>        
+        </Grid>-->
+
+
+        <!--ADD ASSETS-->
+        <StackPanel Grid.Row="1"
+                    Margin="24"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right">
+
+            <StackPanel x:Name="AddAssetsButtons"
+                        Margin="0 0 0 10"
+                        HorizontalAlignment="Right"
+                        Visibility="Collapsed">
+                <TextBlock Text="Add Folder"
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource TextLight}">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddFolderCommand}"/>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+                <TextBlock Text="Add Folder (including subfolders)"
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource TextLight}">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddFolderWithSubfoldersCommand}"/>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+                <TextBlock Text="Add Files"
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource TextLight}">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddFilesCommand}"/>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+            </StackPanel>       
+
+            <!-- + BUTTON -->
+            <Border Background="Transparent"
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Visibility="Visible"
+                    MouseDown="AddAssets_MouseDown">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" Opacity="0.2" Direction="-90"/>
+                </Border.Effect>
+                <Grid>
+                    <Ellipse Width="40" Height="40"
+                             Fill="{StaticResource MainBorder}"
+                             StrokeThickness="2">
+                    </Ellipse>
+
+                    <TextBlock Text="+"
+                               FontSize="28"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0 -4 0 0"
+                               Foreground="#666"
+                               FontFamily="{StaticResource FontRegular}"/>
+                </Grid>
+            </Border>
+            
+        </StackPanel>
 
 
         <!-- ERRORS -->
         <Border Grid.Row="1" x:Name="ErrorsPanel" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Background="#222" CornerRadius="5" BorderThickness="1.5" BorderBrush="#e03d31"
-                Margin="10" Padding="6">
+                Margin="10" Padding="6"
+                d:Visibility="Collapsed">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -229,11 +294,14 @@
         </Border>
 
         <!-- CORNER RESIZE -->
-        <Image Grid.Row="1" x:Name="CornerResize" Height="16" Width="16" Margin="4"
-               HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-               MouseDown="CornerResize_MouseDown"
-               MouseEnter="CornerResize_MouseEnter" MouseLeave="CornerResize_MouseLeave"
-               Source="../Resources/Images/corner_resize_24.png"
-               Style="{StaticResource ImageButtons}"/>
+        <controls:ImageButton Grid.Row="1"
+                              x:Name="CornerResize" 
+                              Width="16" 
+                              Margin="4"
+                              VerticalAlignment="Bottom" 
+                              HorizontalAlignment="Right"                  
+                              MouseDown="CornerResize_MouseDown"
+                              Source="../Resources/Images/corner_resize_24.png"
+                              Cursor="SizeNWSE"/>
     </Grid>
 </Window>

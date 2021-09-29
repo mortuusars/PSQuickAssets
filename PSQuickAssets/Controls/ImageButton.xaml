@@ -14,7 +14,7 @@
         <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
     </UserControl.Resources>
     
-    <Image>
+    <Image MouseDown="Image_MouseDown">
         <Image.Style>
             <Style TargetType="Image">
                 <Setter Property="Source" Value="{Binding Source, ElementName=root}"/>

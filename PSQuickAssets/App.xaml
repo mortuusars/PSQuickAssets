@@ -6,7 +6,9 @@
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary Source="Resources/Fonts.xaml"/>
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml"/>
@@ -22,11 +24,8 @@
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
             <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter"/>
 
-            <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>
-
-            <SolidColorBrush Color="#292929" x:Key="MainBackground"/>
-            <SolidColorBrush Color="#343434" x:Key="MainBorder"/>
-            <SolidColorBrush Color="#9f9f9f" x:Key="TextColorBrush"/>
+            <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>     
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

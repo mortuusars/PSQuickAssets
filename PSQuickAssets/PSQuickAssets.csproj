@@ -34,6 +34,7 @@
 	<None Remove="Resources\Images\psquickassets-size.ico" />
 	<None Remove="Resources\Images\refresh_32.png" />
 	<None Remove="Resources\Images\settings.png" />
+	<None Remove="Resources\Images\test.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +45,9 @@
 	<PackageReference Include="gong-wpf-dragdrop" Version="2.4.0" />
 	<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
 	<PackageReference Include="MdXaml" Version="1.11.0" />
+	<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
+	<PackageReference Include="NetVips" Version="2.0.1" />
+	<PackageReference Include="NetVips.Native.win-x64" Version="8.11.3.1" />
 	<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
 	  <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
 		  <PrivateAssets>all</PrivateAssets>
@@ -77,6 +81,7 @@
 	<Resource Include="Resources\Images\psquickassets-size.ico" />
 	<Resource Include="Resources\Images\refresh_32.png" />
 	<Resource Include="Resources\Images\settings.png" />
+	<Resource Include="Resources\Images\test.jpg" />
   </ItemGroup>
 
   <ItemGroup>

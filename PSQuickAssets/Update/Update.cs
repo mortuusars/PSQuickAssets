@@ -12,6 +12,8 @@ namespace PSQuickAssets.Update
     {
         public async void CheckUpdatesAsync()
         {
+            //ShowUpdateWindow(App.Version, new Version("1.4.0"), File.ReadAllText("../../../../changelog.md"));
+
             if (!ConfigManager.Config.CheckUpdates)
                 return;
 

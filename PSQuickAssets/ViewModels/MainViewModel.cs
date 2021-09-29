@@ -13,12 +13,15 @@ using PSQuickAssets.WPF;
 using GongSolutions.Wpf.DragDrop;
 using System.Windows;
 using PSQuickAssets.PSInterop;
+using PSQuickAssets.Assets;
 
 namespace PSQuickAssets.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class MainViewModel : IDropTarget
     {
+        public AssetsViewModel AssetsViewModel { get; }
+
         public ObservableCollection<List<ImageFile>> Folders { get; set; } = new();
         public List<string> CurrentDirectories { get; set; } = new();
 
@@ -39,6 +42,8 @@ namespace PSQuickAssets.ViewModels
 
         public MainViewModel(IImageFileLoader imagesLoader, ViewManager viewManager)
         {
+            AssetsViewModel = new AssetsViewModel(new AssetLoader(), viewManager);
+
             _imagesLoader = imagesLoader;
             _viewManager = viewManager;
 
@@ -49,8 +54,8 @@ namespace PSQuickAssets.ViewModels
             HideCommand = new RelayCommand(_ => _viewManager.HideMainWindow());
 
 #if DEBUG
-            string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
-            LoadDroppedDirectories(new string[] { testFolderPath });
+            //string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
+            //LoadDroppedDirectories(new string[] { testFolderPath });
 #else
             LoadSavedDirs();
 #endif
@@ -88,20 +93,20 @@ namespace PSQuickAssets.ViewModels
             return await _imagesLoader.LoadAsync(path, (int)ThumbnailSize, ConstrainTo.Height);
         }
 
-        private async void AddNewDirectoryAsync()
+        private void AddNewDirectoryAsync()
         {
-            string newDirectoryPath = _viewManager.ShowSelectDirectoryDialog();
-            if (string.IsNullOrWhiteSpace(newDirectoryPath))
-                return;
+            ////string newDirectoryPath = _viewManager.ShowSelectDirectoryDialog();
+            //if (string.IsNullOrWhiteSpace(newDirectoryPath))
+            //    return;
 
-            if (CurrentDirectories.Contains(newDirectoryPath))
-            {
-                ShowError($"\"{new DirectoryInfo(newDirectoryPath).Name}\" is already added");
-                return;
-            }
+            //if (CurrentDirectories.Contains(newDirectoryPath))
+            //{
+            //    ShowError($"\"{new DirectoryInfo(newDirectoryPath).Name}\" is already added");
+            //    return;
+            //}
 
-            if (await LoadDirectory(newDirectoryPath))
-                Sound.Click();
+            //if (await LoadDirectory(newDirectoryPath))
+            //    Sound.Click();
         }
 
         private async Task<bool> LoadDirectory(string directory)

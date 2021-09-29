@@ -3,12 +3,19 @@ using Ookii.Dialogs.Wpf;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Views;
 
-namespace PSQuickAssets.WPF
+namespace PSQuickAssets.Services
 {
     public class ViewManager
     {
         public MainWindow MainView { get; private set; }
         private MainViewModel _mainViewModel;
+
+        private readonly IOpenDialogService _openDialogService;
+
+        public ViewManager(IOpenDialogService openDialogService)
+        {
+            _openDialogService = openDialogService;
+        }
 
         public void CreateAndShowMainWindow()
         {
@@ -62,14 +69,14 @@ namespace PSQuickAssets.WPF
                 settingsWindow.Close();
         }
 
-        public string ShowSelectDirectoryDialog()
+        public string[] ShowSelectFilesDialog(string title, string filter, bool selectMultiple)
         {
-            var dialog = new VistaFolderBrowserDialog();
+            return _openDialogService.ShowSelectFilesDialog(title, filter, selectMultiple);
+        }
 
-            if (dialog.ShowDialog() is true)
-                return dialog.SelectedPath;
-            else
-                return string.Empty;
+        public string ShowSelectFolderDialog()
+        {
+            return _openDialogService.ShowSelectFolderDialog();
         }
     }
 }

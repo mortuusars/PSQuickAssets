@@ -113,10 +113,6 @@ namespace PSQuickAssets.Views
             SendMessage(hwndSource.Handle, 0x112, (IntPtr)ResizeDirection.BottomRight, IntPtr.Zero);
         }
 
-        private void CornerResize_MouseEnter(object sender, MouseEventArgs e) => Mouse.OverrideCursor = Cursors.SizeNWSE;
-
-        private void CornerResize_MouseLeave(object sender, MouseEventArgs e) => Mouse.OverrideCursor = Cursors.Arrow;
-
         private void BG_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -128,16 +124,7 @@ namespace PSQuickAssets.Views
 
         #endregion
 
-        private void window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
-                CloseButton.ActivateAlternativeStyle = true;
-        }
-
-        private void window_KeyUp(object sender, KeyEventArgs e)
-        {
-            CloseButton.ActivateAlternativeStyle = false;
-        }
+        #region ANIMATIONS
 
         public void FadeIn()
         {
@@ -158,6 +145,27 @@ namespace PSQuickAssets.Views
         {
             if (!IsShown)
                 this.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        private void window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+                CloseButton.ActivateAlternativeStyle = true;
+        }
+
+        private void window_KeyUp(object sender, KeyEventArgs e)
+        {
+            CloseButton.ActivateAlternativeStyle = false;
+        }
+
+        private void AddAssets_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (AddAssetsButtons.Visibility == Visibility.Visible)
+                AddAssetsButtons.Visibility = Visibility.Collapsed;
+            else 
+                AddAssetsButtons.Visibility = Visibility.Visible;
         }
     }
 }

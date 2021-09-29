@@ -3,11 +3,11 @@
 namespace PSQuickAssets.Views
 {
     /// <summary>
-    /// Interaction logic for FolderListBox.xaml
+    /// Interaction logic for AssetView.xaml
     /// </summary>
-    public partial class FolderView : UserControl
+    public partial class AssetView : UserControl
     {
-        public FolderView()
+        public AssetView()
         {
             InitializeComponent();
         }
