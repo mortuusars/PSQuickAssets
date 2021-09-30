@@ -6,11 +6,7 @@
              xmlns:local="clr-namespace:PSQuickAssets.Views"
              mc:Ignorable="d" 
              d:DesignWidth="160"
-             d:DesignHeight="120" >
-
-    <UserControl.Resources>
-        <DropShadowEffect x:Key="AssetShadow" BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
-    </UserControl.Resources>
+             d:DesignHeight="120">
 
     <Grid Background="Transparent"
           VerticalAlignment="Top"

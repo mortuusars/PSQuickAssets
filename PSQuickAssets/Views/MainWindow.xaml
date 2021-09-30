@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSQuickAssets.Views"
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
-        xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:dd="urn:gong-wpf-dragdrop" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:sys="clr-namespace:System;assembly=System.Runtime" xmlns:loadingspinnercontrol="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
         mc:Ignorable="d"
         Title="PSQuickAssets" 
         x:Name="window"
@@ -123,15 +123,15 @@
                     
                     <!-- ADD FOLDER BTN -->
                     <!--<controls:ImageButton Source="/Resources/Images/folder_24.png"
-                                          Margin="5 0" 
-                                          Width="20">
-                        <controls:ImageButton.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddAssetsCommand}"/>
-                        </controls:ImageButton.InputBindings>
-                        <controls:ImageButton.ToolTip>
-                            <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
-                        </controls:ImageButton.ToolTip>
-                    </controls:ImageButton>-->
+                         Margin="5 0" 
+                         Width="20">
+                         <controls:ImageButton.InputBindings>
+                         <MouseBinding Gesture="LeftClick" Command="{Binding AssetsViewModel.AddAssetsCommand}"/>
+                         </controls:ImageButton.InputBindings>
+                         <controls:ImageButton.ToolTip>
+                         <TextBlock Text="Add Folder" Style="{StaticResource TextLight}"/>
+                         </controls:ImageButton.ToolTip>
+                         </controls:ImageButton>-->
                     
                     <!-- CLOSE BTN -->
                     <controls:ImageButton x:Name="CloseButton"
@@ -179,37 +179,37 @@
 
         <!-- NO ITEMS -->
         <!--<Grid  Grid.Row="1" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center" 
-               Background="Transparent">
-            <Grid.InputBindings>
-                <MouseBinding MouseAction="LeftClick" Command="{Binding AddFolderCommand}"/>
-            </Grid.InputBindings>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Opacity" Value=".4"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value=".8"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-            <TextBlock Text="CLICK TO ADD ASSETS" Foreground="{StaticResource TextColorBrush}"
-                       FontSize="16">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Folders.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Grid>-->
+             HorizontalAlignment="Center" 
+             VerticalAlignment="Center" 
+             Background="Transparent">
+             <Grid.InputBindings>
+             <MouseBinding MouseAction="LeftClick" Command="{Binding AddFolderCommand}"/>
+             </Grid.InputBindings>
+             <Grid.Style>
+             <Style TargetType="Grid">
+             <Setter Property="Opacity" Value=".4"/>
+             <Style.Triggers>
+             <Trigger Property="IsMouseOver" Value="True">
+             <Setter Property="Opacity" Value=".8"/>
+             </Trigger>
+             </Style.Triggers>
+             </Style>
+             </Grid.Style>
+             <TextBlock Text="CLICK TO ADD ASSETS" Foreground="{StaticResource TextColorBrush}"
+             FontSize="16">
+             <TextBlock.Style>
+             <Style TargetType="TextBlock">
+             <Setter Property="Visibility" Value="Collapsed"/>
+             <Style.Triggers>
+             <DataTrigger Binding="{Binding Folders.Count}" Value="0">
+             <Setter Property="Visibility" Value="Visible"/>
+             </DataTrigger>
+             
+             </Style.Triggers>
+             </Style>
+             </TextBlock.Style>
+             </TextBlock>
+             </Grid>-->
 
 
         <!--ADD ASSETS-->
@@ -271,6 +271,38 @@
             </Border>
             
         </StackPanel>
+
+        <Border x:Name="LoadingInfo"
+                Grid.Row="1"
+                Background="{StaticResource MainBorder}"
+                BorderBrush="{StaticResource BorderLighter}"
+                BorderThickness="2"
+                CornerRadius="6"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Margin="15"
+                Padding="8 6"
+                Effect="{StaticResource AssetShadow}"
+                Visibility="{Binding AssetsViewModel.IsLoading, Converter={StaticResource BoolToVisibility}}">
+
+            <StackPanel Orientation="Horizontal">
+                <loadingspinnercontrol:LoadingSpinner IsLoading="True"
+                                                      Thickness="1.5"
+                                                      Diameter="20"
+                                                      LineRatio="0.65"
+                                                      RotationSpeed="50"
+                                                      Cap="Flat"
+                                                      Foreground="{StaticResource TextColorBrush}"
+                                                      VerticalAlignment="Center"/>
+
+                <TextBlock Text="Loading" 
+                           Margin="8 -1 0 0"
+                           Style="{StaticResource TextLight}"
+                           FontFamily="{StaticResource FontRegular}"
+                           FontSize="18"/>
+            </StackPanel>
+
+        </Border>
 
 
         <!-- ERRORS -->

@@ -20,7 +20,17 @@ namespace PSQuickAssets.Assets
 
         internal async Task<StoredGroup[]> LoadAsync()
         {
-            string json = await File.ReadAllTextAsync(_saveFilePath);
+            string json;
+
+            try
+            {
+                json = await File.ReadAllTextAsync(_saveFilePath);
+            }
+            catch (System.Exception)
+            {
+                json = null;
+            }
+
             return _atlasLoader.Load(json);
         }
 

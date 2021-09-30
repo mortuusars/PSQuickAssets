@@ -57,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoadingSpinnerControl\LoadingSpinnerControl.csproj" />
     <ProjectReference Include="..\PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System;
 
 namespace PSQuickAssets.Assets
 {
@@ -6,7 +7,14 @@ namespace PSQuickAssets.Assets
     {
         internal StoredGroup[] Load(string contents)
         {
-            return JsonSerializer.Deserialize<StoredGroup[]>(contents);
+            try
+            {
+                return JsonSerializer.Deserialize<StoredGroup[]>(contents);
+            }
+            catch (Exception)
+            {
+                return Array.Empty<StoredGroup>();
+            }
         }
     }
 }

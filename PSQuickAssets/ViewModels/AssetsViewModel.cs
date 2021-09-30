@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.Assets;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using PSQuickAssets.Assets;
 using PSQuickAssets.Models;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
@@ -12,9 +13,11 @@ using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
-    public class AssetsViewModel
+    public class AssetsViewModel : ObservableObject
     {
         public ObservableCollection<AssetGroup> AssetGroups { get; }
+
+        public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); }}
 
         public ICommand AddFolderCommand { get; }
         public ICommand AddFolderWithSubfoldersCommand { get; }
@@ -24,6 +27,8 @@ namespace PSQuickAssets.ViewModels
         private readonly AssetLoader _assetLoader;
         private readonly AssetAtlas _assetAtlas;
         private readonly ViewManager _viewManager;
+
+        private bool isLoading;
 
         public AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, ViewManager viewManager)
         {
@@ -45,16 +50,20 @@ namespace PSQuickAssets.ViewModels
 
         private async void LoadStoredAtlas()
         {
+            IsLoading = true;
+
             StoredGroup[] groups = await _assetAtlas.LoadAsync();
 
             foreach (StoredGroup group in groups)
             {
-                if (group.AssetsPaths is not null)
+                if (group.AssetsPaths is not null && group.AssetsPaths.Count > 0)
                 {
                     var newGroup = AddGroup(group.Name);
                     await AddAssetsToGroup(newGroup, group.AssetsPaths);
                 }
             }
+
+            IsLoading = false;
         }
 
         public async void SaveAssets()
@@ -67,7 +76,8 @@ namespace PSQuickAssets.ViewModels
         public AssetGroup AddGroup(string groupName)
         {
             if (IsGroupExists(groupName))
-                return null;
+                groupName = groupName + " New";
+                //throw new Exception($"Group with name {groupName} already exists");
 
             AssetGroup assetGroup = new(groupName);
             assetGroup.GroupStateChanged += AssetGroup_OnGroupStateChanged;
@@ -86,7 +96,10 @@ namespace PSQuickAssets.ViewModels
         private async void SelectAndAddFolder(bool includeSubfolders = false)
         {
             string folderPath = _viewManager.ShowSelectFolderDialog();
+
+            IsLoading = true;
             await AddGroupFromFolder(folderPath, includeSubfolders);
+            IsLoading = false;
         }
 
         private async void SelectAndAddFiles()
@@ -94,7 +107,10 @@ namespace PSQuickAssets.ViewModels
             string[] files = _viewManager.ShowSelectFilesDialog("Select Assets",
                     "Image Files(*.BMP; *.JPG; *.JPEG; *.GIF; *.TIFF; *.TIF; *.PSD; *.PSB)| " +
                     "*.BMP; *.JPG; *.JPEG; *.GIF; *.TIFF; *.TIF; *.PSD; *.PSB | All files(*.*) | *.*", selectMultiple: true);
+
+            IsLoading = true;
             await AddGroupFromFiles(files);
+            IsLoading = false;
         }
 
         private async Task AddGroupFromFolder(string folderPath, bool includeSubfolders)
@@ -107,9 +123,8 @@ namespace PSQuickAssets.ViewModels
             if (files.Length == 0)
                 return;
 
-            AssetGroup group = new(new DirectoryInfo(folderPath).Name);
+            AssetGroup group = AddGroup(new DirectoryInfo(folderPath).Name);
             await AddAssetsToGroup(group, files);
-            AssetGroups.Add(group);
 
             if (includeSubfolders)
             {
