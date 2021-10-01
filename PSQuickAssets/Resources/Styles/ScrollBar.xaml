@@ -21,7 +21,7 @@
     </Style>
 
     <Style TargetType="{x:Type ScrollBar}">
-        <Setter Property="Margin" Value="0,5,-4,30"/>
+        <Setter Property="Margin" Value="0,5,-4,20"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Foreground" Value="#444"/>
         <Setter Property="Background" Value="Transparent"/>

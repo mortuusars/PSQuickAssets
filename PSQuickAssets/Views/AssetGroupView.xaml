@@ -46,9 +46,11 @@
                  ItemsSource="{Binding Assets}"
                  Background="{x:Null}" 
                  BorderThickness="0" 
-                 Focusable="False"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Standard">
+                 Focusable="False">
+
+            <ListBox.CacheMode>
+                <BitmapCache/>
+            </ListBox.CacheMode>
 
             <ListBox.Template>
                 <ControlTemplate>

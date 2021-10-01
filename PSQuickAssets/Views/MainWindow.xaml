@@ -160,6 +160,7 @@
                       VerticalAlignment="Top"
                       Margin="8 0 8 8" 
                       Focusable="False">
+            
             <ItemsControl.Template>
                 <ControlTemplate>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
@@ -174,6 +175,7 @@
                     <views:AssetGroupView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
+            
         </ItemsControl>
 
 
