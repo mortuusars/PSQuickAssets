@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -162,10 +163,63 @@ namespace PSQuickAssets.Views
 
         private void AddAssets_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (AddAssetsButtons.Visibility == Visibility.Visible)
+            AddAssetsButtons.Visibility = AddAssetsButtons.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void AddAssetsButtons_Click(object sender, MouseButtonEventArgs e)
+        {
+            AddAssetsButtons.Visibility = Visibility.Collapsed;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AddAssetsButtons.Visibility = Visibility.Collapsed;
+        }
+
+        private void window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var clickedRegion = GetParentOfTypeByName<StackPanel>(e.OriginalSource as FrameworkElement, nameof(AddAssets));
+
+            if (clickedRegion != AddAssets)
                 AddAssetsButtons.Visibility = Visibility.Collapsed;
-            else 
-                AddAssetsButtons.Visibility = Visibility.Visible;
+        }
+
+        private T GetParentOfType<T>(FrameworkElement element) where T : FrameworkElement
+        {
+            DependencyObject parent = element;
+
+            do
+            {
+                if (parent == null)
+                    return null;
+
+                if (parent.GetType() == typeof(T))
+                    return (T)parent;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            while (parent != null);
+
+            return null;
+        }
+
+        private T GetParentOfTypeByName<T>(FrameworkElement element, string name) where T : FrameworkElement
+        {
+            DependencyObject parent = element;
+
+            do
+            {
+                if (parent == null)
+                    return null;
+
+                if (parent.GetType() == typeof(T) && parent is FrameworkElement visual && visual.Name == name)
+                    return (T)parent;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            while (parent != null);
+
+            return null;
         }
     }
 }
