@@ -17,7 +17,7 @@ namespace PSQuickAssets.ViewModels
     {
         public ObservableCollection<AssetGroup> AssetGroups { get; }
 
-        public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); }}
+        public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
         public ICommand AddFolderCommand { get; }
         public ICommand AddFolderWithSubfoldersCommand { get; }
@@ -77,7 +77,7 @@ namespace PSQuickAssets.ViewModels
         {
             if (IsGroupExists(groupName))
                 groupName = groupName + " New";
-                //throw new Exception($"Group with name {groupName} already exists");
+            //throw new Exception($"Group with name {groupName} already exists");
 
             AssetGroup assetGroup = new(groupName);
             assetGroup.GroupStateChanged += AssetGroup_OnGroupStateChanged;
@@ -120,16 +120,15 @@ namespace PSQuickAssets.ViewModels
 
             string[] files = Directory.GetFiles(folderPath);
 
-            if (files.Length == 0)
-                return;
-
-            AssetGroup group = AddGroup(new DirectoryInfo(folderPath).Name);
-            await AddAssetsToGroup(group, files);
+            if (files.Length != 0)
+            {
+                AssetGroup group = AddGroup(new DirectoryInfo(folderPath).Name);
+                await AddAssetsToGroup(group, files);
+            }
 
             if (includeSubfolders)
             {
-                string[] folders = Directory.GetDirectories(folderPath);
-                foreach (var folder in folders)
+                foreach (var folder in Directory.GetDirectories(folderPath))
                     await AddGroupFromFolder(folder, includeSubfolders);
             }
         }
