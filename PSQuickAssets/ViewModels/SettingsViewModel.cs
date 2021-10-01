@@ -19,7 +19,7 @@ namespace PSQuickAssets.ViewModels
         {
             SaveCommand = new RelayCommand(_ => Apply());
 
-            GlobalHotkey = App.GlobalHotkey.HotkeyInfo;
+            GlobalHotkey = App.GlobalHotkeyRegistry.HotkeyInfo;
             CheckUpdates = ConfigManager.Config.CheckUpdates;
         }
 
