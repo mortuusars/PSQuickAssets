@@ -1,4 +1,5 @@
 ﻿using PSQuickAssets.Views.State;
+using PSQuickAssets.WPF;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -158,7 +159,8 @@ namespace PSQuickAssets.Views
 
         private void window_KeyUp(object sender, KeyEventArgs e)
         {
-            CloseButton.ActivateAlternativeStyle = false;
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+                CloseButton.ActivateAlternativeStyle = false;
         }
 
         private void AddAssets_MouseDown(object sender, MouseButtonEventArgs e)
@@ -166,60 +168,12 @@ namespace PSQuickAssets.Views
             AddAssetsButtons.Visibility = AddAssetsButtons.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void AddAssetsButtons_Click(object sender, MouseButtonEventArgs e)
-        {
-            AddAssetsButtons.Visibility = Visibility.Collapsed;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            AddAssetsButtons.Visibility = Visibility.Collapsed;
-        }
-
         private void window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var clickedRegion = GetParentOfTypeByName<StackPanel>(e.OriginalSource as FrameworkElement, nameof(AddAssets));
+            var clickedRegion = WpfElementUtils.GetParentOfTypeByName<StackPanel>(e.OriginalSource as FrameworkElement, nameof(AddAssets));
 
             if (clickedRegion != AddAssets)
                 AddAssetsButtons.Visibility = Visibility.Collapsed;
-        }
-
-        private T GetParentOfType<T>(FrameworkElement element) where T : FrameworkElement
-        {
-            DependencyObject parent = element;
-
-            do
-            {
-                if (parent == null)
-                    return null;
-
-                if (parent.GetType() == typeof(T))
-                    return (T)parent;
-
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            while (parent != null);
-
-            return null;
-        }
-
-        private T GetParentOfTypeByName<T>(FrameworkElement element, string name) where T : FrameworkElement
-        {
-            DependencyObject parent = element;
-
-            do
-            {
-                if (parent == null)
-                    return null;
-
-                if (parent.GetType() == typeof(T) && parent is FrameworkElement visual && visual.Name == name)
-                    return (T)parent;
-
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            while (parent != null);
-
-            return null;
         }
     }
 }

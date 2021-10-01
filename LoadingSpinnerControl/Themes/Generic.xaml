@@ -8,6 +8,14 @@
                 <ControlTemplate TargetType="{x:Type local:LoadingSpinner}">
                     
                     <ControlTemplate.Resources>
+
+                        <Storyboard x:Key="Spinning" RepeatBehavior="Forever"
+                                    SpeedRatio="1">
+                            <DoubleAnimation From="0" To="360" 
+                                             Storyboard.TargetName="Rotation"
+                                             Storyboard.TargetProperty="Angle"/>
+                        </Storyboard>
+                        
                         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
                         <local:ToStrokeDashArrayConverter x:Key="ToStrokeDashArrayConverter"/>
                         <local:SpeedDoubleToDurationConverter x:Key="SpeedDoubleToDurationConverter"/>
@@ -19,8 +27,9 @@
                              StrokeThickness="{TemplateBinding Thickness}"
                              StrokeDashCap="{TemplateBinding Cap}"
                              RenderTransformOrigin="0.5 0.5"
-                             Visibility="{TemplateBinding IsLoading, Converter={StaticResource BoolToVisibility}}">
+                             x:Name="Ell">
 
+                             <!--Visibility="{TemplateBinding IsLoading, Converter={StaticResource BoolToVisibility}}"-->
                         <Ellipse.StrokeDashArray>
                             <MultiBinding Converter="{StaticResource ToStrokeDashArrayConverter}">
                                 <Binding Path="Diameter" RelativeSource="{RelativeSource TemplatedParent}"/>
@@ -33,18 +42,6 @@
                             <RotateTransform x:Name="Rotation" Angle="0"/>
                         </Ellipse.RenderTransform>
                         
-                        <Ellipse.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation From="0" To="360"
-                                                         Duration="0:0:0.8"
-                                                         Storyboard.TargetName="Rotation"
-                                                         Storyboard.TargetProperty="Angle"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Ellipse.Triggers>
                     </Ellipse>
                 </ControlTemplate>
             </Setter.Value>

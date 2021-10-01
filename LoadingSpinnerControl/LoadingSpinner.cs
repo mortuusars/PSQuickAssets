@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -18,7 +19,30 @@ namespace LoadingSpinnerControl
     public class LoadingSpinner : Control
     {
         public static readonly DependencyProperty IsLoadingProperty =
-            DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(LoadingSpinner), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(LoadingSpinner), new PropertyMetadata(false, OnIsLoadingChanged));
+
+        private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LoadingSpinner spinner)
+            {
+                var template = spinner.Template;
+                var ellipse = template.FindName("Ell", spinner) as Ellipse;
+
+                if (ellipse is null)
+                    return;
+
+                //var ellipse = (Ellipse)spinner.GetVisualChild(0);
+                var storyboard = (Storyboard)spinner.FindResource("Spinning");
+
+                if ((bool)e.NewValue)
+                {
+                    ellipse.BeginStoryboard(storyboard, HandoffBehavior.SnapshotAndReplace, true);
+                    storyboard.SetSpeedRatio(ellipse, spinner.RotationSpeed);
+                }
+                else
+                    storyboard.Remove(ellipse);
+            }
+        }
 
         public static readonly DependencyProperty DiameterProperty =
             DependencyProperty.Register(nameof(Diameter), typeof(double), typeof(LoadingSpinner), new PropertyMetadata(50.0));
