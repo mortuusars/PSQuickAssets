@@ -5,14 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="360"
+        Title="Settings" 
+        Width="380"
+        MaxHeight="800"
+        SizeToContent="Height"
         Topmost="True"
         Background="{x:Null}" 
         WindowStyle="None"
+        ResizeMode="NoResize"
         AllowsTransparency="True" 
         WindowStartupLocation="CenterOwner"
         FontFamily="{StaticResource FontRegular}" 
-        FontSize="14">
+        FontSize="14"
+        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown">
 
     <Window.DataContext>
         <vm:SettingsViewModel/>
@@ -71,7 +76,8 @@
 
             <!-- SETTINGS -->
             <StackPanel Grid.Row="0">
-                <Grid Margin="0 4">
+                <Grid Margin="0 4"
+                      Name="HotkeyColumn">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
@@ -83,12 +89,16 @@
                         </TextBlock>
                     </Grid.ToolTip>
 
-                    <TextBlock Text="Opening hotkey" Style="{StaticResource TextLight}"
+                    <TextBlock Text="Window open hotkey" Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
-                    <controls:HotkeyEditorControl Grid.Column="1" Hotkey="{Binding GlobalHotkey}"/>
+                    <controls:HotkeyEditorControl x:Name="HotkeyEditor"
+                                                  Grid.Column="1" 
+                                                  Hotkey="{Binding GlobalHotkey}"
+                                                  Foreground="{StaticResource TextColorBrush}"/>
                 </Grid>
 
-                <Rectangle Margin="0 4" Height="1" Fill="{StaticResource TextColorBrush}"/>
+                <Rectangle Margin="0 4" Height="1.5" Fill="{StaticResource TextColorBrush}"
+                           Opacity="0.5"/>
 
                 <Grid Margin="0 4">
                     <Grid.ColumnDefinitions>
@@ -105,7 +115,10 @@
             </StackPanel>
 
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Margin="0 20 0 0">
                 <TextBlock Text="{Binding SavedMessage}" Style="{StaticResource TextLight}"
                            d:Text="Saved" Margin="8 0"
                            VerticalAlignment="Center"/>
@@ -114,6 +127,13 @@
                         HorizontalAlignment="Right"
                         Command="{Binding SaveCommand}"
                         Foreground="{StaticResource TextColorBrush}"/>
+                
+                <Button Content="Close" Width="70"
+                        Margin="8 0 0 0"
+                        HorizontalAlignment="Right"
+                        PreviewMouseDown="CloseButton_MouseDown"
+                        Foreground="{StaticResource TextColorBrush}"/>
+                
             </StackPanel>
         </Grid>
     </Grid>

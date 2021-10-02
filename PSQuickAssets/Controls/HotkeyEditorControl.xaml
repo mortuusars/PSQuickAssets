@@ -6,21 +6,34 @@
              xmlns:local="clr-namespace:PSQuickAssets.WPF"
              mc:Ignorable="d" 
              x:Name="HotkeyControl"
-             d:DesignHeight="200" 
-             d:DesignWidth="300">
+             d:DesignHeight="60" 
+             d:DesignWidth="150">
     
     <TextBox x:Name="HotkeyTextBox"
              HorizontalContentAlignment="Center" 
              VerticalContentAlignment="Center"
-             IsReadOnly="True" IsReadOnlyCaretVisible="False"
-             Background="Transparent"
+             IsReadOnly="True" 
+             IsReadOnlyCaretVisible="False"
              IsUndoEnabled="False"
+             Background="Transparent"
+             BorderBrush="{Binding Foreground, ElementName=HotkeyControl}"
              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
+             Foreground="{Binding Foreground, ElementName=HotkeyControl}"
              d:Text="Ctrl + Alt + F8"
-             Foreground="#8f8f8f"
-             BorderThickness="0"
              Text="{Binding Hotkey, ElementName=HotkeyControl, Mode=OneWay, 
                                                     TargetNullValue=&lt; not set &gt;}">
+
+        <TextBox.Style>
+            <Style TargetType="TextBox">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Style.Triggers>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </TextBox.Style>
+        
         <TextBox.ContextMenu>
             <ContextMenu Visibility="Collapsed"/>
         </TextBox.ContextMenu>
