@@ -7,6 +7,7 @@
              xmlns:models="clr-namespace:PSQuickAssets.Models"
              xmlns:local="clr-namespace:PSQuickAssets.Views" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
              mc:Ignorable="d" 
+             x:Name="root"
              d:DesignHeight="350" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=models:TestAssetGroup, IsDesignTimeCreatable=True}">
 
@@ -14,7 +15,7 @@
         <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DarkToolTip}"/>
     </UserControl.Resources>
     
-    <StackPanel> 
+    <StackPanel Background="Transparent"> 
         
         <Grid Margin="6 5 6 0" 
               HorizontalAlignment="Stretch" 
@@ -35,6 +36,7 @@
                                   Grid.Column="1"
                                   HorizontalAlignment="Right"
                                   Width="16"
+                                  Visibility="{Binding ElementName=root, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}"
                                   Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, 
                                      Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
                                   CommandParameter="{Binding}" 

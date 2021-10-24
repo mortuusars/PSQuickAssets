@@ -257,7 +257,7 @@
         <!--ADD ASSETS-->
         <StackPanel Name="AddAssets"
                     Grid.Row="1"
-                    Margin="24"
+                    Margin="20"
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right">
 
@@ -293,7 +293,7 @@
                     Visibility="Visible"
                     MouseDown="AddAssets_MouseDown">
                 <Grid>
-                    <Ellipse Width="40" Height="40"
+                    <Ellipse Width="36" Height="36"
                              Fill="{StaticResource MainBorder}"
                              StrokeThickness="2"
                              Effect="{StaticResource AssetShadow}">
