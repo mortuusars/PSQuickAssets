@@ -53,12 +53,7 @@ namespace PSQuickAssets.ViewModels
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
             HideCommand = new RelayCommand(_ => _viewManager.HideMainWindow());
 
-#if DEBUG
-            //string testFolderPath = @"F:\PROJECTS\PSQuickAssets\TestAssets";
-            //LoadDroppedDirectories(new string[] { testFolderPath });
-#else
             LoadSavedDirs();
-#endif
         }
 
         private async void PlaceImage(string filePath)
@@ -66,6 +61,7 @@ namespace PSQuickAssets.ViewModels
             _viewManager.ToggleMainWindow();
 
             IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
+            WindowControl.FocusWindow("photoshop");
 
             PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
 
@@ -78,8 +74,6 @@ namespace PSQuickAssets.ViewModels
                 //TODO: localize / decouple errors
                 ShowError(psResult.ResultMessage);
             }
-            else
-                WindowControl.FocusWindow("photoshop");
         }
 
         private async void LoadSavedDirs()

@@ -60,13 +60,15 @@ namespace PSQuickAssets.Services
             if (settingsWindow is null)
             {
                 settingsWindow = new SettingsWindow();
-                settingsWindow.Owner = MainView;
+                //settingsWindow.Owner = MainView;
                 settingsWindow.Show();
-                //settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X - 200;
-                //settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 300;
+                settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
+                settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y;
             }
             else
+            {
                 settingsWindow.Close();
+            }
         }
 
         public string[] ShowSelectFilesDialog(string title, string filter, bool selectMultiple)
