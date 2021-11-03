@@ -11,5 +11,6 @@
         InvalidFileFormat,
         FileNotFound,
         IllegalArgument,
+        NoSelection
     }
 }

@@ -31,6 +31,7 @@ namespace PSQuickAssets.ViewModels
         private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
+        public ICommand PlaceImageWithMaskCommand { get; }
         public ICommand SettingsCommand { get; }
         public ICommand AddFolderCommand { get; }
         public ICommand RemoveFolderCommand { get; }
@@ -48,6 +49,8 @@ namespace PSQuickAssets.ViewModels
             _viewManager = viewManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
+            PlaceImageWithMaskCommand = new RelayCommand(path => PlaceImageWithMask((string)path));
+
             SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsWindow());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
             RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
@@ -68,6 +71,29 @@ namespace PSQuickAssets.ViewModels
             if (psResult.Status == PSStatus.NoDocumentsOpen)
                 psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
                         
+            if (psResult.Status != PSStatus.Success)
+            {
+                _viewManager.ToggleMainWindow();
+                //TODO: localize / decouple errors
+                ShowError(psResult.ResultMessage);
+            }
+        }
+
+        private async void PlaceImageWithMask(string filePath)
+        {
+            _viewManager.ToggleMainWindow();
+
+            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
+            WindowControl.FocusWindow("photoshop");
+
+            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocumentWithMask(filePath, MaskMode.RevealSelection));
+
+            if (psResult.Status == PSStatus.NoSelection)
+                psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
+
+            if (psResult.Status == PSStatus.NoDocumentsOpen)
+                psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
+
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();

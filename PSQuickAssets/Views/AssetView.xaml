@@ -13,7 +13,12 @@
           HorizontalAlignment="Center"
           Effect="{StaticResource AssetShadow}">
         <Grid.InputBindings>
-            <MouseBinding Gesture="LeftClick" CommandParameter="{Binding FilePath}"
+            <MouseBinding Gesture="LeftClick" 
+                          CommandParameter="{Binding FilePath}"
+                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageWithMaskCommand}"/>
+            <MouseBinding Gesture="CTRL+LeftClick" 
+                          CommandParameter="{Binding FilePath}"
                           Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                           AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
         </Grid.InputBindings>

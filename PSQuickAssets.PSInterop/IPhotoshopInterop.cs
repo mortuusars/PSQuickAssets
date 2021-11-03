@@ -2,6 +2,8 @@
 {
     public interface IPhotoshopInterop
     {
+        PSResult AddImageToDocumentWithMask(string filePath, MaskMode maskMode);
+
         /// <summary>
         /// Attempts to add given image (filepath) to open document in PS.
         /// </summary>

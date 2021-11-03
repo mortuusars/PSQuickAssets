@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSQuickAssets.PSInterop.Internal;
+using System;
 using System.Diagnostics;
 
 namespace PSQuickAssets.PSInterop
@@ -11,6 +12,59 @@ namespace PSQuickAssets.PSInterop
         private const int ERR_ILLEGAL_ARGUMENT = -2147220262;
         private const int ERR_INVALID_PATH = -2147220271;
 
+        private const string _selectionChannelName = "QuickAssetsMask";
+
+        public PSResult AddImageToDocumentWithMask(string filePath, MaskMode maskMode)
+        {
+            return ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+
+                PsActions psActions = new PsActions();
+                psActions.SaveSelectionAsChannel(ps, _selectionChannelName);
+                psActions.AddFilePathAsLayer(ps, filePath);
+                psActions.LoadSelectionFromChannel(ps, _selectionChannelName);
+                psActions.ApplyMaskFromSelection(ps, MaskMode.RevealSelection);
+
+
+                psActions.DeleteChannel(ps, _selectionChannelName);
+                psActions.UnlinkMask(ps);
+            }, 
+            filePath);
+        }
+
+        private PSResult ExecuteAction(Action action, string filePath)
+        {
+            if (Process.GetProcessesByName("Photoshop").Length == 0)
+                return new PSResult(PSStatus.NotRunning, filePath, "Photoshop is not running");
+
+            try
+            {
+                action();
+                return new PSResult(PSStatus.Success, filePath, "");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Place\" is not currently available"))
+            {
+                return new PSResult(PSStatus.NoDocumentsOpen, filePath, "No documents open");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Duplicate\" is not currently available"))
+            {
+                return new PSResult(PSStatus.NoSelection, filePath, "Document has no selection");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("no parser or file format can open the file"))
+            {
+                return new PSResult(PSStatus.InvalidFileFormat, filePath, "Invalid file format");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("file could not be found"))
+            {
+                return new PSResult(PSStatus.FileNotFound, filePath, "File could not be found");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
+            {
+                return new PSResult(PSStatus.Busy, filePath, "Photoshop is busy");
+            }
+        }
+
         /// <summary>
         /// Attempts to add given image (filepath) to open document in PS.
         /// </summary>
@@ -22,8 +76,9 @@ namespace PSQuickAssets.PSInterop
 
             try
             {
-                dynamic ps = CreatePhotoshopCOMInstance();
-                PlaceImageInDoc(filePath, ps);
+                dynamic ps = CreatePSInstance();
+                PsActions psActions = new PsActions();
+                psActions.AddFilePathAsLayer(ps, filePath);
                 return new PSResult(PSStatus.Success, filePath, "");
             }
             catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Place\" is not currently available"))
@@ -56,7 +111,7 @@ namespace PSQuickAssets.PSInterop
 
             try
             {
-                dynamic ps = CreatePhotoshopCOMInstance();
+                dynamic ps = CreatePSInstance();
                 ps.Open(filePath);
                 return new PSResult(PSStatus.Success, filePath, "");
             }
@@ -82,35 +137,9 @@ namespace PSQuickAssets.PSInterop
             }
         }
 
-        private static dynamic CreatePhotoshopCOMInstance()
+        private static dynamic CreatePSInstance()
         {
             return Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.Application"));
         }
-
-        private static PSResult PlaceImageInDoc(string filePath, dynamic ps)
-        {
-            dynamic actionDescriptor = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionDescriptor"));
-
-            if (actionDescriptor is null)
-                return new PSResult(PSStatus.COMError, filePath, "Failed to create Action Descriptor");
-
-            dynamic idPlc = ps.CharIDToTypeID("Plc ");
-            dynamic idnull = ps.CharIDToTypeID("null");
-            actionDescriptor.PutPath(idnull, filePath);
-            dynamic idFTcs = ps.CharIDToTypeID("FTcs");
-            dynamic idQCSt = ps.CharIDToTypeID("QCSt");
-            dynamic idQcsa = ps.CharIDToTypeID("Qcsa");
-            actionDescriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
-            ps.ExecuteAction(idPlc, actionDescriptor, PsDialogModes.psDisplayNoDialogs);
-
-            return new PSResult(PSStatus.Success, filePath, "");
-        }
-    }
-
-    public enum PsDialogModes
-    {
-        psDisplayAllDialogs = 1,
-        psDisplayErrorDialogs = 2,
-        psDisplayNoDialogs = 3
     }
 }
