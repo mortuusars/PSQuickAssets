@@ -14,5 +14,7 @@
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
         PSResult OpenImage(string filePath);
+
+        PSResult ExecuteAction(string action, string from);
     }
 }

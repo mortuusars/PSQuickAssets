@@ -11,8 +11,18 @@ namespace PSQuickAssets.PSInterop
         private const int ERR_INVALID_FILE_FORMAT = -2147213504;
         private const int ERR_ILLEGAL_ARGUMENT = -2147220262;
         private const int ERR_INVALID_PATH = -2147220271;
+        private const int ERR_USER_CANCELLED = -2147213497;
 
         private const string _selectionChannelName = "QuickAssetsMask";
+
+        public PSResult ExecuteAction(string action, string from)
+        {
+            return ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+                ps.DoAction(action, from);
+            }, "<no filepath>");
+        }
 
         public PSResult AddImageToDocumentWithMask(string filePath, MaskMode maskMode)
         {
@@ -62,6 +72,10 @@ namespace PSQuickAssets.PSInterop
             catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
             {
                 return new PSResult(PSStatus.Busy, filePath, "Photoshop is busy");
+            }
+            catch (Exception ex) when (ex.HResult == ERR_USER_CANCELLED)
+            {
+                return new PSResult(PSStatus.Busy, filePath, "Execution cancelled");
             }
         }
 

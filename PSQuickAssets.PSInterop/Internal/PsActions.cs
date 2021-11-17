@@ -111,6 +111,6 @@ namespace PSQuickAssets.PSInterop.Internal
             desc2.PutBoolean(ps.CharIDToTypeID("Usrs"), false);
             desc.PutObject(ps.CharIDToTypeID("T   "), ps.CharIDToTypeID("Lyr "), desc2);
             ps.ExecuteAction(ps.CharIDToTypeID("setd"), desc, PsDialogModes.psDisplayNoDialogs);
-        }
+        }        
     }
 }

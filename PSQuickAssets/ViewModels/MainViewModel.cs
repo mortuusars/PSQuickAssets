@@ -49,7 +49,7 @@ namespace PSQuickAssets.ViewModels
             _viewManager = viewManager;
 
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            PlaceImageWithMaskCommand = new RelayCommand(path => PlaceImageWithMask((string)path));
+            PlaceImageWithMaskCommand = new RelayCommand(path => PlaceImageWithMaskAsync((string)path));
 
             SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsWindow());
             AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
@@ -79,7 +79,7 @@ namespace PSQuickAssets.ViewModels
             }
         }
 
-        private async void PlaceImageWithMask(string filePath)
+        private async void PlaceImageWithMaskAsync(string filePath)
         {
             _viewManager.ToggleMainWindow();
 
@@ -99,6 +99,21 @@ namespace PSQuickAssets.ViewModels
                 _viewManager.ToggleMainWindow();
                 //TODO: localize / decouple errors
                 ShowError(psResult.ResultMessage);
+            }
+
+            await ExecuteActionAsync("SelectRGBLayer", "Mask");
+            await ExecuteActionAsync("FreeTransform", "General");
+        }
+
+        private async Task ExecuteActionAsync(string action, string from)
+        {
+            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
+            PSResult psResult = await Task.Run(() => photoshopInterop.ExecuteAction(action, from));
+
+            if (psResult.Status != PSStatus.Success)
+            {
+                _viewManager.ToggleMainWindow();
+                ShowError($"Cannot execute '{action}' from '{from}' set\n{psResult.ResultMessage}");
             }
         }
 
