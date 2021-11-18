@@ -38,13 +38,13 @@ namespace PSQuickAssets
                 config = new Config()
                 {
                     Directories = new List<string>(),
-                    Hotkey = "Ctrl + Alt + F8",
+                    Hotkey = "Alt + A",
                     CheckUpdates = true
                 };
             }
 
             if (config.Hotkey is null)
-                config = config with { Hotkey = "Ctrl + Alt + F8" };
+                config = config with { Hotkey = "Alt + A" };
 
             return config;
         }
