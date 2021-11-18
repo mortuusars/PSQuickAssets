@@ -11,7 +11,7 @@ namespace PSQuickAssets
     {
         public static string AppName { get; } = "PSQuickAssets";
         public static Version Version { get; } = new Version("1.2.0");
-        public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + App.AppName);
+        public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
 
         private TaskbarIcon _taskBarIcon;
