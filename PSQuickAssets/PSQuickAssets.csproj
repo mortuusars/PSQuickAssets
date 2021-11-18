@@ -62,6 +62,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="MLogger">
+      <HintPath>..\..\..\..\VSProjects\Libs\MLogger\MLogger.Terminal\bin\Release\net6.0-windows\win-x64\MLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="MLogger.Terminal">
+      <HintPath>..\..\..\..\VSProjects\Libs\MLogger\MLogger.Terminal\bin\Release\net6.0-windows\win-x64\MLogger.Terminal.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
 	<Resource Include="Resources\Fonts\Lexend-Bold.ttf" />
 	<Resource Include="Resources\Fonts\Lexend-ExtraBold.ttf" />
 	<Resource Include="Resources\Fonts\Lexend-Light.ttf" />

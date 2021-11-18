@@ -19,13 +19,13 @@ namespace PSQuickAssets.ViewModels
         {
             SaveCommand = new RelayCommand(_ => Apply());
 
-            GlobalHotkey = App.GlobalHotkeyRegistry.HotkeyInfo;
+            GlobalHotkey = Program.GlobalHotkeyRegistry.HotkeyInfo;
             CheckUpdates = ConfigManager.Config.CheckUpdates;
         }
 
         public void Apply()
         {
-            ((App)App.Current).RegisterGlobalHotkey(GlobalHotkey.ToString());
+            Program.Instance.RegisterGlobalHotkey(GlobalHotkey.ToString());
             ConfigManager.Config = ConfigManager.Config with { CheckUpdates = CheckUpdates};
 
             ConfigManager.Save();

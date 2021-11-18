@@ -14,8 +14,8 @@ namespace PSQuickAssets.ViewModels
         {
             AppName = "PSQuickAssets " + App.Version.ToString();
 
-            ShowWindowCommand = new RelayCommand(_ => App.ViewManager.ToggleMainWindow());
-            SettingsCommand = new RelayCommand(_ => App.ViewManager.ShowSettingsWindow());
+            ShowWindowCommand = new RelayCommand(_ => Program.ViewManager.ToggleMainWindow());
+            SettingsCommand = new RelayCommand(_ => Program.ViewManager.ShowSettingsWindow());
             ExitCommand = new RelayCommand(_ => App.Current.Shutdown());
         }
     }
