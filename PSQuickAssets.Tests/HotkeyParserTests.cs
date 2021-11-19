@@ -2,6 +2,7 @@
 using Xunit;
 using System.Windows.Input;
 using System;
+using PSQuickAssets.Services.Hotkeys;
 
 namespace PSQuickAssets.Tests
 {

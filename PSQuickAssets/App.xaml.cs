@@ -42,7 +42,7 @@ namespace PSQuickAssets
         {
             ConfigManager.Save();
 
-            Program.GlobalHotkeyRegistry?.Dispose(Program.GlobalHotkeyRegistry.HotkeyInfo);
+            Program.GlobalHotkeys?.Dispose(Program.GlobalHotkeys.HotkeyInfo);
             Program.WindowManager?.CloseMainWindow();
             _taskBarIcon?.Dispose();
 

@@ -24,8 +24,8 @@
             <conv:PathToFolderNameConverter x:Key="PathToFolderName"/>
             <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter"/>
 
-            <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="40" Direction="-90" ShadowDepth="8" Opacity="0.6"/>
-            <DropShadowEffect x:Key="AssetShadow" BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.5"/>
+            <DropShadowEffect x:Key="WindowDropShadow" BlurRadius="36" Direction="-90" ShadowDepth="8" Opacity="0.45"/>
+            <DropShadowEffect x:Key="AssetShadow" BlurRadius="20" ShadowDepth="2" Direction="-90" Opacity="0.45"/>
 
         </ResourceDictionary>
     </Application.Resources>

@@ -21,7 +21,7 @@ namespace PSQuickAssets
         public static Program Instance { get => _program; }
         private static Program _program;
 
-        public static GlobalHotkeys GlobalHotkeyRegistry { get; private set; }
+        public static GlobalHotkeys GlobalHotkeys { get; private set; }
         public static WindowManager WindowManager { get; private set; }
 
         public static ILogger Logger { get; private set; }
@@ -31,7 +31,7 @@ namespace PSQuickAssets
         {
             SetupLogging();
 
-            GlobalHotkeyRegistry = new GlobalHotkeys();
+            GlobalHotkeys = new GlobalHotkeys(Logger);
             WindowManager = new WindowManager();
 
             WindowManager.CreateAndShowMainWindow();
@@ -54,7 +54,7 @@ namespace PSQuickAssets
             if (terminalWindow is not null)
                 terminalWindow.Close();
             else
-                _terminal.ShowWindow("PSQuickAssets Terminal");
+                _terminal.ShowWindow();
         }
 
         private void SetupLogging()
@@ -67,9 +67,18 @@ namespace PSQuickAssets
                 Logger.Loggers.Add(new FileWriter(Path.Combine(logsFolder, "log.txt")));
                 Logger.Loggers.Add(new DebugWriter());
 
-                _terminal = new Terminal();
-                _terminal.Commands.Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()))
-                    .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
+                _terminal = new Terminal("PSQuickAssets Terminal");
+                _terminal.Commands
+                    .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()))
+                    .Add(new ConsoleCommand("register", "Registers new global hotkey", (hotkey) =>
+                    {
+                        GlobalHotkeys.TryRegister(new Hotkey(hotkey), () => Logger.Info($"{hotkey} is pressed!"), out string errorMessage);
+                    }))
+                    .Add(new ConsoleCommand("unregister", "Registers new global hotkey", (hotkey) =>
+                    {
+                        GlobalHotkeys.Remove(new Hotkey(hotkey));
+                    }))
+                    .Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
 
                 Logger.Loggers.Add(_terminal);
             }
@@ -88,19 +97,29 @@ namespace PSQuickAssets
 
         public void RegisterGlobalHotkey(string hotkey)
         {
-            IntPtr mainWindowHandle = new WindowInteropHelper(WindowManager.MainView).Handle;
-
-            if (GlobalHotkeyRegistry.Register(new Hotkey(hotkey), mainWindowHandle, OnGlobalHotkeyPressed, out string errorMessage))
+            if (GlobalHotkeys.TryRegister(new Hotkey(hotkey), () => WindowManager.ToggleMainWindow(), out string errorMessage))
             {
-                ConfigManager.Config = ConfigManager.Config with { Hotkey = GlobalHotkeyRegistry.HotkeyInfo.ToString() };
+                ConfigManager.Config = ConfigManager.Config with { Hotkey = hotkey };
                 ConfigManager.Save();
-                Logger.Debug("Successfully registered global hotkey: " + hotkey);
             }
             else
             {
-                Logger.Error(errorMessage);
                 MessageBox.Show(errorMessage);
             }
+
+            //IntPtr mainWindowHandle = new WindowInteropHelper(WindowManager.MainView).Handle;
+
+            //if (GlobalHotkeys.Register(new Hotkey(hotkey), mainWindowHandle, OnGlobalHotkeyPressed, out string errorMessage))
+            //{
+            //    ConfigManager.Config = ConfigManager.Config with { Hotkey = GlobalHotkeys.HotkeyInfo.ToString() };
+            //    ConfigManager.Save();
+            //    Logger.Debug("Successfully registered global hotkey: " + hotkey);
+            //}
+            //else
+            //{
+            //    Logger.Error(errorMessage);
+            //    MessageBox.Show(errorMessage);
+            //}
         }
 
         private void OnGlobalHotkeyPressed() => WindowManager.ToggleMainWindow();

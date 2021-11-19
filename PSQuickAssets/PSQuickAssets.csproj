@@ -45,7 +45,8 @@
 	<PackageReference Include="gong-wpf-dragdrop" Version="2.4.3" />
 	<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
 	<PackageReference Include="MdXaml" Version="1.12.0" />
-	<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.1" />
+	<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+	<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 	<PackageReference Include="NetVips" Version="2.0.1" />
 	<PackageReference Include="NetVips.Native.win-x64" Version="8.11.4" />
 	<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.0" />

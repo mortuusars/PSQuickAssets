@@ -3,31 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+        xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" 
+        xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Settings" 
-        Width="380"
-        MaxHeight="800"
-        SizeToContent="Height"
+        MaxWidth="600" MinWidth="300"        
+        MaxHeight="800" MinHeight="200"
+        SizeToContent="WidthAndHeight"
         Topmost="True"
         Background="{x:Null}" 
         WindowStyle="None"
         ResizeMode="NoResize"
         AllowsTransparency="True" 
         WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
         FontFamily="{StaticResource FontRegular}" 
         FontSize="14"
-        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown">
+        d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        Loaded="Window_Loaded">
 
-    <Window.DataContext>
-        <vm:SettingsViewModel/>
-    </Window.DataContext>
-
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseCommand_Executed"/>
+    </Window.CommandBindings>
+    
     <Window.Resources>
         <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}"/>
     </Window.Resources>
 
-    <Grid x:Name="MainContainer" Margin="40" Background="{x:Null}">
+    <Grid x:Name="MainContainer" Margin="30 30 30 44" Background="{x:Null}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -58,7 +63,12 @@
                     <!-- CLOSE BTN -->
                     <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
                            VerticalAlignment="Top" HorizontalAlignment="Right" 
-                           Style="{StaticResource ImageButtons}" MouseDown="CloseButton_MouseDown">
+                           Style="{StaticResource ImageButtons}" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="ApplicationCommands.Close"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Image.ToolTip>
                             <TextBlock Text="Close" Style="{StaticResource TextLight}"/>
                         </Image.ToolTip>
@@ -89,7 +99,9 @@
                         </TextBlock>
                     </Grid.ToolTip>
 
-                    <TextBlock Text="Window open hotkey" Style="{StaticResource TextLight}"
+                    <TextBlock Text="Window open/close hotkey" 
+                               Margin="0 0 20 0"
+                               Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
                     <controls:HotkeyEditorControl x:Name="HotkeyEditor"
                                                   Grid.Column="1" 
@@ -119,20 +131,27 @@
                         Orientation="Horizontal" 
                         HorizontalAlignment="Right"
                         Margin="0 20 0 0">
-                <TextBlock Text="{Binding SavedMessage}" Style="{StaticResource TextLight}"
+                <!--<TextBlock Text="{Binding SavedMessage}" Style="{StaticResource TextLight}"
                            d:Text="Saved" Margin="8 0"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"/>-->
 
-                <Button Content="Save" Width="70"
+                <Button Content="OK" Width="70"
                         HorizontalAlignment="Right"
-                        Command="{Binding SaveCommand}"
-                        Foreground="{StaticResource TextColorBrush}"/>
+                        Foreground="{StaticResource TextColorBrush}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding SaveCommand}"/>
+                            <i:InvokeCommandAction Command="ApplicationCommands.Close"/>
+                        </i:EventTrigger>
+                        
+                    </i:Interaction.Triggers>
+                </Button>
                 
-                <Button Content="Close" Width="70"
+                <!--<Button Content="Close" Width="70"
                         Margin="8 0 0 0"
                         HorizontalAlignment="Right"
                         PreviewMouseDown="CloseButton_MouseDown"
-                        Foreground="{StaticResource TextColorBrush}"/>
+                        Foreground="{StaticResource TextColorBrush}"/>-->
                 
             </StackPanel>
         </Grid>

@@ -52,6 +52,7 @@ namespace PSQuickAssets.Services
             if (settingsWindow is null)
             {
                 settingsWindow = new SettingsWindow();
+                settingsWindow.DataContext = new SettingsViewModel(Program.GlobalHotkeys, this);
                 //settingsWindow.Owner = MainView;
                 settingsWindow.Show();
                 settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;

@@ -1,7 +1,10 @@
 ﻿using PSQuickAssets.WPF;
+using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace PSQuickAssets.Views
 {
@@ -10,13 +13,6 @@ namespace PSQuickAssets.Views
         public SettingsWindow()
         {
             InitializeComponent();
-            //DwmDropShadow.DropShadowToWindow(this);
-        }
-
-        private void CloseButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-            this.Close();
         }
 
         private void BG_MouseDown(object sender, MouseButtonEventArgs e)
@@ -30,78 +26,86 @@ namespace PSQuickAssets.Views
             if(WpfElementUtils.GetParentOfTypeByName<Grid>(e.OriginalSource as FrameworkElement, nameof(HotkeyColumn)) != HotkeyColumn)
                 FocusManager.SetFocusedElement(this, this);
         }
+
+        private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            this.Close();
+        }
+
+        void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            WindowInteropHelper wndHelper = new WindowInteropHelper(this);
+            int exStyle = (int)GetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
+
+            exStyle |= (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+            SetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+        }
+
+
+        #region Window styles
+
+        [Flags]
+        public enum ExtendedWindowStyles
+        {
+            // ...
+            WS_EX_TOOLWINDOW = 0x00000080,
+            // ...
+        }
+
+        public enum GetWindowLongFields
+        {
+            // ...
+            GWL_EXSTYLE = (-20),
+            // ...
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
+
+        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+        {
+            int error = 0;
+            IntPtr result = IntPtr.Zero;
+            // Win32 SetWindowLong doesn't clear error on success
+            SetLastError(0);
+
+            if (IntPtr.Size == 4)
+            {
+                // use SetWindowLong
+                Int32 tempResult = IntSetWindowLong(hWnd, nIndex, IntPtrToInt32(dwNewLong));
+                error = Marshal.GetLastWin32Error();
+                result = new IntPtr(tempResult);
+            }
+            else
+            {
+                // use SetWindowLongPtr
+                result = IntSetWindowLongPtr(hWnd, nIndex, dwNewLong);
+                error = Marshal.GetLastWin32Error();
+            }
+
+            if ((result == IntPtr.Zero) && (error != 0))
+            {
+                throw new System.ComponentModel.Win32Exception(error);
+            }
+
+            return result;
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true)]
+        private static extern IntPtr IntSetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
+        private static extern Int32 IntSetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
+
+        private static int IntPtrToInt32(IntPtr intPtr)
+        {
+            return unchecked((int)intPtr.ToInt64());
+        }
+
+        [DllImport("kernel32.dll", EntryPoint = "SetLastError")]
+        public static extern void SetLastError(int dwErrorCode);
+
+        #endregion
     }
-
-    //public static class DwmDropShadow
-    //{
-    //    [DllImport("dwmapi.dll", PreserveSig = true)]
-    //    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-    //    [DllImport("dwmapi.dll")]
-    //    private static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref Margins pMarInset);
-
-    //    /// <summary>
-    //    /// Drops a standard shadow to a WPF Window, even if the window is borderless. Only works with DWM (Windows Vista or newer).
-    //    /// This method is much more efficient than setting AllowsTransparency to true and using the DropShadow effect,
-    //    /// as AllowsTransparency involves a huge performance issue (hardware acceleration is turned off for all the window).
-    //    /// </summary>
-    //    /// <param name="window">Window to which the shadow will be applied</param>
-    //    public static void DropShadowToWindow(Window window)
-    //    {
-    //        if (!DropShadow(window))
-    //        {
-    //            window.SourceInitialized += new EventHandler(window_SourceInitialized);
-    //        }
-    //    }
-
-    //    private static void window_SourceInitialized(object sender, EventArgs e)
-    //    {
-    //        Window window = (Window)sender;
-
-    //        DropShadow(window);
-
-    //        window.SourceInitialized -= new EventHandler(window_SourceInitialized);
-    //    }
-
-    //    /// <summary>
-    //    /// The actual method that makes API calls to drop the shadow to the window
-    //    /// </summary>
-    //    /// <param name="window">Window to which the shadow will be applied</param>
-    //    /// <returns>True if the method succeeded, false if not</returns>
-    //    private static bool DropShadow(Window window)
-    //    {
-    //        try
-    //        {
-    //            WindowInteropHelper helper = new WindowInteropHelper(window);
-    //            int val = 2;
-    //            int ret1 = DwmSetWindowAttribute(helper.Handle, 2, ref val, 4);
-
-    //            if (ret1 == 0)
-    //            {
-    //                Margins m = new Margins { Bottom = 0, Left = 50, Right = 0, Top = 0 };
-    //                int ret2 = DwmExtendFrameIntoClientArea(helper.Handle, ref m);
-    //                return ret2 == 0;
-    //            }
-    //            else
-    //            {
-    //                return false;
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            // Probably dwmapi.dll not found (incompatible OS)
-    //            return false;
-    //        }
-    //    }
-
-    //}
-
-    //[StructLayout(LayoutKind.Sequential)]
-    //public struct Margins
-    //{
-    //    public int Left;
-    //    public int Right;
-    //    public int Top;
-    //    public int Bottom;
-    //}
 }
