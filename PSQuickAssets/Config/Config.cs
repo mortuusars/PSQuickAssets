@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace PSQuickAssets
+namespace PSQuickAssets;
+
+public record Config
 {
-    public record Config
-    {
-        public List<string> Directories { get; init; }
-        public string Hotkey { get; init; }
-        public bool CheckUpdates { get; init; }
-    }
+    public List<string> Directories { get; init; }
+    public string Hotkey { get; init; }
+    public bool CheckUpdates { get; init; }
 }

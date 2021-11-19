@@ -1,6 +1,7 @@
 ﻿using System.Timers;
 using System.Windows.Input;
 using PropertyChanged;
+using PSQuickAssets.Services.Hotkeys;
 using PSQuickAssets.WPF;
 
 namespace PSQuickAssets.ViewModels
@@ -17,13 +18,13 @@ namespace PSQuickAssets.ViewModels
 
         public SettingsViewModel()
         {
-            SaveCommand = new RelayCommand(_ => Apply());
+            SaveCommand = new RelayCommand(_ => ApplyNewSettings());
 
             GlobalHotkey = Program.GlobalHotkeyRegistry.HotkeyInfo;
             CheckUpdates = ConfigManager.Config.CheckUpdates;
         }
 
-        public void Apply()
+        private void ApplyNewSettings()
         {
             Program.Instance.RegisterGlobalHotkey(GlobalHotkey.ToString());
             ConfigManager.Config = ConfigManager.Config with { CheckUpdates = CheckUpdates};

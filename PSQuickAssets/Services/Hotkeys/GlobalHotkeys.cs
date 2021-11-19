@@ -1,16 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using PSQuickAssets.WPF;
 
-namespace PSQuickAssets.Services
+namespace PSQuickAssets.Services.Hotkeys
 {
-    public class GlobalHotkeyRegistry
+    public class GlobalHotkeys
     {
-        public event EventHandler<Hotkey> HotkeyRegistered;
-
+        public Dictionary<Hotkey, SharpHotkeys.WPF.Hotkey> Hotkeys { get; private set; }
         public Hotkey HotkeyInfo { get; private set; } = new Hotkey(Key.None, ModifierKeys.None);
 
         private SharpHotkeys.WPF.Hotkey _registeredSharpHotkey;
+
+        public GlobalHotkeys()
+        {
+            Hotkeys = new Dictionary<Hotkey, SharpHotkeys.WPF.Hotkey>();
+        }
+
+        //public bool Register(Hotkey hotkey, Action onHotkeyPressed, out string errorMessage)
+        //{
+
+        //}
 
         public bool Register(Hotkey hotkey, IntPtr windowHandle, Action action, out string errorMessage)
         {
@@ -27,11 +37,10 @@ namespace PSQuickAssets.Services
             _registeredSharpHotkey.HotkeyClicked += action;
             errorMessage = "";
 
-            HotkeyRegistered?.Invoke(this, hotkey);
             return true;
         }
 
-        public void Dispose()
+        public void Dispose(Hotkey hotkey)
         {
             _registeredSharpHotkey?.Dispose();
             HotkeyInfo = new Hotkey(Key.None, ModifierKeys.None);
@@ -42,7 +51,7 @@ namespace PSQuickAssets.Services
             switch (errCode)
             {
                 case 1409:
-                    return $"Error registering hotkey: {hotkey} already registered.";
+                    return $"Error registering hotkey: <{hotkey}> is already registered.";
                 default:
                     return $"Error registering hotkey <{hotkey}>. Error code: {errCode}.";
             }

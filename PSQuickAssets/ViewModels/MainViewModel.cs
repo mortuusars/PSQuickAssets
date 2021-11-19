@@ -39,9 +39,9 @@ namespace PSQuickAssets.ViewModels
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
 
         private readonly IImageFileLoader _imagesLoader;
-        private readonly ViewManager _viewManager;
+        private readonly WindowManager _viewManager;
 
-        public MainViewModel(IImageFileLoader imagesLoader, ViewManager viewManager)
+        public MainViewModel(IImageFileLoader imagesLoader, WindowManager viewManager)
         {
             AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), viewManager);
 

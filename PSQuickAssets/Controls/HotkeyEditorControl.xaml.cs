@@ -1,13 +1,11 @@
-﻿using PSQuickAssets.WPF;
+﻿using PSQuickAssets.Services.Hotkeys;
+using PSQuickAssets.WPF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PSQuickAssets.Controls
 {
-    /// <summary>
-    /// Interaction logic for HotkeyEditorControl.xaml
-    /// </summary>
     public partial class HotkeyEditorControl : UserControl
     {
         public static readonly DependencyProperty HotkeyProperty =

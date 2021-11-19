@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -20,7 +21,7 @@ namespace PSQuickAssets
         {
             if (IsAnotherInstanceOpen())
             {
-                MessageBox.Show("Another instance of PSQuickAssets is already running", "PSQuickAssets", 
+                MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets", 
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 Shutdown();
                 return;
@@ -33,24 +34,17 @@ namespace PSQuickAssets
 
         private bool IsAnotherInstanceOpen()
         {
-            var current = Process.GetCurrentProcess();
-
-            foreach (var process in Process.GetProcessesByName(current.ProcessName))
-            {
-                if (process.Id != current.Id && process.MainModule.FileName == current.MainModule.FileName)
-                    return true;
-            }
-
-            return false;
+            Process current = Process.GetCurrentProcess();
+            return Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
             ConfigManager.Save();
 
-            Program.GlobalHotkeyRegistry.Dispose();
-            Program.ViewManager.CloseMainWindow();
-            _taskBarIcon.Dispose();
+            Program.GlobalHotkeyRegistry?.Dispose(Program.GlobalHotkeyRegistry.HotkeyInfo);
+            Program.WindowManager?.CloseMainWindow();
+            _taskBarIcon?.Dispose();
 
             base.OnExit(e);
         }

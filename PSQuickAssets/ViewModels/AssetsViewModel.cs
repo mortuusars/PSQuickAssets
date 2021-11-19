@@ -2,7 +2,7 @@
 using PSQuickAssets.Assets;
 using PSQuickAssets.Models;
 using PSQuickAssets.Services;
-using PSQuickAssets.Utils;
+using PSQuickAssets.Utils.SystemDialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,11 +26,11 @@ namespace PSQuickAssets.ViewModels
 
         private readonly AssetLoader _assetLoader;
         private readonly AssetAtlas _assetAtlas;
-        private readonly ViewManager _viewManager;
+        private readonly WindowManager _viewManager;
 
         private bool isLoading;
 
-        public AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, ViewManager viewManager)
+        public AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager viewManager)
         {
             AssetGroups = new ObservableCollection<AssetGroup>();
 
@@ -38,8 +38,8 @@ namespace PSQuickAssets.ViewModels
             _assetAtlas = assetAtlas;
             _viewManager = viewManager;
 
-            AddFolderCommand = new RelayCommand(_ => SelectAndAddFolder(includeSubfolders: false));
-            AddFolderWithSubfoldersCommand = new RelayCommand(_ => SelectAndAddFolder(includeSubfolders: true));
+            AddFolderCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: false));
+            AddFolderWithSubfoldersCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: true));
             AddFilesCommand = new RelayCommand(_ => SelectAndAddFiles());
             RemoveGroupCommand = new RelayCommand(group => RemoveGroup((AssetGroup)group));
 
@@ -77,7 +77,6 @@ namespace PSQuickAssets.ViewModels
         {
             if (IsGroupExists(groupName))
                 groupName = groupName + " New";
-            //throw new Exception($"Group with name {groupName} already exists");
 
             AssetGroup assetGroup = new(groupName);
             assetGroup.GroupStateChanged += AssetGroup_OnGroupStateChanged;
@@ -93,20 +92,27 @@ namespace PSQuickAssets.ViewModels
 
         private void AssetGroup_OnGroupStateChanged() => SaveAssets();
 
-        private async void SelectAndAddFolder(bool includeSubfolders = false)
+        private async void SelectAndAddFolders(bool includeSubfolders = false)
         {
-            string folderPath = _viewManager.ShowSelectFolderDialog();
+            string[] folderPaths = SystemDialogs.SelectFolder("Select Folder", SelectionMode.Multiple);
+
+            if (folderPaths.Length == 0)
+                return;
 
             IsLoading = true;
-            await AddGroupFromFolder(folderPath, includeSubfolders);
+            foreach (var path in folderPaths)
+            {
+                await AddGroupFromFolder(path, includeSubfolders);
+            }
             IsLoading = false;
         }
 
         private async void SelectAndAddFiles()
         {
-            string[] files = _viewManager.ShowSelectFilesDialog("Select Assets",
-                    "Image Files(*.BMP; *.JPG; *.JPEG; *.GIF; *.TIFF; *.TIF; *.PSD; *.PSB)| " +
-                    "*.BMP; *.JPG; *.JPEG; *.GIF; *.TIFF; *.TIF; *.PSD; *.PSB | All files(*.*) | *.*", selectMultiple: true);
+            string[] files = SystemDialogs.SelectFiles("Select Assets", FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+
+            if (files.Length == 0)
+                return;
 
             IsLoading = true;
             await AddGroupFromFiles(files);

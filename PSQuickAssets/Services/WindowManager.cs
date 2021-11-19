@@ -1,21 +1,13 @@
-﻿using System.Linq;
-using Ookii.Dialogs.Wpf;
-using PSQuickAssets.ViewModels;
+﻿using PSQuickAssets.ViewModels;
 using PSQuickAssets.Views;
+using System.Linq;
 
 namespace PSQuickAssets.Services
 {
-    public class ViewManager
+    public class WindowManager
     {
         public MainWindow MainView { get; private set; }
         private MainViewModel _mainViewModel;
-
-        private readonly IOpenDialogService _openDialogService;
-
-        public ViewManager(IOpenDialogService openDialogService)
-        {
-            _openDialogService = openDialogService;
-        }
 
         public void CreateAndShowMainWindow()
         {
@@ -69,16 +61,6 @@ namespace PSQuickAssets.Services
             {
                 settingsWindow.Close();
             }
-        }
-
-        public string[] ShowSelectFilesDialog(string title, string filter, bool selectMultiple)
-        {
-            return _openDialogService.ShowSelectFilesDialog(title, filter, selectMultiple);
-        }
-
-        public string ShowSelectFolderDialog()
-        {
-            return _openDialogService.ShowSelectFolderDialog();
         }
     }
 }

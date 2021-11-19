@@ -4,6 +4,8 @@ using MLogger.Terminal;
 using MLogger.Terminal.Models;
 using MLogger.Terminal.Views;
 using PSQuickAssets.Services;
+using PSQuickAssets.Services.Hotkeys;
+using PSQuickAssets.Utils.SystemDialogs;
 using PSQuickAssets.WPF;
 using System;
 using System.Diagnostics;
@@ -19,8 +21,8 @@ namespace PSQuickAssets
         public static Program Instance { get => _program; }
         private static Program _program;
 
-        public static GlobalHotkeyRegistry GlobalHotkeyRegistry { get; private set; }
-        public static ViewManager ViewManager { get; private set; }
+        public static GlobalHotkeys GlobalHotkeyRegistry { get; private set; }
+        public static WindowManager WindowManager { get; private set; }
 
         public static ILogger Logger { get; private set; }
         private static Terminal _terminal;
@@ -29,10 +31,10 @@ namespace PSQuickAssets
         {
             SetupLogging();
 
-            GlobalHotkeyRegistry = new GlobalHotkeyRegistry();
-            ViewManager = new ViewManager(new OpenDialogService());
+            GlobalHotkeyRegistry = new GlobalHotkeys();
+            WindowManager = new WindowManager();
 
-            ViewManager.CreateAndShowMainWindow();
+            WindowManager.CreateAndShowMainWindow();
             RegisterGlobalHotkey(ConfigManager.Config.Hotkey);
 
             new Update.Update().CheckUpdatesAsync();
@@ -86,7 +88,7 @@ namespace PSQuickAssets
 
         public void RegisterGlobalHotkey(string hotkey)
         {
-            IntPtr mainWindowHandle = new WindowInteropHelper(ViewManager.MainView).Handle;
+            IntPtr mainWindowHandle = new WindowInteropHelper(WindowManager.MainView).Handle;
 
             if (GlobalHotkeyRegistry.Register(new Hotkey(hotkey), mainWindowHandle, OnGlobalHotkeyPressed, out string errorMessage))
             {
@@ -101,6 +103,6 @@ namespace PSQuickAssets
             }
         }
 
-        private void OnGlobalHotkeyPressed() => ViewManager.ToggleMainWindow();
+        private void OnGlobalHotkeyPressed() => WindowManager.ToggleMainWindow();
     }
 }

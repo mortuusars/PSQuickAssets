@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Input;
 
-namespace PSQuickAssets.WPF
+namespace PSQuickAssets.Services.Hotkeys
 {
     public class Hotkey
     {
