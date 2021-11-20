@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace PSQuickAssets
 {
@@ -30,7 +31,7 @@ namespace PSQuickAssets
             WindowManager = new WindowManager();
             WindowManager.CreateAndShowMainWindow();
 
-            GlobalHotkeys = new GlobalHotkeys(WindowManager, Logger);
+            GlobalHotkeys = new GlobalHotkeys(new WindowInteropHelper(WindowManager.MainWindow).Handle, Logger);
             GlobalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => WindowManager.ToggleMainWindow());
             GlobalHotkeys.Register(MGlobalHotkeys.Hotkey.FromString(ConfigManager.Config.Hotkey), HotkeyUse.ToggleMainWindow);
 
@@ -67,14 +68,6 @@ namespace PSQuickAssets
                 _terminal = new Terminal("PSQuickAssets Terminal");
                 _terminal.Commands
                     .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()))
-                    //.Add(new ConsoleCommand("register", "Registers new global hotkey", (hotkey) =>
-                    //{
-                    //    GlobalHotkeys.TryRegister(new Hotkey(hotkey), () => Logger.Info($"{hotkey} is pressed!"), out string errorMessage);
-                    //}))
-                    //.Add(new ConsoleCommand("unregister", "Registers new global hotkey", (hotkey) =>
-                    //{
-                    //    GlobalHotkeys.Remove(new Hotkey(hotkey));
-                    //}))
                     .Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
 
                 Logger.Loggers.Add(_terminal);
@@ -87,11 +80,9 @@ namespace PSQuickAssets
 
         private void OpenAppdataFolder()
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(App.AppDataFolder);
+            ProcessStartInfo processStartInfo = new(App.AppDataFolder);
             processStartInfo.UseShellExecute = true;
             Process.Start(processStartInfo);
         }
-
-        private void OnGlobalHotkeyPressed() => WindowManager.ToggleMainWindow();
     }
 }

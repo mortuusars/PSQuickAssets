@@ -24,16 +24,16 @@ internal class GlobalHotkeys : IDisposable
     private readonly Dictionary<HotkeyUse, Hotkey> _registeredHotkeys;
 
     private readonly MGlobalHotkeys.GlobalHotkeys _globalHotkeysHandler;
-    private readonly WindowManager _windowManager;
+    private readonly IntPtr _windowHandle;
     private readonly ILogger _logger;
 
-    internal GlobalHotkeys(WindowManager windowManager, ILogger logger)
+    internal GlobalHotkeys(IntPtr windowHandle, ILogger logger)
     {
         HotkeyActions = new Dictionary<HotkeyUse, Action>();
         _registeredHotkeys = new Dictionary<HotkeyUse, Hotkey>();
 
         _globalHotkeysHandler = new MGlobalHotkeys.GlobalHotkeys();
-        _windowManager = windowManager;
+        _windowHandle = windowHandle;
         _logger = logger;
     }
     
@@ -65,8 +65,7 @@ internal class GlobalHotkeys : IDisposable
             }
         }
 
-        var mainWindowHandle = new WindowInteropHelper(_windowManager.MainWindow).Handle;
-        if (_globalHotkeysHandler.TryRegister(hotkey, mainWindowHandle, HotkeyActions[use], out string regErrorMessage))
+        if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))
         {
             _registeredHotkeys.Add(use, hotkey);
             _logger.Info($"<{hotkey}> for <{use}> is registered.");
