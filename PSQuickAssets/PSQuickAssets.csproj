@@ -5,7 +5,7 @@
 	<TargetFramework>net6.0-windows</TargetFramework>
 	<UseWPF>true</UseWPF>
 	<ApplicationIcon>Resources\Images\psquickassets-size.ico</ApplicationIcon>
-	<Version>1.1.1</Version>
+	<Version>1.2.0</Version>
 	<StartupObject>PSQuickAssets.App</StartupObject>
 	<Authors>Mortuusars</Authors>
 	<PackageProjectUrl>https://github.com/mortuusars/PSQuickAssets</PackageProjectUrl>
@@ -63,6 +63,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="MGlobalHotkeys">
+      <HintPath>..\..\..\Libraries\MGlobalHotkeys\MGlobalHotkeys\bin\Release\net6.0-windows\MGlobalHotkeys.dll</HintPath>
+    </Reference>
     <Reference Include="MLogger">
       <HintPath>..\..\..\..\VSProjects\Libs\MLogger\MLogger.Terminal\bin\Release\net6.0-windows\win-x64\MLogger.dll</HintPath>
     </Reference>

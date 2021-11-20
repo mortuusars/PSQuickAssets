@@ -1,59 +1,40 @@
-﻿using System.Timers;
-using System.Windows;
-using System.Windows.Input;
+﻿using MGlobalHotkeys;
 using PropertyChanged;
 using PSQuickAssets.Services;
-using PSQuickAssets.Services.Hotkeys;
-using PSQuickAssets.WPF;
+using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class SettingsViewModel
     {
-
-        public Hotkey GlobalHotkey { get; set; }
+        public Hotkey ToggleMainWindowHotkey { get; set; }
         public bool CheckUpdates { get; set; }
-
-        public string SavedMessage { get; set; }
 
         public ICommand SaveCommand { get; }
 
-        private readonly GlobalHotkeys _globalHotkeys;
-        private readonly WindowManager _windowManager;
+        private readonly Services.GlobalHotkeys _globalHotkeys;
 
-        public SettingsViewModel(GlobalHotkeys globalHotkeys, WindowManager windowManager)
+        internal SettingsViewModel(Services.GlobalHotkeys globalHotkeys)
         {
             _globalHotkeys = globalHotkeys;
-            _windowManager = windowManager;
             SaveCommand = new RelayCommand(_ => ApplyNewSettings());
 
-            GlobalHotkey = new Hotkey(ConfigManager.Config.Hotkey);
+            ToggleMainWindowHotkey = Hotkey.FromString(ConfigManager.Config.Hotkey);
             CheckUpdates = ConfigManager.Config.CheckUpdates;
         }
 
         private void ApplyNewSettings()
         {
-            _globalHotkeys.Remove(new Hotkey(ConfigManager.Config.Hotkey));
-            if (!_globalHotkeys.TryRegister(GlobalHotkey, () => _windowManager.ToggleMainWindow(), out string errorMessage))
-            {
-                GlobalHotkey = new Hotkey(ConfigManager.Config.Hotkey);
-                MessageBox.Show(errorMessage);
-                return;
-            }
+            _globalHotkeys.Register(ToggleMainWindowHotkey, HotkeyUse.ToggleMainWindow);
 
             ConfigManager.Config = ConfigManager.Config with
             {
-                Hotkey = GlobalHotkey.ToString(),
+                Hotkey = ToggleMainWindowHotkey.ToString(),
                 CheckUpdates = CheckUpdates
             };
 
             ConfigManager.Save();
-
-            SavedMessage = "Saved";
-            Timer timer = new Timer(1000);
-            timer.Elapsed += (s, e) => { SavedMessage = ""; timer.Stop(); };
-            timer.Start();
         }
     }
 }

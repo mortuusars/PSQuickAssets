@@ -107,5 +107,11 @@ namespace PSQuickAssets.Views
         public static extern void SetLastError(int dwErrorCode);
 
         #endregion
+
+        private void HotkeyPicker_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.Key is Key.Escape or Key.Delete or Key.Back)
+                //okButton.Focus();
+        }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" 
-        xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys;assembly=MGlobalHotkeys"
         mc:Ignorable="d"
         Title="Settings" 
         MaxWidth="600" MinWidth="300"        
@@ -103,10 +103,15 @@
                                Margin="0 0 20 0"
                                Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
-                    <controls:HotkeyEditorControl x:Name="HotkeyEditor"
-                                                  Grid.Column="1" 
-                                                  Hotkey="{Binding GlobalHotkey}"
-                                                  Foreground="{StaticResource TextColorBrush}"/>
+
+                    <mglobalhotkeys:HotkeyPicker x:Name="HotkeyPicker"
+                                                 Grid.Column="1" 
+                                                 MinWidth="110"
+                                                 Hotkey="{Binding ToggleMainWindowHotkey}"
+                                                 ClearFocusOnCancel="True"
+                                                 ClearFocusOnClear="True"
+                                                 Foreground="{StaticResource TextColorBrush}"
+                                                 KeyDown="HotkeyPicker_KeyDown"/>                    
                 </Grid>
 
                 <Rectangle Margin="0 4" Height="1.5" Fill="{StaticResource TextColorBrush}"
@@ -135,7 +140,8 @@
                            d:Text="Saved" Margin="8 0"
                            VerticalAlignment="Center"/>-->
 
-                <Button Content="OK" Width="70"
+                <Button x:Name="okButton"
+                        Content="OK" Width="70"
                         HorizontalAlignment="Right"
                         Foreground="{StaticResource TextColorBrush}">
                     <i:Interaction.Triggers>

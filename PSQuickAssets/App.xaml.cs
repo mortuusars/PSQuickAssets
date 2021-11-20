@@ -21,7 +21,7 @@ namespace PSQuickAssets
         {
             if (IsAnotherInstanceOpen())
             {
-                MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets", 
+                MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets",
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 Shutdown();
                 return;
@@ -42,7 +42,7 @@ namespace PSQuickAssets
         {
             ConfigManager.Save();
 
-            Program.GlobalHotkeys?.Dispose(Program.GlobalHotkeys.HotkeyInfo);
+            Program.GlobalHotkeys?.Dispose();
             Program.WindowManager?.CloseMainWindow();
             _taskBarIcon?.Dispose();
 
@@ -61,7 +61,16 @@ namespace PSQuickAssets
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"PSQuickAssets has crashed.\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace}");
+            string message = $"PSQuickAssets has crashed.\n\n{e.Exception}";
+
+            try
+            {
+                Program.Logger.Fatal(message, e.Exception);
+            }
+            catch (Exception) { }
+
+            MessageBox.Show(message);
+
             Shutdown();
         }
     }

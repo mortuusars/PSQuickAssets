@@ -6,23 +6,23 @@ namespace PSQuickAssets.Services
 {
     public class WindowManager
     {
-        public MainWindow MainView { get; private set; }
+        public MainWindow MainWindow { get; private set; }
         private MainViewModel _mainViewModel;
 
         public void CreateAndShowMainWindow()
         {
             _mainViewModel = new MainViewModel(new ImageFileLoader(), this);
 
-            MainView ??= new MainWindow() { DataContext = _mainViewModel };
-            MainView.RestoreState();
-            MainView.Show();
+            MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
+            MainWindow.RestoreState();
+            MainWindow.Show();
 
-            MainView.FadeIn();
+            MainWindow.FadeIn();
         }
 
         public void ToggleMainWindow()
         {
-            if (MainView.IsShown)
+            if (MainWindow.IsShown)
                 HideMainWindow();
             else
                 ShowMainWindow();
@@ -30,19 +30,19 @@ namespace PSQuickAssets.Services
 
         public void ShowMainWindow()
         {
-            MainView.FadeIn();
-            MainView.Activate();
+            MainWindow.FadeIn();
+            MainWindow.Activate();
         }
 
         public void HideMainWindow()
         {
-            MainView.FadeOut();
+            MainWindow.FadeOut();
         }
 
         public void CloseMainWindow()
         {
-            MainView?.SaveState();
-            MainView?.Close();
+            MainWindow?.SaveState();
+            MainWindow?.Close();
         }
 
         public void ShowSettingsWindow()
@@ -52,7 +52,7 @@ namespace PSQuickAssets.Services
             if (settingsWindow is null)
             {
                 settingsWindow = new SettingsWindow();
-                settingsWindow.DataContext = new SettingsViewModel(Program.GlobalHotkeys, this);
+                settingsWindow.DataContext = new SettingsViewModel(Program.GlobalHotkeys);
                 //settingsWindow.Owner = MainView;
                 settingsWindow.Show();
                 settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
