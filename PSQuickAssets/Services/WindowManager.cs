@@ -1,5 +1,5 @@
 ﻿using PSQuickAssets.ViewModels;
-using PSQuickAssets.Views;
+using PSQuickAssets.Windows;
 using System.Linq;
 
 namespace PSQuickAssets.Services

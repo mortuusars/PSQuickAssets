@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace PSQuickAssets.Views
+namespace PSQuickAssets.Windows
 {
     public partial class SettingsWindow : Window
     {

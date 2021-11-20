@@ -1,4 +1,4 @@
-﻿using PSQuickAssets.Views.State;
+﻿using PSQuickAssets.Windows.State;
 using PSQuickAssets.WPF;
 using System;
 using System.Diagnostics;
@@ -11,11 +11,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace PSQuickAssets.Views
+namespace PSQuickAssets.Windows
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private const string _MAIN_VIEW_STATE_FILE = "state.json";

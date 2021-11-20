@@ -1,4 +1,4 @@
-﻿namespace PSQuickAssets.Views.State
+﻿namespace PSQuickAssets.Windows.State
 {
     public class ViewState
     {

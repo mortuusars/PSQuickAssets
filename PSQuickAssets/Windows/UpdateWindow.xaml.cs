@@ -2,11 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace PSQuickAssets.Views
+namespace PSQuickAssets.Windows
 {
-    /// <summary>
-    /// Interaction logic for UpdateWindow.xaml
-    /// </summary>
     public partial class UpdateWindow : Window
     {
         public UpdateWindow()
