@@ -7,6 +7,7 @@ Added:
 - Beautiful new version notification
 
 Changed:
+- Default hotkey is now Alt + A
 - App window will be shown on startup
 - Click on settings button will close settings window, if it was open
 - Settings window is now positioned at the center of main window
