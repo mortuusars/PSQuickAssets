@@ -1,24 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using GongSolutions.Wpf.DragDrop;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using PSQuickAssets.Assets;
+using PSQuickAssets.Models;
+using PSQuickAssets.PSInterop;
+using PSQuickAssets.Services;
+using PSQuickAssets.Utils;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Media;
-using System.Windows.Input;
-using PropertyChanged;
-using PSQuickAssets.Models;
-using PSQuickAssets.Services;
-using PSQuickAssets.Utils;
-using System.Timers;
 using System.Threading.Tasks;
-using PSQuickAssets.WPF;
-using GongSolutions.Wpf.DragDrop;
+using System.Timers;
 using System.Windows;
-using PSQuickAssets.PSInterop;
-using PSQuickAssets.Assets;
+using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
-    [AddINotifyPropertyChangedInterface]
-    public class MainViewModel : IDropTarget
+    public class MainViewModel : ObservableObject, IDropTarget
     {
         public AssetsViewModel AssetsViewModel { get; }
 
@@ -70,7 +68,7 @@ namespace PSQuickAssets.ViewModels
 
             if (psResult.Status == PSStatus.NoDocumentsOpen)
                 psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
-                        
+
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
@@ -184,7 +182,8 @@ namespace PSQuickAssets.ViewModels
             _errorShowingTimer.Stop();
             _errorShowingTimer.Interval = 3000;
             Error = errorMessage;
-            _errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); };
+            OnPropertyChanged(nameof(Error));
+            _errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); OnPropertyChanged(nameof(Error)); };
             _errorShowingTimer.Start();
             SystemSounds.Asterisk.Play();
         }

@@ -1,11 +1,9 @@
 ﻿using MGlobalHotkeys;
-using PropertyChanged;
 using PSQuickAssets.Services;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
-    [AddINotifyPropertyChangedInterface]
     public class SettingsViewModel
     {
         public Hotkey ToggleMainWindowHotkey { get; set; }

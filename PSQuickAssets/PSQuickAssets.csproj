@@ -51,9 +51,6 @@
 	<PackageReference Include="NetVips" Version="2.0.1" />
 	<PackageReference Include="NetVips.Native.win-x64" Version="8.11.4" />
 	<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.0" />
-	  <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
-		  <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
 	  <PackageReference Include="SharpHotkeys.WPF" Version="1.0.0" />
 	<PackageReference Include="WpfScreenHelper" Version="1.1.0" />
   </ItemGroup>
