@@ -1,49 +1,73 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
+using MLogger;
+using PSQuickAssets.Services;
+using PSQuickAssets.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace PSQuickAssets
 {
     public partial class App : Application
     {
-        public static string AppName { get; } = "PSQuickAssets";
-        public static Version Version { get; } = new Version("1.2.0");
+        public const string AppName = "PSQuickAssets";
+        public static Version Version { get; private set; } 
+        public string Build { get; private set; }        
+
         public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
+        internal static GlobalHotkeys GlobalHotkeys { get; private set; }
+        internal static WindowManager WindowManager { get; private set; }
+        internal static INotificationService NotificationService { get; private set; }
 
-        private TaskbarIcon _taskBarIcon;
+        public static ILogger Logger { get; private set; }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        public static TaskbarIcon _taskBarIcon;
+
+        public App()
         {
-            if (IsAnotherInstanceOpen())
-            {
-                MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-                Shutdown();
-                return;
-            }
+            ShutdownIfAlreadyOpen();
+
+            Version = new Version("1.2.0");
+            Build = BuildTime.GetLinkerTime(Assembly.GetEntryAssembly()).ToString("yyMMddHHmmss");
+            
+            DispatcherUnhandledException += OnUnhandledException;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            SetTooltipDelay(650);
 
             InitTaskbarIcon();
-            SetTooltipDelay(650);
-            Program program = Program.Init(e.Args);
-        }
+            NotificationService = new TaskbarNotificationService(_taskBarIcon);
 
-        private bool IsAnotherInstanceOpen()
-        {
-            Process current = Process.GetCurrentProcess();
-            return Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);
-        }
+            Logger = new MLoggerSetup(NotificationService).CreateLogger();
+
+            WindowManager = new WindowManager();
+            WindowManager.CreateAndShowMainWindow();
+
+            GlobalHotkeys = new GlobalHotkeys(new WindowInteropHelper(WindowManager.MainWindow).Handle, NotificationService, Logger);
+            GlobalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => WindowManager.ToggleMainWindow());
+            GlobalHotkeys.Register(MGlobalHotkeys.Hotkey.FromString(ConfigManager.Config.Hotkey), HotkeyUse.ToggleMainWindow);
+
+            throw new Exception("yes    ");
+
+            new Update.Update().CheckUpdatesAsync();
+        }        
 
         protected override void OnExit(ExitEventArgs e)
         {
             ConfigManager.Save();
 
-            Program.GlobalHotkeys?.Dispose();
-            Program.WindowManager?.CloseMainWindow();
+            GlobalHotkeys?.Dispose();
+            WindowManager?.CloseMainWindow();
             _taskBarIcon?.Dispose();
 
             base.OnExit(e);
@@ -59,17 +83,30 @@ namespace PSQuickAssets
             ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(delayMS));
         }
 
-        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void ShutdownIfAlreadyOpen()
+        {
+            Process current = Process.GetCurrentProcess();
+            bool isAnotherOpen = Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);
+
+            if (isAnotherOpen)
+            {
+                MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+            }
+        }
+
+        private void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             string message = $"PSQuickAssets has crashed.\n\n{e.Exception}";
 
             try
             {
-                Program.Logger.Fatal(message, e.Exception);
+                Logger.Fatal(message, e.Exception);
             }
             catch (Exception) { }
 
-            MessageBox.Show(message);
+            MessageBox.Show(message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
 
             Shutdown();
         }

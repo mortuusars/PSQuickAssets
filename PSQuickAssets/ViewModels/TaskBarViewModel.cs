@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using PSQuickAssets.Services;
+using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
@@ -16,9 +17,9 @@ namespace PSQuickAssets.ViewModels
         {
             AppName = "PSQuickAssets " + App.Version.ToString();
 
-            ShowWindowCommand = new RelayCommand(_ => Program.WindowManager.ToggleMainWindow());
-            ToggleTerminalCommand = new RelayCommand(_ => Program.ToggleTerminalWindow());
-            SettingsCommand = new RelayCommand(_ => Program.WindowManager.ShowSettingsWindow());
+            ShowWindowCommand = new RelayCommand(_ => App.WindowManager.ToggleMainWindow());
+            ToggleTerminalCommand = new RelayCommand(_ => MLoggerSetup.ToggleTerminalWindow());
+            SettingsCommand = new RelayCommand(_ => App.WindowManager.ShowSettingsWindow());
             ExitCommand = new RelayCommand(_ => App.Current.Shutdown());
         }
     }

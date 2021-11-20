@@ -38,14 +38,15 @@ namespace PSQuickAssets.ViewModels
 
         private readonly IImageFileLoader _imagesLoader;
         private readonly WindowManager _viewManager;
+        private readonly INotificationService _notificationService;
 
-        public MainViewModel(IImageFileLoader imagesLoader, WindowManager viewManager)
+        internal MainViewModel(IImageFileLoader imagesLoader, WindowManager viewManager, INotificationService notificationService)
         {
             AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), viewManager);
 
             _imagesLoader = imagesLoader;
             _viewManager = viewManager;
-
+            _notificationService = notificationService;
             PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
             PlaceImageWithMaskCommand = new RelayCommand(path => PlaceImageWithMaskAsync((string)path));
 
@@ -90,28 +91,31 @@ namespace PSQuickAssets.ViewModels
                 psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
 
             if (psResult.Status == PSStatus.NoDocumentsOpen)
+            {
                 psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
+                return;
+            }
 
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
                 //TODO: localize / decouple errors
                 ShowError(psResult.ResultMessage);
+                return;
             }
 
-            await ExecuteActionAsync("SelectRGBLayer", "Mask");
-            await ExecuteActionAsync("FreeTransform", "General");
+            await ExecuteActionAsync(photoshopInterop, "SelectRGBLayer", "Mask");
+            //await ExecuteActionAsync(photoshopInterop, "FreeTransform", "General");
         }
 
-        private async Task ExecuteActionAsync(string action, string from)
+        private async Task ExecuteActionAsync(IPhotoshopInterop photoshopInterop, string action, string from)
         {
-            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
             PSResult psResult = await Task.Run(() => photoshopInterop.ExecuteAction(action, from));
 
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
-                ShowError($"Cannot execute '{action}' from '{from}' set\n{psResult.ResultMessage}");
+                ShowError($"Cannot execute '{action}' from set '{from}'\n{psResult.ResultMessage}");
             }
         }
 
@@ -179,13 +183,14 @@ namespace PSQuickAssets.ViewModels
 
         private void ShowError(string errorMessage)
         {
-            _errorShowingTimer.Stop();
-            _errorShowingTimer.Interval = 3000;
-            Error = errorMessage;
-            OnPropertyChanged(nameof(Error));
-            _errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); OnPropertyChanged(nameof(Error)); };
-            _errorShowingTimer.Start();
-            SystemSounds.Asterisk.Play();
+            _notificationService.Notify("PSQA", errorMessage, NotificationIcon.Error);
+            //_errorShowingTimer.Stop();
+            //_errorShowingTimer.Interval = 3000;
+            //Error = errorMessage;
+            //OnPropertyChanged(nameof(Error));
+            //_errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); OnPropertyChanged(nameof(Error)); };
+            //_errorShowingTimer.Start();
+            //SystemSounds.Asterisk.Play();
         }
 
         public void DragOver(IDropInfo dropInfo)

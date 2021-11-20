@@ -11,7 +11,7 @@ namespace PSQuickAssets.Services
 
         public void CreateAndShowMainWindow()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), this);
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, App.NotificationService);
 
             MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
             MainWindow.RestoreState();
@@ -52,7 +52,7 @@ namespace PSQuickAssets.Services
             if (settingsWindow is null)
             {
                 settingsWindow = new SettingsWindow();
-                settingsWindow.DataContext = new SettingsViewModel(Program.GlobalHotkeys);
+                settingsWindow.DataContext = new SettingsViewModel(App.GlobalHotkeys);
                 //settingsWindow.Owner = MainView;
                 settingsWindow.Show();
                 settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;

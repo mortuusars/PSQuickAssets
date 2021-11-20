@@ -2,7 +2,6 @@
 using MLogger;
 using System;
 using System.Collections.Generic;
-using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
 
@@ -25,15 +24,17 @@ internal class GlobalHotkeys : IDisposable
 
     private readonly MGlobalHotkeys.GlobalHotkeys _globalHotkeysHandler;
     private readonly IntPtr _windowHandle;
+    private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
 
-    internal GlobalHotkeys(IntPtr windowHandle, ILogger logger)
+    internal GlobalHotkeys(IntPtr windowHandle, INotificationService notificationService, ILogger logger)
     {
         HotkeyActions = new Dictionary<HotkeyUse, Action>();
         _registeredHotkeys = new Dictionary<HotkeyUse, Hotkey>();
 
         _globalHotkeysHandler = new MGlobalHotkeys.GlobalHotkeys();
         _windowHandle = windowHandle;
+        _notificationService = notificationService;
         _logger = logger;
     }
     
@@ -71,7 +72,10 @@ internal class GlobalHotkeys : IDisposable
             _logger.Info($"<{hotkey}> for <{use}> is registered.");
         }
         else
+        {
+            _notificationService.Notify(App.AppName, regErrorMessage, NotificationIcon.Error);
             _logger.Error(regErrorMessage);
+        }
     }
 
     /// <summary>
