@@ -17,7 +17,7 @@ namespace PSQuickAssets
     {
         public const string AppName = "PSQuickAssets";
         public static Version Version { get; private set; } 
-        public string Build { get; private set; }        
+        public static string Build { get; private set; }
 
         public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
@@ -35,8 +35,8 @@ namespace PSQuickAssets
 
             Version = new Version("1.2.0");
             Build = BuildTime.GetLinkerTime(Assembly.GetEntryAssembly()).ToString("yyMMddHHmmss");
-            
-            DispatcherUnhandledException += OnUnhandledException;
+
+            DispatcherUnhandledException += CrashHandler.OnUnhandledException;
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -56,8 +56,6 @@ namespace PSQuickAssets
             GlobalHotkeys = new GlobalHotkeys(new WindowInteropHelper(WindowManager.MainWindow).Handle, NotificationService, Logger);
             GlobalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => WindowManager.ToggleMainWindow());
             GlobalHotkeys.Register(MGlobalHotkeys.Hotkey.FromString(ConfigManager.Config.Hotkey), HotkeyUse.ToggleMainWindow);
-
-            throw new Exception("yes    ");
 
             new Update.Update().CheckUpdatesAsync();
         }        

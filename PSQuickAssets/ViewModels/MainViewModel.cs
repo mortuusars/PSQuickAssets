@@ -5,6 +5,7 @@ using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
