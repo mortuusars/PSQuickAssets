@@ -1,5 +1,6 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using MLogger;
+using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
 using System;
@@ -16,27 +17,26 @@ namespace PSQuickAssets
     public partial class App : Application
     {
         public const string AppName = "PSQuickAssets";
-        public static Version Version { get; private set; } 
-        public static string Build { get; private set; }
+        public static Version Version { get; private set; } = new Version("1.2.0");
+        public static string Build { get; private set; } = BuildTime.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
 
         public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
-        internal static GlobalHotkeys GlobalHotkeys { get; private set; }
-        internal static WindowManager WindowManager { get; private set; }
-        internal static INotificationService NotificationService { get; private set; }
+        internal static Config Config { get; private set; }
+        internal static GlobalHotkeys? GlobalHotkeys { get; private set; }
+        internal static WindowManager? WindowManager { get; private set; }
+        internal static INotificationService? NotificationService { get; private set; }
 
-        public static ILogger Logger { get; private set; }
+        public static ILogger? Logger { get; private set; }
 
-        public static TaskbarIcon _taskBarIcon;
+        public static TaskbarIcon? _taskBarIcon;
 
         public App()
         {
             ShutdownIfAlreadyOpen();
 
-            Version = new Version("1.2.0");
-            Build = BuildTime.GetLinkerTime(Assembly.GetEntryAssembly()).ToString("yyMMddHHmmss");
-
             DispatcherUnhandledException += CrashHandler.OnUnhandledException;
+
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -46,23 +46,26 @@ namespace PSQuickAssets
             SetTooltipDelay(650);
 
             InitTaskbarIcon();
-            NotificationService = new TaskbarNotificationService(_taskBarIcon);
+            NotificationService = new TaskbarNotificationService(_taskBarIcon!);
 
             Logger = new MLoggerSetup(NotificationService).CreateLogger();
 
-            WindowManager = new WindowManager();
+            var configFileHandler = new JsonFileConfigHandler("config.json", Logger);
+            Config = new Config(configFileHandler, Logger, saveOnPropertyChanged: true).Load<Config>();
+
+            WindowManager = new WindowManager(NotificationService);
             WindowManager.CreateAndShowMainWindow();
 
             GlobalHotkeys = new GlobalHotkeys(new WindowInteropHelper(WindowManager.MainWindow).Handle, NotificationService, Logger);
             GlobalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => WindowManager.ToggleMainWindow());
-            GlobalHotkeys.Register(MGlobalHotkeys.Hotkey.FromString(ConfigManager.Config.Hotkey), HotkeyUse.ToggleMainWindow);
+            GlobalHotkeys.Register(MGlobalHotkeys.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
 
             new Update.Update().CheckUpdatesAsync();
         }        
 
         protected override void OnExit(ExitEventArgs e)
         {
-            ConfigManager.Save();
+            Config?.Save();
 
             GlobalHotkeys?.Dispose();
             WindowManager?.CloseMainWindow();
@@ -100,7 +103,7 @@ namespace PSQuickAssets
 
             try
             {
-                Logger.Fatal(message, e.Exception);
+                Logger?.Fatal(message, e.Exception);
             }
             catch (Exception) { }
 

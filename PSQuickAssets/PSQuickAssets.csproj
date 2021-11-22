@@ -11,6 +11,7 @@
 		<PackageProjectUrl>https://github.com/mortuusars/PSQuickAssets</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/mortuusars/PSQuickAssets</RepositoryUrl>
 		<SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

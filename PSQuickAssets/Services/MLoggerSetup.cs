@@ -13,7 +13,7 @@ namespace PSQuickAssets.Services;
 
 internal class MLoggerSetup
 {
-    private static Terminal _terminal;
+    private static Terminal? _terminal;
 
     private readonly INotificationService _notificationService;
 
@@ -36,7 +36,6 @@ internal class MLoggerSetup
             _terminal = new Terminal("PSQuickAssets Terminal");
             _terminal.Commands
                 .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()))
-                .Add(new ConsoleCommand("toast", "", (_) => _notificationService.Notify("PSQA", "Test", NotificationIcon.Warning, () => logger.Info("clicked!"))))
                 .Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
 
             logger.Loggers.Add(_terminal);
@@ -52,7 +51,10 @@ internal class MLoggerSetup
 
     internal static void ToggleTerminalWindow()
     {
-        if (App.Current.Windows.OfType<TerminalWindow>().FirstOrDefault() is Window terminalWindow)
+        if (_terminal is null)
+            return;
+
+        if (App.Current.Windows.OfType<TerminalWindow>().FirstOrDefault() is not null)
             _terminal.CloseWindow();
         else
             _terminal.ShowWindow();

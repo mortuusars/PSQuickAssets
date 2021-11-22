@@ -30,7 +30,7 @@ namespace PSQuickAssets.ViewModels
 
         private bool isLoading;
 
-        public AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager viewManager)
+        internal AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager viewManager)
         {
             AssetGroups = new ObservableCollection<AssetGroup>();
 

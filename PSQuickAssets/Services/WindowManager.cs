@@ -4,14 +4,20 @@ using System.Linq;
 
 namespace PSQuickAssets.Services
 {
-    public class WindowManager
+    internal class WindowManager
     {
-        public MainWindow MainWindow { get; private set; }
-        private MainViewModel _mainViewModel;
+        public MainWindow? MainWindow { get; private set; }
+        private MainViewModel? _mainViewModel;
+        private readonly INotificationService _notificationService;
+
+        internal WindowManager(INotificationService notificationService)
+        {
+            _notificationService = notificationService;
+        }
 
         public void CreateAndShowMainWindow()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, App.NotificationService);
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, _notificationService);
 
             MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
             MainWindow.RestoreState();
@@ -22,7 +28,7 @@ namespace PSQuickAssets.Services
 
         public void ToggleMainWindow()
         {
-            if (MainWindow.IsShown)
+            if (MainWindow?.IsShown is true)
                 HideMainWindow();
             else
                 ShowMainWindow();
@@ -30,13 +36,13 @@ namespace PSQuickAssets.Services
 
         public void ShowMainWindow()
         {
-            MainWindow.FadeIn();
-            MainWindow.Activate();
+            MainWindow?.FadeIn();
+            MainWindow?.Activate();
         }
 
         public void HideMainWindow()
         {
-            MainWindow.FadeOut();
+            MainWindow?.FadeOut();
         }
 
         public void CloseMainWindow()
@@ -52,8 +58,7 @@ namespace PSQuickAssets.Services
             if (settingsWindow is null)
             {
                 settingsWindow = new SettingsWindow();
-                settingsWindow.DataContext = new SettingsViewModel(App.GlobalHotkeys);
-                //settingsWindow.Owner = MainView;
+                settingsWindow.DataContext = new SettingsViewModel(App.Config, App.GlobalHotkeys, _notificationService);
                 settingsWindow.Show();
                 settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
                 settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y;
