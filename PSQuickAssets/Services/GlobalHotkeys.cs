@@ -1,4 +1,4 @@
-﻿using MGlobalHotkeys;
+﻿using MGlobalHotkeys.WPF;
 using MLogger;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ internal class GlobalHotkeys : IDisposable
 
     private readonly Dictionary<HotkeyUse, Hotkey> _registeredHotkeys;
 
-    private readonly MGlobalHotkeys.GlobalHotkeys _globalHotkeysHandler;
+    private readonly MGlobalHotkeys.WPF.GlobalHotkeys _globalHotkeysHandler;
     private readonly IntPtr _windowHandle;
     private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
@@ -32,7 +32,7 @@ internal class GlobalHotkeys : IDisposable
         HotkeyActions = new Dictionary<HotkeyUse, Action>();
         _registeredHotkeys = new Dictionary<HotkeyUse, Hotkey>();
 
-        _globalHotkeysHandler = new MGlobalHotkeys.GlobalHotkeys();
+        _globalHotkeysHandler = new MGlobalHotkeys.WPF.GlobalHotkeys();
         _windowHandle = windowHandle;
         _notificationService = notificationService;
         _logger = logger;
@@ -64,6 +64,12 @@ internal class GlobalHotkeys : IDisposable
                 _logger.Error(unregErrorMessage);
                 return;
             }
+        }
+
+        if (hotkey.Key is System.Windows.Input.Key.None)
+        {
+            _logger.Info("Hotkey <None> will not be registered.");
+            return;
         }
 
         if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))

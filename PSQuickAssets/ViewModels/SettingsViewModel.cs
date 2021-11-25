@@ -1,4 +1,4 @@
-﻿using MGlobalHotkeys;
+﻿using MGlobalHotkeys.WPF;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using System.Windows.Input;
