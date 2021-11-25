@@ -83,16 +83,18 @@ public abstract class ConfigBase
     /// <param name="propertyName">Property that will be set.</param>
     /// <param name="value">New value for this property.</param>
     /// <returns>Error message if not successful.</returns>
-    public virtual string TrySetValue(string propertyName, object value)
+    public virtual bool TrySetValue(string propertyName, object value, out string message)
     {
         try
         {
             SetValue(propertyName, value);
-            return string.Empty;
+            message = string.Empty;
+            return true;
         }
         catch (Exception ex)
         {
-            return ex.Message;
+            message = ex.Message;
+            return false;
         }
     }
 

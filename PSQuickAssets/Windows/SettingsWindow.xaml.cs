@@ -23,7 +23,7 @@ namespace PSQuickAssets.Windows
 
         private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(WpfElementUtils.GetParentOfTypeByName<Grid>(e.OriginalSource as FrameworkElement, nameof(HotkeyColumn)) != HotkeyColumn)
+            if(WpfElementUtils.GetParentOfTypeByName<Grid>((FrameworkElement)e.OriginalSource, nameof(HotkeyColumn)) != HotkeyColumn)
                 FocusManager.SetFocusedElement(this, this);
         }
 
@@ -43,7 +43,7 @@ namespace PSQuickAssets.Windows
         }
 
 
-        #region Window styles
+        #region Remove from Alt+Tab
 
         [Flags]
         public enum ExtendedWindowStyles
@@ -108,10 +108,5 @@ namespace PSQuickAssets.Windows
 
         #endregion
 
-        private void HotkeyPicker_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key is Key.Escape or Key.Delete or Key.Back)
-                //okButton.Focus();
-        }
     }
 }

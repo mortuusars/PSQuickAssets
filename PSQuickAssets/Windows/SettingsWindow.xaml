@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:PSQuickAssets.Controls" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
         mc:Ignorable="d"
         Title="Settings" 
         MaxWidth="600" MinWidth="300"        
@@ -23,7 +24,11 @@
         FontSize="14"
         d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        lex:LocalizeDictionary.DesignCulture="en"
+        lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+        >
 
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
@@ -56,24 +61,26 @@
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Source="../Resources/Images/settings.png"
                            Margin="6 0 0 0" Opacity=".4"/>
-                    <TextBlock Text="Settings" Style="{StaticResource TextLight}"
+                    <TextBlock Text="{lex:Loc Settings}" Style="{StaticResource TextLight}"
                            Margin="6 -1 0 0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </StackPanel>
 
                 <!-- HEADER BUTTONS -->
                 <StackPanel Margin="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <!-- CLOSE BTN -->
-                    <Image Source="/Resources/Images/close_24.png" Margin="2" Width="18" Height="18"
-                           VerticalAlignment="Top" HorizontalAlignment="Right" 
-                           Style="{StaticResource ImageButtons}" >
+                    <Image Source="/Resources/Images/close_24.png" 
+                           Margin="2" 
+                           Width="18" 
+                           Height="18"
+                           VerticalAlignment="Top" 
+                           HorizontalAlignment="Right" 
+                           Style="{StaticResource ImageButtons}" 
+                           ToolTip="{lex:Loc Close}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="ApplicationCommands.Close"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <Image.ToolTip>
-                            <TextBlock Text="Close" Style="{StaticResource TextLight}"/>
-                        </Image.ToolTip>
                     </Image>
                 </StackPanel>
             </Grid>
@@ -89,19 +96,14 @@
             <!-- SETTINGS -->
             <StackPanel Grid.Row="0">
                 <Grid Margin="0 4"
-                      Name="HotkeyColumn">
+                      Name="HotkeyColumn"
+                      ToolTip="{lex:Loc Settings_ToggleWindowHotkey_Tooltip}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid.ToolTip>
-                        <TextBlock Style="{StaticResource TextLight}">
-                        Press a key combination to assign.<LineBreak/>Esc, Del, Backspace to clear.
-                        </TextBlock>
-                    </Grid.ToolTip>
-
-                    <TextBlock Text="Window open/close hotkey" 
+                    <TextBlock Text="{lex:Loc Settings_ToggleWindowHotkey}" 
                                Margin="0 0 20 0"
                                Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
@@ -109,11 +111,10 @@
                     <mglobalhotkeys:HotkeyPicker x:Name="HotkeyPicker"
                                                  Grid.Column="1" 
                                                  MinWidth="110"
-                                                 Hotkey="{Binding ToggleMainWindowHotkey}"
+                                                 Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}"
                                                  ClearFocusOnCancel="True"
                                                  ClearFocusOnClear="True"
-                                                 Foreground="{StaticResource TextColorBrush}"
-                                                 KeyDown="HotkeyPicker_KeyDown"/>                    
+                                                 Foreground="{StaticResource TextColorBrush}"/>
                 </Grid>
 
                 <Rectangle Margin="0 4" Height="1.5" Fill="{StaticResource TextColorBrush}"
@@ -125,7 +126,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Check for updates" Style="{StaticResource TextLight}"
+                    <TextBlock Text="{lex:Loc Settings_CheckForUpdates}" Style="{StaticResource TextLight}"
                            TextWrapping="Wrap"/>
                     <controls:ToggleSwitch x:Name="Toggle" Grid.Column="1"
                                       IsOn="{Binding CheckUpdates, Mode=TwoWay}" 
@@ -134,34 +135,22 @@
             </StackPanel>
 
 
-            <StackPanel Grid.Row="1" 
-                        Orientation="Horizontal" 
-                        HorizontalAlignment="Right"
-                        Margin="0 20 0 0">
-                <!--<TextBlock Text="{Binding SavedMessage}" Style="{StaticResource TextLight}"
-                           d:Text="Saved" Margin="8 0"
-                           VerticalAlignment="Center"/>-->
-
                 <Button x:Name="okButton"
-                        Content="OK" Width="70"
+                        Content="{lex:Loc OK}" 
+                        Grid.Row="1" 
+                        Margin="0 20 0 0"
+                        MinWidth="70"
+                        MaxWidth="180"
                         HorizontalAlignment="Right"
-                        Foreground="{StaticResource TextColorBrush}">
+                        Foreground="{StaticResource TextColorBrush}"
+                        ToolTip="{lex:Loc Settings_SaveAndClose}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="{Binding SaveCommand}"/>
                             <i:InvokeCommandAction Command="ApplicationCommands.Close"/>
                         </i:EventTrigger>
-                        
                     </i:Interaction.Triggers>
                 </Button>
-                
-                <!--<Button Content="Close" Width="70"
-                        Margin="8 0 0 0"
-                        HorizontalAlignment="Right"
-                        PreviewMouseDown="CloseButton_MouseDown"
-                        Foreground="{StaticResource TextColorBrush}"/>-->
-                
-            </StackPanel>
         </Grid>
     </Grid>
 </Window>

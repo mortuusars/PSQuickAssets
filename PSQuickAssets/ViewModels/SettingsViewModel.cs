@@ -1,5 +1,6 @@
 ﻿using MGlobalHotkeys.WPF;
 using PSQuickAssets.Configuration;
+using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using System.Windows.Input;
 
@@ -7,10 +8,45 @@ namespace PSQuickAssets.ViewModels
 {
     public class SettingsViewModel
     {
-        public Hotkey ToggleMainWindowHotkey { get; set; }
-        public bool CheckUpdates { get; set; }
+        public Hotkey ToggleMainWindowHotkey
+        {
+            get => _toggleMainWindowHotkey;
+            set
+            {
+                _toggleMainWindowHotkey = value;
+
+                if (_config.TrySetValue(nameof(_config.ShowHideWindowHotkey), ToggleMainWindowHotkey.ToString(), out string error))
+                {
+                    _globalHotkeys.Register(ToggleMainWindowHotkey, HotkeyUse.ToggleMainWindow);
+
+                    if (!_config.SavesOnPropertyChanged)
+                        _config.Save();
+                }
+                else
+                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_ToggleWindowHotkeyFailed"] + "\n" + error, NotificationIcon.Error);
+            }
+        }
+        public bool CheckUpdates
+        {
+            get => _checkUpdates;
+            set
+            {
+                _checkUpdates = value;
+
+                if (_config.TrySetValue(nameof(_config.CheckUpdates), CheckUpdates, out string error))
+                {
+                    if (!_config.SavesOnPropertyChanged)
+                        _config.Save();
+                }
+                else
+                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
+            }
+        }
 
         public ICommand SaveCommand { get; }
+
+        private Hotkey _toggleMainWindowHotkey;
+        private bool _checkUpdates;
 
         private readonly Config _config;
         private readonly Services.GlobalHotkeys _globalHotkeys;
@@ -30,18 +66,8 @@ namespace PSQuickAssets.ViewModels
 
         private void ApplyNewSettings()
         {
-            _globalHotkeys.Register(ToggleMainWindowHotkey, HotkeyUse.ToggleMainWindow);
-
-            string failedSettings = "";
-
-            failedSettings += _config.TrySetValue(nameof(_config.ShowHideWindowHotkey), ToggleMainWindowHotkey.ToString()).Length > 0 ? "Window Open/Close hotkey\n" : "";
-            failedSettings += _config.TrySetValue(nameof(_config.CheckUpdates), CheckUpdates).Length > 0 ? "Check for Updates\n" : "";
-
             if (!_config.SavesOnPropertyChanged)
                 _config.Save();
-
-            if (failedSettings.Length > 0)
-                _notificationService.Notify("PSQuickAssets Settings", "Failed to save one or more settings:\n" + failedSettings, NotificationIcon.Error);
         }
     }
 }

@@ -53,6 +53,7 @@
 		<PackageReference Include="NetVips" Version="2.0.1" />
 		<PackageReference Include="NetVips.Native.win-x64" Version="8.11.4" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.0" />
+		<PackageReference Include="WPFLocalizeExtension" Version="3.9.1" />
 		<PackageReference Include="WpfScreenHelper" Version="1.1.0" />
 	</ItemGroup>
 
@@ -92,6 +93,21 @@
 		<Resource Include="Resources\Images\refresh_32.png" />
 		<Resource Include="Resources\Images\settings.png" />
 		<Resource Include="Resources\Images\test.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Strings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Strings.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Strings.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
