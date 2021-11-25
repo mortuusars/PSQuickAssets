@@ -6,6 +6,7 @@
     <tb:TaskbarIcon x:Key="TaskBarIcon"
                     IconSource="Images/psquickassets-size.ico"
                     LeftClickCommand="{Binding ShowWindowCommand}">
+
         <tb:TaskbarIcon.DataContext>
             <vm:TaskBarViewModel/>
         </tb:TaskbarIcon.DataContext>
@@ -16,19 +17,19 @@
                     BorderThickness="1"
                     Padding="4 2">
                 <TextBlock Text="{Binding AppName}" 
-                       Foreground="DimGray" />
+                           Foreground="DimGray" />
             </Border>
         </tb:TaskbarIcon.TrayToolTip>
 
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Show/Close Terminal" Command="{Binding ToggleTerminalCommand}"/>
-                <MenuItem Header="Settings" Command="{Binding SettingsCommand}">
+                <MenuItem Header="{Binding ToggleTerminalWindow}" Command="{Binding ToggleTerminalCommand}"/>
+                <MenuItem Header="{Binding Settings}" Command="{Binding SettingsCommand}">
                     <MenuItem.Icon>
                         <Image Source="Images/settings.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                <MenuItem Header="{Binding Exit}" Command="{Binding ExitCommand}"/>
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>
     </tb:TaskbarIcon>

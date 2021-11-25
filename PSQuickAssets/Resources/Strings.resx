@@ -146,6 +146,15 @@
 Delete or Backspace to clear.
 Esc to cancel.</value>
   </data>
+  <data name="Taskbar_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Taskbar_Setting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Taskbar_ToggleTerminal" xml:space="preserve">
+    <value>Toggle Terminal</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>

@@ -144,6 +144,33 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Taskbar_Exit {
+            get {
+                return ResourceManager.GetString("Taskbar_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Taskbar_Setting {
+            get {
+                return ResourceManager.GetString("Taskbar_Setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Terminal.
+        /// </summary>
+        public static string Taskbar_ToggleTerminal {
+            get {
+                return ResourceManager.GetString("Taskbar_ToggleTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Update {
