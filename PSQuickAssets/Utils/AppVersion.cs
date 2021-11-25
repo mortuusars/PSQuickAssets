@@ -4,8 +4,28 @@ using System.Reflection;
 
 namespace PSQuickAssets.Utils
 {
-    internal static class BuildTime
+    internal static class AppVersion
     {
+		/// <summary>
+		/// Gets version number defined in .csproj file.
+		/// </summary>
+		public static string GetVersionFromAssembly()
+		{
+			try
+			{
+				string info = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+				return info.Substring(0, info.IndexOf('+'));
+			}
+			catch (Exception)
+			{
+				return "99.99.99";
+			}
+		}
+
+		/// <summary>
+		/// Gets lates build Time.
+		/// </summary>
+		/// <param name="assembly"></param>
 		public static DateTime GetLinkerTime(Assembly assembly)
 		{
 			const string BuildVersionMetadataPrefix = "+build";

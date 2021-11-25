@@ -17,8 +17,8 @@ namespace PSQuickAssets
     public partial class App : Application
     {
         public const string AppName = "PSQuickAssets";
-        public static Version Version { get; private set; } = new Version(GetVersionFromAssembly());
-        public static string Build { get; private set; } = BuildTime.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
+        public static Version Version { get; private set; } = new Version(AppVersion.GetVersionFromAssembly());
+        public static string Build { get; private set; } = AppVersion.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
 
         public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
@@ -35,20 +35,7 @@ namespace PSQuickAssets
         {
             DispatcherUnhandledException += CrashHandler.OnUnhandledException;
             ShutdownIfAlreadyOpen();
-        }
-
-        private static string GetVersionFromAssembly()
-        {
-            try
-            {
-                string info = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-                return info.Substring(0, info.IndexOf('+'));
-            }
-            catch (Exception)
-            {
-                return "99.99.99";
-            }
-        }
+        }        
 
         protected override void OnStartup(StartupEventArgs e)
         {
