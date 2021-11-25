@@ -146,10 +146,22 @@
 Delete or Backspace to clear.
 Esc to cancel.</value>
   </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="Update_Current" xml:space="preserve">
+    <value>Current:</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Download:</value>
+  </data>
+  <data name="Update_New" xml:space="preserve">
+    <value>New:</value>
+  </data>
   <data name="Window_MainWindow" xml:space="preserve">
     <value>PSQuickAssets</value>
-  </data>
-  <data name="Window_Update" xml:space="preserve">
-    <value>PSQuickAssets Update</value>
   </data>
 </root>

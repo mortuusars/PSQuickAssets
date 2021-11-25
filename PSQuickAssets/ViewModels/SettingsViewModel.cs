@@ -60,8 +60,8 @@ namespace PSQuickAssets.ViewModels
 
             SaveCommand = new RelayCommand(_ => ApplyNewSettings());
 
-            ToggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
-            CheckUpdates = _config.CheckUpdates;
+            _toggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
+            _checkUpdates = _config.CheckUpdates;
         }
 
         private void ApplyNewSettings()

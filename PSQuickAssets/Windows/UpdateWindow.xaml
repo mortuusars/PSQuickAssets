@@ -3,7 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PSQuickAssets.Views" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:mdxaml="clr-namespace:MdXaml;assembly=MdXaml" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:local="clr-namespace:PSQuickAssets.Views" 
+        xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:mdxaml="clr-namespace:MdXaml;assembly=MdXaml" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="en"
+        lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         mc:Ignorable="d"
         Title="UpdateWindow" 
         Width="650"
@@ -111,7 +116,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Source="../Resources/Images/refresh_32.png"
                            Margin="6 0 0 0" Opacity=".4"/>
-                    <TextBlock Text="PSQuickAssets Update" 
+                    <TextBlock Text="{Binding WindowTitle}" d:Text="PSQuickAssets Update"
                                Style="{StaticResource TextLight}"
                                Margin="6 -1 0 0" 
                                VerticalAlignment="Center" 
@@ -137,7 +142,7 @@
                     VerticalAlignment="Top"
                     MinHeight="100">
 
-            <TextBlock Text="Update available" Margin="0 15 0 0" 
+            <TextBlock Text="{lex:Loc Update_Available}" Margin="0 15 0 0" 
                        HorizontalAlignment="Center"
                                 
                        FontSize="20"
@@ -155,7 +160,7 @@
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <TextBlock Text="Current:"/>
+                    <TextBlock Text="{lex:Loc Update_Current}"/>
 
                     <TextBlock Text="{Binding CurrentVersion}" 
                                d:Text="1.2.1" 
@@ -165,7 +170,7 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             Margin="0 4 0 0">
-                    <TextBlock Text="New:"/>
+                    <TextBlock Text="{lex:Loc Update_New}"/>
 
                     <TextBlock Text="{Binding NewVersion}" 
                                d:Text="1.2.1" 
@@ -200,8 +205,8 @@
             </Border>
 
             <!--LINK-->
-            <StackPanel Margin="10 10 10 15">            
-                <TextBlock Text="Download:" 
+            <StackPanel Margin="10 10 10 15">
+                <TextBlock Text="{lex:Loc Update_Download}" 
                            HorizontalAlignment="Center"/>
 
                 <TextBlock Margin="0 5 0 0"

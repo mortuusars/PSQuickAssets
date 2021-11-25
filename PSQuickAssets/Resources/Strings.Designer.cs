@@ -144,20 +144,56 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string Update_Available {
+            get {
+                return ResourceManager.GetString("Update_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current:.
+        /// </summary>
+        public static string Update_Current {
+            get {
+                return ResourceManager.GetString("Update_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download:.
+        /// </summary>
+        public static string Update_Download {
+            get {
+                return ResourceManager.GetString("Update_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New:.
+        /// </summary>
+        public static string Update_New {
+            get {
+                return ResourceManager.GetString("Update_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PSQuickAssets.
         /// </summary>
         public static string Window_MainWindow {
             get {
                 return ResourceManager.GetString("Window_MainWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PSQuickAssets Update.
-        /// </summary>
-        public static string Window_Update {
-            get {
-                return ResourceManager.GetString("Window_Update", resourceCulture);
             }
         }
     }
