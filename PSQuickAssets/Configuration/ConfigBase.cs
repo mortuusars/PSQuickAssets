@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace PSQuickAssets.Configuration;
 
-public abstract class BaseConfig
+public abstract class ConfigBase
 {
     public event Action<string>? ConfigPropertyChanged;
 
@@ -15,7 +15,7 @@ public abstract class BaseConfig
     protected IConfigHandler _configHandler;
     private readonly ILogger? _logger;
 
-    public BaseConfig(IConfigHandler configHandler, ILogger? logger, bool shouldSaveOnPropertyChanged)
+    public ConfigBase(IConfigHandler configHandler, ILogger? logger, bool shouldSaveOnPropertyChanged)
     {
         _configHandler = configHandler;
         _logger = logger;
@@ -96,7 +96,7 @@ public abstract class BaseConfig
         }
     }
 
-    public T Load<T>() where T : BaseConfig
+    public T Load<T>() where T : ConfigBase
     {
         var jsonElements = _configHandler.Load();
 

@@ -2,7 +2,7 @@
 
 namespace PSQuickAssets.Configuration;
 
-public class Config : BaseConfig
+public class Config : ConfigBase
 {
     public string ShowHideWindowHotkey { get; private set; }
     public bool CheckUpdates { get; private set; }

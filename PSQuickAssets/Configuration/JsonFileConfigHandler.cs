@@ -58,7 +58,7 @@ namespace PSQuickAssets.Configuration
             return jsonValues;
         }
 
-        public void Save<T>(T config) where T : BaseConfig
+        public void Save<T>(T config) where T : ConfigBase
         {
             try
             {

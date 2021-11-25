@@ -6,6 +6,6 @@ namespace PSQuickAssets.Configuration
     {
         //T? Load<T>() where T : BaseConfig;
         Dictionary<string, object> Load();
-        void Save<T>(T config) where T : BaseConfig;
+        void Save<T>(T config) where T : ConfigBase;
     }
 }

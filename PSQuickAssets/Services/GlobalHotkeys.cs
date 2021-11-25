@@ -75,7 +75,7 @@ internal class GlobalHotkeys : IDisposable
         if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))
         {
             _registeredHotkeys.Add(use, hotkey);
-            _logger.Info($"<{hotkey}> for <{use}> is registered.");
+            _logger.Info($"Registered <{hotkey}> for <{use}>.");
         }
         else
         {
