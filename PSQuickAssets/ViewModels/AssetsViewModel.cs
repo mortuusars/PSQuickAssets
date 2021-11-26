@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Models;
+using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils.SystemDialogs;
 using System;
@@ -76,7 +77,7 @@ namespace PSQuickAssets.ViewModels
         public AssetGroup AddGroup(string groupName)
         {
             if (IsGroupExists(groupName))
-                groupName = groupName + " New";
+                groupName = $"{groupName} {Localization.Instance["New"]}";
 
             AssetGroup assetGroup = new(groupName);
             assetGroup.GroupStateChanged += AssetGroup_OnGroupStateChanged;
@@ -94,7 +95,7 @@ namespace PSQuickAssets.ViewModels
 
         private async void SelectAndAddFolders(bool includeSubfolders = false)
         {
-            string[] folderPaths = SystemDialogs.SelectFolder("Select Folder", SelectionMode.Multiple);
+            string[] folderPaths = SystemDialogs.SelectFolder(Localization.Instance["SelectFolder"], SelectionMode.Multiple);
 
             if (folderPaths.Length == 0)
                 return;
@@ -109,7 +110,7 @@ namespace PSQuickAssets.ViewModels
 
         private async void SelectAndAddFiles()
         {
-            string[] files = SystemDialogs.SelectFiles("Select Assets", FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+            string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
 
             if (files.Length == 0)
                 return;
@@ -158,8 +159,10 @@ namespace PSQuickAssets.ViewModels
 
         private string GenericGroupName()
         {
-            int genericGroupCount = AssetGroups.Select(g => g.Name.Contains("group", StringComparison.OrdinalIgnoreCase)).Count();
-            return genericGroupCount == 0 ? "Group" : "Group " + (genericGroupCount + 1);
+            string group = Localization.Instance["Group"];
+
+            int genericGroupCount = AssetGroups.Select(g => g.Name.Contains(group, StringComparison.OrdinalIgnoreCase)).Count();
+            return genericGroupCount == 0 ? group : group + " " + (genericGroupCount + 1);
         }
     }
 }

@@ -61,6 +61,42 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Files.
+        /// </summary>
+        public static string Assets_AddFiles {
+            get {
+                return ResourceManager.GetString("Assets_AddFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Folder.
+        /// </summary>
+        public static string Assets_AddFolder {
+            get {
+                return ResourceManager.GetString("Assets_AddFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Folder (including subfolders).
+        /// </summary>
+        public static string Assets_AddFolderWithSubfolders {
+            get {
+                return ResourceManager.GetString("Assets_AddFolderWithSubfolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute action &apos;{0}&apos; from set &apos;{1}&apos;.
+        /// </summary>
+        public static string Assets_CannotExecuteActionFromSet {
+            get {
+                return ResourceManager.GetString("Assets_CannotExecuteActionFromSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
@@ -70,11 +106,66 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Group {
+            get {
+                return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide
+        ///Ctrl+Click: Close.
+        /// </summary>
+        public static string Main_Close_Tooltip {
+            get {
+                return ResourceManager.GetString("Main_Close_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Assets.
+        /// </summary>
+        public static string SelectAssets {
+            get {
+                return ResourceManager.GetString("SelectAssets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Folder.
+        /// </summary>
+        public static string SelectFolder {
+            get {
+                return ResourceManager.GetString("SelectFolder", resourceCulture);
             }
         }
         
@@ -149,15 +240,6 @@ namespace PSQuickAssets.Resources {
         public static string Taskbar_Exit {
             get {
                 return ResourceManager.GetString("Taskbar_Exit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Taskbar_Setting {
-            get {
-                return ResourceManager.GetString("Taskbar_Setting", resourceCulture);
             }
         }
         

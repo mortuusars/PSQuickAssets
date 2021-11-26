@@ -24,10 +24,7 @@ namespace PSQuickAssets.ViewModels
         public ObservableCollection<List<ImageFile>> Folders { get; set; } = new();
         public List<string> CurrentDirectories { get; set; } = new();
 
-        public string Error { get; set; } = "";
         public double ThumbnailSize { get; } = 55;
-
-        private readonly Timer _errorShowingTimer = new Timer();
 
         public ICommand PlaceImageCommand { get; }
         public ICommand PlaceImageWithMaskCommand { get; }
@@ -74,8 +71,7 @@ namespace PSQuickAssets.ViewModels
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
-                //TODO: localize / decouple errors
-                ShowError(psResult.ResultMessage);
+                _notificationService.Notify(App.AppName, psResult.ResultMessage, NotificationIcon.Error);
             }
         }
 
@@ -100,8 +96,7 @@ namespace PSQuickAssets.ViewModels
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
-                //TODO: localize / decouple errors
-                ShowError(psResult.ResultMessage);
+                _notificationService.Notify(App.AppName, psResult.ResultMessage, NotificationIcon.Error);
                 return;
             }
 
@@ -116,7 +111,8 @@ namespace PSQuickAssets.ViewModels
             if (psResult.Status != PSStatus.Success)
             {
                 _viewManager.ToggleMainWindow();
-                ShowError($"Cannot execute '{action}' from set '{from}'\n{psResult.ResultMessage}");
+                string errorMessage = String.Format(Resources.Localization.Instance["Assets_CannotExecuteActionFromSet"], action, from) + $"\n{psResult.ResultMessage}";
+                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
             }
         }
 
@@ -155,12 +151,10 @@ namespace PSQuickAssets.ViewModels
             {
                 Folders.Add(images);
                 CurrentDirectories.Add(directory);
-                UpdateConfig();
                 return true;
             }
             else
             {
-                //ShowError("No valid images in a folder");
                 return false;
             }
         }
@@ -172,26 +166,7 @@ namespace PSQuickAssets.ViewModels
             // Remove folderpath from stored directories
             var dir = Path.GetDirectoryName(folder[0].FilePath);
             CurrentDirectories.Remove(dir);
-            UpdateConfig();
             Sound.Click();
-        }
-
-        private void UpdateConfig()
-        {
-            //ConfigManager.Config = ConfigManager.Config with { Directories = CurrentDirectories };
-            //ConfigManager.Save();
-        }
-
-        private void ShowError(string errorMessage)
-        {
-            _notificationService.Notify("PSQA", errorMessage, NotificationIcon.Error);
-            //_errorShowingTimer.Stop();
-            //_errorShowingTimer.Interval = 3000;
-            //Error = errorMessage;
-            //OnPropertyChanged(nameof(Error));
-            //_errorShowingTimer.Elapsed += (s, e) => { Error = ""; _errorShowingTimer.Stop(); OnPropertyChanged(nameof(Error)); };
-            //_errorShowingTimer.Start();
-            //SystemSounds.Asterisk.Play();
         }
 
         public void DragOver(IDropInfo dropInfo)

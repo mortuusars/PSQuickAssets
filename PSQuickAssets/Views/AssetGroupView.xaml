@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
              xmlns:models="clr-namespace:PSQuickAssets.Models"
-             xmlns:local="clr-namespace:PSQuickAssets.Views" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+             xmlns:local="clr-namespace:PSQuickAssets.Views" xmlns:controls="clr-namespace:PSQuickAssets.Controls" xmlns:sys="clr-namespace:System;assembly=netstandard"
              mc:Ignorable="d" 
              x:Name="root"
              d:DesignHeight="350" d:DesignWidth="400"
@@ -93,6 +93,10 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
+
+            <!--<d:ListBox.ItemsSource>
+                <sys:Array
+            </d:ListBox.ItemsSource>-->
 
         </ListBox>
     </StackPanel>
