@@ -1,159 +1,136 @@
 ﻿using PSQuickAssets.PSInterop.Internal;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace PSQuickAssets.PSInterop
 {
-    public class PhotoshopInterop : IPhotoshopInterop
+    public class PhotoshopInterop
     {
-        private const int ERR_GENERAL_PS_ERROR = -2147212704;
-        private const int ERR_RETRY_LATER = -2147417846;
-        private const int ERR_INVALID_FILE_FORMAT = -2147213504;
-        private const int ERR_ILLEGAL_ARGUMENT = -2147220262;
-        private const int ERR_INVALID_PATH = -2147220271;
-        private const int ERR_USER_CANCELLED = -2147213497;
-
         private const string _selectionChannelName = "QuickAssetsMask";
 
-        public PSResult ExecuteAction(string action, string from)
+        public async Task<PSResult> ExecuteActionAsync(string actionName, string set)
         {
-            return ExecuteAction(() =>
+            return await Task.Run(() => ExecuteAction(() =>
             {
                 dynamic ps = CreatePSInstance();
-                ps.DoAction(action, from);
-            }, "<no filepath>");
+                ps.DoAction(actionName, set);
+            }));
         }
 
-        public PSResult AddImageToDocumentWithMask(string filePath, MaskMode maskMode)
+        /// <summary>
+        /// Attempts to add given image (filepath) as layer to open document in PS and applies a mask to it if selection was present.
+        /// </summary>
+        /// <param name="filePath">Image filepath.</param>
+        /// <param name="maskMode">Mask mode.</param>
+        public async Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode)
         {
-            return ExecuteAction(() =>
+            return await Task.Run(() => ExecuteAction(() =>
             {
                 dynamic ps = CreatePSInstance();
 
-                PsActions psActions = new PsActions();
-                psActions.SaveSelectionAsChannel(ps, _selectionChannelName);
-                psActions.AddFilePathAsLayer(ps, filePath);
-                psActions.LoadSelectionFromChannel(ps, _selectionChannelName);
-                psActions.ApplyMaskFromSelection(ps, MaskMode.RevealSelection);
+                PsActions.SaveSelectionAsChannel(ps, _selectionChannelName);
+                PsActions.AddFilePathAsLayer(ps, filePath);
+                PsActions.LoadSelectionFromChannel(ps, _selectionChannelName);
+                PsActions.ApplyMaskFromSelection(ps, maskMode);
 
-
-                psActions.DeleteChannel(ps, _selectionChannelName);
-                psActions.UnlinkMask(ps);
-            }, 
-            filePath);
+                PsActions.DeleteChannel(ps, _selectionChannelName);
+                PsActions.UnlinkMask(ps);
+            }, filePath));
         }
 
-        private PSResult ExecuteAction(Action action, string filePath)
+
+        /// <summary>
+        /// Attempts to add given image (filepath) as layer to open document in PS.
+        /// </summary>
+        /// <param name="filePath">Image filepath.</param>
+        public async Task<PSResult> AddImageToDocumentAsync(string filePath)
+        {
+            return await Task.Run(() => ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+
+                PsActions.AddFilePathAsLayer(ps, filePath);
+            }, filePath));
+        }
+
+        /// <summary>
+        /// Opens image as new document.
+        /// </summary>
+        /// <param name="filePath">Image filepath.</param>
+        /// <exception cref="Exception"></exception>
+        public async Task<PSResult> OpenImageAsNewDocumentAsync(string filePath)
+        {
+            return await Task.Run(() => ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+                ps.Open(filePath);
+            }, filePath));
+        }
+
+        /// <summary>
+        /// Determines if Active Document has a selection.
+        /// </summary>
+        public async Task<bool> HasSelectionAsync()
+        {
+            var result = await Task.Run(() => ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+                var selectionBounds = ps.ActiveDocument.Selection.Bounds;
+            }));
+
+            return result.Status == Status.Success;
+        }
+
+        /// <summary>
+        /// Determines if Photoshop has a Document open.
+        /// </summary>
+        public async Task<bool> HasOpenDocumentAsync()
+        {
+            var result = await Task.Run(() => ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+                var document = ps.ActiveDocument;
+            }));
+
+            return result.Status == Status.Success;
+        }
+
+        /// <summary>
+        /// Create instance of Photoshop COM Object.
+        /// </summary>
+        /// <exception cref="Exception"></exception>
+        private static dynamic CreatePSInstance()
+        {
+            Type psType = Type.GetTypeFromProgID("Photoshop.Application") ?? throw new NullReferenceException("Failed to retrieve Photoshop Type from ProgID");
+            return Activator.CreateInstance(psType) ?? throw new NullReferenceException("Failed to create Photoshop instance.");
+        }
+
+        /// <summary>
+        /// Executes passed call to photoshop. Catches any exceptions.
+        /// </summary>
+        /// <param name="action">Code, that will be executed safely.</param>
+        /// <param name="filePath">Image filepath, if call is related to files.</param>
+        /// <returns>Result of the executed action.</returns>
+        private PSResult ExecuteAction(Action action, string filePath = "")
         {
             if (Process.GetProcessesByName("Photoshop").Length == 0)
-                return new PSResult(PSStatus.NotRunning, filePath, "Photoshop is not running");
+                return new PSResult(Status.NotRunning, filePath, "Photoshop is not running");
 
             try
             {
                 action();
-                return new PSResult(PSStatus.Success, filePath, "");
+                return new PSResult(Status.Success, filePath);
             }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Place\" is not currently available"))
+            catch (COMException comException)
             {
-                return new PSResult(PSStatus.NoDocumentsOpen, filePath, "No documents open");
+                return PSResult.FromException(comException, filePath);
             }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Duplicate\" is not currently available"))
+            catch (Exception exception)
             {
-                return new PSResult(PSStatus.NoSelection, filePath, "Document has no selection");
+                return PSResult.FromException(exception, filePath);
             }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("no parser or file format can open the file"))
-            {
-                return new PSResult(PSStatus.InvalidFileFormat, filePath, "Invalid file format");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("file could not be found"))
-            {
-                return new PSResult(PSStatus.FileNotFound, filePath, "File could not be found");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
-            {
-                return new PSResult(PSStatus.Busy, filePath, "Photoshop is busy");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_USER_CANCELLED)
-            {
-                return new PSResult(PSStatus.Busy, filePath, "Execution cancelled");
-            }
-        }
-
-        /// <summary>
-        /// Attempts to add given image (filepath) to open document in PS.
-        /// </summary>
-        /// <param name="filePath">Image filepath.</param>
-        public PSResult AddImageToDocument(string filePath)
-        {
-            if (Process.GetProcessesByName("Photoshop").Length == 0)
-                return new PSResult(PSStatus.NotRunning, filePath, "Photoshop is not running");
-
-            try
-            {
-                dynamic ps = CreatePSInstance();
-                PsActions psActions = new PsActions();
-                psActions.AddFilePathAsLayer(ps, filePath);
-                return new PSResult(PSStatus.Success, filePath, "");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("The command \"Place\" is not currently available"))
-            {
-                return new PSResult(PSStatus.NoDocumentsOpen, filePath, "No documents open");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("no parser or file format can open the file"))
-            {
-                return new PSResult(PSStatus.InvalidFileFormat, filePath, "Invalid file format");
-            }            
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("file could not be found"))
-            {
-                return new PSResult(PSStatus.FileNotFound, filePath, "File could not be found");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
-            {
-                return new PSResult(PSStatus.Busy, filePath, "Photoshop is busy");
-            }
-        }
-
-        /// <summary>
-        /// Open image as new document.
-        /// </summary>
-        /// <param name="filePath">Image filepath.</param>
-        /// <exception cref="Exception"></exception>
-        public PSResult OpenImage(string filePath)
-        {
-            if (Process.GetProcessesByName("Photoshop").Length == 0)
-                return new PSResult(PSStatus.NotRunning, filePath, "Photoshop is not running");
-
-            try
-            {
-                dynamic ps = CreatePSInstance();
-                ps.Open(filePath);
-                return new PSResult(PSStatus.Success, filePath, "");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_RETRY_LATER)
-            {
-                return new PSResult(PSStatus.Busy, filePath, "Photoshop is busy");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_INVALID_FILE_FORMAT)
-            {
-                return new PSResult(PSStatus.InvalidFileFormat, filePath, "Invalid file format");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_ILLEGAL_ARGUMENT)
-            {
-                return new PSResult(PSStatus.IllegalArgument, filePath, "Filepath is not valid");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_INVALID_PATH)
-            {
-                return new PSResult(PSStatus.IllegalArgument, filePath, "Filepath is not valid");
-            }
-            catch (Exception ex) when (ex.HResult == ERR_GENERAL_PS_ERROR && ex.Message.Contains("file could not be found"))
-            {
-                return new PSResult(PSStatus.FileNotFound, filePath, "File could not be found");
-            }
-        }
-
-        private static dynamic CreatePSInstance()
-        {
-            return Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.Application"));
         }
     }
 }

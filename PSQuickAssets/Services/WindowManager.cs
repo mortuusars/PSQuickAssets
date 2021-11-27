@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PSQuickAssets.Services
 {
-    internal class WindowManager
+    public class WindowManager
     {
         public MainWindow? MainWindow { get; private set; }
         private MainViewModel? _mainViewModel;

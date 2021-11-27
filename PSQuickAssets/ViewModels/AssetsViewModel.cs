@@ -18,6 +18,8 @@ namespace PSQuickAssets.ViewModels
     {
         public ObservableCollection<AssetGroup> AssetGroups { get; }
 
+        public AssetUseViewModel AssetUseViewModel { get; set; }
+
         public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
         public ICommand AddFolderCommand { get; }

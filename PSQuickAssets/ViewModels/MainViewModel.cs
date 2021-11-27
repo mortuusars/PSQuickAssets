@@ -29,8 +29,6 @@ namespace PSQuickAssets.ViewModels
         public ICommand PlaceImageCommand { get; }
         public ICommand PlaceImageWithMaskCommand { get; }
         public ICommand SettingsCommand { get; }
-        public ICommand AddFolderCommand { get; }
-        public ICommand RemoveFolderCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
 
@@ -45,102 +43,95 @@ namespace PSQuickAssets.ViewModels
             _imagesLoader = imagesLoader;
             _viewManager = viewManager;
             _notificationService = notificationService;
-            PlaceImageCommand = new RelayCommand(path => PlaceImage((string)path));
-            PlaceImageWithMaskCommand = new RelayCommand(path => PlaceImageWithMaskAsync((string)path));
+            PlaceImageCommand = new RelayCommand(path => PlaceImageAsync((string)path));
+            PlaceImageWithMaskCommand = new RelayCommand(path => AddImageWithMaskAsync((string)path));
 
             SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsWindow());
-            AddFolderCommand = new RelayCommand(_ => AddNewDirectoryAsync());
-            RemoveFolderCommand = new RelayCommand(folder => RemoveFolder((List<ImageFile>)folder));
             HideCommand = new RelayCommand(_ => _viewManager.HideMainWindow());
-
-            LoadSavedDirs();
         }
 
-        private async void PlaceImage(string filePath)
+        private async Task PlaceImageAsync(string filePath)
         {
             _viewManager.ToggleMainWindow();
 
-            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
+            PhotoshopInterop photoshopInterop = new PhotoshopInterop();
             WindowControl.FocusWindow("photoshop");
 
-            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
+            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocumentAsync(filePath));
 
-            if (psResult.Status == PSStatus.NoDocumentsOpen)
-                psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
+            if (psResult.Status == Status.NoDocumentsOpen)
+                psResult = await Task.Run(() => photoshopInterop.OpenImageAsNewDocumentAsync(filePath));
 
-            if (psResult.Status != PSStatus.Success)
+            if (psResult.Status != Status.Success)
             {
-                _viewManager.ToggleMainWindow();
-                _notificationService.Notify(App.AppName, psResult.ResultMessage, NotificationIcon.Error);
-            }
-        }
-
-        private async void PlaceImageWithMaskAsync(string filePath)
-        {
-            _viewManager.ToggleMainWindow();
-
-            IPhotoshopInterop photoshopInterop = new PhotoshopInterop();
-            WindowControl.FocusWindow("photoshop");
-
-            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocumentWithMask(filePath, MaskMode.RevealSelection));
-
-            if (psResult.Status == PSStatus.NoSelection)
-                psResult = await Task.Run(() => photoshopInterop.AddImageToDocument(filePath));
-
-            if (psResult.Status == PSStatus.NoDocumentsOpen)
-            {
-                psResult = await Task.Run(() => photoshopInterop.OpenImage(filePath));
-                return;
-            }
-
-            if (psResult.Status != PSStatus.Success)
-            {
-                _viewManager.ToggleMainWindow();
-                _notificationService.Notify(App.AppName, psResult.ResultMessage, NotificationIcon.Error);
-                return;
-            }
-
-            await ExecuteActionAsync(photoshopInterop, "SelectRGBLayer", "Mask");
-            //await ExecuteActionAsync(photoshopInterop, "FreeTransform", "General");
-        }
-
-        private async Task ExecuteActionAsync(IPhotoshopInterop photoshopInterop, string action, string from)
-        {
-            PSResult psResult = await Task.Run(() => photoshopInterop.ExecuteAction(action, from));
-
-            if (psResult.Status != PSStatus.Success)
-            {
-                _viewManager.ToggleMainWindow();
-                string errorMessage = String.Format(Resources.Localization.Instance["Assets_CannotExecuteActionFromSet"], action, from) + $"\n{psResult.ResultMessage}";
+                string errorMessage = Resources.Localization.Instance[$"PSStatus_{psResult.Status}"];
                 _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
             }
         }
 
-        private async void LoadSavedDirs()
+        private async Task AddImageWithMaskAsync(string filePath)
         {
-            //foreach (var path in ConfigManager.Config.Directories)
-                //await LoadDirectory(path);
+            _viewManager.ToggleMainWindow();
+            WindowControl.FocusWindow("photoshop");
+
+            PhotoshopInterop psInterop = new PhotoshopInterop();
+
+            if (await psInterop.HasOpenDocumentAsync() is false)
+            {
+                await OpenImageAsNewDocumentAsync(filePath);
+                return;
+            }
+
+            if (await psInterop.HasSelectionAsync())
+            {
+                var result = await psInterop.AddImageToDocumentWithMaskAsync(filePath, MaskMode.RevealSelection);
+
+                if (result.IsSuccessful)
+                    await ExecuteActionAsync(psInterop, "SelectRGBLayer", "Mask");
+                else
+                {
+                    string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
+                    _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
+                }
+            }
+            else
+            {
+                var result = await psInterop.AddImageToDocumentAsync(filePath);
+
+                if (!result.IsSuccessful)
+                {
+                    string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
+                    _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
+                }
+            }
+        }
+
+        private async Task OpenImageAsNewDocumentAsync(string filePath)
+        {
+            PhotoshopInterop psInterop = new PhotoshopInterop();
+            var result = await psInterop.OpenImageAsNewDocumentAsync(filePath);
+
+            if (!result.IsSuccessful)
+            {
+                string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
+                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
+            }
+        }
+
+        private async Task ExecuteActionAsync(PhotoshopInterop photoshopInterop, string action, string from)
+        {
+            PSResult result = await photoshopInterop.ExecuteActionAsync(action, from);
+
+            if (result.IsSuccessful is false)
+            {
+                string errorMessage = String.Format(Resources.Localization.Instance["Assets_CannotExecuteActionFromSet"], action, from) + $"\n{result.Message}";
+                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
+            }
         }
 
         private async Task<List<ImageFile>> LoadImages(string path)
         {
             return await _imagesLoader.LoadAsync(path, (int)ThumbnailSize, ConstrainTo.Height);
-        }
-
-        private void AddNewDirectoryAsync()
-        {
-            ////string newDirectoryPath = _viewManager.ShowSelectDirectoryDialog();
-            //if (string.IsNullOrWhiteSpace(newDirectoryPath))
-            //    return;
-
-            //if (CurrentDirectories.Contains(newDirectoryPath))
-            //{
-            //    ShowError($"\"{new DirectoryInfo(newDirectoryPath).Name}\" is already added");
-            //    return;
-            //}
-
-            //if (await LoadDirectory(newDirectoryPath))
-            //    Sound.Click();
         }
 
         private async Task<bool> LoadDirectory(string directory)
@@ -157,16 +148,6 @@ namespace PSQuickAssets.ViewModels
             {
                 return false;
             }
-        }
-
-        private void RemoveFolder(List<ImageFile> folder)
-        {
-            Folders.Remove(folder);
-
-            // Remove folderpath from stored directories
-            var dir = Path.GetDirectoryName(folder[0].FilePath);
-            CurrentDirectories.Remove(dir);
-            Sound.Click();
         }
 
         public void DragOver(IDropInfo dropInfo)

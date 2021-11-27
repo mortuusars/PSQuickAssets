@@ -16,5 +16,6 @@
         PSResult OpenImage(string filePath);
 
         PSResult ExecuteAction(string action, string from);
+        bool HasSelection();
     }
 }
