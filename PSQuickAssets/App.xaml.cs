@@ -22,6 +22,8 @@ namespace PSQuickAssets
 
         public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
+        public static TaskbarIcon TaskBarIcon { get => (TaskbarIcon)Current.FindResource("TaskBarIcon"); }
+
         internal static Config Config { get; private set; }
         internal static GlobalHotkeys? GlobalHotkeys { get; private set; }
         internal static WindowManager? WindowManager { get; private set; }
@@ -29,22 +31,20 @@ namespace PSQuickAssets
 
         public static ILogger? Logger { get; private set; }
 
-        public static TaskbarIcon? _taskBarIcon;
 
         public App()
         {
             DispatcherUnhandledException += CrashHandler.OnUnhandledException;
-            ShutdownIfAlreadyOpen();
         }        
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             SetTooltipDelay(650);
 
-            InitTaskbarIcon();
-            NotificationService = new TaskbarNotificationService(_taskBarIcon!);
+            ShutdownIfAlreadyOpen();
+            
+            NotificationService = new TaskbarNotificationService(TaskBarIcon);
 
             Logger = new MLoggerSetup(NotificationService).CreateLogger();
 
@@ -67,14 +67,9 @@ namespace PSQuickAssets
 
             GlobalHotkeys?.Dispose();
             WindowManager?.CloseMainWindow();
-            _taskBarIcon?.Dispose();
+            TaskBarIcon?.Dispose();
 
             base.OnExit(e);
-        }
-
-        private void InitTaskbarIcon()
-        {
-            _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
         }
 
         private static void SetTooltipDelay(int delayMS)
@@ -91,7 +86,8 @@ namespace PSQuickAssets
             {
                 MessageBox.Show("Another instance of PSQuickAssets is already running.", "PSQuickAssets",
                     MessageBoxButton.OK, MessageBoxImage.Information);
-                Shutdown();
+                App.Current.Shutdown();
+                Environment.Exit(0); // Kill process if shutdown not worked. Probably only in debug.
             }
         }
 

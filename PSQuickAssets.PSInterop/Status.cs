@@ -1,16 +1,19 @@
 ﻿namespace PSQuickAssets.PSInterop
 {
-    public enum PSStatus
+    public enum Status
     {
         Success,
         NotRunning,
         NoDocumentsOpen,
         Busy,
-        COMError,
         Failed,
         InvalidFileFormat,
         FileNotFound,
         IllegalArgument,
-        NoSelection
+        InvalidFilePath,
+        NoSelection,
+        Cancelled,
+        UnknownComException,
+        UnknownException
     }
 }

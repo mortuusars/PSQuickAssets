@@ -2,7 +2,7 @@
 
 namespace PSQuickAssets.PSInterop.Internal
 {
-    internal class PsActions
+    internal static class PsActions
     {
         /// <summary>
         /// Adds specified filePath as a new layer.
@@ -10,12 +10,9 @@ namespace PSQuickAssets.PSInterop.Internal
         /// <param name="ps"></param>
         /// <param name="filePath"></param>
         /// <exception cref="Exception"></exception>
-        internal PSResult AddFilePathAsLayer(dynamic ps, string filePath)
+        internal static void AddFilePathAsLayer(dynamic ps, string filePath)
         {
             dynamic actionDescriptor = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionDescriptor"));
-
-            if (actionDescriptor is null)
-                return new PSResult(PSStatus.COMError, filePath, "Failed to create Action Descriptor");
 
             dynamic idPlc = ps.CharIDToTypeID("Plc ");
             dynamic idnull = ps.CharIDToTypeID("null");
@@ -25,15 +22,13 @@ namespace PSQuickAssets.PSInterop.Internal
             dynamic idQcsa = ps.CharIDToTypeID("Qcsa");
             actionDescriptor.PutEnumerated(idFTcs, idQCSt, idQcsa);
             ps.ExecuteAction(idPlc, actionDescriptor, PsDialogModes.psDisplayNoDialogs);
-
-            return new PSResult(PSStatus.Success, filePath, "");
         }
 
         /// <summary>
         /// Saves current selection to new channel with specified name.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        internal void SaveSelectionAsChannel(dynamic ps, string channelName)
+        internal static void SaveSelectionAsChannel(dynamic ps, string channelName)
         {
             var idDplc = ps.CharIDToTypeID("Dplc");
             dynamic desc27 = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionDescriptor"));
@@ -52,7 +47,7 @@ namespace PSQuickAssets.PSInterop.Internal
         /// Makes selection from specified channel.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        internal void LoadSelectionFromChannel(dynamic ps, string channelName)
+        internal static void LoadSelectionFromChannel(dynamic ps, string channelName)
         {
             dynamic channel = ps.ActiveDocument.Channels[channelName];
             ps.ActiveDocument.Selection.Load(channel, PsSelectionType.psReplaceSelection);
@@ -61,8 +56,9 @@ namespace PSQuickAssets.PSInterop.Internal
         /// <summary>
         /// Adds mask to a current layer.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">When mask mode is out of range.</exception>
         /// <exception cref="Exception"></exception>
-        internal void ApplyMaskFromSelection(dynamic ps, MaskMode maskMode)
+        internal static void ApplyMaskFromSelection(dynamic ps, MaskMode maskMode)
         {
             string selectionMode = maskMode switch
             {
@@ -70,7 +66,7 @@ namespace PSQuickAssets.PSInterop.Internal
                 MaskMode.HideAll => "HdAl",
                 MaskMode.RevealSelection => "RvlS",
                 MaskMode.HideSelection => "HdSl",
-                _ => throw new ArgumentOutOfRangeException(maskMode + " is not supported.")
+                _ => throw new ArgumentOutOfRangeException(nameof(maskMode), maskMode + " is not supported.")
             };
 
             var idMk = ps.CharIDToTypeID("Mk  ");
@@ -96,12 +92,16 @@ namespace PSQuickAssets.PSInterop.Internal
         /// Deletes channel with specified name.
         /// </summary>
         /// <exception cref="Exception"></exception>
-        internal void DeleteChannel(dynamic ps, string channelName)
+        internal static void DeleteChannel(dynamic ps, string channelName)
         {
             ps.ActiveDocument.Channels[channelName].Delete();
         }
 
-        internal void UnlinkMask(dynamic ps)
+        /// <summary>
+        /// Unlinks mask from layer.
+        /// </summary>
+        /// <exception cref="Exception"/>
+        internal static void UnlinkMask(dynamic ps)
         {
             dynamic desc = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionDescriptor"));
             dynamic refer = Activator.CreateInstance(Type.GetTypeFromProgID("Photoshop.ActionReference"));

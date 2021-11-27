@@ -148,6 +148,42 @@ Ctrl+Click: Close</value>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="PSStatus_Busy" xml:space="preserve">
+    <value>Photoshop is busy</value>
+  </data>
+  <data name="PSStatus_Cancelled" xml:space="preserve">
+    <value>Operation was cancelled</value>
+  </data>
+  <data name="PSStatus_COMError" xml:space="preserve">
+    <value>Unexpected error occured</value>
+  </data>
+  <data name="PSStatus_Failed" xml:space="preserve">
+    <value>Failed to communicate with Photoshop</value>
+  </data>
+  <data name="PSStatus_FileNotFound" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="PSStatus_IllegalArgument" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="PSStatus_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
+  <data name="PSStatus_InvalidFilePath" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
+  <data name="PSStatus_NoDocumentsOpen" xml:space="preserve">
+    <value>No documents open</value>
+  </data>
+  <data name="PSStatus_NoSelection" xml:space="preserve">
+    <value>Document has no selection</value>
+  </data>
+  <data name="PSStatus_NotRunning" xml:space="preserve">
+    <value>Photoshop is not running</value>
+  </data>
+  <data name="PSStatus_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
   <data name="SelectAssets" xml:space="preserve">
     <value>Select Assets</value>
   </data>

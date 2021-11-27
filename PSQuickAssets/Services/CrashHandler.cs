@@ -26,13 +26,13 @@ namespace PSQuickAssets.Services
             }
             else
             {
-                message += $"\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace.Substring(0, 500)}";
+                message += $"\n\n{e.Exception.Message}\n\n{e.Exception.StackTrace?.Substring(0, 500)}";
                 MessageBox.Show(message, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             try
             {
-                App.Logger.Fatal(message, e.Exception);
+                App.Logger?.Fatal(message, e.Exception);
             }
             catch (Exception) { }
 

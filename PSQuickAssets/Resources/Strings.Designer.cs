@@ -152,6 +152,114 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photoshop is busy.
+        /// </summary>
+        public static string PSStatus_Busy {
+            get {
+                return ResourceManager.GetString("PSStatus_Busy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation was cancelled.
+        /// </summary>
+        public static string PSStatus_Cancelled {
+            get {
+                return ResourceManager.GetString("PSStatus_Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occured.
+        /// </summary>
+        public static string PSStatus_COMError {
+            get {
+                return ResourceManager.GetString("PSStatus_COMError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to communicate with Photoshop.
+        /// </summary>
+        public static string PSStatus_Failed {
+            get {
+                return ResourceManager.GetString("PSStatus_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found.
+        /// </summary>
+        public static string PSStatus_FileNotFound {
+            get {
+                return ResourceManager.GetString("PSStatus_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid path.
+        /// </summary>
+        public static string PSStatus_IllegalArgument {
+            get {
+                return ResourceManager.GetString("PSStatus_IllegalArgument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid file format.
+        /// </summary>
+        public static string PSStatus_InvalidFileFormat {
+            get {
+                return ResourceManager.GetString("PSStatus_InvalidFileFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid file path.
+        /// </summary>
+        public static string PSStatus_InvalidFilePath {
+            get {
+                return ResourceManager.GetString("PSStatus_InvalidFilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No documents open.
+        /// </summary>
+        public static string PSStatus_NoDocumentsOpen {
+            get {
+                return ResourceManager.GetString("PSStatus_NoDocumentsOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document has no selection.
+        /// </summary>
+        public static string PSStatus_NoSelection {
+            get {
+                return ResourceManager.GetString("PSStatus_NoSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photoshop is not running.
+        /// </summary>
+        public static string PSStatus_NotRunning {
+            get {
+                return ResourceManager.GetString("PSStatus_NotRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string PSStatus_Success {
+            get {
+                return ResourceManager.GetString("PSStatus_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Assets.
         /// </summary>
         public static string SelectAssets {
