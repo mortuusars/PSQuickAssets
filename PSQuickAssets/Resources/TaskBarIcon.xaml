@@ -1,35 +1,37 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:tb="http://www.hardcodet.net/taskbar"
-                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels">    
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels">
 
-    <tb:TaskbarIcon x:Key="TaskBarIcon"
-                    IconSource="Images/psquickassets-size.ico"
-                    LeftClickCommand="{Binding ShowWindowCommand}">
+    <tb:TaskbarIcon
+        x:Key="TaskBarIcon"
+        IconSource="Images/psquickassets-size.ico"
+        LeftClickCommand="{Binding ShowWindowCommand}">
 
         <tb:TaskbarIcon.DataContext>
-            <vm:TaskBarViewModel/>
+            <vm:TaskBarViewModel />
         </tb:TaskbarIcon.DataContext>
-        
+
         <tb:TaskbarIcon.TrayToolTip>
-            <Border Background="White"
-                    BorderBrush="DimGray"
-                    BorderThickness="1"
-                    Padding="4 2">
-                <TextBlock Text="{Binding AppName}" 
-                           Foreground="DimGray" />
+            <Border
+                Padding="4,2"
+                Background="White"
+                BorderBrush="DimGray"
+                BorderThickness="1">
+                <TextBlock Foreground="DimGray" Text="{Binding AppName}" />
             </Border>
         </tb:TaskbarIcon.TrayToolTip>
 
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="{Binding ToggleTerminalWindow}" Command="{Binding ToggleTerminalCommand}"/>
-                <MenuItem Header="{Binding Settings}" Command="{Binding SettingsCommand}">
+                <MenuItem Command="{Binding ToggleTerminalCommand}" Header="{Binding ToggleTerminalWindow}" />
+                <MenuItem Command="{Binding SettingsCommand}" Header="{Binding Settings}">
                     <MenuItem.Icon>
-                        <Image Source="Images/settings.png"/>
+                        <Image Source="Images/settings.png" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="{Binding Exit}" Command="{Binding ExitCommand}"/>
+                <MenuItem Command="{Binding ExitCommand}" Header="{Binding Exit}" />
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>
     </tb:TaskbarIcon>

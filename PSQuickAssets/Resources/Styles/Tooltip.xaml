@@ -1,31 +1,35 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="DarkToolTip" TargetType="ToolTip">
-        <Setter Property="OverridesDefaultStyle" Value="true"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="UseLayoutRounding" Value="True"/>
-        <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
-        <Setter Property="FontFamily" Value="{StaticResource FontRegular}"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="Foreground" Value="{StaticResource TextColorBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource FontRegular}" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
-                    <Border Name="Border" 
-                            Margin="10"
-                            Width="{TemplateBinding Width}" 
-                            Height="{TemplateBinding Height}"
-                            Background="{DynamicResource MainBorder}" 
-                            BorderThickness="1.5" 
-                            BorderBrush="#666"
-                            CornerRadius="4">
+                    <Border
+                        Name="Border"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Margin="10"
+                        Background="{DynamicResource MainBorder}"
+                        BorderBrush="#666"
+                        BorderThickness="1.5"
+                        CornerRadius="4">
                         <Border.Effect>
-                            <DropShadowEffect BlurRadius="10" Opacity="0.4" Direction="-90"/>
+                            <DropShadowEffect
+                                BlurRadius="10"
+                                Direction="-90"
+                                Opacity="0.4" />
                         </Border.Effect>
-                        <ContentPresenter Margin="8 6" 
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top"/>
+                        <ContentPresenter
+                            Margin="8,6"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

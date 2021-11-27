@@ -1,67 +1,73 @@
-﻿<UserControl x:Class="PSQuickAssets.Views.AssetView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PSQuickAssets.Views"
-             mc:Ignorable="d" 
-             d:DesignWidth="160"
-             d:DesignHeight="120">
+﻿<UserControl
+    x:Class="PSQuickAssets.Views.AssetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PSQuickAssets.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="120"
+    d:DesignWidth="160"
+    mc:Ignorable="d">
 
-    <Grid Background="Transparent"
-          VerticalAlignment="Top"
-          HorizontalAlignment="Center"
-          Effect="{StaticResource AssetShadow}">
+    <Grid
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top"
+        Background="Transparent"
+        Effect="{StaticResource AssetShadow}">
         <Grid.InputBindings>
-            <MouseBinding Gesture="LeftClick" 
-                          CommandParameter="{Binding FilePath}"
-                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageWithMaskCommand}"/>
-            <MouseBinding Gesture="CTRL+LeftClick" 
-                          CommandParameter="{Binding FilePath}"
-                          Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                          AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"/>
+            <MouseBinding
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PlaceImageWithMaskCommand}"
+                CommandParameter="{Binding FilePath}"
+                Gesture="LeftClick" />
+            <MouseBinding
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"
+                CommandParameter="{Binding FilePath}"
+                Gesture="CTRL+LeftClick" />
         </Grid.InputBindings>
 
         <Grid.ToolTip>
-            <TextBlock Text="{Binding FileName}" Style="{StaticResource TextLight}"/>
+            <TextBlock Style="{StaticResource TextLight}" Text="{Binding FileName}" />
         </Grid.ToolTip>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <!-- THUMBNAIL -->
-        <Border x:Name="ThumbContainer" 
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Center"
-                CornerRadius="3" 
-                BorderThickness="0" 
-                Width="{Binding Thumbnail.PixelWidth}"
-                MinWidth="80" 
-                MaxWidth="140" d:Width="160"
-                Height="60">
+        <!--  THUMBNAIL  -->
+        <Border
+            x:Name="ThumbContainer"
+            Width="{Binding Thumbnail.PixelWidth}"
+            Height="60"
+            MinWidth="80"
+            MaxWidth="140"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            d:Width="160"
+            BorderThickness="0"
+            CornerRadius="3">
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Thumbnail, Mode=OneTime, IsAsync=True}"
-                            d:ImageSource="../Resources/Images/test.jpg"
-                            Stretch="{Binding Thumbnail, Converter={StaticResource ThumbnailSizeToImageStretchConverter}}"
-                            d:Stretch="UniformToFill"/>
+                <ImageBrush
+                    d:ImageSource="../Resources/Images/test.jpg"
+                    d:Stretch="UniformToFill"
+                    ImageSource="{Binding Thumbnail, Mode=OneTime, IsAsync=True}"
+                    Stretch="{Binding Thumbnail, Converter={StaticResource ThumbnailSizeToImageStretchConverter}}" />
             </Border.Background>
         </Border>
 
-        <!-- FILENAME -->
-        <TextBlock Text="{Binding Name}"
-                   d:Text="Batch 1421 - Daytime - No Tv Inserts"
-                   Grid.Row="1" 
-                   Margin="0 6 0 0" 
-                   Height="32"
-                   Foreground="{StaticResource TextColorBrush}"
-                   VerticalAlignment="Top" 
-                   TextAlignment="Center"
-                   MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
-                   TextWrapping="Wrap" 
-                   FontSize="13"
-                   FontFamily="{StaticResource FontRegular}"/>
+        <!--  FILENAME  -->
+        <TextBlock
+            Grid.Row="1"
+            Height="32"
+            MaxWidth="{Binding ElementName=ThumbContainer, Path=ActualWidth}"
+            Margin="0,6,0,0"
+            VerticalAlignment="Top"
+            d:Text="Batch 1421 - Daytime - No Tv Inserts"
+            FontFamily="{StaticResource FontRegular}"
+            FontSize="13"
+            Foreground="{StaticResource TextColorBrush}"
+            Text="{Binding Name}"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
     </Grid>
 </UserControl>

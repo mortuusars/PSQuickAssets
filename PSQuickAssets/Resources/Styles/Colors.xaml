@@ -1,9 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush Color="#292929" x:Key="MainBackground"/>
-    <SolidColorBrush Color="#343434" x:Key="MainBorder"/>
-    <SolidColorBrush Color="#666" x:Key="BorderLighter"/>
-    <SolidColorBrush Color="#9f9f9f" x:Key="TextColorBrush"/>
+    <SolidColorBrush x:Key="MainBackground" Color="#292929" />
+    <SolidColorBrush x:Key="MainBorder" Color="#343434" />
+    <SolidColorBrush x:Key="BorderLighter" Color="#666" />
+    <SolidColorBrush x:Key="TextColorBrush" Color="#9f9f9f" />
 
 </ResourceDictionary>
