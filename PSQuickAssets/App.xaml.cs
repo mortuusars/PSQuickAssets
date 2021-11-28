@@ -51,7 +51,7 @@ namespace PSQuickAssets
             var configFileHandler = new JsonFileConfigHandler("config.json", Logger);
             Config = new Config(configFileHandler, Logger, saveOnPropertyChanged: true).Load<Config>();
 
-            WindowManager = new WindowManager(NotificationService);
+            WindowManager = new WindowManager(NotificationService, Config);
             WindowManager.CreateAndShowMainWindow();
 
             GlobalHotkeys = new GlobalHotkeys(new WindowInteropHelper(WindowManager.MainWindow).Handle, NotificationService, Logger);

@@ -15,13 +15,21 @@
         Background="Transparent"
         Effect="{StaticResource AssetShadow}">
         <Grid.InputBindings>
-            <MouseBinding
+            <!--<MouseBinding
                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PlaceImageWithMaskCommand}"
                 CommandParameter="{Binding FilePath}"
                 Gesture="LeftClick" />
             <MouseBinding
                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PlaceImageCommand}"
                 CommandParameter="{Binding FilePath}"
+                Gesture="CTRL+LeftClick" />-->
+            <MouseBinding
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AssetsViewModel.AssetCommands.AddImageAsLayerCommand}"
+                CommandParameter="{Binding}"
+                Gesture="LeftClick" />
+            <MouseBinding
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AssetsViewModel.AssetCommands.OpenImageCommand}"
+                CommandParameter="{Binding}"
                 Gesture="CTRL+LeftClick" />
         </Grid.InputBindings>
 

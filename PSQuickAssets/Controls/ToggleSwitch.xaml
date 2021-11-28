@@ -1,32 +1,36 @@
-﻿<UserControl x:Class="PSQuickAssets.Controls.ToggleSwitch"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PSQuickAssets.WPF"
-             mc:Ignorable="d" 
-             x:Name="ToggleControl"
-             d:DesignHeight="30" d:DesignWidth="60"
-             Background="{x:Null}"
-             MouseDown="Control_MouseDown"
-             FontFamily="{StaticResource FontMedium}"
-             FontSize="10">
+﻿<UserControl
+    x:Class="PSQuickAssets.Controls.ToggleSwitch"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PSQuickAssets.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="ToggleControl"
+    d:DesignHeight="30"
+    d:DesignWidth="60"
+    Background="{x:Null}"
+    FontFamily="{StaticResource FontMedium}"
+    FontSize="10"
+    MouseDown="Control_MouseDown"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <Duration x:Key="AnimDuration">0:0:0.4</Duration>
-        <BackEase Amplitude=".4"  EasingMode="EaseInOut" x:Key="Easing"/>
+        <BackEase
+            x:Key="Easing"
+            Amplitude=".4"
+            EasingMode="EaseInOut" />
 
         <Style x:Key="BorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="#555"/>
+            <Setter Property="Background" Value="#555" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsOn, ElementName=ToggleControl}" Value="True">
                     <DataTrigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ColorAnimationUsingKeyFrames Duration="{StaticResource AnimDuration}"
-                                                              Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#555"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.25" Value="#999"/>
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" Duration="{StaticResource AnimDuration}">
+                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#555" />
+                                    <EasingColorKeyFrame KeyTime="0:0:0.25" Value="#999" />
                                 </ColorAnimationUsingKeyFrames>
                             </Storyboard>
                         </BeginStoryboard>
@@ -34,10 +38,9 @@
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ColorAnimationUsingKeyFrames Duration="{StaticResource AnimDuration}"
-                                                              Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#999"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.25" Value="#555"/>
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" Duration="{StaticResource AnimDuration}">
+                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#999" />
+                                    <EasingColorKeyFrame KeyTime="0:0:0.25" Value="#555" />
                                 </ColorAnimationUsingKeyFrames>
                             </Storyboard>
                         </BeginStoryboard>
@@ -47,37 +50,37 @@
         </Style>
 
         <Style x:Key="Circle" TargetType="Ellipse">
-            <Setter Property="Fill" Value="#aaa"/>
-            <Setter Property="Margin" Value="-20 0 0 0"/>
+            <Setter Property="Fill" Value="#aaa" />
+            <Setter Property="Margin" Value="-20,0,0,0" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsOn, ElementName=ToggleControl}" Value="True">
                     <DataTrigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ThicknessAnimation Duration="{StaticResource AnimDuration}"
-                                                    To="20 0 0 0" 
-                                                    Storyboard.TargetProperty="Margin"
-                                                    EasingFunction="{StaticResource Easing}"/>
-                                <ColorAnimationUsingKeyFrames Duration="{StaticResource AnimDuration}"
-                                                              Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#aaa"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#eee"/>
+                                <ThicknessAnimation
+                                    EasingFunction="{StaticResource Easing}"
+                                    Storyboard.TargetProperty="Margin"
+                                    To="20 0 0 0"
+                                    Duration="{StaticResource AnimDuration}" />
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)" Duration="{StaticResource AnimDuration}">
+                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#aaa" />
+                                    <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#eee" />
                                 </ColorAnimationUsingKeyFrames>
-                                                              
+
                             </Storyboard>
                         </BeginStoryboard>
                     </DataTrigger.EnterActions>
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ThicknessAnimation Duration="{StaticResource AnimDuration}"
-                                                    To="-20 0 0 0" 
-                                                    Storyboard.TargetProperty="Margin"
-                                                    EasingFunction="{StaticResource Easing}"/>
-                                <ColorAnimationUsingKeyFrames Duration="{StaticResource AnimDuration}"
-                                                              Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)">
-                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#eee"/>
-                                    <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#aaa"/>
+                                <ThicknessAnimation
+                                    EasingFunction="{StaticResource Easing}"
+                                    Storyboard.TargetProperty="Margin"
+                                    To="-20 0 0 0"
+                                    Duration="{StaticResource AnimDuration}" />
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)" Duration="{StaticResource AnimDuration}">
+                                    <EasingColorKeyFrame KeyTime="0:0:0" Value="#eee" />
+                                    <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#aaa" />
                                 </ColorAnimationUsingKeyFrames>
                             </Storyboard>
                         </BeginStoryboard>
@@ -87,12 +90,24 @@
         </Style>
     </UserControl.Resources>
 
-        <Border Margin="0" Width="40" Height="20" CornerRadius="10"
-                Style="{StaticResource BorderStyle}">
-        <Ellipse x:Name="MovingCircle" Width="13" Height="13" Style="{StaticResource Circle}">
+    <Border
+        Width="40"
+        Height="20"
+        Margin="0"
+        CornerRadius="10"
+        Style="{StaticResource BorderStyle}">
+        <Ellipse
+            x:Name="MovingCircle"
+            Width="13"
+            Height="13"
+            Style="{StaticResource Circle}">
             <Ellipse.Effect>
-                <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="-90" Opacity="0.3"/>
+                <DropShadowEffect
+                    BlurRadius="6"
+                    Direction="-90"
+                    Opacity="0.3"
+                    ShadowDepth="1" />
             </Ellipse.Effect>
         </Ellipse>
-        </Border>
+    </Border>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.ViewModels;
+﻿using PSQuickAssets.Configuration;
+using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System.Linq;
 
@@ -9,15 +10,17 @@ namespace PSQuickAssets.Services
         public MainWindow? MainWindow { get; private set; }
         private MainViewModel? _mainViewModel;
         private readonly INotificationService _notificationService;
+        private readonly Config _config;
 
-        internal WindowManager(INotificationService notificationService)
+        internal WindowManager(INotificationService notificationService, Config config)
         {
             _notificationService = notificationService;
+            _config = config;
         }
 
         public void CreateAndShowMainWindow()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, _notificationService);
+            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, _notificationService, _config);
 
             MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
             MainWindow.RestoreState();

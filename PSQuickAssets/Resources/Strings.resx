@@ -193,6 +193,12 @@ Ctrl+Click: Close</value>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Settings_AddMaskIfHasSelection" xml:space="preserve">
+    <value>Add mask from selection</value>
+  </data>
+  <data name="Settings_AddMaskIfHasSelection_Tooltip" xml:space="preserve">
+    <value>If document has a selection, a mask will be applied to added layer</value>
+  </data>
   <data name="Settings_CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>

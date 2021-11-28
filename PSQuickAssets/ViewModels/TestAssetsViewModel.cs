@@ -20,7 +20,7 @@ namespace PSQuickAssets.ViewModels
 
             for (int i = 0; i < 4; i++)
             {
-                group.AddAsset(new Asset() { ThumbnailPath = "../../../../Resources/Images/test.jpg", FilePath = "C://asd/" + i });
+                group.AddAsset(new Asset() { ThumbnailPath = "../../../../Resources/Images/test.jpg", FilePath = "C://asd/" + i }, DuplicateHandling.Deny);
             }
 
             AssetGroups.Add(group);

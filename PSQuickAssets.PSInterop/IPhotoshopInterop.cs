@@ -1,21 +1,41 @@
-﻿namespace PSQuickAssets.PSInterop
+﻿using System.Threading.Tasks;
+
+namespace PSQuickAssets.PSInterop
 {
+    /// <summary>
+    /// Provides methods to call Photoshop.
+    /// </summary>
     public interface IPhotoshopInterop
     {
-        PSResult AddImageToDocumentWithMask(string filePath, MaskMode maskMode);
-
         /// <summary>
-        /// Attempts to add given image (filepath) to open document in PS.
+        /// Executes specified action.
+        /// </summary>
+        /// <param name="actionName">Name of the action.</param>
+        /// <param name="set">Set containing that action.</param>
+        Task<PSResult> ExecuteActionAsync(string actionName, string set);
+        /// <summary>
+        /// Attempts to add given image (filepath) as layer to open document in PS and applies a mask to it if selection was present.
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
-        PSResult AddImageToDocument(string filePath);
+        /// <param name="maskMode">Mask mode.</param>
+        Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode);
         /// <summary>
-        /// Open image as new document.
+        /// Attempts to add given image (filepath) as layer to open document in PS.
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
-        PSResult OpenImage(string filePath);
-
-        PSResult ExecuteAction(string action, string from);
-        bool HasSelection();
+        Task<PSResult> AddImageToDocumentAsync(string filePath);
+        /// <summary>
+        /// Opens image as new document.
+        /// </summary>
+        /// <param name="filePath">Image filepath.</param>
+        Task<PSResult> OpenImageAsNewDocumentAsync(string filePath);
+        /// <summary>
+        /// Determines if Active Document has a selection.
+        /// </summary>
+        Task<bool> HasSelectionAsync();
+        /// <summary>
+        /// Determines if Photoshop has a Document open.
+        /// </summary>
+        Task<bool> HasOpenDocumentAsync();
     }
 }

@@ -45,10 +45,4 @@ namespace PSQuickAssets.Assets
         public string Name { get; set; }
         public List<string> AssetsPaths { get; set; }
     }
-
-    //internal class AssetFile
-    //{
-    //    public string ThumbnailPath { get; set; }
-    //    public string FilePath { get; set; }
-    //}
 }

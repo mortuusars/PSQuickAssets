@@ -1,6 +1,7 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
@@ -33,26 +34,28 @@ namespace PSQuickAssets.ViewModels
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
 
         private readonly IImageFileLoader _imagesLoader;
-        private readonly WindowManager _viewManager;
+        private readonly WindowManager _windowManager;
         private readonly INotificationService _notificationService;
+        private readonly Config _config;
 
-        internal MainViewModel(IImageFileLoader imagesLoader, WindowManager viewManager, INotificationService notificationService)
+        internal MainViewModel(IImageFileLoader imagesLoader, WindowManager windowManager, INotificationService notificationService, Config config)
         {
-            AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), viewManager);
+            AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), windowManager, notificationService, config);
 
             _imagesLoader = imagesLoader;
-            _viewManager = viewManager;
+            _windowManager = windowManager;
             _notificationService = notificationService;
+            _config = config;
             PlaceImageCommand = new RelayCommand(path => PlaceImageAsync((string)path));
             PlaceImageWithMaskCommand = new RelayCommand(path => AddImageWithMaskAsync((string)path));
 
-            SettingsCommand = new RelayCommand(_ => _viewManager.ShowSettingsWindow());
-            HideCommand = new RelayCommand(_ => _viewManager.HideMainWindow());
+            SettingsCommand = new RelayCommand(_ => _windowManager.ShowSettingsWindow());
+            HideCommand = new RelayCommand(_ => _windowManager.HideMainWindow());
         }
 
         private async Task PlaceImageAsync(string filePath)
         {
-            _viewManager.ToggleMainWindow();
+            _windowManager.ToggleMainWindow();
 
             PhotoshopInterop photoshopInterop = new PhotoshopInterop();
             WindowControl.FocusWindow("photoshop");
@@ -71,7 +74,7 @@ namespace PSQuickAssets.ViewModels
 
         private async Task AddImageWithMaskAsync(string filePath)
         {
-            _viewManager.ToggleMainWindow();
+            _windowManager.ToggleMainWindow();
             WindowControl.FocusWindow("photoshop");
 
             PhotoshopInterop psInterop = new PhotoshopInterop();

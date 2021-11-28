@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.PSInterop
 {
-    public class PhotoshopInterop
+    /// <summary>
+    /// Provides methods to call photoshop.
+    /// </summary>
+    public class PhotoshopInterop : IPhotoshopInterop
     {
         private const string _selectionChannelName = "QuickAssetsMask";
 
+        /// <summary>
+        /// Executes specified action.
+        /// </summary>
+        /// <param name="actionName">Name of the action.</param>
+        /// <param name="set">Set containing that action.</param>
         public async Task<PSResult> ExecuteActionAsync(string actionName, string set)
         {
             return await Task.Run(() => ExecuteAction(() =>
@@ -59,7 +67,6 @@ namespace PSQuickAssets.PSInterop
         /// Opens image as new document.
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
-        /// <exception cref="Exception"></exception>
         public async Task<PSResult> OpenImageAsNewDocumentAsync(string filePath)
         {
             return await Task.Run(() => ExecuteAction(() =>

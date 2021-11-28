@@ -287,6 +287,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add mask from selection.
+        /// </summary>
+        public static string Settings_AddMaskIfHasSelection {
+            get {
+                return ResourceManager.GetString("Settings_AddMaskIfHasSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If document has a selection, a mask will be applied to added layer.
+        /// </summary>
+        public static string Settings_AddMaskIfHasSelection_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_AddMaskIfHasSelection_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for updates.
         /// </summary>
         public static string Settings_CheckForUpdates {

@@ -43,10 +43,30 @@ namespace PSQuickAssets.ViewModels
             }
         }
 
+        public bool AddMaskIfHasSelection
+        {
+            get => _addMaskIfHasSelection;
+            set
+            {
+                _addMaskIfHasSelection = value;
+
+                if (_config.TrySetValue(nameof(_config.AddMaskIfDocumentHasSelection), AddMaskIfHasSelection, out string error))
+                {
+                    if (!_config.SavesOnPropertyChanged)
+                        _config.Save();
+                }
+                else
+                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
+            }
+        }
+
+        //TODO: Clean up settings. Generalize config updates.
+
         public ICommand SaveCommand { get; }
 
         private Hotkey _toggleMainWindowHotkey;
         private bool _checkUpdates;
+        private bool _addMaskIfHasSelection;
 
         private readonly Config _config;
         private readonly Services.GlobalHotkeys _globalHotkeys;
@@ -62,6 +82,7 @@ namespace PSQuickAssets.ViewModels
 
             _toggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
             _checkUpdates = _config.CheckUpdates;
+            _addMaskIfHasSelection = _config.AddMaskIfDocumentHasSelection;
         }
 
         private void ApplyNewSettings()

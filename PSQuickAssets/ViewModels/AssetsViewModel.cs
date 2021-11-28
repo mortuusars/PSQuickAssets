@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
@@ -18,29 +19,33 @@ namespace PSQuickAssets.ViewModels
     {
         public ObservableCollection<AssetGroup> AssetGroups { get; }
 
-        public AssetUseViewModel AssetUseViewModel { get; set; }
+        public AssetCommandsViewModel AssetCommands { get; set; }
 
-        public bool IsLoading { get => isLoading; set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+        public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
         public ICommand AddFolderCommand { get; }
         public ICommand AddFolderWithSubfoldersCommand { get; }
         public ICommand AddFilesCommand { get; }
         public ICommand RemoveGroupCommand { get; }
 
+        private bool _isLoading;
+        
         private readonly AssetLoader _assetLoader;
         private readonly AssetAtlas _assetAtlas;
         private readonly WindowManager _viewManager;
+        private readonly INotificationService _notificationService;
+        private readonly Config _config;
 
-        private bool isLoading;
-
-        internal AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager viewManager)
+        internal AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager windowManager, INotificationService notificationService, Config config)
         {
             AssetGroups = new ObservableCollection<AssetGroup>();
+            AssetCommands = new AssetCommandsViewModel(windowManager, notificationService, config);
 
             _assetLoader = assetLoader;
             _assetAtlas = assetAtlas;
-            _viewManager = viewManager;
-
+            _viewManager = windowManager;
+            _notificationService = notificationService;
+            _config = config;
             AddFolderCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: false));
             AddFolderWithSubfoldersCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: true));
             AddFilesCommand = new RelayCommand(_ => SelectAndAddFiles());
@@ -82,14 +87,14 @@ namespace PSQuickAssets.ViewModels
                 groupName = $"{groupName} {Localization.Instance["New"]}";
 
             AssetGroup assetGroup = new(groupName);
-            assetGroup.GroupStateChanged += AssetGroup_OnGroupStateChanged;
+            assetGroup.GroupChanged += AssetGroup_OnGroupStateChanged;
             AssetGroups.Add(assetGroup);
             return assetGroup;
         }
 
         public bool RemoveGroup(AssetGroup assetGroup)
         {
-            assetGroup.GroupStateChanged -= AssetGroup_OnGroupStateChanged;
+            assetGroup.GroupChanged -= AssetGroup_OnGroupStateChanged;
             return AssetGroups.Remove(assetGroup);
         }
 
@@ -156,7 +161,7 @@ namespace PSQuickAssets.ViewModels
         private async Task AddAssetsToGroup(AssetGroup group, IEnumerable<string> files)
         {
             IEnumerable<Asset> assets = await Task.Run(() => _assetLoader.Load(files));
-            group.AddMultipleAssets(assets);
+            group.AddMultipleAssets(assets, DuplicateHandling.Deny);
         }
 
         private string GenericGroupName()
