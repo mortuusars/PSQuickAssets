@@ -40,7 +40,6 @@ namespace PSQuickAssets.Configuration
                 return jsonValues;
             }
 
-
             foreach (var item in jsonEnumerator)
             {
                 try

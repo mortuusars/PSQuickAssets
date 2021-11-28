@@ -1,5 +1,6 @@
 ﻿using MLogger;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -100,27 +101,44 @@ public abstract class ConfigBase
 
     public T Load<T>() where T : ConfigBase
     {
-        var jsonElements = _configHandler.Load();
+        Dictionary<string, object> jsonElements = _configHandler.Load();
 
         if (jsonElements.Count == 0)
         {
             _logger?.Warn("[Config - Loading] - No properties have been loaded from json. Default config values would be loaded.");
+            return (T)this;
         }
-        else
-        {
-            var properties = (typeof(Config)).GetProperties();
 
-            foreach (var prop in properties)
+
+        var properties = (typeof(Config)).GetProperties();
+        bool hasMissingSettings = false;
+
+        foreach (var prop in properties)
+        {
+            //Skip. This property is configured when config is created.
+            if (prop.Name.Equals(nameof(SavesOnPropertyChanged)))
+                continue;
+
+            try
             {
-                try
-                {
-                    prop.SetValue(this, jsonElements[prop.Name]);
-                }
-                catch (Exception ex)
-                {
-                    _logger?.Error($"[Config - Loading] - Failed to set value of <{prop.Name}>:\n{ex}");
-                }
+                prop.SetValue(this, jsonElements[prop.Name]);
             }
+            catch (KeyNotFoundException)
+            {
+                _logger?.Error($"[Config - Loading] - Failed to set value of <{prop.Name}>: This setting was probably missing from config file.");
+                hasMissingSettings = true;
+            }
+            catch (Exception ex)
+            {
+                _logger?.Error($"[Config - Loading] - Failed to set value of <{prop.Name}>:\n{ex}");
+                hasMissingSettings = true;
+            }
+        }
+
+        if (hasMissingSettings)
+        {
+            _logger?.Info($"[Config - Loading] - Saving config because missing settings were found...");
+            Save();
         }
 
         return (T)this;

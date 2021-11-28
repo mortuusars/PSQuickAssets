@@ -45,8 +45,6 @@ internal class GlobalHotkeys : IDisposable
     /// <param name="use"></param>
     internal void Register(Hotkey hotkey, HotkeyUse use)
     {
-        _logger.Debug($"Registering <{hotkey}> for <{use}>");
-
         if (!HotkeyActions.ContainsKey(use))
         {
             _logger.Error($"Cannot register hotkey for <{use}>. No action was registered for this use.");
@@ -80,7 +78,7 @@ internal class GlobalHotkeys : IDisposable
         else
         {
             _notificationService.Notify(App.AppName, regErrorMessage, NotificationIcon.Error);
-            _logger.Error(regErrorMessage);
+            _logger.Error($"Failed to register <{hotkey}>: {regErrorMessage}");
         }
     }
 

@@ -43,13 +43,12 @@ namespace PSQuickAssets
             SetTooltipDelay(650);
 
             ShutdownIfAlreadyOpen();
-            
+
             NotificationService = new TaskbarNotificationService(TaskBarIcon);
 
             Logger = new MLoggerSetup(NotificationService).CreateLogger();
 
-            var configFileHandler = new JsonFileConfigHandler("config.json", Logger);
-            Config = new Config(configFileHandler, Logger, saveOnPropertyChanged: true).Load<Config>();
+            Config = CreateConfig();
 
             WindowManager = new WindowManager(NotificationService, Config);
             WindowManager.CreateAndShowMainWindow();
@@ -59,7 +58,23 @@ namespace PSQuickAssets
             GlobalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
 
             new Update.Update().CheckUpdatesAsync();
-        }        
+        }
+
+        private static Config CreateConfig()
+        {
+            string cfgFilePath = "config.json";
+
+            //TODO: All of this is pretty dirty. Should probably restructure it somehow.
+            var configFileHandler = new JsonFileConfigHandler(cfgFilePath, Logger);
+            var config = new Config(configFileHandler, Logger, saveOnPropertyChanged: true);
+
+            if (!File.Exists(cfgFilePath))
+                config.Save();
+
+            config.Load<Config>();
+
+            return config;
+        }
 
         protected override void OnExit(ExitEventArgs e)
         {

@@ -9,7 +9,7 @@ public class Config : ConfigBase
 
     public bool AddMaskIfDocumentHasSelection { get; private set; }
 
-    public Config(IConfigHandler configHandler, ILogger logger, bool saveOnPropertyChanged) : base(configHandler, logger, saveOnPropertyChanged)
+    public Config(IConfigHandler configHandler, ILogger? logger, bool saveOnPropertyChanged) : base(configHandler, logger, saveOnPropertyChanged)
     {
         ShowHideWindowHotkey = "Ctrl + Alt + A";
         CheckUpdates = true;
