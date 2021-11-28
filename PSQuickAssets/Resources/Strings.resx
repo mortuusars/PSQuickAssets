@@ -199,6 +199,12 @@ Ctrl+Click: Close</value>
   <data name="Settings_AddMaskIfHasSelection_Tooltip" xml:space="preserve">
     <value>If document has a selection, a mask will be applied to added layer</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>Always On Top</value>
+  </data>
+  <data name="Settings_AlwaysOnTop_Tooltip" xml:space="preserve">
+    <value>Keeps assets window above all other windows</value>
+  </data>
   <data name="Settings_CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>

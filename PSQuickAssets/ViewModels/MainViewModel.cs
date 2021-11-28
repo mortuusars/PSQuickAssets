@@ -20,6 +20,8 @@ namespace PSQuickAssets.ViewModels
 {
     public class MainViewModel : ObservableObject, IDropTarget
     {
+        public bool AlwaysOnTop { get => _config.AlwaysOnTop; }
+
         public AssetsViewModel AssetsViewModel { get; }
 
         public ObservableCollection<List<ImageFile>> Folders { get; set; } = new();
@@ -27,8 +29,8 @@ namespace PSQuickAssets.ViewModels
 
         public double ThumbnailSize { get; } = 55;
 
-        public ICommand PlaceImageCommand { get; }
-        public ICommand PlaceImageWithMaskCommand { get; }
+        //public ICommand PlaceImageCommand { get; }
+        //public ICommand PlaceImageWithMaskCommand { get; }
         public ICommand SettingsCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
@@ -46,8 +48,11 @@ namespace PSQuickAssets.ViewModels
             _windowManager = windowManager;
             _notificationService = notificationService;
             _config = config;
-            PlaceImageCommand = new RelayCommand(path => PlaceImageAsync((string)path));
-            PlaceImageWithMaskCommand = new RelayCommand(path => AddImageWithMaskAsync((string)path));
+
+            _config.ConfigPropertyChanged += (property) => { if (property.Equals(nameof(_config.AlwaysOnTop))) OnPropertyChanged(nameof(AlwaysOnTop)); };
+
+            //PlaceImageCommand = new RelayCommand(path => PlaceImageAsync((string)path));
+            //PlaceImageWithMaskCommand = new RelayCommand(path => AddImageWithMaskAsync((string)path));
 
             SettingsCommand = new RelayCommand(_ => _windowManager.ShowSettingsWindow());
             HideCommand = new RelayCommand(_ => _windowManager.HideMainWindow());

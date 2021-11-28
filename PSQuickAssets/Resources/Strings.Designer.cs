@@ -305,6 +305,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always On Top.
+        /// </summary>
+        public static string Settings_AlwaysOnTop {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keeps assets window above all other windows.
+        /// </summary>
+        public static string Settings_AlwaysOnTop_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysOnTop_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for updates.
         /// </summary>
         public static string Settings_CheckForUpdates {

@@ -152,6 +152,40 @@
                         Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}" />
                 </Grid>
 
+                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AlwaysOnTop_Tooltip}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Style="{StaticResource TextLight}"
+                        Text="{lex:Loc Settings_AlwaysOnTop}"
+                        TextWrapping="Wrap" />
+                    <controls:ToggleSwitch
+                        x:Name="AlwaysOnTopToggle"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        IsOn="{Binding AlwaysOnTop, Mode=TwoWay}" />
+                </Grid>
+
+                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfHasSelection_Tooltip}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Style="{StaticResource TextLight}"
+                        Text="{lex:Loc Settings_AddMaskIfHasSelection}"
+                        TextWrapping="Wrap" />
+                    <controls:ToggleSwitch
+                        x:Name="AddMaskToggle"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        IsOn="{Binding AddMaskIfHasSelection, Mode=TwoWay}" />
+                </Grid>
+
                 <Rectangle
                     Height="1.5"
                     Margin="0,4"
@@ -173,24 +207,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         IsOn="{Binding CheckUpdates, Mode=TwoWay}" />
-                </Grid>
-
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfHasSelection_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_AddMaskIfHasSelection}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="AddMaskToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding AddMaskIfHasSelection, Mode=TwoWay}" />
-                </Grid>
+                </Grid>                
             </StackPanel>
 
 

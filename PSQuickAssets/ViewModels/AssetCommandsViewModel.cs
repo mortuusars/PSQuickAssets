@@ -107,6 +107,7 @@ public class AssetCommandsViewModel
 
     private void FocusPhotoshop()
     {
+        //TODO: Decouple from this class. Add an option to not hide assets window on placing.
         _windowManager.HideMainWindow();
         WindowControl.FocusWindow("photoshop");
     }

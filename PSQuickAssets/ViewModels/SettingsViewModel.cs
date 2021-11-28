@@ -60,6 +60,23 @@ namespace PSQuickAssets.ViewModels
             }
         }
 
+        public bool AlwaysOnTop
+        {
+            get => _alwaysOnTop;
+            set
+            {
+                _alwaysOnTop = value;
+
+                if (_config.TrySetValue(nameof(_config.AlwaysOnTop), AlwaysOnTop, out string error))
+                {
+                    if (!_config.SavesOnPropertyChanged)
+                        _config.Save();
+                }
+                else
+                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
+            }
+        }
+
         //TODO: Clean up settings. Generalize config updates.
 
         public ICommand SaveCommand { get; }
@@ -67,6 +84,7 @@ namespace PSQuickAssets.ViewModels
         private Hotkey _toggleMainWindowHotkey;
         private bool _checkUpdates;
         private bool _addMaskIfHasSelection;
+        private bool _alwaysOnTop;
 
         private readonly Config _config;
         private readonly Services.GlobalHotkeys _globalHotkeys;
@@ -83,6 +101,7 @@ namespace PSQuickAssets.ViewModels
             _toggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
             _checkUpdates = _config.CheckUpdates;
             _addMaskIfHasSelection = _config.AddMaskIfDocumentHasSelection;
+            _alwaysOnTop = _config.AlwaysOnTop;
         }
 
         private void ApplyNewSettings()
