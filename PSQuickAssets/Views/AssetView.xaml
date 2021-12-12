@@ -13,7 +13,8 @@
         HorizontalAlignment="Center"
         VerticalAlignment="Top"
         Background="Transparent"
-        Effect="{StaticResource AssetShadow}">
+        Effect="{StaticResource AssetShadow}"
+        Cursor="Hand">
         <Grid.InputBindings>
             <!--<MouseBinding
                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.PlaceImageWithMaskCommand}"
