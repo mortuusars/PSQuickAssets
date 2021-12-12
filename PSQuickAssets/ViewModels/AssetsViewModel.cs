@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AsyncAwaitBestPractices;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -56,6 +58,12 @@ namespace PSQuickAssets.ViewModels
             LoadStoredAtlas();
         }
 
+        public void SaveJson()
+        {
+            string json = JsonSerializer.Serialize(AssetGroups, new JsonSerializerOptions() { WriteIndented = true});
+            var load = JsonSerializer.Deserialize<ObservableCollection<AssetGroup>>(json);
+        }
+
         private async void LoadStoredAtlas()
         {
             IsLoading = true;
@@ -74,9 +82,9 @@ namespace PSQuickAssets.ViewModels
             IsLoading = false;
         }
 
-        public async void SaveAssets()
+        public void SaveAssets()
         {
-            await _assetAtlas.SaveAsync(AssetGroups);
+            _assetAtlas.SaveAsync(AssetGroups).SafeFireAndForget();
         }
 
         public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name == groupName);

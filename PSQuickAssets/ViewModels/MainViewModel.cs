@@ -29,8 +29,6 @@ namespace PSQuickAssets.ViewModels
 
         public double ThumbnailSize { get; } = 55;
 
-        //public ICommand PlaceImageCommand { get; }
-        //public ICommand PlaceImageWithMaskCommand { get; }
         public ICommand SettingsCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand ShutdownCommand { get; } = new RelayCommand(_ => App.Current.Shutdown());
@@ -51,90 +49,8 @@ namespace PSQuickAssets.ViewModels
 
             _config.ConfigPropertyChanged += (property) => { if (property.Equals(nameof(_config.AlwaysOnTop))) OnPropertyChanged(nameof(AlwaysOnTop)); };
 
-            //PlaceImageCommand = new RelayCommand(path => PlaceImageAsync((string)path));
-            //PlaceImageWithMaskCommand = new RelayCommand(path => AddImageWithMaskAsync((string)path));
-
             SettingsCommand = new RelayCommand(_ => _windowManager.ShowSettingsWindow());
             HideCommand = new RelayCommand(_ => _windowManager.HideMainWindow());
-        }
-
-        private async Task PlaceImageAsync(string filePath)
-        {
-            _windowManager.ToggleMainWindow();
-
-            PhotoshopInterop photoshopInterop = new PhotoshopInterop();
-            WindowControl.FocusWindow("photoshop");
-
-            PSResult psResult = await Task.Run(() => photoshopInterop.AddImageToDocumentAsync(filePath));
-
-            if (psResult.Status == Status.NoDocumentsOpen)
-                psResult = await Task.Run(() => photoshopInterop.OpenImageAsNewDocumentAsync(filePath));
-
-            if (psResult.Status != Status.Success)
-            {
-                string errorMessage = Resources.Localization.Instance[$"PSStatus_{psResult.Status}"];
-                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-            }
-        }
-
-        private async Task AddImageWithMaskAsync(string filePath)
-        {
-            _windowManager.ToggleMainWindow();
-            WindowControl.FocusWindow("photoshop");
-
-            PhotoshopInterop psInterop = new PhotoshopInterop();
-
-            if (await psInterop.HasOpenDocumentAsync() is false)
-            {
-                await OpenImageAsNewDocumentAsync(filePath);
-                return;
-            }
-
-            if (await psInterop.HasSelectionAsync())
-            {
-                var result = await psInterop.AddImageToDocumentWithMaskAsync(filePath, MaskMode.RevealSelection);
-
-                if (result.IsSuccessful)
-                    await ExecuteActionAsync(psInterop, "SelectRGBLayer", "Mask");
-                else
-                {
-                    string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
-                    _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-                }
-            }
-            else
-            {
-                var result = await psInterop.AddImageToDocumentAsync(filePath);
-
-                if (!result.IsSuccessful)
-                {
-                    string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
-                    _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-                }
-            }
-        }
-
-        private async Task OpenImageAsNewDocumentAsync(string filePath)
-        {
-            PhotoshopInterop psInterop = new PhotoshopInterop();
-            var result = await psInterop.OpenImageAsNewDocumentAsync(filePath);
-
-            if (!result.IsSuccessful)
-            {
-                string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
-                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-            }
-        }
-
-        private async Task ExecuteActionAsync(PhotoshopInterop photoshopInterop, string action, string from)
-        {
-            PSResult result = await photoshopInterop.ExecuteActionAsync(action, from);
-
-            if (result.IsSuccessful is false)
-            {
-                string errorMessage = String.Format(Resources.Localization.Instance["Assets_CannotExecuteActionFromSet"], action, from) + $"\n{result.Message}";
-                _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-            }
         }
 
         private async Task<List<ImageFile>> LoadImages(string path)

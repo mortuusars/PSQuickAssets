@@ -12,7 +12,7 @@ namespace PSQuickAssets.ViewModels;
 
 public class AssetCommandsViewModel
 {
-    public IList<PhotoshopAction> Actions { get; }
+    public IList<PhotoshopAction> GlobalActions { get; }
 
     public AsyncCommand<Asset> OpenImageCommand { get; }
     public AsyncCommand<Asset> AddImageAsLayerCommand { get; }
@@ -31,7 +31,9 @@ public class AssetCommandsViewModel
 
         _photoshopInterop = new PhotoshopInterop();
 
-        Actions = new List<PhotoshopAction>();
+        GlobalActions = new List<PhotoshopAction>();
+        //TODO: Global actions
+        GlobalActions.Add(new PhotoshopAction("SelectRGBLayer", "Mask"));
 
         OpenImageCommand = new AsyncCommand<Asset>(asset => OpenImageAsNewDocumentAsync(asset!));
         AddImageAsLayerCommand = new AsyncCommand<Asset>(asset => AddImageToPhotoshopAsync(asset!));
@@ -42,7 +44,7 @@ public class AssetCommandsViewModel
     {
         FocusPhotoshop();
 
-        var result = await _photoshopInterop.OpenImageAsNewDocumentAsync(asset.FilePath);
+        var result = await _photoshopInterop.OpenImageAsNewDocumentAsync(asset.Path);
 
         if (result.IsSuccessful)
             return true;
@@ -64,10 +66,10 @@ public class AssetCommandsViewModel
         PSResult result;
 
         if (_config.AddMaskIfDocumentHasSelection && await _photoshopInterop.HasSelectionAsync())
-            result = await _photoshopInterop.AddImageToDocumentWithMaskAsync(asset.FilePath, MaskMode.RevealSelection);
+            result = await _photoshopInterop.AddImageToDocumentWithMaskAsync(asset.Path, MaskMode.RevealSelection);
             //TODO: Option to disable Unlink Mask
         else
-            result = await _photoshopInterop.AddImageToDocumentAsync(asset.FilePath);
+            result = await _photoshopInterop.AddImageToDocumentAsync(asset.Path);
 
         if (result.IsSuccessful)
         {
@@ -97,7 +99,7 @@ public class AssetCommandsViewModel
 
     private async Task<bool> ExecuteGlobalActions()
     {
-        foreach (var action in Actions)
+        foreach (var action in GlobalActions)
         {
             if (await ExecuteActionAsync(action))
                 return false;

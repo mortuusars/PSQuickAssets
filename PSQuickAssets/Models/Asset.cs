@@ -1,20 +1,31 @@
 ﻿using System.Drawing;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.Models
 {
     public class Asset
     {
+        [JsonIgnore]
         public BitmapImage Thumbnail { get; set; }
         public string ThumbnailPath { get; set; }
-        public string FilePath { get; set; }
-        public string FileName { get => Path.GetFileName(FilePath); }
-        public string Name { get => Path.GetFileNameWithoutExtension(FilePath); }
-        public string Format { get => Path.GetExtension(FilePath); }
+        public string Path { get; set; }
+        [JsonIgnore]
+        public long FileSize { get; set; }
+        [JsonIgnore]
         public Size Dimensions { get; set; }
+
+        [JsonIgnore]
         public int Width { get => Dimensions.Width; }
+        [JsonIgnore]
         public int Height { get => Dimensions.Height; }
-        public long Size { get; set; }
+
+        [JsonIgnore]
+        public string FileName { get => System.IO.Path.GetFileName(Path); }
+        [JsonIgnore]
+        public string Name { get => System.IO.Path.GetFileNameWithoutExtension(Path); }
+        [JsonIgnore]
+        public string Format { get => System.IO.Path.GetExtension(Path); }
     }
 }

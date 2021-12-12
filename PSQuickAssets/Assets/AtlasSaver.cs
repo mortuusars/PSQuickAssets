@@ -21,7 +21,7 @@ namespace PSQuickAssets.Assets
 
                 foreach (var inputAsset in inputGroup.Assets)
                 {
-                    group.AssetsPaths.Add(inputAsset.FilePath);
+                    group.AssetsPaths.Add(inputAsset.Path);
                 }
 
                 groups.Add(group);

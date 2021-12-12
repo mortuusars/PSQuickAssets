@@ -14,12 +14,12 @@ namespace PSQuickAssets.Models
             {
                 new Asset()
                 {
-                    FilePath = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png",
+                    Path = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png",
                     ThumbnailPath = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png"
                 },
                 new Asset()
                 {
-                    FilePath = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png",
+                    Path = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png",
                     ThumbnailPath = @"F:\PROJECTS\PSQuickAssets\PSQASource\PSQuickAssets\Resources\Images\image.png"
                 }
             };

@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace PSQuickAssets.Models;
 
+[JsonConverter(typeof(AssetGroupJsonConverter))]
 public class AssetGroup : ObservableObject
 {
     /// <summary>
@@ -21,7 +23,7 @@ public class AssetGroup : ObservableObject
     /// <summary>
     /// Collection of assets in the group.
     /// </summary>
-    public ObservableCollection<Asset> Assets { get; }
+    public ObservableCollection<Asset> Assets { get; private set; }
 
     /// <summary>
     /// Initializes Asset Group.
@@ -83,7 +85,7 @@ public class AssetGroup : ObservableObject
     /// <returns><see langword="true"/> if asset is in the group. Otherwise <see langword="false"/>.</returns>
     public bool HasAsset(Asset asset)
     {
-        return Assets.Any(a => a.FilePath == asset.FilePath);
+        return Assets.Any(a => a.Path == asset.Path);
     }
 
     /// <summary>

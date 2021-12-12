@@ -62,9 +62,9 @@ namespace PSQuickAssets.Assets
             {
                 Thumbnail = CreateThumbnail(filePath),
                 ThumbnailPath = filePath,
-                FilePath = filePath,
-                Size = new FileInfo(filePath).Length,
-                Dimensions = GetAssetPixelSize(filePath)
+                Path = filePath,
+                FileSize = new FileInfo(filePath).Length,
+                Dimensions = GetAssetDimensions(filePath)
             };
         }
 
@@ -96,7 +96,7 @@ namespace PSQuickAssets.Assets
             }
         }
 
-        private Size GetAssetPixelSize(string filePath)
+        private Size GetAssetDimensions(string filePath)
         {
             try
             {

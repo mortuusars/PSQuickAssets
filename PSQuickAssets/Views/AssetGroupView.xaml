@@ -27,8 +27,8 @@
             HorizontalAlignment="Stretch"
             Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <!--  NAME  -->

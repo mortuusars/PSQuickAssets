@@ -3,6 +3,7 @@ using MLogger.LogWriters;
 using MLogger.Terminal;
 using MLogger.Terminal.Models;
 using MLogger.Terminal.Views;
+using PSQuickAssets.ViewModels;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -36,6 +37,7 @@ internal class MLoggerSetup
             _terminal = new Terminal("PSQuickAssets Terminal");
             _terminal.Commands
                 .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()))
+                .Add(new ConsoleCommand("saveassets", "Save", (_) => ((MainViewModel)App.WindowManager!.MainWindow!.DataContext).AssetsViewModel.SaveJson()))
                 .Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
 
             logger.Loggers.Add(_terminal);

@@ -17,7 +17,7 @@ namespace PSQuickAssets.Tests.AssetTests
             bool eventOccured = false;
 
             _sut.GroupChanged += () => eventOccured = true;
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
 
             Assert.True(eventOccured);
         }
@@ -29,8 +29,8 @@ namespace PSQuickAssets.Tests.AssetTests
 
             List<Asset> multiple = new List<Asset>()
             {
-                new Asset() { FilePath = "C:\\test.jpg"},
-                new Asset() { FilePath = "C:\\testing.jpg"},
+                new Asset() { Path = "C:\\test.jpg"},
+                new Asset() { Path = "C:\\testing.jpg"},
             };
 
             _sut.GroupChanged += () => eventOccured = true;
@@ -80,7 +80,7 @@ namespace PSQuickAssets.Tests.AssetTests
         [Fact]
         public void AddAssetShouldAddAssetToGroup()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
 
             Assert.Single(_sut.Assets);
         }
@@ -88,9 +88,9 @@ namespace PSQuickAssets.Tests.AssetTests
         [Fact]
         public void AddAssetWithDenyShouldReturnFalseIfDuplicateIsPassed()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
 
-            bool dupResult = _sut.AddAsset(new Asset() { FilePath = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
+            bool dupResult = _sut.AddAsset(new Asset() { Path = "C:\\test\\a.jpg" }, DuplicateHandling.Deny);
 
             Assert.False(dupResult);
         }
@@ -98,9 +98,9 @@ namespace PSQuickAssets.Tests.AssetTests
         [Fact]
         public void AddAssetWithAllowShouldAddIfDuplicateIsPassed()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test\\a.jpg" }, DuplicateHandling.Allow);
+            _sut.AddAsset(new Asset() { Path = "C:\\test\\a.jpg" }, DuplicateHandling.Allow);
 
-            bool dupResult = _sut.AddAsset(new Asset() { FilePath = "C:\\test\\a.jpg" }, DuplicateHandling.Allow);
+            bool dupResult = _sut.AddAsset(new Asset() { Path = "C:\\test\\a.jpg" }, DuplicateHandling.Allow);
 
             Assert.True(dupResult);
             Assert.Equal(2, _sut.Assets.Count);
@@ -111,22 +111,22 @@ namespace PSQuickAssets.Tests.AssetTests
         {
             List<Asset> assets = new List<Asset>()
             {
-                new Asset() { FilePath = "C:\\test.jpg"},
-                new Asset() { FilePath = "C:\\test.jpg"},
-                new Asset() { FilePath = "C:\\test1.jpg"},
-                new Asset() { FilePath = "C:\\testing.jpg"},
-                new Asset() { FilePath = "C:\\testing.jpg"},
+                new Asset() { Path = "C:\\test.jpg"},
+                new Asset() { Path = "C:\\test.jpg"},
+                new Asset() { Path = "C:\\test1.jpg"},
+                new Asset() { Path = "C:\\testing.jpg"},
+                new Asset() { Path = "C:\\testing.jpg"},
             };
 
             List<Asset> duplicates = new List<Asset>()
             {
-                new Asset() { FilePath = "C:\\test.jpg"},
-                new Asset() { FilePath = "C:\\testing.jpg"},
+                new Asset() { Path = "C:\\test.jpg"},
+                new Asset() { Path = "C:\\testing.jpg"},
             };
 
             var returnedDuplicates = _sut.AddMultipleAssets(assets, DuplicateHandling.Deny);
-            Assert.Equal(duplicates[0].FilePath, returnedDuplicates[0].FilePath);
-            Assert.Equal(duplicates[1].FilePath, returnedDuplicates[1].FilePath);
+            Assert.Equal(duplicates[0].Path, returnedDuplicates[0].Path);
+            Assert.Equal(duplicates[1].Path, returnedDuplicates[1].Path);
         }
 
         #endregion
@@ -166,26 +166,26 @@ namespace PSQuickAssets.Tests.AssetTests
         [Fact]
         public void HasAssetShouldReturnFalseIfNoneFound()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test.jpg" }, DuplicateHandling.Deny);
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test1.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
-            Assert.False(_sut.HasAsset(new Asset() { FilePath = "D:\\a.jpg" }));
+            Assert.False(_sut.HasAsset(new Asset() { Path = "D:\\a.jpg" }));
         }
 
         [Fact]
         public void HasAssetShouldReturnTrueIfDuplicateFound()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test.jpg" }, DuplicateHandling.Deny);
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test1.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
-            Assert.True(_sut.HasAsset(new Asset() { FilePath = "C:\\test1.jpg" }));
+            Assert.True(_sut.HasAsset(new Asset() { Path = "C:\\test1.jpg" }));
         }
 
         [Fact]
         public void HasAssetThrowsNullReferenceIfNullIsPassed()
         {
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test.jpg" }, DuplicateHandling.Deny);
-            _sut.AddAsset(new Asset() { FilePath = "C:\\test1.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
+            _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
             Assert.Throws<NullReferenceException>(() => _sut.HasAsset(null));
         }
