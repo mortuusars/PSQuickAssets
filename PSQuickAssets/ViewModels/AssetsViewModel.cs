@@ -21,7 +21,7 @@ namespace PSQuickAssets.ViewModels
     {
         public ObservableCollection<AssetGroup> AssetGroups { get; }
 
-        public AssetCommandsViewModel AssetCommands { get; set; }
+        public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
 
         public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
@@ -34,18 +34,18 @@ namespace PSQuickAssets.ViewModels
         
         private readonly AssetLoader _assetLoader;
         private readonly AssetAtlas _assetAtlas;
-        private readonly WindowManager _viewManager;
+        private readonly WindowManager _windowManager;
         private readonly INotificationService _notificationService;
         private readonly Config _config;
 
         internal AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager windowManager, INotificationService notificationService, Config config)
         {
             AssetGroups = new ObservableCollection<AssetGroup>();
-            AssetCommands = new AssetCommandsViewModel(windowManager, notificationService, config);
+            PhotoshopCommands = new PhotoshopCommandsViewModel(windowManager, notificationService, config);
 
             _assetLoader = assetLoader;
             _assetAtlas = assetAtlas;
-            _viewManager = windowManager;
+            _windowManager = windowManager;
             _notificationService = notificationService;
             _config = config;
             AddFolderCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: false));

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-public class AssetCommandsViewModel
+public class PhotoshopCommandsViewModel
 {
     public IList<PhotoshopAction> GlobalActions { get; }
 
@@ -23,7 +23,7 @@ public class AssetCommandsViewModel
     private readonly INotificationService _notificationService;
     private readonly Config _config;
 
-    internal AssetCommandsViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
+    internal PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
     {
         _windowManager = windowManager;
         _notificationService = notificationService;

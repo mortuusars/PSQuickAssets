@@ -9,7 +9,7 @@ namespace PSQuickAssets.Assets
         {
             try
             {
-                return JsonSerializer.Deserialize<StoredGroup[]>(contents);
+                return JsonSerializer.Deserialize<StoredGroup[]>(contents) ?? Array.Empty<StoredGroup>();
             }
             catch (Exception)
             {

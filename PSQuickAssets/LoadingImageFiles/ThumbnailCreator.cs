@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 
-namespace PSQuickAssets.LoadingImageFiles
+namespace PSQuickAssets
 {
+    public enum ConstrainTo
+    {
+        Width,
+        Height
+    }
+
     /// <summary>
     /// Provides funcionality to create thumbnails from filepath or resourcepath.
     /// </summary>

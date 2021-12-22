@@ -20,7 +20,7 @@ namespace PSQuickAssets.Services
 
         public void CreateAndShowMainWindow()
         {
-            _mainViewModel = new MainViewModel(new ImageFileLoader(), this, _notificationService, _config);
+            _mainViewModel = new MainViewModel(this, _notificationService, _config);
 
             MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
             MainWindow.RestoreState();
