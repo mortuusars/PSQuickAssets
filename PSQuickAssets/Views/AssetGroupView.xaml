@@ -8,14 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:PSQuickAssets.Models"
     xmlns:sys="clr-namespace:System;assembly=netstandard"
-    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels" 
+    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
     x:Name="root"
-    d:DataContext="{d:DesignInstance Type=models:TestAssetGroup,
-                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="350"
     d:DesignWidth="400"
     mc:Ignorable="d">
 
+    
     <UserControl.Resources>
         <Style BasedOn="{StaticResource DarkToolTip}" TargetType="{x:Type ToolTip}" />
     </UserControl.Resources>

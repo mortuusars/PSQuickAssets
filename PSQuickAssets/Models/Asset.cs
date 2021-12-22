@@ -9,7 +9,6 @@ namespace PSQuickAssets.Models
     {
         [JsonIgnore]
         public BitmapImage? Thumbnail { get; set; }
-        public string? ThumbnailPath { get; set; }
         /// <summary>
         /// Full path to the file.
         /// </summary>

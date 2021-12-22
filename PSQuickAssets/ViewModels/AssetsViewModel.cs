@@ -1,5 +1,6 @@
 ﻿using AsyncAwaitBestPractices;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
@@ -48,10 +49,10 @@ namespace PSQuickAssets.ViewModels
             _windowManager = windowManager;
             _notificationService = notificationService;
             _config = config;
-            AddFolderCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: false));
-            AddFolderWithSubfoldersCommand = new RelayCommand(_ => SelectAndAddFolders(includeSubfolders: true));
-            AddFilesCommand = new RelayCommand(_ => SelectAndAddFiles());
-            RemoveGroupCommand = new RelayCommand(group => RemoveGroup((AssetGroup)group));
+            AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
+            AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
+            AddFilesCommand = new RelayCommand(SelectAndAddFiles);
+            RemoveGroupCommand = new RelayCommand<AssetGroup>((group) => RemoveGroup(group!));
 
             AssetGroups.CollectionChanged += (_, _) => SaveAssets();
 

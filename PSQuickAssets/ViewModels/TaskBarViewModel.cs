@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.Resources;
+﻿using Microsoft.Toolkit.Mvvm.Input;
+using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using System.Windows.Input;
 
@@ -24,10 +25,10 @@ namespace PSQuickAssets.ViewModels
             Settings = Localization.Instance["Settings"];
             Exit = Localization.Instance["Taskbar_Exit"];
 
-            ShowWindowCommand = new RelayCommand(_ => App.WindowManager.ToggleMainWindow());
-            ToggleTerminalCommand = new RelayCommand(_ => MLoggerSetup.ToggleTerminalWindow());
-            SettingsCommand = new RelayCommand(_ => App.WindowManager.ShowSettingsWindow());
-            ExitCommand = new RelayCommand(_ => App.Current.Shutdown());
+            ShowWindowCommand = new RelayCommand(() => App.WindowManager!.ToggleMainWindow());
+            ToggleTerminalCommand = new RelayCommand(MLoggerSetup.ToggleTerminalWindow);
+            SettingsCommand = new RelayCommand(() => App.WindowManager!.ShowSettingsWindow());
+            ExitCommand = new RelayCommand(App.Current.Shutdown);
         }
     }
 }

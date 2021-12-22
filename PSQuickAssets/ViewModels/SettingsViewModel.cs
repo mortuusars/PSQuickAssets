@@ -1,4 +1,5 @@
 ﻿using MGlobalHotkeys.WPF;
+using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
@@ -26,6 +27,7 @@ namespace PSQuickAssets.ViewModels
                     _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_ToggleWindowHotkeyFailed"] + "\n" + error, NotificationIcon.Error);
             }
         }
+
         public bool CheckUpdates
         {
             get => _checkUpdates;
@@ -96,7 +98,7 @@ namespace PSQuickAssets.ViewModels
             _globalHotkeys = globalHotkeys;
             _notificationService = notificationService;
 
-            SaveCommand = new RelayCommand(_ => ApplyNewSettings());
+            SaveCommand = new RelayCommand(ApplyNewSettings);
 
             _toggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
             _checkUpdates = _config.CheckUpdates;

@@ -11,6 +11,7 @@
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:views="clr-namespace:PSQuickAssets.Views"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
     x:Name="window"
     Title="PSQuickAssets"
     Width="600"
@@ -27,7 +28,6 @@
     PreviewKeyDown="window_KeyDown"
     PreviewKeyUp="window_KeyUp"
     PreviewMouseLeftButtonDown="window_PreviewMouseLeftButtonDown"
-    ShowInTaskbar="False"
     TextOptions.TextFormattingMode="Ideal"
     Topmost="{Binding AlwaysOnTop}"
     UseLayoutRounding="True"
@@ -37,6 +37,9 @@
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}" />
+
+        <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
+        <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -150,6 +153,12 @@
             </Style>
         </Grid.Style>
 
+        <Grid.InputBindings>
+            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Down, Keys=Shift}" />
+            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Up, Keys=Shift}" />
+
+        </Grid.InputBindings>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -232,7 +241,8 @@
             Background="{x:Null}"
             BorderThickness="0"
             Focusable="False"
-            ItemsSource="{Binding AssetsViewModel.AssetGroups}">
+            ItemsSource="{Binding AssetsViewModel.AssetGroups}"
+            PreviewMouseWheel="ItemsContainer_PreviewMouseWheel">
 
             <ItemsControl.Template>
                 <ControlTemplate>

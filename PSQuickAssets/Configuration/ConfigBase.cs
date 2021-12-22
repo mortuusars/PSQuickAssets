@@ -1,14 +1,15 @@
 ﻿using MLogger;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace PSQuickAssets.Configuration;
 
-public abstract class ConfigBase
+public abstract class ConfigBase : INotifyPropertyChanged
 {
-    public event Action<string>? ConfigPropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public bool SavesOnPropertyChanged { get; }
@@ -71,7 +72,7 @@ public abstract class ConfigBase
         }
 
         property.SetValue(this, value);
-        ConfigPropertyChanged?.Invoke(propertyName);
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         _logger?.Info($"[Config] - {propertyName} is set to <{value}>");
 
         if (SavesOnPropertyChanged)

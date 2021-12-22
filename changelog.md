@@ -4,6 +4,7 @@ Added:
 - Asset opens as a new document if none are open
 - Setting to add a mask to the layer if document had selection prior to adding asset
 - Setting to configure if window should be always on top of other windows
+- Thumbnail size can be changed with Ctrl+Scroll or Ctrl+Plus/Minus.
 - Close button turns red when CTRL is pressed
 - Window Show/Hide fading animations
 - Beautiful Update window

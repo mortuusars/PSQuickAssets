@@ -350,6 +350,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to set config value:.
+        /// </summary>
+        public static string Settings_SetValueFailed {
+            get {
+                return ResourceManager.GetString("Settings_SetValueFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Size.
+        /// </summary>
+        public static string Settings_ThumbnailSize {
+            get {
+                return ResourceManager.GetString("Settings_ThumbnailSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Window open/close hotkey.
         /// </summary>
         public static string Settings_ToggleWindowHotkey {

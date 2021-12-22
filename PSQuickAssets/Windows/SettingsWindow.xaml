@@ -128,7 +128,7 @@
             <!--  SETTINGS  -->
             <StackPanel Grid.Row="0">
                 <Grid
-                    Name="HotkeyColumn"
+                    Name="Hotkey"
                     Margin="0,4"
                     ToolTip="{lex:Loc Settings_ToggleWindowHotkey_Tooltip}">
                     <Grid.ColumnDefinitions>
@@ -207,7 +207,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         IsOn="{Binding CheckUpdates, Mode=TwoWay}" />
-                </Grid>                
+                </Grid>
             </StackPanel>
 
 

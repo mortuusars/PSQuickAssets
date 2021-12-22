@@ -83,7 +83,7 @@ namespace PSQuickAssets.Windows
             try
             {
                 var json = File.ReadAllText(filepath);
-                return JsonSerializer.Deserialize<ViewState>(json);
+                return JsonSerializer.Deserialize<ViewState>(json) ?? throw new NullReferenceException("Deserialized ViewState was null.");
             }
             catch (Exception)
             {
@@ -167,10 +167,31 @@ namespace PSQuickAssets.Windows
 
         private void window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var clickedRegion = WpfElementUtils.GetParentOfTypeByName<StackPanel>(e.OriginalSource as FrameworkElement, nameof(AddAssets));
+            var clickedRegion = WpfElementUtils.GetParentOfTypeByName<StackPanel>((FrameworkElement)e.OriginalSource, nameof(AddAssets));
 
             if (clickedRegion != AddAssets)
                 AddAssetsButtons.Visibility = Visibility.Collapsed;
+        }
+
+        private void ItemsContainer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
+            {
+                e.Handled = true;
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = sender;
+                var parent = ((Control)sender).Parent as UIElement;
+                parent?.RaiseEvent(eventArg);
+            }
+
+            //App.Logger.Info(sender.GetType().ToString());
+            //App.Logger.Info(((UIElement)((Control)sender).Parent).ToString());
+
+            //string wheel = e.Delta > 0 ? "Up" : "Down";
+            //string msg = $"{Keyboard.Modifiers} + {wheel}";
+            //App.Logger.Info(msg);
         }
     }
 }

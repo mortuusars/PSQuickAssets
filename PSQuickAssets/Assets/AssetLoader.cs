@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.Assets
@@ -24,7 +21,7 @@ namespace PSQuickAssets.Assets
                 : throw new NotSupportedException($"Loading {extension} files is not supported.");
         }
 
-        public bool TryLoad(string filePath, out Asset asset)
+        public bool TryLoad(string filePath, out Asset? asset)
         {
             try
             {
@@ -44,8 +41,8 @@ namespace PSQuickAssets.Assets
 
             foreach (string filePath in filePaths)
             {
-                if (TryLoad(filePath, out  Asset asset))
-                    assets.Add(asset);
+                Asset asset = CreateAsset(filePath);
+                assets.Add(asset);
             }
 
             return assets;
@@ -61,7 +58,6 @@ namespace PSQuickAssets.Assets
             return new Asset
             {
                 Thumbnail = CreateThumbnail(filePath),
-                ThumbnailPath = filePath,
                 Path = filePath,
                 FileSize = new FileInfo(filePath).Length,
                 Dimensions = GetAssetDimensions(filePath)

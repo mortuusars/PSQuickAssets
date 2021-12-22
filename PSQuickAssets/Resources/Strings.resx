@@ -214,6 +214,12 @@ Ctrl+Click: Close</value>
   <data name="Settings_SavingConfigFailed" xml:space="preserve">
     <value>Failed to save setting:</value>
   </data>
+  <data name="Settings_SetValueFailed" xml:space="preserve">
+    <value>Failed to set config value:</value>
+  </data>
+  <data name="Settings_ThumbnailSize" xml:space="preserve">
+    <value>Thumbnail Size</value>
+  </data>
   <data name="Settings_ToggleWindowHotkey" xml:space="preserve">
     <value>Window open/close hotkey</value>
   </data>
