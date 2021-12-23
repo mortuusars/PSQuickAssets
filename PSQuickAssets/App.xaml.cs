@@ -71,7 +71,7 @@ namespace PSQuickAssets
             if (!File.Exists(cfgFilePath))
                 config.Save();
 
-            config.Load<Config>();
+            config.Load<Config>(configFileHandler);
 
             return config;
         }

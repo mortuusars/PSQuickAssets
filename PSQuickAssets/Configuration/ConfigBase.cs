@@ -14,12 +14,12 @@ public abstract class ConfigBase : INotifyPropertyChanged
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public bool SaveOnPropertyChanged { get; }
 
-    protected IConfigHandler _configHandler;
+    protected IConfigSaver _configSaver;
     private readonly ILogger? _logger;
 
-    public ConfigBase(IConfigHandler configHandler, ILogger? logger, bool shouldSaveOnPropertyChanged)
+    public ConfigBase(IConfigSaver configHandler, ILogger? logger, bool shouldSaveOnPropertyChanged)
     {
-        _configHandler = configHandler;
+        _configSaver = configHandler;
         _logger = logger;
 
         SaveOnPropertyChanged = shouldSaveOnPropertyChanged;
@@ -67,13 +67,13 @@ public abstract class ConfigBase : INotifyPropertyChanged
 
         if (value.Equals(prevValue))
         {
-            _logger?.Info($"[Config] - New value for <{propertyName}> has not been set: Values is already equal.");
+            _logger?.Info($"[Config] - New value for <{propertyName}> has not been set: Values already equal.");
             return;
         }
 
         property.SetValue(this, value);
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        _logger?.Info($"[Config] - {propertyName} is set to <{value}>");
+        _logger?.Debug($"[Config] - {propertyName} is set to <{value}>");
 
         if (SaveOnPropertyChanged)
             Save();
@@ -100,29 +100,33 @@ public abstract class ConfigBase : INotifyPropertyChanged
         }
     }
 
-    public T Load<T>() where T : ConfigBase
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T Load<T>(IConfigLoader loader) where T : ConfigBase
     {
-        Dictionary<string, object> jsonElements = _configHandler.Load();
+        Dictionary<string, object> loadedProperties = loader.Load();
 
-        if (jsonElements.Count == 0)
+        if (loadedProperties.Count == 0)
         {
-            _logger?.Warn("[Config - Loading] - No properties have been loaded from json. Default config values would be loaded.");
+            _logger?.Warn("[Config - Loading] - No properties have been loaded. Default config values would be used.");
             return (T)this;
         }
-
 
         var properties = (typeof(Config)).GetProperties();
         bool hasMissingSettings = false;
 
         foreach (var prop in properties)
         {
-            //Skip. This property is configured when config is created.
+            //Skip property in the base class. This property is configured when config is instantiated.
             if (prop.Name.Equals(nameof(SaveOnPropertyChanged)))
                 continue;
 
             try
             {
-                prop.SetValue(this, jsonElements[prop.Name]);
+                prop.SetValue(this, loadedProperties[prop.Name]);
             }
             catch (KeyNotFoundException)
             {
@@ -138,15 +142,18 @@ public abstract class ConfigBase : INotifyPropertyChanged
 
         if (hasMissingSettings)
         {
-            _logger?.Info($"[Config - Loading] - Saving config because missing settings were found...");
+            _logger?.Debug($"[Config - Loading] - Saving config because missing settings were found...");
             Save();
         }
 
         return (T)this;
     }
 
+    /// <summary>
+    /// Saves the config through the provided IConfigHandler.
+    /// </summary>
     public void Save()
     {
-        _configHandler.Save(this);
+        _configSaver.Save(this);
     }
 }

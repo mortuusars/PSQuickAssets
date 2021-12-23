@@ -63,8 +63,8 @@ namespace PSQuickAssets.Services
                 settingsWindow = new SettingsWindow();
                 settingsWindow.DataContext = new SettingsViewModel(App.Config, App.GlobalHotkeys, _notificationService);
                 settingsWindow.Show();
-                settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
-                settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y;
+                settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X - 100;
+                settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 100;
             }
             else
             {

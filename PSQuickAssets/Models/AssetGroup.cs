@@ -23,7 +23,7 @@ public class AssetGroup : ObservableObject
     /// <summary>
     /// Collection of assets in the group.
     /// </summary>
-    public ObservableCollection<Asset> Assets { get; private set; }
+    public ObservableCollection<Asset> Assets { get; set; }
 
     /// <summary>
     /// Initializes Asset Group.
@@ -40,6 +40,11 @@ public class AssetGroup : ObservableObject
 
         Assets.CollectionChanged += (_, _) => GroupChanged?.Invoke();
     }
+
+    /// <summary>
+    /// Initializes Asset Group with name of a current Unix time seconds. (To be unique)
+    /// </summary>
+    public AssetGroup() : this(DateTimeOffset.Now.ToUnixTimeSeconds().ToString()) { }
 
     /// <summary>
     /// Adds asset to the group.

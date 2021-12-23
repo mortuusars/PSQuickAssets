@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace PSQuickAssets.Configuration
 {
-    public class JsonFileConfigHandler : IConfigHandler
+    public class JsonFileConfigHandler : IConfigLoader, IConfigSaver
     {
         private readonly string _filePath;
         private readonly ILogger? _logger;

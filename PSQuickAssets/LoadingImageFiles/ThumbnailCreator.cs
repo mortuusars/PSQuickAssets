@@ -20,7 +20,7 @@ namespace PSQuickAssets
             {
                 ConstrainTo.Width => ToWidth(filepath, maxSize),
                 ConstrainTo.Height => ToHeight(filepath, maxSize),
-                _ => throw new ArgumentException("Not a valid contrain.")
+                _ => throw new ArgumentException("Not a valid constrain.")
             };
         }
 
@@ -30,7 +30,7 @@ namespace PSQuickAssets
             {
                 ConstrainTo.Width => ToWidthFromResource(resourceUri, maxSize),
                 ConstrainTo.Height => ToHeightFromResource(resourceUri, maxSize),
-                _ => throw new ArgumentException("Not a valid contrain.")
+                _ => throw new ArgumentException("Not a valid constrain.")
             };
         }
 

@@ -26,8 +26,6 @@ namespace PSQuickAssets.Windows
             //TODO: Capture Mouse in a HotkeyPicker
             if (e.OriginalSource is FrameworkElement element && element != HotkeyPicker)
                 FocusManager.SetFocusedElement(this, this);
-
-            //if(WpfElementUtils.GetParentOfTypeByName<Grid>((FrameworkElement)e.OriginalSource, nameof(HotkeyPicker)) != HotkeyPicker)
         }
 
         private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
