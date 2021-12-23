@@ -12,7 +12,7 @@ public abstract class ConfigBase : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
-    public bool SavesOnPropertyChanged { get; }
+    public bool SaveOnPropertyChanged { get; }
 
     protected IConfigHandler _configHandler;
     private readonly ILogger? _logger;
@@ -22,7 +22,7 @@ public abstract class ConfigBase : INotifyPropertyChanged
         _configHandler = configHandler;
         _logger = logger;
 
-        SavesOnPropertyChanged = shouldSaveOnPropertyChanged;
+        SaveOnPropertyChanged = shouldSaveOnPropertyChanged;
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public abstract class ConfigBase : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         _logger?.Info($"[Config] - {propertyName} is set to <{value}>");
 
-        if (SavesOnPropertyChanged)
+        if (SaveOnPropertyChanged)
             Save();
     }
 
@@ -117,7 +117,7 @@ public abstract class ConfigBase : INotifyPropertyChanged
         foreach (var prop in properties)
         {
             //Skip. This property is configured when config is created.
-            if (prop.Name.Equals(nameof(SavesOnPropertyChanged)))
+            if (prop.Name.Equals(nameof(SaveOnPropertyChanged)))
                 continue;
 
             try

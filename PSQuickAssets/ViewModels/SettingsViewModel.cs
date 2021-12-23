@@ -7,86 +7,37 @@ using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
-    public class SettingsViewModel
+    internal class SettingsViewModel
     {
         public Hotkey ToggleMainWindowHotkey
         {
-            get => _toggleMainWindowHotkey;
+            get => Hotkey.FromString(_config.ShowHideWindowHotkey);
             set
             {
-                _toggleMainWindowHotkey = value;
-
-                if (_config.TrySetValue(nameof(_config.ShowHideWindowHotkey), ToggleMainWindowHotkey.ToString(), out string error))
-                {
+                if (SetConfigValue(nameof(_config.ShowHideWindowHotkey), value.ToString()))
                     _globalHotkeys.Register(ToggleMainWindowHotkey, HotkeyUse.ToggleMainWindow);
-
-                    if (!_config.SavesOnPropertyChanged)
-                        _config.Save();
-                }
-                else
-                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_ToggleWindowHotkeyFailed"] + "\n" + error, NotificationIcon.Error);
-            }
-        }
-
-        public bool CheckUpdates
-        {
-            get => _checkUpdates;
-            set
-            {
-                _checkUpdates = value;
-
-                if (_config.TrySetValue(nameof(_config.CheckUpdates), CheckUpdates, out string error))
-                {
-                    if (!_config.SavesOnPropertyChanged)
-                        _config.Save();
-                }
-                else
-                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
-            }
-        }
-
-        public bool AddMaskIfHasSelection
-        {
-            get => _addMaskIfHasSelection;
-            set
-            {
-                _addMaskIfHasSelection = value;
-
-                if (_config.TrySetValue(nameof(_config.AddMaskIfDocumentHasSelection), AddMaskIfHasSelection, out string error))
-                {
-                    if (!_config.SavesOnPropertyChanged)
-                        _config.Save();
-                }
-                else
-                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
             }
         }
 
         public bool AlwaysOnTop
         {
-            get => _alwaysOnTop;
-            set
-            {
-                _alwaysOnTop = value;
-
-                if (_config.TrySetValue(nameof(_config.AlwaysOnTop), AlwaysOnTop, out string error))
-                {
-                    if (!_config.SavesOnPropertyChanged)
-                        _config.Save();
-                }
-                else
-                    _notificationService.Notify(App.AppName + Localization.Instance["Settings"], Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
-            }
+            get => _config.AlwaysOnTop;
+            set => SetConfigValue(nameof(_config.AlwaysOnTop), value);
         }
 
-        //TODO: Clean up settings. Generalize config updates.
+        public bool AddMaskIfDocumentHasSelection
+        {
+            get => _config.AddMaskIfDocumentHasSelection;
+            set => SetConfigValue(nameof(_config.AddMaskIfDocumentHasSelection), value);
+        }
+
+        public bool CheckUpdates
+        {
+            get => _config.CheckUpdates;
+            set => SetConfigValue(nameof(_config.CheckUpdates), value);
+        }
 
         public ICommand SaveCommand { get; }
-
-        private Hotkey _toggleMainWindowHotkey;
-        private bool _checkUpdates;
-        private bool _addMaskIfHasSelection;
-        private bool _alwaysOnTop;
 
         private readonly Config _config;
         private readonly Services.GlobalHotkeys _globalHotkeys;
@@ -99,16 +50,24 @@ namespace PSQuickAssets.ViewModels
             _notificationService = notificationService;
 
             SaveCommand = new RelayCommand(ApplyNewSettings);
+        }
 
-            _toggleMainWindowHotkey = Hotkey.FromString(_config.ShowHideWindowHotkey);
-            _checkUpdates = _config.CheckUpdates;
-            _addMaskIfHasSelection = _config.AddMaskIfDocumentHasSelection;
-            _alwaysOnTop = _config.AlwaysOnTop;
+        private bool SetConfigValue(string propertyName, object newValue)
+        {
+            if (!_config.TrySetValue(propertyName, newValue, out string error))
+            {
+                _notificationService.Notify(App.AppName + Localization.Instance["Settings"],
+                    Localization.Instance["Settings_SavingConfigFailed"] + "\n" + error, NotificationIcon.Error);
+                return false;
+            }
+
+            ApplyNewSettings();
+            return true;
         }
 
         private void ApplyNewSettings()
         {
-            if (!_config.SavesOnPropertyChanged)
+            if (!_config.SaveOnPropertyChanged)
                 _config.Save();
         }
     }

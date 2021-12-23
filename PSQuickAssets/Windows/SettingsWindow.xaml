@@ -169,7 +169,7 @@
                         IsOn="{Binding AlwaysOnTop, Mode=TwoWay}" />
                 </Grid>
 
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfHasSelection_Tooltip}">
+                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
@@ -177,13 +177,13 @@
 
                     <TextBlock
                         Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_AddMaskIfHasSelection}"
+                        Text="{lex:Loc Settings_AddMaskIfDocumentHasSelection}"
                         TextWrapping="Wrap" />
                     <controls:ToggleSwitch
                         x:Name="AddMaskToggle"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
-                        IsOn="{Binding AddMaskIfHasSelection, Mode=TwoWay}" />
+                        IsOn="{Binding AddMaskIfDocumentHasSelection, Mode=TwoWay}" />
                 </Grid>
 
                 <Rectangle

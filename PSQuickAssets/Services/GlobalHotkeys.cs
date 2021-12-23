@@ -39,10 +39,8 @@ internal class GlobalHotkeys : IDisposable
     }
     
     /// <summary>
-    /// 
+    /// Registers specified Hotkey with specified use. Displays an error if registering failed.
     /// </summary>
-    /// <param name="hotkey"></param>
-    /// <param name="use"></param>
     internal void Register(Hotkey hotkey, HotkeyUse use)
     {
         if (!HotkeyActions.ContainsKey(use))

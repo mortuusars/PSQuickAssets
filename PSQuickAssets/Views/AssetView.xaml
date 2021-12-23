@@ -47,9 +47,9 @@
         <!--  THUMBNAIL  -->
         <Border
             x:Name="ThumbContainer"
-            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Config.ThumbnailSize}"
+            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ThumbnailSize}"
             MinWidth="60"
-            MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource DoubleWithRatioConverter}, ConverterParameter={StaticResource MaxThumbnailHeightToWidthRatio}, Path=DataContext.Config.ThumbnailSize}"
+            MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource DoubleWithRatioConverter}, ConverterParameter={StaticResource MaxThumbnailHeightToWidthRatio}, Path=DataContext.ThumbnailSize}"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             d:Height="60"

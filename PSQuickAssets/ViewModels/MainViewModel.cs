@@ -11,13 +11,9 @@ namespace PSQuickAssets.ViewModels
     public class MainViewModel : ObservableObject
     {
         public bool AlwaysOnTop { get => _config.AlwaysOnTop; }
+        public double ThumbnailSize { get => _config.ThumbnailSize; }
 
         public AssetsViewModel AssetsViewModel { get; }
-
-        public double ThumbnailSize { get => _thumbnailSize; set { _thumbnailSize = value; OnPropertyChanged(nameof(ThumbnailSize)); } }
-        private double _thumbnailSize;
-
-        public Config Config { get => _config; }
 
         public ICommand IncreaseThumbnailSizeCommand { get; }
         public ICommand DecreaseThumbnailSizeCommand { get; }
@@ -38,9 +34,7 @@ namespace PSQuickAssets.ViewModels
             _notificationService = notificationService;
             _config = config;
 
-            Config.PropertyChanged += (_, property) => { if (property.PropertyName?.Equals(nameof(_config.AlwaysOnTop)) ?? false) OnPropertyChanged(nameof(AlwaysOnTop)); };
-
-            _thumbnailSize = Config.ThumbnailSize;
+            _config.PropertyChanged += Config_PropertyChanged;
 
             IncreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Up));
             DecreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Down));
@@ -50,21 +44,25 @@ namespace PSQuickAssets.ViewModels
             ShutdownCommand = new RelayCommand(App.Current.Shutdown);
         }
 
+        private void Config_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (nameof(_config.AlwaysOnTop).Equals(e.PropertyName)) OnPropertyChanged(nameof(AlwaysOnTop));
+            else if (nameof(_config.ThumbnailSize).Equals(e.PropertyName)) OnPropertyChanged(nameof(ThumbnailSize));
+        }
+
         private void ChangeThumbnailSize(MouseWheelDirection direction)
         {
             switch (direction)
             {
                 case MouseWheelDirection.Up:
                     if (ThumbnailSize <= 142)
-                        ThumbnailSize = ThumbnailSize += 8;
+                        _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize + 8, out string _);
                     break;
                 case MouseWheelDirection.Down:
                     if (ThumbnailSize >= 38)
-                        ThumbnailSize = ThumbnailSize -= 8;
+                        _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize - 8, out string _);
                     break;
             }
-
-            _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize, out string _);
         }
     }
 }
