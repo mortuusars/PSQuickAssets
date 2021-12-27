@@ -16,9 +16,9 @@ namespace PSQuickAssets.Services
 
             if (TrySaveCrashReport(e.Exception, out string reportFilePath) && File.Exists(reportFilePath))
             {
-                message += $"\n\nCrash Report has been saved to: {reportFilePath}\n\nOpen the file now?";
+                message += $"\n\nCrash Report has been saved to: {reportFilePath}";
 
-                if (MessageBox.Show(message, App.AppName, MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
+                if (MessageBox.Show(message + "\n\nOpen the file now?", App.AppName, MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
                 {
                     ProcessStartInfo process = new ProcessStartInfo(reportFilePath) { UseShellExecute = true };
                     Process.Start(process);
@@ -37,6 +37,7 @@ namespace PSQuickAssets.Services
             catch (Exception) { }
 
             App.Current.Shutdown();
+            Environment.Exit(-1);
         }
 
         private static bool TrySaveCrashReport(Exception exception, out string reportFilePath)

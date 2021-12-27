@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.Models;
+﻿using PSQuickAssets.Assets;
+using PSQuickAssets.Models;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -45,7 +46,7 @@ namespace PSQuickAssets.Tests.AssetTests
             bool eventOccured = false;
 
             _sut.GroupChanged += () => eventOccured = true;
-            _sut.Rename("123");
+            _sut.Name = "123";
             Assert.True(eventOccured);
         }
 
@@ -136,27 +137,39 @@ namespace PSQuickAssets.Tests.AssetTests
         [Fact]
         public void RenameThrowsIfPassedNull()
         {
-            Assert.Throws<ArgumentNullException>(() => _sut.Rename(null));
+            Assert.Throws<ArgumentNullException>(() => _sut.Name = null);
         }
 
         [Fact]
         public void RenameNotChangesNameIfSame()
         {
-            Assert.False(_sut.Rename("test"));
+            _sut.Name = "same name";
+            bool groupChanged = false;
+            _sut.GroupChanged += () => groupChanged = true;
+
+            _sut.Name = "same name";
+
+            Assert.False(groupChanged);
         }
 
         [Fact]
         public void RenameChangesNameIfDifferentCase()
         {
-            Assert.True(_sut.Rename("Test"));
+            _sut.Name = "new name";
+
+            _sut.Name = "New name";
+
+            Assert.True(_sut.Name.Equals("New name"));
         }
 
         [Fact]
         public void RenameShouldChangeGroupName()
         {
-            _sut.Rename("changed");
+            _sut.Name = "Old name";
 
-            Assert.Equal("changed", _sut.Name);
+            _sut.Name = "New name";
+
+            Assert.True(_sut.Name.Equals("New name"));
         }
 
         #endregion

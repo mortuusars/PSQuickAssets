@@ -1,5 +1,6 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using MLogger;
+using MTerminal.WPF;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
@@ -47,6 +48,10 @@ namespace PSQuickAssets
             NotificationService = new TaskbarNotificationService(TaskBarIcon);
 
             Logger = new MLoggerSetup(NotificationService).CreateLogger();
+            
+            Console.SetOut(Terminal.Out);
+            Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
+            Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
 
             Config = CreateConfig();
 
@@ -58,6 +63,29 @@ namespace PSQuickAssets
             GlobalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
 
             new Update.Update().CheckUpdatesAsync();
+        }
+
+        private void OpenAppdataFolder()
+        {
+            ProcessStartInfo processStartInfo = new(App.AppDataFolder);
+            processStartInfo.UseShellExecute = true;
+            Process.Start(processStartInfo);
+        }
+
+        private static bool _isTerminalOpen;
+
+        internal static void ToggleTerminalWindow()
+        {
+            if (_isTerminalOpen)
+            {
+                Terminal.CloseWindow();
+                _isTerminalOpen = false;
+            }
+            else
+            {
+                Terminal.ShowWindow();
+                _isTerminalOpen = true;
+            }
         }
 
         private static Config CreateConfig()

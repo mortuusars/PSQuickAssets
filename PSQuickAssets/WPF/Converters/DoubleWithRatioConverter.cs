@@ -15,7 +15,6 @@ namespace PSQuickAssets.WPF.Converters
             if (parameter is not double ratio) throw new ArgumentException("Converter Parameter should be of type double");
 
             double result = input * ratio;
-            App.Logger.Info(input.ToString() +" " + result.ToString());
             return result;
         }
 

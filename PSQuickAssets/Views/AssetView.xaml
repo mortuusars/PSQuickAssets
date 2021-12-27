@@ -14,8 +14,9 @@
     <UserControl.Resources>
         <system:Double x:Key="MaxThumbnailHeightToWidthRatio">2.5</system:Double>
 
-        <converters:ThumbnailHeightToWidthProportionConverter x:Key="WidthToHeightProportionConveter" />
         <converters:DoubleWithRatioConverter x:Key="DoubleWithRatioConverter" />
+
+        <BitmapImage x:Key="MissingImage" UriSource="../Resources/Images/image_light.png" />
     </UserControl.Resources>
 
     <Grid
@@ -49,30 +50,32 @@
             x:Name="ThumbContainer"
             Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ThumbnailSize}"
             MinWidth="60"
-            MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource DoubleWithRatioConverter}, ConverterParameter={StaticResource MaxThumbnailHeightToWidthRatio}, Path=DataContext.ThumbnailSize}"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             d:Height="60"
             d:Width="60"
             CornerRadius="3">
-            <Border.Background>
-                <ImageBrush
-                    d:ImageSource="../Resources/Images/test.jpg"
-                    d:Stretch="UniformToFill"
-                    ImageSource="{Binding Thumbnail, Mode=OneTime, IsAsync=True}"
-                    Stretch="{Binding Thumbnail, Converter={StaticResource ThumbnailSizeToImageStretchConverter}}" />
-            </Border.Background>
 
             <!--
                 Proportionally set Width of a thumbnail by multiplying
                 Height (which is controlled by ThumbnailSize) with proportions of an image
             -->
             <Border.Width>
-                <MultiBinding Converter="{StaticResource WidthToHeightProportionConveter}">
-                    <Binding Path="Thumbnail" />
-                    <Binding Path="DataContext.ThumbnailSize" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" />
+                <MultiBinding Converter="{x:Static converters:ProportionConverter.Instance}" ConverterParameter="{StaticResource MaxThumbnailHeightToWidthRatio}">
+                    <Binding Path="Thumbnail.PixelWidth" />
+                    <Binding Path="Thumbnail.PixelHeight" />
+                    <Binding Path="Height" RelativeSource="{RelativeSource Mode=Self}" />
                 </MultiBinding>
             </Border.Width>
+
+            <Border.Background>
+                <ImageBrush
+                    d:ImageSource="../Resources/Images/test.jpg"
+                    d:Stretch="UniformToFill"
+                    ImageSource="{Binding Thumbnail, Mode=OneTime, IsAsync=True, TargetNullValue={StaticResource MissingImage}}"
+                    Stretch="{Binding Thumbnail, Converter={StaticResource ThumbnailSizeToImageStretchConverter}}" />
+            </Border.Background>
+
         </Border>
 
         <!--  FILENAME  -->

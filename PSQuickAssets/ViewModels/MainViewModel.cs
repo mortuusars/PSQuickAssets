@@ -19,6 +19,7 @@ namespace PSQuickAssets.ViewModels
         public ICommand DecreaseThumbnailSizeCommand { get; }
 
         public ICommand SettingsCommand { get; }
+        public ICommand ToggleTerminalCommand { get; }
         public ICommand HideCommand { get; }
         public ICommand ShutdownCommand { get; }
 
@@ -28,7 +29,7 @@ namespace PSQuickAssets.ViewModels
 
         internal MainViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
         {
-            AssetsViewModel = new AssetsViewModel(new AssetLoader(), new AssetAtlas(new AtlasLoader(), new AtlasSaver(), "save.json"), windowManager, notificationService, config);
+            AssetsViewModel = new AssetsViewModel(new AssetManager(App.AppDataFolder + "/assets/", App.Logger), windowManager, notificationService, config);
 
             _windowManager = windowManager;
             _notificationService = notificationService;
@@ -40,6 +41,7 @@ namespace PSQuickAssets.ViewModels
             DecreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Down));
 
             SettingsCommand = new RelayCommand(_windowManager.ShowSettingsWindow);
+            ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
             HideCommand = new RelayCommand(_windowManager.HideMainWindow);
             ShutdownCommand = new RelayCommand(App.Current.Shutdown);
         }
@@ -59,7 +61,7 @@ namespace PSQuickAssets.ViewModels
                         _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize + 8, out string _);
                     break;
                 case MouseWheelDirection.Down:
-                    if (ThumbnailSize >= 38)
+                    if (ThumbnailSize >= 30)
                         _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize - 8, out string _);
                     break;
             }

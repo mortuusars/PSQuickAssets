@@ -11,19 +11,20 @@
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
     x:Name="root"
+    d:DataContext="{d:DesignInstance Type=vm:TestAssetsViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="350"
     d:DesignWidth="400"
     mc:Ignorable="d">
-
 
     <UserControl.Resources>
         <Style BasedOn="{StaticResource DarkToolTip}" TargetType="{x:Type ToolTip}" />
     </UserControl.Resources>
 
-    <StackPanel Background="Transparent">
+    <StackPanel d:DataContext="{Binding AssetGroups}" Background="Transparent">
 
         <Grid
-            Margin="6,5,6,0"
+            Margin="3,7,3,0"
             HorizontalAlignment="Stretch"
             Background="Transparent">
             <Grid.ColumnDefinitions>
@@ -37,12 +38,42 @@
                 Grid.Column="0"
                 Width="16"
                 Margin="0,0,4,0"
-                MouseLeftButtonDown="Fold_MouseLeftButtonDown"
+                Command="{Binding Path=DataContext.AssetsViewModel.ToggleGroupExpandCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                CommandParameter="{Binding}"
                 RenderTransformOrigin="0.5, 0.5"
-                Source="../Resources/Images/expand_24.png">
+                Source="{StaticResource ExpandIcon}">
                 <controls:ImageButton.RenderTransform>
-                    <RotateTransform Angle="360" />
+                    <RotateTransform Angle="270" />
                 </controls:ImageButton.RenderTransform>
+                <controls:ImageButton.Style>
+                    <Style TargetType="controls:ImageButton">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                To="360"
+                                                Duration="0:0:0.12" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                To="270"
+                                                Duration="0:0:0.12" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:ImageButton.Style>
+
             </controls:ImageButton>
 
             <!--  NAME  -->
@@ -60,7 +91,7 @@
                 HorizontalAlignment="Right"
                 Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
                 CommandParameter="{Binding}"
-                Source="../Resources/Images/close_24.png"
+                Source="{StaticResource CloseIcon}"
                 ToolTip="Remove Group"
                 Visibility="{Binding ElementName=root, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}" />
         </Grid>
@@ -73,7 +104,7 @@
             BorderThickness="0"
             Focusable="False"
             ItemsSource="{Binding Assets}"
-            Visibility="{Binding ElementName=root, Path=IsExpanded, Converter={StaticResource BoolToVisibility}}">
+            Visibility="{Binding IsExpanded, Converter={StaticResource BoolToVisibility}}">
 
             <ListBox.CacheMode>
                 <BitmapCache />

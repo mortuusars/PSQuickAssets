@@ -1,29 +1,87 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
+using Microsoft.Toolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Windows.Input;
 
-namespace PSQuickAssets.Models;
+namespace PSQuickAssets.Assets;
 
-[JsonConverter(typeof(AssetGroupJsonConverter))]
+public enum DuplicateHandling
+{
+    Deny,
+    Allow
+}
+
 public class AssetGroup : ObservableObject
 {
+
     /// <summary>
     /// Occurs at any change in the group. E.g adding/removing assets, renaming, etc.
     /// </summary>
     public event Action? GroupChanged;
 
     /// <summary>
-    /// Name of the group.
+    /// Name of the group.<br></br>
+    /// If new name is same as old - name will not be updated.
     /// </summary>
-    public string Name { get; private set; }
+    /// <exception cref="ArgumentNullException">Thrown when name is null.</exception>
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(Name), "Name of a group cannot be null.");
+
+            if (!_name.Equals(value))
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+                GroupChanged?.Invoke();
+            }
+        }
+    }
+
     /// <summary>
     /// Collection of assets in the group.
     /// </summary>
-    public ObservableCollection<Asset> Assets { get; set; }
+    public ObservableCollection<Asset> Assets
+    {
+        get => _assets;
+        set
+        {
+            _assets = value;
+            OnPropertyChanged(nameof(Assets));
+            GroupChanged?.Invoke();
+            _assets.CollectionChanged += (_, _) => GroupChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// Indicates that group contents are visible.
+    /// </summary>
+    public bool IsExpanded
+    {
+        get => _isExpanded;
+        set
+        {
+            if (_isExpanded != value)
+            {
+                _isExpanded = value; 
+                OnPropertyChanged(nameof(IsExpanded));
+                GroupChanged?.Invoke();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Group with empty name and no assets.
+    /// </summary>
+    public static readonly AssetGroup Empty = new AssetGroup(string.Empty);
+
+    private string _name;
+    private bool _isExpanded;
+    private ObservableCollection<Asset> _assets;
 
     /// <summary>
     /// Initializes Asset Group.
@@ -35,16 +93,16 @@ public class AssetGroup : ObservableObject
         if (name is null)
             throw new ArgumentNullException(nameof(name));
 
-        Name = name;
-        Assets = new ObservableCollection<Asset>();
-
-        Assets.CollectionChanged += (_, _) => GroupChanged?.Invoke();
+        _name = name;
+        _assets = new ObservableCollection<Asset>();
+        _assets.CollectionChanged += (_, _) => GroupChanged?.Invoke();
+        _isExpanded = true;
     }
 
     /// <summary>
-    /// Initializes Asset Group with name of a current Unix time seconds. (To be unique)
+    /// Initializes Asset Group with a new guid as a name.
     /// </summary>
-    public AssetGroup() : this(DateTimeOffset.Now.ToUnixTimeSeconds().ToString()) { }
+    public AssetGroup() : this(Guid.NewGuid().ToString()) { }
 
     /// <summary>
     /// Adds asset to the group.
@@ -94,26 +152,6 @@ public class AssetGroup : ObservableObject
     }
 
     /// <summary>
-    /// Renames the group.
-    /// </summary>
-    /// <param name="name">New name for a group. Cannot be null.</param>
-    /// <returns><see langword="true"/> if renames successfully. Otherwise <see langword="false"/>.</returns>
-    /// <exception cref="ArgumentNullException">When name is null.</exception>
-    public bool Rename(string name)
-    {
-        if (name is null)
-            throw new ArgumentNullException(nameof(name));
-
-        if (Name.Equals(name))
-            return false;
-
-        Name = name;
-        OnPropertyChanged(nameof(Name));
-        GroupChanged?.Invoke();
-        return true;
-    }
-
-    /// <summary>
     /// Prints group name and all of group's assets.
     /// </summary>
     /// <returns></returns>
@@ -125,10 +163,4 @@ public class AssetGroup : ObservableObject
 
         return $"Group: {{\"{Name}\"\nAssets: {{{sb}\n}}\n}}";
     }
-}
-
-public enum DuplicateHandling
-{
-    Deny,
-    Allow
 }

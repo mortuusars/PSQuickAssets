@@ -26,7 +26,7 @@ namespace PSQuickAssets.ViewModels
             Exit = Localization.Instance["Taskbar_Exit"];
 
             ShowWindowCommand = new RelayCommand(() => App.WindowManager!.ToggleMainWindow());
-            ToggleTerminalCommand = new RelayCommand(MLoggerSetup.ToggleTerminalWindow);
+            ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
             SettingsCommand = new RelayCommand(() => App.WindowManager!.ShowSettingsWindow());
             ExitCommand = new RelayCommand(App.Current.Shutdown);
         }

@@ -1,21 +1,17 @@
 ﻿using MLogger;
 using MLogger.LogWriters;
-using MLogger.Terminal;
-using MLogger.Terminal.Models;
-using MLogger.Terminal.Views;
-using PSQuickAssets.ViewModels;
+using MTerminal.WPF;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace PSQuickAssets.Services;
 
 internal class MLoggerSetup
 {
-    private static Terminal? _terminal;
-
     private readonly INotificationService _notificationService;
 
     internal MLoggerSetup(INotificationService notificationService)
@@ -33,14 +29,7 @@ internal class MLoggerSetup
             Directory.CreateDirectory(logsFolder);
             logger.Loggers.Add(new FileWriter(Path.Combine(logsFolder, "log.txt")));
             logger.Loggers.Add(new DebugWriter());
-
-            _terminal = new Terminal("PSQuickAssets Terminal");
-            _terminal.Commands
-                .Add(new ConsoleCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()))
-                .Add(new ConsoleCommand("saveassets", "Save", (_) => ((MainViewModel)App.WindowManager!.MainWindow!.DataContext).AssetsViewModel.SaveJson()))
-                .Add(new ConsoleCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
-
-            logger.Loggers.Add(_terminal);
+            logger.Loggers.Add(new TerminalLogger());
         }
         catch (Exception ex)
         {
@@ -50,22 +39,24 @@ internal class MLoggerSetup
 
         return logger;
     }
+}
 
-    internal static void ToggleTerminalWindow()
+internal class TerminalLogger : ILogWriter
+{
+    public void Log(IEntry logEntry)
     {
-        if (_terminal is null)
-            return;
+        string message = $"[{DateTime.Now:HH:mm:ss}] - [{logEntry.Level}] - {logEntry.Message}";
 
-        if (App.Current.Windows.OfType<TerminalWindow>().FirstOrDefault() is not null)
-            _terminal.CloseWindow();
-        else
-            _terminal.ShowWindow();
-    }
+        Color color = logEntry.Level switch
+        {
+            LogLevel.Debug => Colors.LightGray,
+            LogLevel.Info => Colors.LightBlue,
+            LogLevel.Warning => Colors.LightYellow,
+            LogLevel.Error => Colors.Red,
+            LogLevel.Fatal => Colors.OrangeRed,
+            _ => Terminal.ForegroundColor
+        };
 
-    private void OpenAppdataFolder()
-    {
-        ProcessStartInfo processStartInfo = new(App.AppDataFolder);
-        processStartInfo.UseShellExecute = true;
-        Process.Start(processStartInfo);
+        Terminal.WriteLine(message, color);
     }
 }

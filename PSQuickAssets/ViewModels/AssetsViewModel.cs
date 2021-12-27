@@ -20,7 +20,7 @@ namespace PSQuickAssets.ViewModels
 {
     public class AssetsViewModel : ObservableObject
     {
-        public ObservableCollection<AssetGroup> AssetGroups { get; }
+        public ObservableCollection<AssetGroup> AssetGroups { get; private set; }
 
         public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
 
@@ -30,62 +30,59 @@ namespace PSQuickAssets.ViewModels
         public ICommand AddFolderWithSubfoldersCommand { get; }
         public ICommand AddFilesCommand { get; }
         public ICommand RemoveGroupCommand { get; }
+        public ICommand ToggleGroupExpandCommand { get; }
 
         private bool _isLoading;
-        
-        private readonly AssetLoader _assetLoader;
-        private readonly AssetAtlas _assetAtlas;
+
+        private readonly AssetManager _assetManager;
         private readonly WindowManager _windowManager;
         private readonly INotificationService _notificationService;
         private readonly Config _config;
 
-        internal AssetsViewModel(AssetLoader assetLoader, AssetAtlas assetAtlas, WindowManager windowManager, INotificationService notificationService, Config config)
+        internal AssetsViewModel(AssetManager assetManager, WindowManager windowManager, INotificationService notificationService, Config config)
         {
             AssetGroups = new ObservableCollection<AssetGroup>();
             PhotoshopCommands = new PhotoshopCommandsViewModel(windowManager, notificationService, config);
 
-            _assetLoader = assetLoader;
-            _assetAtlas = assetAtlas;
+            _assetManager = assetManager;
             _windowManager = windowManager;
             _notificationService = notificationService;
             _config = config;
+
             AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
             AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
             AddFilesCommand = new RelayCommand(SelectAndAddFiles);
             RemoveGroupCommand = new RelayCommand<AssetGroup>((group) => RemoveGroup(group!));
 
-            AssetGroups.CollectionChanged += (_, _) => SaveAssets();
+            ToggleGroupExpandCommand = new RelayCommand<AssetGroup>((group) => ToggleGroupExpanded(group));
 
-            LoadStoredAtlas();
+            LoadStoredGroupsAsync().SafeFireAndForget();
         }
 
-        public void SaveJson()
+        public async Task SaveGroupsAsync()
         {
-            string json = JsonSerializer.Serialize(AssetGroups, new JsonSerializerOptions() { WriteIndented = true});
-            var load = JsonSerializer.Deserialize<ObservableCollection<AssetGroup>>(json);
-        }
+            Result saveResult = await _assetManager.SaveAsync(AssetGroups);
 
-        private async void LoadStoredAtlas()
-        {
-            IsLoading = true;
+            if (saveResult.IsSuccessful)
+                return;
 
-            StoredGroup[] groups = await _assetAtlas.LoadAsync();
-
-            foreach (StoredGroup group in groups)
+            if (saveResult.Exception is AggregateException aggregateException)
             {
-                if (group.AssetsPaths is not null && group.AssetsPaths.Count > 0)
+                if (aggregateException.InnerExceptions.Count == AssetGroups.Count)
+                    _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAllGroups"], NotificationIcon.Error);
+                else
                 {
-                    var newGroup = AddGroup(group.Name);
-                    await AddAssetsToGroup(newGroup, group.AssetsPaths);
+                    string failedGroups = "";
+                    foreach (var exception in aggregateException.InnerExceptions)
+                    {
+                        failedGroups += exception.Message;
+                    }
+
+                    _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveGroups"] + $"\n<{failedGroups}>", NotificationIcon.Error);
                 }
             }
-
-            IsLoading = false;
-        }
-
-        public void SaveAssets()
-        {
-            _assetAtlas.SaveAsync(AssetGroups).SafeFireAndForget();
+            else
+                _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAssetGroups"] + saveResult.Exception?.Message, NotificationIcon.Error);
         }
 
         public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name == groupName);
@@ -96,18 +93,34 @@ namespace PSQuickAssets.ViewModels
                 groupName = $"{groupName} {Localization.Instance["New"]}";
 
             AssetGroup assetGroup = new(groupName);
-            assetGroup.GroupChanged += AssetGroup_OnGroupStateChanged;
             AssetGroups.Add(assetGroup);
+            SaveGroupsAsync().SafeFireAndForget();
             return assetGroup;
         }
 
         public bool RemoveGroup(AssetGroup assetGroup)
         {
-            assetGroup.GroupChanged -= AssetGroup_OnGroupStateChanged;
-            return AssetGroups.Remove(assetGroup);
+            bool isRemoved = AssetGroups.Remove(assetGroup);
+            if (isRemoved)
+                SaveGroupsAsync().SafeFireAndForget();
+            return isRemoved;
         }
 
-        private void AssetGroup_OnGroupStateChanged() => SaveAssets();
+        private void ToggleGroupExpanded(AssetGroup? group)
+        {
+            if (group is null)
+                throw new ArgumentNullException(nameof(group), "Group cannot be null");
+
+            group.IsExpanded = !group.IsExpanded;
+            SaveGroupsAsync().SafeFireAndForget();
+        }
+
+        private async Task LoadStoredGroupsAsync()
+        {
+            IsLoading = true;
+            await _assetManager.LoadGroupsToCollectionAsync(AssetGroups);
+            IsLoading = false;
+        }
 
         private async void SelectAndAddFolders(bool includeSubfolders = false)
         {
@@ -121,6 +134,7 @@ namespace PSQuickAssets.ViewModels
             {
                 await AddGroupFromFolder(path, includeSubfolders);
             }
+            SaveGroupsAsync().SafeFireAndForget();
             IsLoading = false;
         }
 
@@ -133,6 +147,7 @@ namespace PSQuickAssets.ViewModels
 
             IsLoading = true;
             await AddGroupFromFiles(files);
+            SaveGroupsAsync().SafeFireAndForget();
             IsLoading = false;
         }
 
@@ -154,6 +169,7 @@ namespace PSQuickAssets.ViewModels
                 foreach (var folder in Directory.GetDirectories(folderPath))
                     await AddGroupFromFolder(folder, includeSubfolders);
             }
+            SaveGroupsAsync().SafeFireAndForget();
         }
 
         private async Task AddGroupFromFiles(IList<string> files)
@@ -165,18 +181,19 @@ namespace PSQuickAssets.ViewModels
 
             await AddAssetsToGroup(group, files);
             AssetGroups.Add(group);
+            SaveGroupsAsync().SafeFireAndForget();
         }
 
         private async Task AddAssetsToGroup(AssetGroup group, IEnumerable<string> files)
         {
-            IEnumerable<Asset> assets = await Task.Run(() => _assetLoader.Load(files));
+            var assets = await Task.Run(() => _assetManager.Load(files));
             group.AddMultipleAssets(assets, DuplicateHandling.Deny);
+            SaveGroupsAsync().SafeFireAndForget();
         }
 
         private string GenericGroupName()
         {
             string group = Localization.Instance["Group"];
-
             int genericGroupCount = AssetGroups.Select(g => g.Name.Contains(group, StringComparison.OrdinalIgnoreCase)).Count();
             return genericGroupCount == 0 ? group : group + " " + (genericGroupCount + 1);
         }

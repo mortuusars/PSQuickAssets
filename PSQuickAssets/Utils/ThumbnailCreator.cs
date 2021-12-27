@@ -14,6 +14,7 @@ namespace PSQuickAssets
     /// </summary>
     public static class ThumbnailCreator
     {
+        //TODO: Cleanup
         public static BitmapImage FromFile(string filepath, int maxSize, ConstrainTo constrainTo)
         {
             return constrainTo switch

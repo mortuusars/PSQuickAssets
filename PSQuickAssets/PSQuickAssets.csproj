@@ -32,6 +32,8 @@
 		<None Remove="Resources\Images\expand_24.png" />
 		<None Remove="Resources\Images\folder_24.png" />
 		<None Remove="Resources\Images\image.png" />
+		<None Remove="Resources\Images\image_dark.png" />
+		<None Remove="Resources\Images\image_light.png" />
 		<None Remove="Resources\Images\psb_90.png" />
 		<None Remove="Resources\Images\psd_90.png" />
 		<None Remove="Resources\Images\psquickassets-size.ico" />
@@ -53,15 +55,15 @@
 		<PackageReference Include="MGlobalHotkeys.WPF" Version="1.0.1" />
 		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-		<PackageReference Include="NetVips" Version="2.0.1" />
-		<PackageReference Include="NetVips.Native.win-x64" Version="8.11.4" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.0" />
 		<PackageReference Include="WPFLocalizeExtension" Version="3.9.1" />
 		<PackageReference Include="WpfScreenHelper" Version="1.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Libraries\MTerminal.WPF\MTerminal.WPF\MTerminal.WPF.csproj" />
 		<ProjectReference Include="..\LoadingSpinnerControl\LoadingSpinnerControl.csproj" />
+		<ProjectReference Include="..\PSQuickAssets.Assets\PSQuickAssets.Assets.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj" />
 	</ItemGroup>
 
@@ -91,6 +93,8 @@
 		<Resource Include="Resources\Images\expand_24.png" />
 		<Resource Include="Resources\Images\folder_24.png" />
 		<Resource Include="Resources\Images\image.png" />
+		<Resource Include="Resources\Images\image_dark.png" />
+		<Resource Include="Resources\Images\image_light.png" />
 		<Resource Include="Resources\Images\psb_90.png" />
 		<Resource Include="Resources\Images\psd_90.png" />
 		<Resource Include="Resources\Images\psquickassets-size.ico" />

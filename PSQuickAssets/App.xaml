@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Fonts.xaml" />
+                <ResourceDictionary Source="Resources/Icons.xaml" />
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
                 <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
@@ -24,9 +25,11 @@
             <conv:PathToFolderNameConverter x:Key="PathToFolderName" />
             <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter" />
 
+            <BitmapSource x:Key="ExpandIcon">Resources/Images/expand_24.png</BitmapSource>
+
             <DropShadowEffect
                 x:Key="WindowDropShadow"
-                BlurRadius="36"
+                BlurRadius="30"
                 Direction="-90"
                 Opacity="0.45"
                 ShadowDepth="8" />

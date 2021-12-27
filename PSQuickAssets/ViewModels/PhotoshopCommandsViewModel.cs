@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
+using PSQuickAssets.Assets;
 using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
