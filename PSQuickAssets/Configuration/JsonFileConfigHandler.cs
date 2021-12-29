@@ -13,10 +13,11 @@ namespace PSQuickAssets.Configuration
         private readonly string _filePath;
         private readonly ILogger? _logger;
 
-        public JsonFileConfigHandler(string filePath, MLogger.ILogger? logger)
+        public JsonFileConfigHandler(ILogger? logger)
         {
-            _filePath = filePath;
             _logger = logger;
+
+            _filePath = "config.json";
         }
 
         public Dictionary<string, object> Load()

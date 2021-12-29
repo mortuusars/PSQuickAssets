@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    internal class MainViewModel : ObservableObject
     {
         public bool AlwaysOnTop { get => _config.AlwaysOnTop; }
         public double ThumbnailSize { get => _config.ThumbnailSize; }
@@ -24,15 +24,14 @@ namespace PSQuickAssets.ViewModels
         public ICommand ShutdownCommand { get; }
 
         private readonly WindowManager _windowManager;
-        private readonly INotificationService _notificationService;
         private readonly Config _config;
 
-        internal MainViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
+        public MainViewModel(AssetsViewModel assetsViewModel, WindowManager windowManager, Config config)
         {
-            AssetsViewModel = new AssetsViewModel(new AssetManager(App.AppDataFolder + "/assets/", App.Logger), windowManager, notificationService, config);
+            //AssetsViewModel = new AssetsViewModel(new AssetManager(App.AppDataFolder + "/assets/", App.Logger), windowManager, notificationService, config);
+            AssetsViewModel = assetsViewModel;
 
             _windowManager = windowManager;
-            _notificationService = notificationService;
             _config = config;
 
             _config.PropertyChanged += Config_PropertyChanged;
@@ -40,7 +39,7 @@ namespace PSQuickAssets.ViewModels
             IncreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Up));
             DecreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Down));
 
-            SettingsCommand = new RelayCommand(_windowManager.ShowSettingsWindow);
+            SettingsCommand = new RelayCommand(_windowManager.ToggleSettingsWindow);
             ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
             HideCommand = new RelayCommand(_windowManager.HideMainWindow);
             ShutdownCommand = new RelayCommand(App.Current.Shutdown);

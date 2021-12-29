@@ -15,6 +15,7 @@ namespace LoadingSpinnerControl
         {
             if (d is LoadingSpinner spinner)
             {
+                spinner.UpdateDefaultStyle();
                 var template = spinner.Template;
                 var ellipse = template.FindName("Ell", spinner) as Ellipse;
 

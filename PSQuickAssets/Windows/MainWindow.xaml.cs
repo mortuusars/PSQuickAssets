@@ -1,26 +1,34 @@
-﻿using PSQuickAssets.Windows.State;
+﻿using AsyncAwaitBestPractices;
+using PSQuickAssets.Windows.State;
 using PSQuickAssets.WPF;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace PSQuickAssets.Windows
 {
     public partial class MainWindow : Window
     {
         private const string _MAIN_VIEW_STATE_FILE = "state.json";
+        private static readonly TimeSpan _fadeInDuration = TimeSpan.FromMilliseconds(80);
+        private static readonly TimeSpan _fadeOutDuration = TimeSpan.FromMilliseconds(150);
 
         public static readonly DependencyProperty IsShownProperty =
-            DependencyProperty.Register("IsShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
-        public bool IsShown
+            DependencyProperty.Register(nameof(IsShowing), typeof(bool), typeof(MainWindow), new PropertyMetadata(false, OnIsShowingChanged));
+        
+        /// <summary>
+        /// Indicates whether the window is currently showing.
+        /// </summary>
+        public bool IsShowing
         {
             get { return (bool)GetValue(IsShownProperty); }
             set { SetValue(IsShownProperty, value); }
@@ -30,23 +38,54 @@ namespace PSQuickAssets.Windows
         {
             InitializeComponent();
             IsVisibleChanged += OnVisibilityChanged;
+
+            RestoreState();
         }
 
+        /// <summary>
+        /// Shows the window.
+        /// </summary>
         public new void Show()
         {
             base.Show();
-            this.Visibility = Visibility.Collapsed;
+            IsShowing = true;
+        }
+
+        /// <summary>
+        /// Plays short fade out animation before hiding.
+        /// </summary>
+        public void HideWithAnimation() => IsShowing = false;
+
+        private static void OnIsShowingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not MainWindow window || e.NewValue == e.OldValue)
+                return;
+
+            if (e.NewValue is true)
+            {
+                window.LayoutRoot.Opacity = 0;
+                var anim = new DoubleAnimation(0.0, 1.0, new Duration(_fadeInDuration));
+                anim.EasingFunction = new SineEase() { EasingMode = EasingMode.EaseInOut };
+                window.LayoutRoot.BeginAnimation(Grid.OpacityProperty, anim);
+            }
+            else if (e.NewValue is false)
+            {
+                var anim = new DoubleAnimation(1.0, 0.0, new Duration(_fadeOutDuration));
+                anim.EasingFunction = new SineEase() { EasingMode = EasingMode.EaseInOut };
+                anim.Completed += (_, _) => { window.Hide(); };
+                window.LayoutRoot.BeginAnimation(Grid.OpacityProperty, anim);
+            }
         }
 
         private void OnVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!IsVisible)
-                SaveState();
+                SaveState().SafeFireAndForget();
         }
 
         #region STATE
 
-        public void SaveState()
+        private async Task SaveState()
         {
             var state = new ViewState()
             {
@@ -60,7 +99,7 @@ namespace PSQuickAssets.Windows
 
             try
             {
-                File.WriteAllText(_MAIN_VIEW_STATE_FILE, json);
+                await File.WriteAllTextAsync(_MAIN_VIEW_STATE_FILE, json);
             }
             catch (Exception ex)
             {
@@ -68,7 +107,7 @@ namespace PSQuickAssets.Windows
             }
         }
 
-        public void RestoreState()
+        private void RestoreState()
         {
             var state = ReadStateFromFile(_MAIN_VIEW_STATE_FILE);
 
@@ -108,7 +147,8 @@ namespace PSQuickAssets.Windows
 
         private void CornerResize_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var hwndSource = PresentationSource.FromVisual((Visual)sender) as HwndSource;
+            e.Handled = true;
+            var hwndSource = (HwndSource)PresentationSource.FromVisual((Visual)sender);
             SendMessage(hwndSource.Handle, 0x112, (IntPtr)ResizeDirection.BottomRight, IntPtr.Zero);
         }
 
@@ -119,31 +159,6 @@ namespace PSQuickAssets.Windows
                 this.DragMove();
                 e.Handled = true;
             }
-        }
-
-        #endregion
-
-        #region ANIMATIONS
-
-        public void FadeIn()
-        {
-            if (!IsShown)
-            {
-                IsShown = true;
-                this.Visibility = Visibility.Visible;
-            }
-        }
-
-        public void FadeOut()
-        {
-            if (IsShown)
-                IsShown = false;
-        }
-
-        private void FadeOut_Completed(object sender, EventArgs e)
-        {
-            if (!IsShown)
-                this.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -175,7 +190,6 @@ namespace PSQuickAssets.Windows
 
         private void ItemsContainer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-
             if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
             {
                 e.Handled = true;
@@ -185,13 +199,6 @@ namespace PSQuickAssets.Windows
                 var parent = ((Control)sender).Parent as UIElement;
                 parent?.RaiseEvent(eventArg);
             }
-
-            //App.Logger.Info(sender.GetType().ToString());
-            //App.Logger.Info(((UIElement)((Control)sender).Parent).ToString());
-
-            //string wheel = e.Delta > 0 ? "Up" : "Down";
-            //string msg = $"{Keyboard.Modifiers} + {wheel}";
-            //App.Logger.Info(msg);
         }
     }
 }

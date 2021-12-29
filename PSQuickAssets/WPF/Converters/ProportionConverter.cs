@@ -18,26 +18,37 @@ namespace PSQuickAssets.WPF.Converters
             if (values.Length < 2)
                 throw new ArgumentException("'values' must contain two items: BitmapImage and double");
 
-            double width = System.Convert.ToDouble(values[0]);
-            double height = System.Convert.ToDouble(values[1]);
             double desiredHeight = (double)values[2];
+            
+            double ratio = 0;
 
-            if (height == 0)
-                return desiredHeight;
+            try
+            {
+                double width = System.Convert.ToDouble(values[0]);
+                double height = System.Convert.ToDouble(values[1]);
 
-            double ratio = width / height;
+                if (height == 0)
+                    return desiredHeight;
+                
+                ratio = width / height;
+            }
+            catch (Exception)
+            {
+                int width = System.Convert.ToInt32(values[0]);
+                int height = System.Convert.ToInt32(values[1]);
+
+                if (height == 0)
+                    return desiredHeight;
+
+                ratio = width / height;
+            }
 
             if (parameter is double maxRatio && ratio > maxRatio)
                 ratio = maxRatio;
+            else if (parameter is int maxRatioInt && ratio > maxRatioInt)
+                ratio = maxRatioInt;
 
-            var result = desiredHeight * ratio;
-
-            if (result < 130)
-            {
-                Console.WriteLine(result);
-            }
-
-            return result;
+            return desiredHeight * ratio;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

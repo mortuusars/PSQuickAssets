@@ -20,6 +20,7 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     AllowsTransparency="True"
     Background="{x:Null}"
+    DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
     FontFamily="{StaticResource FontRegular}"
     FontSize="14"
     Loaded="Window_Loaded"

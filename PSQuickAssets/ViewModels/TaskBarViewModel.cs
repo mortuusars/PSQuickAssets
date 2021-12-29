@@ -13,21 +13,21 @@ namespace PSQuickAssets.ViewModels
         public string Exit { get; set; }
 
         public ICommand ShowWindowCommand { get; }
-        public ICommand ToggleTerminalCommand { get; }
 
+        public ICommand ToggleTerminalCommand { get; }
         public ICommand SettingsCommand { get; }
         public ICommand ExitCommand { get; }
 
-        public TaskBarViewModel()
+        public TaskBarViewModel(WindowManager windowManager)
         {
             AppName = App.AppName;
             ToggleTerminalWindow = Localization.Instance["Taskbar_ToggleTerminal"];
             Settings = Localization.Instance["Settings"];
             Exit = Localization.Instance["Taskbar_Exit"];
 
-            ShowWindowCommand = new RelayCommand(() => App.WindowManager!.ToggleMainWindow());
+            ShowWindowCommand = new RelayCommand(windowManager.ToggleMainWindow);
             ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
-            SettingsCommand = new RelayCommand(() => App.WindowManager!.ShowSettingsWindow());
+            SettingsCommand = new RelayCommand(windowManager.ToggleSettingsWindow);
             ExitCommand = new RelayCommand(App.Current.Shutdown);
         }
     }

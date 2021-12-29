@@ -2,30 +2,23 @@
     x:Class="PSQuickAssets.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="clr-namespace:PSQuickAssets.WPF.Converters"
     ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Fonts.xaml" />
                 <ResourceDictionary Source="Resources/Icons.xaml" />
-                <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
                 <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Texts.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Tooltip.xaml" />
+
+                <ResourceDictionary Source="Resources/Converters.xaml" />
+                <ResourceDictionary Source="Resources/Services.xaml" />
+
+                <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-            <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityHidden" />
-            <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth" />
-            <conv:FilenameToShortConverter x:Key="FilenameToShort" />
-            <conv:PathToFolderNameConverter x:Key="PathToFolderName" />
-            <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter" />
-
-            <BitmapSource x:Key="ExpandIcon">Resources/Images/expand_24.png</BitmapSource>
 
             <DropShadowEffect
                 x:Key="WindowDropShadow"

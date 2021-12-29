@@ -8,19 +8,16 @@ namespace PSQuickAssets.Services
     /// </summary>
     internal class TaskbarNotificationService : INotificationService
     {
-        private Action _onNotificationClicked = () => { };
+        private Action? _onNotificationClickedAction = () => { };
 
-        private readonly TaskbarIcon _taskBarIcon;
+        private TaskbarIcon? _taskbarIcon;
 
-        public TaskbarNotificationService(TaskbarIcon taskBarIcon)
+        public void Notify(string title, string message, NotificationIcon icon, Action? onNotificationClicked = null)
         {
-            _taskBarIcon = taskBarIcon;
-            _taskBarIcon.TrayBalloonTipClicked += NotificationClicked;
-        }
+            if (_taskbarIcon is null)
+                TryGetTaskbarIcon();
 
-        public void Notify(string title, string message, NotificationIcon icon)
-        {
-            BalloonIcon balloonIcon = icon switch
+            var balloonIcon = icon switch
             {
                 NotificationIcon.None => BalloonIcon.None,
                 NotificationIcon.Info => BalloonIcon.Info,
@@ -29,19 +26,34 @@ namespace PSQuickAssets.Services
                 _ => BalloonIcon.Info,
             };
 
-            _onNotificationClicked = () => { };
-            _taskBarIcon.ShowBalloonTip(title, message, balloonIcon);
+            _onNotificationClickedAction = onNotificationClicked;
+            _taskbarIcon?.ShowBalloonTip(title, message, balloonIcon);
         }
 
-        public void Notify(string title, string message, NotificationIcon icon, Action onNotificationClicked)
+        public void Notify(string message, NotificationIcon icon, Action? onNotificationClicked = null)
         {
-            Notify(title, message, icon);
-            _onNotificationClicked = onNotificationClicked;
+            Notify(App.AppName, message, icon, onNotificationClicked);
         }
 
         private void NotificationClicked(object sender, System.Windows.RoutedEventArgs e)
         {
-            _onNotificationClicked();
+            if (_onNotificationClickedAction is not null)
+                _onNotificationClickedAction();
+        }
+
+        private TaskbarIcon? TryGetTaskbarIcon()
+        {
+            try
+            {
+                var taskbarIcon = (TaskbarIcon)App.Current.FindResource("TaskBarIcon");
+                taskbarIcon.TrayBalloonTipClicked += NotificationClicked;
+                _taskbarIcon = taskbarIcon;
+                return taskbarIcon;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

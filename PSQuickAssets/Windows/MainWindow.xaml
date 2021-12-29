@@ -20,11 +20,14 @@
     Height="400"
     MinWidth="400"
     MinHeight="300"
+    d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
+                                     IsDesignTimeCreatable=True}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     AllowsTransparency="True"
     Background="Transparent"
+    DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     FontFamily="{StaticResource FontSans}"
     FontWeight="Bold"
     PreviewKeyDown="window_KeyDown"
@@ -49,37 +52,6 @@
             x:Key="{x:Type ToolTip}"
             BasedOn="{StaticResource DarkToolTip}"
             TargetType="ToolTip" />
-
-        <Duration x:Key="FadeInDuration">0:0:0.08</Duration>
-        <Duration x:Key="FadeOutDuration">0:0:0.15</Duration>
-
-        <SineEase x:Key="EasingOut" EasingMode="EaseOut" />
-
-        <Storyboard x:Key="FadeIn">
-            <DoubleAnimation
-                EasingFunction="{StaticResource EasingOut}"
-                Storyboard.TargetProperty="Opacity"
-                From="0"
-                To="1"
-                Duration="{StaticResource FadeInDuration}" />
-        </Storyboard>
-
-        <Storyboard x:Key="FadeOut">
-            <DoubleAnimation
-                AccelerationRatio="0.5"
-                DecelerationRatio="0.5"
-                FillBehavior="Stop"
-                Storyboard.TargetProperty="Opacity"
-                To="0"
-                Duration="{StaticResource FadeOutDuration}" />
-            <DoubleAnimation
-                BeginTime="0:0:0.5"
-                Completed="FadeOut_Completed"
-                Storyboard.TargetProperty="Opacity"
-                From="0"
-                To="0"
-                Duration="0:0:0" />
-        </Storyboard>
 
         <Style
             x:Key="AddAssetsButton"
@@ -134,34 +106,17 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         d:Opacity="1"
-        Background="{x:Null}">
-
+        Background="{x:Null}"
+        Opacity="0">
         <!--
             dd:DragDrop.DragHandler="{Binding}"
             dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDropTarget="True"
         -->
 
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Setter Property="Opacity" Value="0" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsShown, ElementName=window}" Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard Storyboard="{StaticResource FadeIn}" />
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard Storyboard="{StaticResource FadeOut}" />
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
-
         <Grid.InputBindings>
             <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Down, Keys=Shift}" />
             <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Up, Keys=Shift}" />
-
         </Grid.InputBindings>
 
         <Grid.RowDefinitions>
@@ -217,7 +172,6 @@
                         Source="{StaticResource CornerResizeIcon}" />
 
                 </StackPanel>
-
 
                 <StackPanel
                     Margin="3"

@@ -2,38 +2,31 @@
 using MLogger.LogWriters;
 using MTerminal.WPF;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
 namespace PSQuickAssets.Services;
 
-internal class MLoggerSetup
+internal static class LoggerSetup
 {
-    private readonly INotificationService _notificationService;
-
-    internal MLoggerSetup(INotificationService notificationService)
+    internal static ILogger CreateLogger(LogLevel logLevel, INotificationService notificationService)
     {
-        _notificationService = notificationService;
-    }
-
-    internal ILogger CreateLogger()
-    {
-        ILogger logger = new Logger(LogLevel.Debug);
+        ILogger logger = new Logger(logLevel);
+        
+        logger.Loggers.Add(new DebugWriter());
+        logger.Loggers.Add(new TerminalLogger());
 
         try
         {
             string logsFolder = Path.Combine(App.AppDataFolder, "logs");
             Directory.CreateDirectory(logsFolder);
-            logger.Loggers.Add(new FileWriter(Path.Combine(logsFolder, "log.txt")));
-            logger.Loggers.Add(new DebugWriter());
-            logger.Loggers.Add(new TerminalLogger());
+            string logFilePath = Path.Combine(logsFolder, "log.txt");
+            logger.Loggers.Add(new FileWriter(logFilePath));
         }
         catch (Exception ex)
         {
-            _notificationService.Notify(App.AppName, $"Error has occured during Logging Setup. Click to show details.", NotificationIcon.Warning,
+            notificationService.Notify(App.AppName, $"Error has occured during Logging Setup. Click to show details.", NotificationIcon.Warning,
                 () => MessageBox.Show($"Error in Logging Setup:\n\n{ex}", App.AppName, MessageBoxButton.OK, MessageBoxImage.Warning));
         }
 

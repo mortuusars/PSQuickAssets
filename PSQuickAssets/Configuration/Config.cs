@@ -11,13 +11,18 @@ public class Config : ConfigBase
 
     public bool AddMaskIfDocumentHasSelection { get; private set; }
 
-    public Config(IConfigSaver configSaver, ILogger? logger, bool saveOnPropertyChanged) : base(configSaver, logger, saveOnPropertyChanged)
+    public Config(IConfigSaver configSaver, ILogger? logger) : base(configSaver, logger, true)
     {
+        var configHandler = new JsonFileConfigHandler(logger);
+
         ShowHideWindowHotkey = "Ctrl + Alt + A";
         ThumbnailSize = 60;
         AlwaysOnTop = true;
         CheckUpdates = true;
 
         AddMaskIfDocumentHasSelection = true;
+
+        Load<Config>(configHandler);
+        Save();
     }
 }

@@ -6,12 +6,9 @@
 
     <tb:TaskbarIcon
         x:Key="TaskBarIcon"
+        DataContext="{Binding TaskBarViewModel, Source={StaticResource ViewModelLocator}}"
         IconSource="Images/psquickassets-size.ico"
         LeftClickCommand="{Binding ShowWindowCommand}">
-
-        <tb:TaskbarIcon.DataContext>
-            <vm:TaskBarViewModel />
-        </tb:TaskbarIcon.DataContext>
 
         <tb:TaskbarIcon.TrayToolTip>
             <Border

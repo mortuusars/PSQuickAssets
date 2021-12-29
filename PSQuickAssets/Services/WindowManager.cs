@@ -1,75 +1,83 @@
-﻿using PSQuickAssets.Configuration;
-using PSQuickAssets.ViewModels;
+﻿using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
+using System;
 using System.Linq;
+using System.Windows.Interop;
 
-namespace PSQuickAssets.Services
+namespace PSQuickAssets.Services;
+
+public class WindowManager
 {
-    public class WindowManager
+    public static MainWindow? MainWindow { get; private set; }
+
+    /// <summary>
+    /// Shows main window. Creates it if needed.
+    /// </summary>
+    public void ShowMainWindow()
     {
-        public MainWindow? MainWindow { get; private set; }
-        private MainViewModel? _mainViewModel;
-        private readonly INotificationService _notificationService;
-        private readonly Config _config;
+        if (MainWindow is null)
+            MainWindow = new MainWindow();
 
-        internal WindowManager(INotificationService notificationService, Config config)
+        MainWindow.Show();
+    }
+
+    /// <summary>
+    /// Toggles state of the main window. If window was hidden - shows it. And vise versa.
+    /// </summary>
+    public void ToggleMainWindow()
+    {
+        if (MainWindow?.IsShowing ?? false) HideMainWindow();
+        else ShowMainWindow();
+    }
+    /// <summary>
+    /// Hides main window.
+    /// </summary>
+    public void HideMainWindow() => MainWindow?.HideWithAnimation();
+    /// <summary>
+    /// Closes main window.
+    /// </summary>
+    public void CloseMainWindow() => MainWindow?.Close();
+    /// <summary>
+    /// Toggle state of the settings window. If settings window is closed - opens it. If opened - closes.
+    /// </summary>
+    public void ToggleSettingsWindow()
+    {
+        var settingsWindow = App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+
+        if (settingsWindow is null)
         {
-            _notificationService = notificationService;
-            _config = config;
+            settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
+            settingsWindow.Owner = MainWindow;
+            settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
+            settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 60;
         }
-
-        public void CreateAndShowMainWindow()
+        else
         {
-            _mainViewModel = new MainViewModel(this, _notificationService, _config);
-
-            MainWindow ??= new MainWindow() { DataContext = _mainViewModel };
-            MainWindow.RestoreState();
-            MainWindow.Show();
-
-            MainWindow.FadeIn();
+            settingsWindow.Close();
         }
+    }
 
-        public void ToggleMainWindow()
-        {
-            if (MainWindow?.IsShown is true)
-                HideMainWindow();
-            else
-                ShowMainWindow();
-        }
+    /// <summary>
+    /// Creates and shows update window with provided info about new version.
+    /// </summary>
+    /// <param name="currentVersion"></param>
+    /// <param name="newVersion"></param>
+    /// <param name="changelog"></param>
+    public void ShowUpdateWindow(Version currentVersion, Version newVersion, string changelog)
+    {
+        UpdateWindow updateWindow = new();
+        updateWindow.DataContext = new UpdateViewModel(currentVersion, newVersion, changelog);
+        updateWindow.Show();
+    }
 
-        public void ShowMainWindow()
-        {
-            MainWindow?.FadeIn();
-            MainWindow?.Activate();
-        }
-
-        public void HideMainWindow()
-        {
-            MainWindow?.FadeOut();
-        }
-
-        public void CloseMainWindow()
-        {
-            MainWindow?.SaveState();
-            MainWindow?.Close();
-        }
-
-        public void ShowSettingsWindow()
-        {
-            var settingsWindow = App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
-
-            if (settingsWindow is null)
-            {
-                settingsWindow = new SettingsWindow();
-                settingsWindow.DataContext = new SettingsViewModel(App.Config, App.GlobalHotkeys, _notificationService);
-                settingsWindow.Show();
-                settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X - 100;
-                settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 100;
-            }
-            else
-            {
-                settingsWindow.Close();
-            }
-        }
+    /// <summary>
+    /// Gets handle to the main window.
+    /// </summary>
+    /// <returns>Window handle.</returns>
+    /// <exception cref="Exception">Thrown if getting failed.</exception>
+    public IntPtr GetMainWindowHandle()
+    {
+        return new WindowInteropHelper(MainWindow).Handle;
     }
 }

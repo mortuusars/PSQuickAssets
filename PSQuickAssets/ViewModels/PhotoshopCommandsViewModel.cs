@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-public class PhotoshopCommandsViewModel
+internal class PhotoshopCommandsViewModel
 {
     public IList<PhotoshopAction> GlobalActions { get; }
 
@@ -24,7 +24,7 @@ public class PhotoshopCommandsViewModel
     private readonly INotificationService _notificationService;
     private readonly Config _config;
 
-    internal PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
+    public PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
     {
         _windowManager = windowManager;
         _notificationService = notificationService;
