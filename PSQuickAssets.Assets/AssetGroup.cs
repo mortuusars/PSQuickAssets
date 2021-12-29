@@ -112,7 +112,7 @@ public class AssetGroup : ObservableObject
     /// <returns><see langword="true"/> if added successfully, otherwise <see langword="false"/>.</returns>
     public bool AddAsset(Asset asset, DuplicateHandling duplicateHandling)
     {
-        if (duplicateHandling is DuplicateHandling.Deny && HasAsset(asset))
+        if (duplicateHandling is DuplicateHandling.Deny && HasAsset(asset.Path))
             return false;
 
         Assets.Add(asset);
@@ -126,13 +126,13 @@ public class AssetGroup : ObservableObject
     /// <param name="assets">Asset collection to add.</param>
     /// <param name="duplicateHandling">Specify how the duplicates should be handled. If set to Deny - asset will not be added if it is already in the group.</param>
     /// <returns>List of assets that were NOT added.</returns>
-    public List<Asset> AddMultipleAssets(IEnumerable<Asset> assets, DuplicateHandling duplicateHandling)
+    public List<Asset> AddAssets(IEnumerable<Asset> assets, DuplicateHandling duplicateHandling)
     {
         var notAddedList = new List<Asset>();
 
         foreach (var asset in assets)
         {
-            if (duplicateHandling is DuplicateHandling.Allow || !HasAsset(asset))
+            if (duplicateHandling is DuplicateHandling.Allow || !HasAsset(asset.Path))
                 Assets.Add(asset);
             else
                 notAddedList.Add(asset);
@@ -143,12 +143,30 @@ public class AssetGroup : ObservableObject
     }
 
     /// <summary>
+    /// Removes asset from a group.
+    /// </summary>
+    /// <param name="asset">Asset to remove.</param>
+    /// <returns><see langword="true"/> if successfully removed. Otherwise <see langword="false"/>.</returns>
+    public bool RemoveAsset(Asset asset)
+    {
+        if (Assets.Remove(asset))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Checks if asset with the same FILEPATH is already in the group.
     /// </summary>
     /// <returns><see langword="true"/> if asset is in the group. Otherwise <see langword="false"/>.</returns>
-    public bool HasAsset(Asset asset)
+    public bool HasAsset(string filePath)
     {
-        return Assets.Any(a => a.Path == asset.Path);
+        if (filePath is null)
+            throw new ArgumentNullException(nameof(filePath));
+
+        return Assets.Any(a => a.Path == filePath);
     }
 
     /// <summary>

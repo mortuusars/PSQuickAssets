@@ -2,7 +2,6 @@
 using PSQuickAssets.Assets.Thumbnails;
 using System.Drawing;
 using System.IO;
-using System.Text.Json;
 using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.Assets;
@@ -10,7 +9,6 @@ namespace PSQuickAssets.Assets;
 internal interface IAssetLoader
 {
     Asset Load(string filePath);
-    AssetGroup? LoadGroup(string filePath);
 }
 
 internal class AssetLoader : IAssetLoader
@@ -46,21 +44,6 @@ internal class AssetLoader : IAssetLoader
         Asset asset = CreateAsset(filePath);
 
         return asset;
-    }
-
-    public AssetGroup? LoadGroup(string filePath)
-    {
-        try
-        {
-            string json = File.ReadAllText(filePath);
-            var group = JsonSerializer.Deserialize<AssetGroup>(json);
-            return group;
-        }
-        catch (Exception ex)
-        {
-            _logger.Error("Failed to load AssetGroup:\n" + ex);
-            return null;
-        }
     }
 
     private Asset CreateAsset(string filePath)

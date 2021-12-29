@@ -187,7 +187,7 @@ namespace PSQuickAssets.ViewModels
         private async Task AddAssetsToGroup(AssetGroup group, IEnumerable<string> files)
         {
             var assets = await Task.Run(() => _assetManager.Load(files));
-            group.AddMultipleAssets(assets, DuplicateHandling.Deny);
+            group.AddAssets(assets, DuplicateHandling.Deny);
             SaveGroupsAsync().SafeFireAndForget();
         }
 

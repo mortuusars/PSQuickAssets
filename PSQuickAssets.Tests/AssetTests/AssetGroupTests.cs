@@ -35,7 +35,7 @@ namespace PSQuickAssets.Tests.AssetTests
             };
 
             _sut.GroupChanged += () => eventOccured = true;
-            _sut.AddMultipleAssets(multiple, DuplicateHandling.Deny);
+            _sut.AddAssets(multiple, DuplicateHandling.Deny);
 
             Assert.True(eventOccured);
         }
@@ -125,7 +125,7 @@ namespace PSQuickAssets.Tests.AssetTests
                 new Asset() { Path = "C:\\testing.jpg"},
             };
 
-            var returnedDuplicates = _sut.AddMultipleAssets(assets, DuplicateHandling.Deny);
+            var returnedDuplicates = _sut.AddAssets(assets, DuplicateHandling.Deny);
             Assert.Equal(duplicates[0].Path, returnedDuplicates[0].Path);
             Assert.Equal(duplicates[1].Path, returnedDuplicates[1].Path);
         }
@@ -182,7 +182,7 @@ namespace PSQuickAssets.Tests.AssetTests
             _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
             _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
-            Assert.False(_sut.HasAsset(new Asset() { Path = "D:\\a.jpg" }));
+            Assert.False(_sut.HasAsset("D:\\a.jpg"));
         }
 
         [Fact]
@@ -191,7 +191,7 @@ namespace PSQuickAssets.Tests.AssetTests
             _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
             _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
-            Assert.True(_sut.HasAsset(new Asset() { Path = "C:\\test1.jpg" }));
+            Assert.True(_sut.HasAsset("C:\\test1.jpg"));
         }
 
         [Fact]
@@ -200,7 +200,7 @@ namespace PSQuickAssets.Tests.AssetTests
             _sut.AddAsset(new Asset() { Path = "C:\\test.jpg" }, DuplicateHandling.Deny);
             _sut.AddAsset(new Asset() { Path = "C:\\test1.jpg" }, DuplicateHandling.Deny);
 
-            Assert.Throws<NullReferenceException>(() => _sut.HasAsset(null));
+            Assert.Throws<ArgumentNullException>(() => _sut.HasAsset(null));
         }
 
         #endregion
