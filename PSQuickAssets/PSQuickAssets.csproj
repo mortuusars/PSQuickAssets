@@ -56,8 +56,9 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="Mortuus.Config" Version="1.0.1" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-		<PackageReference Include="WPFLocalizeExtension" Version="3.9.1" />
+		<PackageReference Include="WPFLocalizeExtension" Version="3.9.2" />
 		<PackageReference Include="WpfScreenHelper" Version="1.1.0" />
 	</ItemGroup>
 

@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MLogger;
 using PSQuickAssets.Assets;
-using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.ViewModels;
 using System;
-using System.IO;
 
 namespace PSQuickAssets
 {
@@ -21,8 +19,7 @@ namespace PSQuickAssets
             services.AddSingleton<INotificationService, TaskbarNotificationService>();
             services.AddSingleton<ILogger>((provider) => LoggerSetup.CreateLogger(LogLevel.Debug, provider.GetRequiredService<INotificationService>()));
 
-            services.AddSingleton<IConfigSaver, JsonFileConfigHandler>();
-            services.AddSingleton<Config>();
+            services.AddSingleton<IConfig>(p => Config.Deserialize(p.GetRequiredService<ILogger>()));
             
             services.AddSingleton<WindowManager>();
             services.AddSingleton<GlobalHotkeys>((provider) =>
@@ -44,20 +41,5 @@ namespace PSQuickAssets
 
             return services.BuildServiceProvider();
         }
-
-        //private static Config CreateConfig(IServiceProvider provider, string configJsonFilePath)
-        //{
-        //    //TODO: All of this is pretty dirty. Should probably restructure it somehow.
-        //    var configFileHandler = provider.GetRequiredService<JsonFileConfigHandler>();
-        //    var logger = provider.GetRequiredService<ILogger>();
-        //    var config = new Config(configFileHandler, logger, saveOnPropertyChanged: true);
-
-        //    if (!File.Exists(configJsonFilePath))
-        //        config.Save();
-
-        //    config.Load<Config>(configFileHandler);
-
-        //    return config;
-        //}
     }
 }

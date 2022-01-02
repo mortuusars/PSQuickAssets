@@ -2,8 +2,6 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Assets;
-using PSQuickAssets.Configuration;
-using PSQuickAssets.Models;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils.SystemDialogs;
@@ -12,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

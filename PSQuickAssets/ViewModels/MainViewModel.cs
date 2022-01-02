@@ -1,7 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using PSQuickAssets.Assets;
-using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using PSQuickAssets.WPF;
 using System.Windows.Input;
@@ -24,21 +22,18 @@ namespace PSQuickAssets.ViewModels
         public ICommand ShutdownCommand { get; }
 
         private readonly WindowManager _windowManager;
-        private readonly Config _config;
+        private readonly IConfig _config;
 
-        public MainViewModel(AssetsViewModel assetsViewModel, WindowManager windowManager, Config config)
+        public MainViewModel(AssetsViewModel assetsViewModel, WindowManager windowManager, IConfig config)
         {
-            //AssetsViewModel = new AssetsViewModel(new AssetManager(App.AppDataFolder + "/assets/", App.Logger), windowManager, notificationService, config);
             AssetsViewModel = assetsViewModel;
 
             _windowManager = windowManager;
             _config = config;
-
             _config.PropertyChanged += Config_PropertyChanged;
 
             IncreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Up));
             DecreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Down));
-
             SettingsCommand = new RelayCommand(_windowManager.ToggleSettingsWindow);
             ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
             HideCommand = new RelayCommand(_windowManager.HideMainWindow);
@@ -57,11 +52,11 @@ namespace PSQuickAssets.ViewModels
             {
                 case MouseWheelDirection.Up:
                     if (ThumbnailSize <= 142)
-                        _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize + 8, out string _);
+                        _config.ThumbnailSize += 8;
                     break;
                 case MouseWheelDirection.Down:
                     if (ThumbnailSize >= 30)
-                        _config.TrySetValue(nameof(_config.ThumbnailSize), ThumbnailSize - 8, out string _);
+                        _config.ThumbnailSize -= 8;
                     break;
             }
         }

@@ -1,8 +1,8 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using AsyncAwaitBestPractices;
+using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Extensions.DependencyInjection;
 using MLogger;
 using MTerminal.WPF;
-using PSQuickAssets.Configuration;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.Utils;
@@ -13,111 +13,107 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
-using AsyncAwaitBestPractices;
-using PSQuickAssets.ViewModels;
-using PSQuickAssets.Assets;
 
-namespace PSQuickAssets
+namespace PSQuickAssets;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public const string AppName = "PSQuickAssets";
+    public Version Version { get; }
+    public string Build { get; }
+
+    public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
+
+    public IServiceProvider ServiceProvider { get; private set; }
+
+    internal IConfig Config { get; }
+    public ILogger Logger { get; }
+
+    public App()
     {
-        public const string AppName = "PSQuickAssets";
-        public Version Version { get; }
-        public string Build { get; }
+        DispatcherUnhandledException += CrashHandler.OnUnhandledException;
 
-        public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
+        Version = new Version(AppVersion.GetVersionFromAssembly());
+        Build = AppVersion.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
 
-        public IServiceProvider ServiceProvider { get; private set; }
+        ServiceProvider = DIKernel.ServiceProvider;
 
-        public Config Config { get; }
-        public ILogger Logger { get; }
+        Config = ServiceProvider.GetRequiredService<IConfig>();
+        Logger = ServiceProvider.GetRequiredService<ILogger>();
+    }
 
-        public App()
-        {
-            DispatcherUnhandledException += CrashHandler.OnUnhandledException;
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        ShutdownIfAlreadyOpen();
+        SetTooltipDelay(650);
+        var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
-            Version = new Version(AppVersion.GetVersionFromAssembly());
-            Build = AppVersion.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
+        Console.SetOut(Terminal.Out);
+        Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
+        Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
 
-            ServiceProvider = DIKernel.ServiceProvider;
+        var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
+        windowManager.ShowMainWindow();
 
-            Config = ServiceProvider.GetRequiredService<Config>();
-            Logger = ServiceProvider.GetRequiredService<ILogger>();
-        }
+        SetupGlobalHotkeys(windowManager);
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            ShutdownIfAlreadyOpen();
-            SetTooltipDelay(650);
-            var _ = (TaskbarIcon)FindResource("TaskBarIcon");
-
-            Console.SetOut(Terminal.Out);
-            Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
-            Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
-
-            var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
-            windowManager.ShowMainWindow();
-
-            SetupGlobalHotkeys(windowManager);
-
+        if (Config.CheckUpdates)
             ServiceProvider.GetRequiredService<UpdateChecker>().CheckUpdatesAsync(Version).SafeFireAndForget();
-        }
+    }
 
-        private void SetupGlobalHotkeys(WindowManager windowManager)
+    private void SetupGlobalHotkeys(WindowManager windowManager)
+    {
+        var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
+        globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ToggleMainWindow());
+        globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
+    }
+
+    private void OpenAppdataFolder()
+    {
+        ProcessStartInfo processStartInfo = new(App.AppDataFolder);
+        processStartInfo.UseShellExecute = true;
+        Process.Start(processStartInfo);
+    }
+
+    private static bool _isTerminalOpen;
+
+    internal static void ToggleTerminalWindow()
+    {
+        if (_isTerminalOpen)
         {
-            var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
-            globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ToggleMainWindow());
-            globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
+            Terminal.CloseWindow();
+            _isTerminalOpen = false;
         }
-
-        private void OpenAppdataFolder()
+        else
         {
-            ProcessStartInfo processStartInfo = new(App.AppDataFolder);
-            processStartInfo.UseShellExecute = true;
-            Process.Start(processStartInfo);
+            Terminal.ShowWindow();
+            _isTerminalOpen = true;
         }
+    }
 
-        private static bool _isTerminalOpen;
+    protected override void OnExit(ExitEventArgs e)
+    {
+        try { Config?.Save(); }
+        catch (Exception) { }
+        base.OnExit(e);
+    }
 
-        internal static void ToggleTerminalWindow()
+    private static void SetTooltipDelay(int delayMS)
+    {
+        ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(delayMS));
+    }
+
+    private void ShutdownIfAlreadyOpen()
+    {
+        Process current = Process.GetCurrentProcess();
+        bool isAnotherOpen = Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);
+
+        if (isAnotherOpen)
         {
-            if (_isTerminalOpen)
-            {
-                Terminal.CloseWindow();
-                _isTerminalOpen = false;
-            }
-            else
-            {
-                Terminal.ShowWindow();
-                _isTerminalOpen = true;
-            }
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            try { Config?.Save(); }
-            catch (Exception) { }
-            base.OnExit(e);
-        }
-
-        private static void SetTooltipDelay(int delayMS)
-        {
-            ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(delayMS));
-        }
-
-        private void ShutdownIfAlreadyOpen()
-        {
-            Process current = Process.GetCurrentProcess();
-            bool isAnotherOpen = Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);
-
-            if (isAnotherOpen)
-            {
-                MessageBox.Show("Another instance of PSQuickAssets is already running.", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
-                App.Current.Shutdown();
-                Environment.Exit(0); // Kill process if shutdown not worked. Probably only in debug.
-            }
+            MessageBox.Show("Another instance of PSQuickAssets is already running.", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+            App.Current.Shutdown();
+            Environment.Exit(0); // Kill process if shutdown not worked. Probably only in debug.
         }
     }
 }

@@ -167,7 +167,7 @@
                         x:Name="AlwaysOnTopToggle"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
-                        IsOn="{Binding AlwaysOnTop, Mode=TwoWay}" />
+                        IsOn="{Binding Config.AlwaysOnTop, Mode=TwoWay}" />
                 </Grid>
 
                 <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}">
@@ -184,7 +184,7 @@
                         x:Name="AddMaskToggle"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
-                        IsOn="{Binding AddMaskIfDocumentHasSelection, Mode=TwoWay}" />
+                        IsOn="{Binding Config.AddMaskIfDocumentHasSelection, Mode=TwoWay}" />
                 </Grid>
 
                 <Rectangle
@@ -207,7 +207,7 @@
                         x:Name="CheckUpdatesToggle"
                         Grid.Column="1"
                         HorizontalAlignment="Right"
-                        IsOn="{Binding CheckUpdates, Mode=TwoWay}" />
+                        IsOn="{Binding Config.CheckUpdates, Mode=TwoWay}" />
                 </Grid>
             </StackPanel>
 

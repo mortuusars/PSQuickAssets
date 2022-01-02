@@ -1,6 +1,5 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using PSQuickAssets.Assets;
-using PSQuickAssets.Configuration;
 using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
@@ -22,9 +21,9 @@ internal class PhotoshopCommandsViewModel
     private readonly IPhotoshopInterop _photoshopInterop;
     private readonly WindowManager _windowManager;
     private readonly INotificationService _notificationService;
-    private readonly Config _config;
+    private readonly IConfig _config;
 
-    public PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, Config config)
+    public PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, IConfig config)
     {
         _windowManager = windowManager;
         _notificationService = notificationService;
