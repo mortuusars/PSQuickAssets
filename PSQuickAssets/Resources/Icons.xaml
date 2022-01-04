@@ -2,6 +2,7 @@
 
     <BitmapImage x:Key="SettingsIcon" UriSource="Images/settings.png" />
     <BitmapImage x:Key="CloseIcon" UriSource="Images/close_24.png" />
+    <BitmapImage x:Key="MinimizeIcon" UriSource="Images/minimize_24.png" />
     <BitmapImage x:Key="CloseRedIcon" UriSource="Images/close_red_24.png" />
     <BitmapImage x:Key="ExpandIcon" UriSource="Images/expand_24.png" />
     <BitmapImage x:Key="CornerResizeIcon" UriSource="Images/corner_resize_24.png" />

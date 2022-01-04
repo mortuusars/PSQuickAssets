@@ -34,6 +34,7 @@
 		<None Remove="Resources\Images\image.png" />
 		<None Remove="Resources\Images\image_dark.png" />
 		<None Remove="Resources\Images\image_light.png" />
+		<None Remove="Resources\Images\minimize_24.png" />
 		<None Remove="Resources\Images\psb_90.png" />
 		<None Remove="Resources\Images\psd_90.png" />
 		<None Remove="Resources\Images\psquickassets-size.ico" />
@@ -97,6 +98,7 @@
 		<Resource Include="Resources\Images\image.png" />
 		<Resource Include="Resources\Images\image_dark.png" />
 		<Resource Include="Resources\Images\image_light.png" />
+		<Resource Include="Resources\Images\minimize_24.png" />
 		<Resource Include="Resources\Images\psb_90.png" />
 		<Resource Include="Resources\Images\psd_90.png" />
 		<Resource Include="Resources\Images\psquickassets-size.ico" />

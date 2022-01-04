@@ -47,7 +47,6 @@
                     </Trigger>
 
                     <DataTrigger Binding="{Binding ActivateAlternativeStyle, ElementName=root}" Value="True">
-                        <Setter Property="Opacity" Value="0.6" />
                         <Setter Property="Source" Value="{Binding AlternativeSource, ElementName=root}" />
                     </DataTrigger>
 

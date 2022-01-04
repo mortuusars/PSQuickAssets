@@ -11,29 +11,6 @@ namespace LoadingSpinnerControl
         public static readonly DependencyProperty IsLoadingProperty =
             DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(LoadingSpinner), new PropertyMetadata(false, OnIsLoadingChanged));
 
-        private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is LoadingSpinner spinner)
-            {
-                spinner.UpdateDefaultStyle();
-                var template = spinner.Template;
-                var ellipse = template.FindName("Ell", spinner) as Ellipse;
-
-                if (ellipse is null)
-                    return;
-
-                var storyboard = (Storyboard)spinner.FindResource("Spinning");
-
-                if ((bool)e.NewValue)
-                {
-                    ellipse.BeginStoryboard(storyboard, HandoffBehavior.SnapshotAndReplace, true);
-                    storyboard.SetSpeedRatio(ellipse, spinner.RotationSpeed);
-                }
-                else
-                    storyboard.Remove(ellipse);
-            }
-        }
-
         public static readonly DependencyProperty DiameterProperty =
             DependencyProperty.Register(nameof(Diameter), typeof(double), typeof(LoadingSpinner), new PropertyMetadata(50.0));
 
@@ -88,6 +65,29 @@ namespace LoadingSpinnerControl
         static LoadingSpinner()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(LoadingSpinner), new FrameworkPropertyMetadata(typeof(LoadingSpinner)));
+        }
+
+        private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LoadingSpinner spinner)
+            {
+                spinner.UpdateDefaultStyle();
+                var template = spinner.Template;
+                var ellipse = template.FindName("Ell", spinner) as Ellipse;
+
+                if (ellipse is null)
+                    return;
+
+                var storyboard = (Storyboard)spinner.FindResource("Spinning");
+
+                if ((bool)e.NewValue)
+                {
+                    ellipse.BeginStoryboard(storyboard, HandoffBehavior.SnapshotAndReplace, true);
+                    storyboard.SetSpeedRatio(ellipse, spinner.RotationSpeed);
+                }
+                else
+                    storyboard.Remove(ellipse);
+            }
         }
     }
 }

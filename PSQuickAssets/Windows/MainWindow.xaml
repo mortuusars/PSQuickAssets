@@ -184,8 +184,8 @@
                         x:Name="CloseButton"
                         Width="18"
                         Margin="1"
-                        AlternativeSource="{StaticResource CloseRedIcon}"
-                        Source="{StaticResource CloseIcon}"
+                        AlternativeSource="{StaticResource CloseIcon}"
+                        Source="{StaticResource MinimizeIcon}"
                         ToolTip="{lex:Loc Main_Close_Tooltip}">
                         <controls:ImageButton.InputBindings>
                             <MouseBinding Command="{Binding HideCommand}" Gesture="LeftClick" />
