@@ -34,13 +34,7 @@ namespace PSQuickAssets.WPF.Converters
             }
             catch (Exception)
             {
-                int width = System.Convert.ToInt32(values[0]);
-                int height = System.Convert.ToInt32(values[1]);
-
-                if (height == 0)
-                    return desiredHeight;
-
-                ratio = width / height;
+                return 30.0;
             }
 
             if (parameter is double maxRatio && ratio > maxRatio)

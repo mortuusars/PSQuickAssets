@@ -140,7 +140,7 @@
   </data>
   <data name="Main_Close_Tooltip" xml:space="preserve">
     <value>Hide
-Ctrl+Click: Close</value>
+Ctrl+Click: Exit</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>

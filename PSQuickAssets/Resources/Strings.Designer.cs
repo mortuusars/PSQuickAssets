@@ -125,7 +125,7 @@ namespace PSQuickAssets.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Hide
-        ///Ctrl+Click: Close.
+        ///Ctrl+Click: Exit.
         /// </summary>
         public static string Main_Close_Tooltip {
             get {
