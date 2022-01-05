@@ -17,14 +17,8 @@ public class MouseWheelGesture : MouseGesture
 
     public override bool Matches(object targetElement, InputEventArgs inputEventArgs)
     {
-        if (inputEventArgs is KeyEventArgs)
+        if (inputEventArgs is not MouseWheelEventArgs args || !base.Matches(targetElement, inputEventArgs))
             return false;
-
-        if (inputEventArgs is not MouseWheelEventArgs args)
-            return false;
-
-        //if (!base.Matches(targetElement, inputEventArgs))
-            //return false;
 
         if (Direction == MouseWheelDirection.Up && args.Delta > 0 || Direction == MouseWheelDirection.Down && args.Delta < 0)
         {

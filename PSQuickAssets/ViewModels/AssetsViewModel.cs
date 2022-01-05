@@ -21,6 +21,8 @@ internal class AssetsViewModel : ObservableObject
 
     public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
 
+    public Func<string, bool> IsGroupNameValid { get; }
+
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
     public ICommand AddFolderCommand { get; }
@@ -37,17 +39,16 @@ internal class AssetsViewModel : ObservableObject
     public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel, INotificationService notificationService)
     {
         AssetGroups = new ObservableCollection<AssetGroup>();
-
         PhotoshopCommands = photoshopCommandsViewModel;
 
         _assetManager = assetManager;
         _notificationService = notificationService;
 
+        IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
         AddFilesCommand = new RelayCommand(SelectAndAddFiles);
         RemoveGroupCommand = new RelayCommand<AssetGroup>((group) => RemoveGroup(group!));
-
         ToggleGroupExpandCommand = new RelayCommand<AssetGroup>((group) => ToggleGroupExpanded(group));
 
         LoadStoredGroupsAsync().SafeFireAndForget();
@@ -79,7 +80,7 @@ internal class AssetsViewModel : ObservableObject
             _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAssetGroups"] + saveResult.Exception?.Message, NotificationIcon.Error);
     }
 
-    public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name == groupName);
+    public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name.Equals(groupName));
 
     public AssetGroup AddGroup(string groupName)
     {
@@ -114,6 +115,11 @@ internal class AssetsViewModel : ObservableObject
         IsLoading = true;
         await _assetManager.LoadGroupsToCollectionAsync(AssetGroups);
         IsLoading = false;
+
+        foreach (var group in AssetGroups)
+        {
+            group.GroupChanged += () => SaveGroupsAsync().SafeFireAndForget();
+        }
     }
 
     private async void SelectAndAddFolders(bool includeSubfolders = false)

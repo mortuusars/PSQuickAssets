@@ -115,8 +115,8 @@
         -->
 
         <Grid.InputBindings>
-            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Down, Keys=Shift}" />
-            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Up, Keys=Shift}" />
+            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Down, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Up, Keys=Ctrl}" />
         </Grid.InputBindings>
 
         <Grid.RowDefinitions>
@@ -213,7 +213,7 @@
 
             <ItemsControl.Template>
                 <ControlTemplate>
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Focusable="False" >
                         <ItemsPresenter />
                     </ScrollViewer>
                 </ControlTemplate>

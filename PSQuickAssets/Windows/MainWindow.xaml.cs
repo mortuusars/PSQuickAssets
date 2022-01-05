@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices;
+using PSQuickAssets.Controls;
 using PSQuickAssets.Windows.State;
 using PSQuickAssets.WPF;
 using System;
@@ -24,7 +25,7 @@ namespace PSQuickAssets.Windows
 
         public static readonly DependencyProperty IsShownProperty =
             DependencyProperty.Register(nameof(IsShowing), typeof(bool), typeof(MainWindow), new PropertyMetadata(false, OnIsShowingChanged));
-        
+
         /// <summary>
         /// Indicates whether the window is currently showing.
         /// </summary>
@@ -182,14 +183,15 @@ namespace PSQuickAssets.Windows
 
         private void window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var clickedRegion = WpfElementUtils.GetParentOfTypeByName<StackPanel>((FrameworkElement)e.OriginalSource, nameof(AddAssets));
+            //var clickedRegion = WpfElementUtils.GetParentOfTypeByName<StackPanel>((FrameworkElement)e.OriginalSource, nameof(AddAssets));
 
-            if (clickedRegion != AddAssets)
-                AddAssetsButtons.Visibility = Visibility.Collapsed;
+            //if (clickedRegion != AddAssets)
+            //    AddAssetsButtons.Visibility = Visibility.Collapsed;
         }
 
         private void ItemsContainer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            // Properly raize mouse scroll event without interfering with other controls.
             if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
             {
                 e.Handled = true;
@@ -199,6 +201,13 @@ namespace PSQuickAssets.Windows
                 var parent = ((Control)sender).Parent as UIElement;
                 parent?.RaiseEvent(eventArg);
             }
+        }
+
+        private void EditableTextBlock_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            EditableTextBlock editableTB = (EditableTextBlock)sender;
+            editableTB.IsEditing = true;
         }
     }
 }
