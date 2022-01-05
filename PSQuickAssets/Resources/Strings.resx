@@ -208,6 +208,12 @@ Ctrl+Click: Exit</value>
   <data name="Settings_CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
+  <data name="Settings_HideIfClickedOutside" xml:space="preserve">
+    <value>Hide window if clicked outside</value>
+  </data>
+  <data name="Settings_HideIfClickedOutside_Tooltip" xml:space="preserve">
+    <value>Main window will hide if deactivated</value>
+  </data>
   <data name="Settings_SaveAndClose" xml:space="preserve">
     <value>Save settings and close this window</value>
   </data>

@@ -332,6 +332,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide window if clicked outside.
+        /// </summary>
+        public static string Settings_HideIfClickedOutside {
+            get {
+                return ResourceManager.GetString("Settings_HideIfClickedOutside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main window will hide if deactivated.
+        /// </summary>
+        public static string Settings_HideIfClickedOutside_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HideIfClickedOutside_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save settings and close this window.
         /// </summary>
         public static string Settings_SaveAndClose {

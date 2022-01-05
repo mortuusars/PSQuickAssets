@@ -38,7 +38,8 @@
     UseLayoutRounding="True"
     WindowStartupLocation="Manual"
     WindowStyle="None"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    >
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}" />
@@ -133,7 +134,8 @@
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"
-            Effect="{StaticResource WindowDropShadow}" />
+            Effect="{StaticResource WindowDropShadow}"
+            IsHitTestVisible="False"/>
 
         <!--  HEADER  -->
         <Border

@@ -170,6 +170,23 @@
                         IsOn="{Binding Config.AlwaysOnTop, Mode=TwoWay}" />
                 </Grid>
 
+                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_HideIfClickedOutside_Tooltip}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Style="{StaticResource TextLight}"
+                        Text="{lex:Loc Settings_HideIfClickedOutside}"
+                        TextWrapping="Wrap" />
+                    <controls:ToggleSwitch
+                        x:Name="HideWindowIfClickedOutsideToggle"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        IsOn="{Binding Config.HideWindowIfClickedOutside, Mode=TwoWay}" />
+                </Grid>
+
                 <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

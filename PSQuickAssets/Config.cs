@@ -15,6 +15,7 @@ internal interface IConfig : INotifyPropertyChanged
     string ShowHideWindowHotkey { get; set; }
     double ThumbnailSize { get; set; }
     bool AlwaysOnTop { get; set; }
+    bool HideWindowIfClickedOutside { get; set; }
     bool AddMaskIfDocumentHasSelection { get; set; }
     bool CheckUpdates { get; set; }
 
@@ -26,12 +27,14 @@ internal class Config : ConfigBase, IConfig
     public string ShowHideWindowHotkey { get => _showHideWindowHotkey.Value; set => _showHideWindowHotkey.SetValue(value); }
     public double ThumbnailSize { get => _thumbnailSize.Value; set => _thumbnailSize.SetValue(value); }
     public bool AlwaysOnTop { get => _alwaysOnTop.Value; set => _alwaysOnTop.SetValue(value); }
+    public bool HideWindowIfClickedOutside { get => _hideWindowIfClickedOutside.Value; set => _hideWindowIfClickedOutside.SetValue(value); }
     public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
     public bool CheckUpdates { get => _checkUpdates.Value; set => _checkUpdates.SetValue(value); }
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
     private readonly ConfigProperty<double> _thumbnailSize;
     private readonly ConfigProperty<bool> _alwaysOnTop;
+    private readonly ConfigProperty<bool> _hideWindowIfClickedOutside;
     private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
     private readonly ConfigProperty<bool> _checkUpdates;
 
@@ -43,6 +46,7 @@ internal class Config : ConfigBase, IConfig
         _showHideWindowHotkey = RegisterProperty(nameof(ShowHideWindowHotkey), "Ctrl + Alt + A");
         _thumbnailSize = RegisterProperty(nameof(ThumbnailSize), 60.0);
         _alwaysOnTop = RegisterProperty(nameof(AlwaysOnTop), true);
+        _hideWindowIfClickedOutside = RegisterProperty(nameof(HideWindowIfClickedOutside), true);
         _addMaskIfDocumentHasSelection = RegisterProperty(nameof(AddMaskIfDocumentHasSelection), true);
         _checkUpdates = RegisterProperty(nameof(CheckUpdates), true);
 

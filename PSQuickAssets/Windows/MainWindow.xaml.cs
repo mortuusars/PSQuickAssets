@@ -49,6 +49,7 @@ namespace PSQuickAssets.Windows
         public new void Show()
         {
             base.Show();
+            Activate();
             IsShowing = true;
         }
 
@@ -56,6 +57,22 @@ namespace PSQuickAssets.Windows
         /// Plays short fade out animation before hiding.
         /// </summary>
         public void HideWithAnimation() => IsShowing = false;
+
+        protected override void OnDeactivated(EventArgs e)
+        {
+            bool isOtherAppWindowOpen = false;
+
+            foreach (var window in App.Current.Windows)
+            {
+                var w = (Window)window;
+                if (w.IsVisible && w != this)
+                    isOtherAppWindowOpen = true;
+            }
+
+            if (((App)App.Current).Config.HideWindowIfClickedOutside && !isOtherAppWindowOpen)
+                HideWithAnimation();
+            base.OnDeactivated(e);
+        }
 
         private static void OnIsShowingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
