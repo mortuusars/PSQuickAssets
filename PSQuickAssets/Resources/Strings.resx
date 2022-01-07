@@ -184,6 +184,9 @@ Ctrl+Click: Exit</value>
   <data name="PSStatus_Success" xml:space="preserve">
     <value>Success</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="SelectAssets" xml:space="preserve">
     <value>Select Assets</value>
   </data>

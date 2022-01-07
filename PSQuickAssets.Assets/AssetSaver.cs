@@ -53,7 +53,9 @@ internal class AssetSaver : IAssetSaver
 
             int groupIndex = 0;
 
-            foreach (var group in assetGroups)
+            AssetGroup[] groups = assetGroups.ToArray();
+
+            foreach (var group in groups)
             {
                 try
                 {

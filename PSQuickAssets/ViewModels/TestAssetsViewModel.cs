@@ -12,21 +12,21 @@ namespace PSQuickAssets.ViewModels
 {
     public class TestAssetsViewModel
     {
-        public ObservableCollection<AssetGroup> AssetGroups { get; }
+        public ObservableCollection<AssetGroupViewModel> AssetGroups { get; }
 
         public TestAssetsViewModel()
         {
-            AssetGroups = new ObservableCollection<AssetGroup>();
+            //AssetGroups = new ObservableCollection<AssetGroupViewModel>();
 
-            var group = new AssetGroup("Test Asd");
+            //var group = new AssetGroup();
 
-            for (int i = 0; i < 8; i++)
-            {
-                group.AddAsset(new Asset() { Path = "C://asd/" + i, Thumbnail = CreateThumb() }, DuplicateHandling.Allow);
-            }
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    group.AddAsset(new Asset() { Path = "C://asd/" + i, Thumbnail = CreateThumb() }, DuplicateHandling.Allow);
+            //}
 
-            AssetGroups.Add(group);
-            AssetGroups.Add(group);
+            //AssetGroups.Add(group);
+            //AssetGroups.Add(group);
         }
 
         private BitmapImage CreateThumb()

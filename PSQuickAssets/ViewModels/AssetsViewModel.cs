@@ -1,13 +1,16 @@
 ﻿using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices.MVVM;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Commands;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils.SystemDialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +20,7 @@ namespace PSQuickAssets.ViewModels;
 
 internal class AssetsViewModel : ObservableObject
 {
-    public ObservableCollection<AssetGroup> AssetGroups { get; private set; }
+    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; private set; }
 
     public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
 
@@ -29,7 +32,8 @@ internal class AssetsViewModel : ObservableObject
     public ICommand AddFolderWithSubfoldersCommand { get; }
     public ICommand AddFilesCommand { get; }
     public ICommand RemoveGroupCommand { get; }
-    public ICommand ToggleGroupExpandCommand { get; }
+
+    public IAsyncCommand SaveGroupsAsyncCommand { get; }
 
     private bool _isLoading;
 
@@ -38,7 +42,7 @@ internal class AssetsViewModel : ObservableObject
 
     public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel, INotificationService notificationService)
     {
-        AssetGroups = new ObservableCollection<AssetGroup>();
+        AssetGroups = new ObservableCollection<AssetGroupViewModel>();
         PhotoshopCommands = photoshopCommandsViewModel;
 
         _assetManager = assetManager;
@@ -48,78 +52,56 @@ internal class AssetsViewModel : ObservableObject
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
         AddFilesCommand = new RelayCommand(SelectAndAddFiles);
-        RemoveGroupCommand = new RelayCommand<AssetGroup>((group) => RemoveGroup(group!));
-        ToggleGroupExpandCommand = new RelayCommand<AssetGroup>((group) => ToggleGroupExpanded(group));
+        RemoveGroupCommand = new RelayCommand<AssetGroupViewModel>(g => RemoveGroup(g));
+
+        SaveGroupsAsyncCommand = new SaveGroupsAsyncCommand(this, assetManager, notificationService);
 
         LoadStoredGroupsAsync().SafeFireAndForget();
     }
 
-    public async Task SaveGroupsAsync()
-    {
-        Result saveResult = await _assetManager.SaveAsync(AssetGroups);
-
-        if (saveResult.IsSuccessful)
-            return;
-
-        if (saveResult.Exception is AggregateException aggregateException)
-        {
-            if (aggregateException.InnerExceptions.Count == AssetGroups.Count)
-                _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAllGroups"], NotificationIcon.Error);
-            else
-            {
-                string failedGroups = "";
-                foreach (var exception in aggregateException.InnerExceptions)
-                {
-                    failedGroups += exception.Message;
-                }
-
-                _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveGroups"] + $"\n<{failedGroups}>", NotificationIcon.Error);
-            }
-        }
-        else
-            _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAssetGroups"] + saveResult.Exception?.Message, NotificationIcon.Error);
-    }
-
     public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name.Equals(groupName));
 
-    public AssetGroup AddGroup(string groupName)
+    public AssetGroup CreateGroup(string groupName)
     {
         if (IsGroupExists(groupName))
             groupName = $"{groupName} {Localization.Instance["New"]}";
 
         AssetGroup assetGroup = new(groupName);
-        AssetGroups.Add(assetGroup);
-        SaveGroupsAsync().SafeFireAndForget();
+        AssetGroupViewModel groupVM = new AssetGroupViewModel(assetGroup);
+        AssetGroups.Add(groupVM);
+        groupVM.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         return assetGroup;
     }
 
-    public bool RemoveGroup(AssetGroup assetGroup)
+    public bool RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
     {
-        bool isRemoved = AssetGroups.Remove(assetGroup);
+        bool isRemoved = assetGroupViewModel is not null && AssetGroups.Remove(assetGroupViewModel);
         if (isRemoved)
-            SaveGroupsAsync().SafeFireAndForget();
+            SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         return isRemoved;
-    }
-
-    private void ToggleGroupExpanded(AssetGroup? group)
-    {
-        if (group is null)
-            throw new ArgumentNullException(nameof(group), "Group cannot be null");
-
-        group.IsExpanded = !group.IsExpanded;
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
     private async Task LoadStoredGroupsAsync()
     {
         IsLoading = true;
-        await _assetManager.LoadGroupsToCollectionAsync(AssetGroups);
-        IsLoading = false;
 
-        foreach (var group in AssetGroups)
+        var observableColl = new ObservableCollection<AssetGroup>();
+        observableColl.CollectionChanged += (s, e) =>
         {
-            group.GroupChanged += () => SaveGroupsAsync().SafeFireAndForget();
-        }
+            if (e.NewItems is null)
+                return;
+
+            foreach (var item in e.NewItems)
+            {
+                AssetGroups.Add(new AssetGroupViewModel((AssetGroup)item));
+            }
+        };
+
+        await _assetManager.LoadGroupsToCollectionAsync(observableColl);
+        IsLoading = false;
+     
+        foreach (var group in AssetGroups)
+            group.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
     }
 
     private async void SelectAndAddFolders(bool includeSubfolders = false)
@@ -134,8 +116,8 @@ internal class AssetsViewModel : ObservableObject
         {
             await AddGroupFromFolder(path, includeSubfolders);
         }
-        SaveGroupsAsync().SafeFireAndForget();
         IsLoading = false;
+        SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
     }
 
     private async void SelectAndAddFiles()
@@ -147,8 +129,8 @@ internal class AssetsViewModel : ObservableObject
 
         IsLoading = true;
         await AddGroupFromFiles(files);
-        SaveGroupsAsync().SafeFireAndForget();
         IsLoading = false;
+        SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
     }
 
     private async Task AddGroupFromFolder(string folderPath, bool includeSubfolders)
@@ -160,8 +142,9 @@ internal class AssetsViewModel : ObservableObject
 
         if (files.Length != 0)
         {
-            AssetGroup group = AddGroup(new DirectoryInfo(folderPath).Name);
-            await AddAssetsToGroup(group, files);
+            AssetGroup group = CreateGroup(new DirectoryInfo(folderPath).Name);
+            var groupVM = new AssetGroupViewModel(group);
+            await AddAssetsToGroup(groupVM, files);
         }
 
         if (includeSubfolders)
@@ -169,7 +152,6 @@ internal class AssetsViewModel : ObservableObject
             foreach (var folder in Directory.GetDirectories(folderPath))
                 await AddGroupFromFolder(folder, includeSubfolders);
         }
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
     private async Task AddGroupFromFiles(IList<string> files)
@@ -177,18 +159,17 @@ internal class AssetsViewModel : ObservableObject
         if (files.Count == 0)
             return;
 
-        var group = new AssetGroup(GenericGroupName());
+        var group = CreateGroup(GenericGroupName());
+        var groupVM = new AssetGroupViewModel(group);
 
-        await AddAssetsToGroup(group, files);
-        AssetGroups.Add(group);
-        SaveGroupsAsync().SafeFireAndForget();
+        await AddAssetsToGroup(groupVM, files);
+        AssetGroups.Add(new AssetGroupViewModel(group));
     }
 
-    private async Task AddAssetsToGroup(AssetGroup group, IEnumerable<string> files)
+    private async Task AddAssetsToGroup(AssetGroupViewModel group, IEnumerable<string> files)
     {
         var assets = await Task.Run(() => _assetManager.Load(files));
         group.AddAssets(assets, DuplicateHandling.Deny);
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
     private string GenericGroupName()

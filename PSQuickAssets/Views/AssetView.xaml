@@ -1,21 +1,22 @@
 ﻿<UserControl
     x:Class="PSQuickAssets.Views.AssetView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:PSQuickAssets.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
     xmlns:system="clr-namespace:System;assembly=netstandard"
     d:DesignHeight="120"
     d:DesignWidth="160"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <system:Double x:Key="MaxThumbnailHeightToWidthRatio">2.5</system:Double>
-
         <converters:DoubleWithRatioConverter x:Key="DoubleWithRatioConverter" />
-
         <BitmapImage x:Key="MissingImage" UriSource="../Resources/Images/image_light.png" />
     </UserControl.Resources>
 
@@ -24,7 +25,8 @@
         VerticalAlignment="Top"
         Background="Transparent"
         Cursor="Hand"
-        Effect="{StaticResource AssetShadow}">
+        Effect="{StaticResource AssetShadow}"
+        Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=DataContext}">
         <Grid.InputBindings>
             <MouseBinding
                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AssetsViewModel.PhotoshopCommands.AddImageAsLayerCommand}"
@@ -35,6 +37,15 @@
                 CommandParameter="{Binding}"
                 Gesture="CTRL+LeftClick" />
         </Grid.InputBindings>
+
+        <Grid.ContextMenu>
+            <ContextMenu Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
+                <MenuItem
+                    Command="{Binding Path=Tag.RemoveAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                    CommandParameter="{Binding}"
+                    Header="{lex:Loc PSQuickAssets:Strings:Remove}" />
+            </ContextMenu>
+        </Grid.ContextMenu>
 
         <Grid.ToolTip>
             <TextBlock Style="{StaticResource TextLight}" Text="{Binding FileName}" />

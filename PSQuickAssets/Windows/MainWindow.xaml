@@ -65,37 +65,6 @@
             <Setter Property="Effect" Value="{StaticResource AssetShadow}" />
         </Style>
 
-        <!--<Style x:Key="LoadingContainerStyle" TargetType="Border">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding AssetsViewModel.IsLoading}" Value="True">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0"
-                                                               Storyboard.TargetProperty="Visibility">
-                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                    <DataTrigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Duration="0:0:0.4" To="0"
-                                                 Storyboard.TargetProperty="Opacity"
-                                                 FillBehavior="Stop"/>
-                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.4"
-                                                               Storyboard.TargetProperty="Visibility"
-                                                               FillBehavior="HoldEnd">
-                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.ExitActions>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>-->
-
     </Window.Resources>
 
     <Grid
