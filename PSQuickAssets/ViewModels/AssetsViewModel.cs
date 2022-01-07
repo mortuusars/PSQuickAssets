@@ -61,7 +61,7 @@ internal class AssetsViewModel : ObservableObject
 
     public bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name.Equals(groupName));
 
-    public AssetGroup CreateGroup(string groupName)
+    public AssetGroupViewModel CreateGroup(string groupName)
     {
         if (IsGroupExists(groupName))
             groupName = $"{groupName} {Localization.Instance["New"]}";
@@ -70,11 +70,13 @@ internal class AssetsViewModel : ObservableObject
         AssetGroupViewModel groupVM = new AssetGroupViewModel(assetGroup);
         AssetGroups.Add(groupVM);
         groupVM.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
-        return assetGroup;
+        return groupVM;
     }
 
     public bool RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
     {
+        var uq = ReferenceEquals(assetGroupViewModel, AssetGroups[0]);
+
         bool isRemoved = assetGroupViewModel is not null && AssetGroups.Remove(assetGroupViewModel);
         if (isRemoved)
             SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
@@ -142,9 +144,11 @@ internal class AssetsViewModel : ObservableObject
 
         if (files.Length != 0)
         {
-            AssetGroup group = CreateGroup(new DirectoryInfo(folderPath).Name);
-            var groupVM = new AssetGroupViewModel(group);
-            await AddAssetsToGroup(groupVM, files);
+            AssetGroupViewModel group = CreateGroup(new DirectoryInfo(folderPath).Name);
+            await AddAssetsToGroup(group, files);
+
+            if (group.Group.Assets.Count == 0)
+                RemoveGroup(group);
         }
 
         if (includeSubfolders)
@@ -160,10 +164,9 @@ internal class AssetsViewModel : ObservableObject
             return;
 
         var group = CreateGroup(GenericGroupName());
-        var groupVM = new AssetGroupViewModel(group);
 
-        await AddAssetsToGroup(groupVM, files);
-        AssetGroups.Add(new AssetGroupViewModel(group));
+        await AddAssetsToGroup(group, files);
+        AssetGroups.Add(group);
     }
 
     private async Task AddAssetsToGroup(AssetGroupViewModel group, IEnumerable<string> files)
