@@ -72,7 +72,7 @@ internal class AssetSaver : IAssetSaver
             }
 
             string groupWord = groupIndex == 1 ? "group" : "groups";
-            _logger.Info($"[Asset Group Saving] Saved {groupIndex++} {groupWord} successfully.");
+            _logger.Debug($"[Asset Group Saving] Saved {groupIndex++} {groupWord}.");
         }
 
         if (exceptions.Count > 0)

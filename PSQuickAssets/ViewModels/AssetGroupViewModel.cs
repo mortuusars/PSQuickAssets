@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MLogger;
 using PSQuickAssets.Assets;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace PSQuickAssets.ViewModels
 {
     public class AssetGroupViewModel : ObservableObject
     {
+        private readonly ILogger _logger;
+
         public string Name { get => Group.Name; set => Rename(value); }
 
         public bool IsExpanded { get => Group.IsExpanded; 
@@ -32,9 +35,10 @@ namespace PSQuickAssets.ViewModels
         public ICommand ToggleExpandedCommand { get; }
         public ICommand RemoveAssetCommand { get; }
 
-        public AssetGroupViewModel(AssetGroup assetGroup)
+        public AssetGroupViewModel(AssetGroup assetGroup, ILogger logger)
         {
             Group = assetGroup;
+            _logger = logger;
 
             ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
             RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
@@ -83,7 +87,10 @@ namespace PSQuickAssets.ViewModels
         {
             bool result = asset is not null && Group.Assets.Remove(asset);
             if (result)
+            {
+                _logger.Info($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
                 OnPropertyChanged(nameof(Assets));
+            }
             return result;
         }
 
@@ -108,7 +115,9 @@ namespace PSQuickAssets.ViewModels
             if (string.IsNullOrWhiteSpace(name) || Group.Name.Equals(name))
                 return;
 
+            string oldName = Name;
             Group.Name = name;
+            _logger.Info($"[Group] '{oldName}' was renamed to '{name}'");
             OnPropertyChanged(nameof(Name));
         }
     }
