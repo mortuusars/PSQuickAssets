@@ -108,7 +108,7 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{StaticResource MainBackground}"
+            Background="{StaticResource BackgroundDark}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"

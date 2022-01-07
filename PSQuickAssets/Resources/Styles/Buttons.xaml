@@ -67,7 +67,7 @@
                     <Border
                         x:Name="Border"
                         Padding="{TemplateBinding Padding}"
-                        Background="{DynamicResource MainBackground}"
+                        Background="{DynamicResource BackgroundLighter}"
                         BorderBrush="#777"
                         BorderThickness="1.5"
                         CornerRadius="6"

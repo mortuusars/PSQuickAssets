@@ -33,6 +33,8 @@
                 Opacity="0.45"
                 ShadowDepth="2" />
 
+            <SineEase EasingMode="EaseInOut" x:Key="EaseInOut"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

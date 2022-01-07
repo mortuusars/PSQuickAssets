@@ -38,8 +38,7 @@
     UseLayoutRounding="True"
     WindowStartupLocation="Manual"
     WindowStyle="None"
-    mc:Ignorable="d"
-    >
+    mc:Ignorable="d">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding HideCommand}" />
@@ -65,7 +64,84 @@
             <Setter Property="Effect" Value="{StaticResource AssetShadow}" />
         </Style>
 
+        <Storyboard x:Key="PlusButtonFadeIn">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AddButton" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                Storyboard.TargetName="AddButton"
+                Storyboard.TargetProperty="Opacity"
+                To="1"
+                Duration="0:0:0.08" />
+        </Storyboard>
+
+        <Storyboard x:Key="PlusButtonFadeOut">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AddButton" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                Storyboard.TargetName="AddButton"
+                Storyboard.TargetProperty="Opacity"
+                To="0"
+                Duration="0:0:0.2" />
+        </Storyboard>
+
+        <Duration x:Key="AddButtonsFadeInDuration">0:0:0.2</Duration>
+        <Storyboard x:Key="AddButtonsFadeIn">
+            <ObjectAnimationUsingKeyFrames
+                FillBehavior="HoldEnd"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="Opacity"
+                To="1"
+                Duration="{StaticResource AddButtonsFadeInDuration}" />
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                From="10"
+                To="0"
+                Duration="{StaticResource AddButtonsFadeInDuration}" />
+        </Storyboard>
+
+        <Duration x:Key="AddButtonsFadeOutDuration">0:0:0.25</Duration>
+        <Storyboard x:Key="AddButtonsFadeOut" Completed="AddButtons_FadeOut_Completed">
+            <ObjectAnimationUsingKeyFrames
+                FillBehavior="Stop"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="Opacity"
+                To="0"
+                Duration="{StaticResource AddButtonsFadeOutDuration}" />
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetName="AddAssetsButtons"
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                From="0"
+                To="8"
+                Duration="{StaticResource AddButtonsFadeOutDuration}" />
+        </Storyboard>
+
     </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="window">
+            <BeginStoryboard Storyboard="{StaticResource PlusButtonFadeIn}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="window">
+            <BeginStoryboard Storyboard="{StaticResource PlusButtonFadeOut}" />
+        </EventTrigger>
+    </Window.Triggers>
 
     <Grid
         x:Name="LayoutRoot"
@@ -99,12 +175,12 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{StaticResource MainBackground}"
+            Background="{StaticResource BackgroundDark}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"
             Effect="{StaticResource WindowDropShadow}"
-            IsHitTestVisible="False"/>
+            IsHitTestVisible="False" />
 
         <!--  HEADER  -->
         <Border
@@ -184,7 +260,10 @@
 
             <ItemsControl.Template>
                 <ControlTemplate>
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Focusable="False" >
+                    <ScrollViewer
+                        Focusable="False"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
                         <ItemsPresenter />
                     </ScrollViewer>
                 </ControlTemplate>
@@ -235,91 +314,188 @@
 
 
         <!--  ADD ASSETS  -->
-        <StackPanel
-            Name="AddAssets"
+        <Grid
+            x:Name="AddButtonsArea"
             Grid.Row="1"
-            Margin="20"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom">
-
+            VerticalAlignment="Bottom"
+            Background="Transparent">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="AddButtonsArea">
+                    <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeOut}" />
+                </EventTrigger>
+            </Grid.Triggers>
             <StackPanel
-                x:Name="AddAssetsButtons"
-                Margin="0,0,0,10"
+                Name="AddAssets"
+                Margin="20,20,20,20"
                 HorizontalAlignment="Right"
-                d:Visibility="Visible"
-                Visibility="Collapsed">
-
-                <Button
-                    Margin="0,3"
+                VerticalAlignment="Bottom">
+                <StackPanel
+                    x:Name="AddAssetsButtons"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Right"
-                    Command="{Binding AssetsViewModel.AddFolderCommand}"
-                    Content="{lex:Loc Assets_AddFolder}"
-                    Style="{StaticResource AddAssetsButton}" />
+                    d:Visibility="Visible"
+                    Visibility="Collapsed">
+                    <StackPanel.RenderTransform>
+                        <TranslateTransform X="0" Y="0" />
+                    </StackPanel.RenderTransform>
 
-                <Button
-                    Margin="0,3"
+                    <!--<StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseDown" SourceName="AddAssetsButtons">
+                        <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeOut}"/>
+                    </EventTrigger>
+                </StackPanel.Triggers>-->
+
+                    <Button
+                        Margin="0,3"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AssetsViewModel.AddFolderCommand}"
+                        Content="{lex:Loc Assets_AddFolder}"
+                        Style="{StaticResource AddAssetsButton}" />
+
+                    <Button
+                        Margin="0,3"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AssetsViewModel.AddFolderWithSubfoldersCommand}"
+                        Content="{lex:Loc Assets_AddFolderWithSubfolders}"
+                        Style="{StaticResource AddAssetsButton}" />
+
+                    <Button
+                        Margin="0,3"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AssetsViewModel.AddFilesCommand}"
+                        Content="{lex:Loc Assets_AddFiles}"
+                        Style="{StaticResource AddAssetsButton}" />
+                </StackPanel>
+
+
+                <ToggleButton
+                    x:Name="AddButton"
+                    Width="42"
+                    Height="42"
                     HorizontalAlignment="Right"
-                    Command="{Binding AssetsViewModel.AddFolderWithSubfoldersCommand}"
-                    Content="{lex:Loc Assets_AddFolderWithSubfolders}"
-                    Style="{StaticResource AddAssetsButton}" />
+                    Checked="AddButton_Checked"
+                    ClickMode="Press"
+                    ToolTip="{lex:Loc Add}">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid>
+                                <Ellipse
+                                    x:Name="toggleButtonShape"
+                                    Effect="{StaticResource AssetShadow}"
+                                    Fill="{StaticResource BackgroundLighter}">
+                                    <Ellipse.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.05">
+                                                    <ColorAnimationUsingKeyFrames>
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.05" Value="#5a5a5a" />
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.4">
+                                                    <ColorAnimationUsingKeyFrames>
+                                                        <EasingColorKeyFrame KeyTime="0:0:0.4" Value="{StaticResource BackgroundLighterColor}">
+                                                            <EasingColorKeyFrame.EasingFunction>
+                                                                <SineEase EasingMode="EaseInOut" />
+                                                            </EasingColorKeyFrame.EasingFunction>
+                                                        </EasingColorKeyFrame>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Ellipse.Triggers>
+                                </Ellipse>
 
-                <Button
-                    Margin="0,3"
-                    HorizontalAlignment="Right"
-                    Command="{Binding AssetsViewModel.AddFilesCommand}"
-                    Content="{lex:Loc Assets_AddFiles}"
-                    Style="{StaticResource AddAssetsButton}" />
-            </StackPanel>
+                                <TextBlock
+                                    Margin="1,-4,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontFamily="{StaticResource FontRegular}"
+                                    FontSize="30"
+                                    Foreground="{StaticResource ForegroundLighter}"
+                                    IsHitTestVisible="False"
+                                    Text="+" />
+                            </Grid>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
 
-            <!--  + BUTTON  -->
-            <Border
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked" SourceName="AddButton">
+                            <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeIn}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="AddButton">
+                            <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeOut}" />
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+
+                </ToggleButton>
+
+
+                <!--  + BUTTON  -->
+                <!--<Grid
+                x:Name="PlusButton"
                 Grid.Row="1"
                 HorizontalAlignment="Right"
+                d:Opacity="1"
+                d:Visibility="Visible"
                 Background="Transparent"
-                MouseDown="AddAssets_MouseDown"
-                Visibility="Visible">
-                <Grid>
-                    <Ellipse
-                        Width="36"
-                        Height="36"
-                        Effect="{StaticResource AssetShadow}"
-                        Fill="{StaticResource MainBorder}"
-                        StrokeThickness="2">
-                        <Ellipse.Triggers>
-                            <EventTrigger RoutedEvent="MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.08">
-                                        <ColorAnimationUsingKeyFrames>
-                                            <LinearColorKeyFrame KeyTime="0:0:0.08" Value="#454545" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.2">
-                                        <ColorAnimationUsingKeyFrames>
-                                            <LinearColorKeyFrame KeyTime="0:0:0.2" Value="#343434" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Ellipse.Triggers>
-                    </Ellipse>
+                MouseDown="AddAssets_MouseDown">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                </Grid.Style>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseDown" SourceName="PlusButton">
+                        <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeIn}" />
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Ellipse
+                    Width="42"
+                    Height="42"
+                    Effect="{StaticResource AssetShadow}"
+                    Fill="{StaticResource MainBorder}"
+                    StrokeThickness="2">
+                    <Ellipse.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.08">
+                                    <ColorAnimationUsingKeyFrames>
+                                        <LinearColorKeyFrame KeyTime="0:0:0.08" Value="#454545" />
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.2">
+                                    <ColorAnimationUsingKeyFrames>
+                                        <LinearColorKeyFrame KeyTime="0:0:0.2" Value="#343434" />
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Ellipse.Triggers>
+                </Ellipse>
 
-                    <TextBlock
-                        Margin="0,-4,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontFamily="{StaticResource FontRegular}"
-                        FontSize="28"
-                        Foreground="{StaticResource BorderLighter}"
-                        IsHitTestVisible="False"
-                        Text="+" />
-                </Grid>
-            </Border>
+                <TextBlock
+                    Margin="1,-5,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="{StaticResource FontRegular}"
+                    FontSize="28"
+                    Foreground="{StaticResource BorderLighter}"
+                    IsHitTestVisible="False"
+                    Text="+" />
+            </Grid>-->
 
-        </StackPanel>
+            </StackPanel>
+        </Grid>
 
         <Border
             x:Name="LoadingInfo"

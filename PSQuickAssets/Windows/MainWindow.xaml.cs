@@ -226,5 +226,17 @@ namespace PSQuickAssets.Windows
             EditableTextBlock editableTB = (EditableTextBlock)sender;
             editableTB.IsEditing = true;
         }
+
+        private void AddButtons_FadeOut_Completed(object sender, EventArgs e)
+        {
+            // Update button state when AddButtons was hidden by other actions.
+            // Without this AddButton needs to be clicked twice to show buttons.
+            AddButton.IsChecked = false;
+        }
+
+        private void AddButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

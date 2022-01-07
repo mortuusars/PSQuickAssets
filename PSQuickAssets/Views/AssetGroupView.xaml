@@ -19,10 +19,53 @@
 
     <UserControl.Resources>
         <Style BasedOn="{StaticResource DarkToolTip}" TargetType="{x:Type ToolTip}" />
+
+        <Duration x:Key="FadeInDuration">0:0:0.05</Duration>
+        <Storyboard
+            x:Key="ButtonsFadeIn"
+            Storyboard.TargetName="GroupButtons"
+            Duration="{StaticResource FadeInDuration}">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GroupButtons" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetName="GroupButtons"
+                Storyboard.TargetProperty="Opacity"
+                To="1"
+                Duration="{StaticResource FadeInDuration}" />
+        </Storyboard>
+
+        <Duration x:Key="FadeOutDuration">0:0:0.3</Duration>
+        <Storyboard
+            x:Key="ButtonsFadeOut"
+            Storyboard.TargetName="GroupButtons"
+            Duration="{StaticResource FadeOutDuration}">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation
+                EasingFunction="{StaticResource EaseInOut}"
+                Storyboard.TargetProperty="Opacity"
+                To="0"
+                Duration="{StaticResource FadeOutDuration}" />
+        </Storyboard>
     </UserControl.Resources>
 
-    <StackPanel d:DataContext="{Binding AssetGroups}" Background="Transparent">
+    <StackPanel
+        x:Name="groupRoot"
+        d:DataContext="{Binding AssetGroups}"
+        Background="Transparent">
+        <StackPanel.Triggers>
+            <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="groupRoot">
+                <BeginStoryboard Storyboard="{StaticResource ButtonsFadeIn}" />
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="groupRoot">
+                <BeginStoryboard Storyboard="{StaticResource ButtonsFadeOut}" />
+            </EventTrigger>
+        </StackPanel.Triggers>
 
+        <!--  HEADER  -->
         <Grid
             Margin="3,7,3,0"
             HorizontalAlignment="Stretch"
@@ -33,6 +76,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
+            <!--  EXPAND  -->
             <controls:ImageButton
                 x:Name="expandButton"
                 Grid.Column="0"
@@ -86,17 +130,29 @@
                 RenameValidation="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}, Path=DataContext.AssetsViewModel.IsGroupNameValid}"
                 Text="{Binding Name}" />
 
-            <!--  REMOVE GROUP  -->
-            <controls:ImageButton
+            <!--  BUTTONS  -->
+            <StackPanel
+                x:Name="GroupButtons"
                 Grid.Column="2"
-                Width="16"
                 HorizontalAlignment="Right"
                 d:Visibility="Visible"
-                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
-                CommandParameter="{Binding}"
-                Source="{StaticResource CloseIcon}"
-                ToolTip="Remove Group"
-                Visibility="{Binding ElementName=root, Path=IsMouseOver, Converter={StaticResource BoolToVisibilityHidden}}" />
+                Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                </StackPanel.Style>
+
+                <!--  REMOVE GROUP  -->
+                <controls:ImageButton
+                    Width="16"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
+                    CommandParameter="{Binding}"
+                    Source="{StaticResource CloseIcon}"
+                    ToolTip="Remove Group" />
+            </StackPanel>
+
+
         </Grid>
 
 
