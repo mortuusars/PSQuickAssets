@@ -20,14 +20,14 @@ internal interface IAssetSaver
     Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups);
 }
 
-internal class AssetSaver : IAssetSaver
+internal class AssetGroupSaver : IAssetSaver
 {
 
     private object _savingLock = new object();
     private readonly string _assetsFolderPath;
     private readonly ILogger _logger;
 
-    public AssetSaver(string assetsFolderPath, ILogger logger)
+    public AssetGroupSaver(string assetsFolderPath, ILogger logger)
     {
         _assetsFolderPath = assetsFolderPath;
         _logger = logger;

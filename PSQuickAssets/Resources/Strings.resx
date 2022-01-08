@@ -151,6 +151,9 @@ Ctrl+Click: Exit</value>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>Open File Location</value>
+  </data>
   <data name="PSStatus_Busy" xml:space="preserve">
     <value>Photoshop is busy</value>
   </data>

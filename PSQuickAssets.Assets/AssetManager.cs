@@ -11,10 +11,11 @@ public class AssetManager
 {
     private string _savedAssetsFolder;
 
-    private readonly IAssetLoader _assetLoader;
-    private readonly IAssetSaver _assetSaver;
+    private readonly IAssetCreator _assetCreator;
+    private readonly IAssetSaver _assetGroupSaver;
     private readonly AssetGroupLoader _assetGroupLoader;
     private readonly ThumbnailManager _thumbnailManager;
+    private readonly AssetDataLoader _assetDataLoader;
 
     private ILogger _logger;
 
@@ -29,9 +30,11 @@ public class AssetManager
         _logger = logger;
 
         _thumbnailManager = new ThumbnailManager(logger);
-        _assetLoader = new AssetLoader(new NetVipsThumbnailCreator(), logger);
-        _assetSaver = new AssetSaver(_savedAssetsFolder, logger);
-        _assetGroupLoader = new AssetGroupLoader(_thumbnailManager, logger);
+        _assetDataLoader = new AssetDataLoader(_thumbnailManager, logger);
+
+        _assetCreator = new AssetCreator(_assetDataLoader, logger);
+        _assetGroupSaver = new AssetGroupSaver(_savedAssetsFolder, logger);
+        _assetGroupLoader = new AssetGroupLoader(_assetDataLoader, logger);
     }
 
     /// <summary>
@@ -56,7 +59,7 @@ public class AssetManager
 
         try
         {
-            Asset asset = _assetLoader.Load(filePath);
+            Asset asset = _assetCreator.Create(filePath);
             return new Result<Asset>(true, asset);
         }
         catch (Exception ex)
@@ -90,20 +93,14 @@ public class AssetManager
     /// </summary>
     /// <param name="assetGroups">Collection of asset groups.</param>
     /// <returns>Result of the saving.</returns>
-    public Result Save(IEnumerable<AssetGroup> assetGroups) => _assetSaver.Save(assetGroups);
+    public Result Save(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.Save(assetGroups);
 
     /// <summary>
     /// Asynchronously saves collection of asset groups to file system.
     /// </summary>
     /// <param name="assetGroups">Collection of asset groups.</param>
     /// <returns>Result of the saving.</returns>
-    public Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups) => _assetSaver.SaveAsync(assetGroups);
-
-    /// <summary>
-    /// Loads stored asset groups.
-    /// </summary>
-    /// <returns>Collection of asset groups with all its assets and their thumbnails.</returns>
-    public Result<IEnumerable<AssetGroup>> LoadGroups() => _assetGroupLoader.LoadGroups(_savedAssetsFolder);
+    public Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.SaveAsync(assetGroups);
 
     /// <summary>
     /// Asynchronously loads stored asset groups.

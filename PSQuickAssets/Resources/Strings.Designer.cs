@@ -161,6 +161,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open File Location.
+        /// </summary>
+        public static string OpenFileLocation {
+            get {
+                return ResourceManager.GetString("OpenFileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photoshop is busy.
         /// </summary>
         public static string PSStatus_Busy {

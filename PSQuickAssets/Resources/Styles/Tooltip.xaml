@@ -7,6 +7,7 @@
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource FontRegular}" />
         <Setter Property="FontSize" Value="15" />
+        <Setter Property="Placement" Value="Right" />
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -17,17 +18,18 @@
                         Height="{TemplateBinding Height}"
                         Margin="10"
                         Background="{DynamicResource MainBorder}"
-                        BorderBrush="#666"
-                        BorderThickness="1.5"
+                        BorderBrush="{x:Null}"
+                        BorderThickness="0"
                         CornerRadius="4">
                         <Border.Effect>
                             <DropShadowEffect
-                                BlurRadius="10"
+                                BlurRadius="16"
                                 Direction="-90"
-                                Opacity="0.4" />
+                                Opacity="0.4"
+                                ShadowDepth="2" />
                         </Border.Effect>
                         <ContentPresenter
-                            Margin="8,6"
+                            Margin="12,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top" />
                     </Border>
