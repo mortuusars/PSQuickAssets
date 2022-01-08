@@ -340,12 +340,13 @@
                         <TranslateTransform X="0" Y="0" />
                     </StackPanel.RenderTransform>
 
-                    <!--<StackPanel.Triggers>
-                    <EventTrigger RoutedEvent="Mouse.MouseDown" SourceName="AddAssetsButtons">
-                        <BeginStoryboard Storyboard="{StaticResource AddButtonsFadeOut}"/>
-                    </EventTrigger>
-                </StackPanel.Triggers>-->
-
+                    <Button
+                        Margin="0,3"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AssetsViewModel.AddEmptyGroupCommand}"
+                        Content="{lex:Loc Assets_AddGroup}"
+                        Style="{StaticResource AddAssetsButton}" />
+                    
                     <Button
                         Margin="0,3"
                         HorizontalAlignment="Right"

@@ -129,6 +129,9 @@
   <data name="Assets_AddFolderWithSubfolders" xml:space="preserve">
     <value>Add Folder (including subfolders)</value>
   </data>
+  <data name="Assets_AddGroup" xml:space="preserve">
+    <value>New Group</value>
+  </data>
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>

@@ -97,6 +97,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Group.
+        /// </summary>
+        public static string Assets_AddGroup {
+            get {
+                return ResourceManager.GetString("Assets_AddGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute action &apos;{0}&apos; from set &apos;{1}&apos;.
         /// </summary>
         public static string Assets_CannotExecuteActionFromSet {

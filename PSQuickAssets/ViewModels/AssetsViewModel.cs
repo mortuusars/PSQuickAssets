@@ -29,6 +29,7 @@ internal class AssetsViewModel : ObservableObject
     public ICommand AddFolderCommand { get; }
     public ICommand AddFolderWithSubfoldersCommand { get; }
     public ICommand AddFilesCommand { get; }
+    public ICommand AddEmptyGroupCommand { get; }
     public ICommand RemoveGroupCommand { get; }
 
     public IAsyncCommand SaveGroupsAsyncCommand { get; }
@@ -51,6 +52,7 @@ internal class AssetsViewModel : ObservableObject
         IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
+        AddEmptyGroupCommand = new RelayCommand(() => CreateEmptyGroup());
         AddFilesCommand = new RelayCommand(SelectAndAddFiles);
         RemoveGroupCommand = new RelayCommand<AssetGroupViewModel>(g => RemoveGroup(g));
 

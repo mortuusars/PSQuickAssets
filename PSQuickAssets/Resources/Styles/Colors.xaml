@@ -4,7 +4,7 @@
     <SolidColorBrush x:Key="BackgroundDark" Color="{StaticResource BackgroundDarkColor}" />
 
     <Color x:Key="SemiDarkColor">#343434</Color>
-    <SolidColorBrush x:Key="SemiDark" Color="{StaticResource SemiDarkColor}"/>
+    <SolidColorBrush x:Key="SemiDark" Color="{StaticResource SemiDarkColor}" />
 
     <SolidColorBrush x:Key="MainBorder" Color="#343434" />
     <SolidColorBrush x:Key="BorderLighter" Color="#5a5a5a" />
