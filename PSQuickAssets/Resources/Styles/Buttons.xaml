@@ -67,7 +67,7 @@
                     <Border
                         x:Name="Border"
                         Padding="{TemplateBinding Padding}"
-                        Background="{DynamicResource BackgroundLighter}"
+                        Background="{DynamicResource BackgroundCloserBrush}"
                         BorderBrush="#777"
                         BorderThickness="1.5"
                         CornerRadius="6"
@@ -89,7 +89,7 @@
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#454545" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundCloserHighlightColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -98,8 +98,8 @@
                                         <ColorAnimationUsingKeyFrames
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                            Duration="0:0:0.3">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#666" />
+                                            Duration="0:0:0.1">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundNearColor}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

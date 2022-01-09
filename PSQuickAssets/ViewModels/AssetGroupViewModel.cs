@@ -9,116 +9,118 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace PSQuickAssets.ViewModels
+namespace PSQuickAssets.ViewModels;
+
+internal class AssetGroupViewModel : ObservableObject
 {
-    public class AssetGroupViewModel : ObservableObject
+    private readonly ILogger _logger;
+
+    public string Name { get => Group.Name; set => Rename(value); }
+
+    public bool IsExpanded
     {
-        private readonly ILogger _logger;
-
-        public string Name { get => Group.Name; set => Rename(value); }
-
-        public bool IsExpanded { get => Group.IsExpanded; 
-            set
+        get => Group.IsExpanded;
+        set
+        {
+            if (Group.IsExpanded != value)
             {
-                if (Group.IsExpanded != value)
-                {
-                    Group.IsExpanded = value;
-                    OnPropertyChanged(nameof(IsExpanded));
-                }
+                Group.IsExpanded = value;
+                OnPropertyChanged(nameof(IsExpanded));
             }
         }
+    }
 
-        public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
+    public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
 
-        public AssetGroup Group { get; }
+    public AssetGroup Group { get; }
+    public PhotoshopCommandsViewModel PhotoshopCommands { get; }
+    public ICommand ToggleExpandedCommand { get; }
+    public ICommand RemoveAssetCommand { get; }
 
-        public ICommand ToggleExpandedCommand { get; }
-        public ICommand RemoveAssetCommand { get; }
+    public AssetGroupViewModel(AssetGroup assetGroup, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
+    {
+        Group = assetGroup;
+        PhotoshopCommands = photoshopCommandsViewModel;
+        _logger = logger;
 
-        public AssetGroupViewModel(AssetGroup assetGroup, ILogger logger)
+        ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
+        RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
+    }
+
+    /// <summary>
+    /// Adds asset to the group.
+    /// </summary>
+    /// <param name="asset">Asset to add.</param>
+    /// <param name="duplicateHandling">Specify how the duplicates should be handled. If set to Deny - asset will not be added if it is already in the group.</param>
+    /// <returns><see langword="true"/> if added successfully, otherwise <see langword="false"/>.</returns>
+    public bool AddAsset(Asset asset, DuplicateHandling duplicateHandling)
+    {
+        if (duplicateHandling is DuplicateHandling.Deny && HasAsset(asset.Path))
+            return false;
+
+        Group.Assets.Add(asset);
+        return true;
+    }
+
+    /// <summary>
+    /// Adds multiple assets to the group.
+    /// </summary>
+    /// <param name="assets">Asset collection to add.</param>
+    /// <param name="duplicateHandling">Specify how the duplicates should be handled. If set to Deny - asset will not be added if it is already in the group.</param>
+    /// <returns>List of assets that were NOT added.</returns>
+    public List<Asset> AddAssets(IEnumerable<Asset> assets, DuplicateHandling duplicateHandling)
+    {
+        var notAddedList = new List<Asset>();
+
+        foreach (var asset in assets)
         {
-            Group = assetGroup;
-            _logger = logger;
-
-            ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
-            RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
+            if (!AddAsset(asset, duplicateHandling))
+                notAddedList.Add(asset);
         }
 
-        /// <summary>
-        /// Adds asset to the group.
-        /// </summary>
-        /// <param name="asset">Asset to add.</param>
-        /// <param name="duplicateHandling">Specify how the duplicates should be handled. If set to Deny - asset will not be added if it is already in the group.</param>
-        /// <returns><see langword="true"/> if added successfully, otherwise <see langword="false"/>.</returns>
-        public bool AddAsset(Asset asset, DuplicateHandling duplicateHandling)
+        return notAddedList;
+    }
+
+    /// <summary>
+    /// Removes asset from a group.
+    /// </summary>
+    /// <param name="asset">Asset to remove.</param>
+    /// <returns><see langword="true"/> if successfully removed. Otherwise <see langword="false"/>.</returns>
+    public bool RemoveAsset(Asset? asset)
+    {
+        bool result = asset is not null && Group.Assets.Remove(asset);
+        if (result)
         {
-            if (duplicateHandling is DuplicateHandling.Deny && HasAsset(asset.Path))
-                return false;
-
-            Group.Assets.Add(asset);
-            return true;
+            _logger.Info($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
+            OnPropertyChanged(nameof(Assets));
         }
+        return result;
+    }
 
-        /// <summary>
-        /// Adds multiple assets to the group.
-        /// </summary>
-        /// <param name="assets">Asset collection to add.</param>
-        /// <param name="duplicateHandling">Specify how the duplicates should be handled. If set to Deny - asset will not be added if it is already in the group.</param>
-        /// <returns>List of assets that were NOT added.</returns>
-        public List<Asset> AddAssets(IEnumerable<Asset> assets, DuplicateHandling duplicateHandling)
-        {
-            var notAddedList = new List<Asset>();
+    /// <summary>
+    /// Checks if asset with the same FILEPATH is already in the group.
+    /// </summary>
+    /// <returns><see langword="true"/> if asset is in the group. Otherwise <see langword="false"/>.</returns>
+    public bool HasAsset(string filePath)
+    {
+        if (filePath is null)
+            throw new ArgumentNullException(nameof(filePath));
 
-            foreach (var asset in assets)
-            {
-                if (!AddAsset(asset, duplicateHandling))
-                    notAddedList.Add(asset);
-            }
+        return Group.Assets.Any(a => a.Path == filePath);
+    }
 
-            return notAddedList;
-        }
+    /// <summary>
+    /// Renames asset group.
+    /// </summary>
+    /// <param name="name"></param>
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name) || Group.Name.Equals(name))
+            return;
 
-        /// <summary>
-        /// Removes asset from a group.
-        /// </summary>
-        /// <param name="asset">Asset to remove.</param>
-        /// <returns><see langword="true"/> if successfully removed. Otherwise <see langword="false"/>.</returns>
-        public bool RemoveAsset(Asset? asset)
-        {
-            bool result = asset is not null && Group.Assets.Remove(asset);
-            if (result)
-            {
-                _logger.Info($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
-                OnPropertyChanged(nameof(Assets));
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Checks if asset with the same FILEPATH is already in the group.
-        /// </summary>
-        /// <returns><see langword="true"/> if asset is in the group. Otherwise <see langword="false"/>.</returns>
-        public bool HasAsset(string filePath)
-        {
-            if (filePath is null)
-                throw new ArgumentNullException(nameof(filePath));
-
-            return Group.Assets.Any(a => a.Path == filePath);
-        }
-
-        /// <summary>
-        /// Renames asset group.
-        /// </summary>
-        /// <param name="name"></param>
-        public void Rename(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name) || Group.Name.Equals(name))
-                return;
-
-            string oldName = Name;
-            Group.Name = name;
-            _logger.Info($"[Group] '{oldName}' was renamed to '{name}'");
-            OnPropertyChanged(nameof(Name));
-        }
+        string oldName = Name;
+        Group.Name = name;
+        _logger.Info($"[Group] '{oldName}' was renamed to '{name}'");
+        OnPropertyChanged(nameof(Name));
     }
 }

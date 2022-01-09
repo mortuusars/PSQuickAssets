@@ -175,7 +175,7 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{StaticResource BackgroundDark}"
+            Background="{StaticResource BackgroundFarBrush}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"
@@ -216,7 +216,8 @@
                         Width="17"
                         Margin="5,0,0,0"
                         Command="{Binding ToggleTerminalCommand}"
-                        Source="{StaticResource CornerResizeIcon}" />
+                        Source="{StaticResource CornerResizeIcon}"
+                        ToolTip="{lex:Loc Terminal}" />
 
                 </StackPanel>
 
@@ -346,7 +347,7 @@
                         Command="{Binding AssetsViewModel.AddEmptyGroupCommand}"
                         Content="{lex:Loc Assets_AddGroup}"
                         Style="{StaticResource AddAssetsButton}" />
-                    
+
                     <Button
                         Margin="0,3"
                         HorizontalAlignment="Right"
@@ -384,13 +385,13 @@
                                 <Ellipse
                                     x:Name="toggleButtonShape"
                                     Effect="{StaticResource AssetShadow}"
-                                    Fill="{StaticResource BackgroundLighter}">
+                                    Fill="{StaticResource BackgroundCloserBrush}">
                                     <Ellipse.Triggers>
                                         <EventTrigger RoutedEvent="MouseEnter">
                                             <BeginStoryboard>
                                                 <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.05">
                                                     <ColorAnimationUsingKeyFrames>
-                                                        <LinearColorKeyFrame KeyTime="0:0:0.05" Value="#5a5a5a" />
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.05" Value="{StaticResource BackgroundCloserHighlightColor}" />
                                                     </ColorAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </BeginStoryboard>
@@ -399,7 +400,7 @@
                                             <BeginStoryboard>
                                                 <Storyboard Storyboard.TargetProperty="Fill.Color" Duration="0:0:0.4">
                                                     <ColorAnimationUsingKeyFrames>
-                                                        <EasingColorKeyFrame KeyTime="0:0:0.4" Value="{StaticResource BackgroundLighterColor}">
+                                                        <EasingColorKeyFrame KeyTime="0:0:0.4" Value="{StaticResource BackgroundCloserColor}">
                                                             <EasingColorKeyFrame.EasingFunction>
                                                                 <SineEase EasingMode="EaseInOut" />
                                                             </EasingColorKeyFrame.EasingFunction>
@@ -411,7 +412,15 @@
                                     </Ellipse.Triggers>
                                 </Ellipse>
 
-                                <TextBlock
+                                <Viewbox Margin="12">
+                                    <Path
+                                        Data="M 15 0 L 15 30 M 0 15 L 30 15"
+                                        IsHitTestVisible="False"
+                                        Stroke="{StaticResource ForegroundLighterBrush}"
+                                        StrokeThickness="3.5" />
+                                </Viewbox>
+
+                                <!--<TextBlock
                                     Margin="1,-4,0,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -419,7 +428,7 @@
                                     FontSize="30"
                                     Foreground="{StaticResource ForegroundLighter}"
                                     IsHitTestVisible="False"
-                                    Text="+" />
+                                    Text="+" />-->
                             </Grid>
                         </ControlTemplate>
                     </ToggleButton.Template>

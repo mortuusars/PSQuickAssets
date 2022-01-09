@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:PSQuickAssets.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:local="clr-namespace:PSQuickAssets.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:PSQuickAssets.Models"
@@ -15,6 +16,9 @@
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="350"
     d:DesignWidth="400"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -90,15 +94,17 @@
                 </controls:ImageButton.RenderTransform>
                 <controls:ImageButton.Style>
                     <Style TargetType="controls:ImageButton">
+                        <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                <Setter Property="ToolTip" Value="{lex:Loc Collapse}"/>
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                                                 To="360"
-                                                Duration="0:0:0.12" />
+                                                Duration="0:0:0.12"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
@@ -112,6 +118,9 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.ExitActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                                <Setter Property="ToolTip" Value="{lex:Loc Expand}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -149,7 +158,7 @@
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
                     CommandParameter="{Binding}"
                     Source="{StaticResource CloseIcon}"
-                    ToolTip="Remove Group" />
+                    ToolTip="{lex:Loc RemoveGroup}" />
             </StackPanel>
 
 

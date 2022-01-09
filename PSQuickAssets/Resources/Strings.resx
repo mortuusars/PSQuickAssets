@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddAsLayer" xml:space="preserve">
+    <value>Add as layer</value>
+  </data>
   <data name="Assets_AddFiles" xml:space="preserve">
     <value>Add Files</value>
   </data>
@@ -135,8 +138,23 @@
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>
+  <data name="Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="CtrlClick" xml:space="preserve">
+    <value>Ctrl+Click</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="ExpandCollapse" xml:space="preserve">
+    <value>Expand/Collapse</value>
   </data>
   <data name="Group" xml:space="preserve">
     <value>Group</value>
@@ -154,8 +172,11 @@ Ctrl+Click: Exit</value>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="OpenAsNewDoc" xml:space="preserve">
+    <value>Open as new document</value>
+  </data>
   <data name="OpenFileLocation" xml:space="preserve">
-    <value>Open File Location</value>
+    <value>Open file location</value>
   </data>
   <data name="PSStatus_Busy" xml:space="preserve">
     <value>Photoshop is busy</value>
@@ -195,6 +216,9 @@ Ctrl+Click: Exit</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="RemoveGroup" xml:space="preserve">
+    <value>Remove Group</value>
   </data>
   <data name="SelectAssets" xml:space="preserve">
     <value>Select Assets</value>
@@ -254,6 +278,9 @@ Esc to cancel.</value>
   </data>
   <data name="Taskbar_ToggleTerminal" xml:space="preserve">
     <value>Toggle Terminal</value>
+  </data>
+  <data name="Terminal" xml:space="preserve">
+    <value>Terminal</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

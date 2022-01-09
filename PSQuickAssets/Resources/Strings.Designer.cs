@@ -70,6 +70,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add as layer.
+        /// </summary>
+        public static string AddAsLayer {
+            get {
+                return ResourceManager.GetString("AddAsLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_AddFiles {
@@ -115,11 +124,56 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click.
+        /// </summary>
+        public static string Click {
+            get {
+                return ResourceManager.GetString("Click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collapse.
+        /// </summary>
+        public static string Collapse {
+            get {
+                return ResourceManager.GetString("Collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ctrl+Click.
+        /// </summary>
+        public static string CtrlClick {
+            get {
+                return ResourceManager.GetString("CtrlClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand.
+        /// </summary>
+        public static string Expand {
+            get {
+                return ResourceManager.GetString("Expand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand/Collapse.
+        /// </summary>
+        public static string ExpandCollapse {
+            get {
+                return ResourceManager.GetString("ExpandCollapse", resourceCulture);
             }
         }
         
@@ -170,7 +224,16 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open File Location.
+        ///   Looks up a localized string similar to Open as new document.
+        /// </summary>
+        public static string OpenAsNewDoc {
+            get {
+                return ResourceManager.GetString("OpenAsNewDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open file location.
         /// </summary>
         public static string OpenFileLocation {
             get {
@@ -292,6 +355,15 @@ namespace PSQuickAssets.Resources {
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Group.
+        /// </summary>
+        public static string RemoveGroup {
+            get {
+                return ResourceManager.GetString("RemoveGroup", resourceCulture);
             }
         }
         
@@ -465,6 +537,15 @@ namespace PSQuickAssets.Resources {
         public static string Taskbar_ToggleTerminal {
             get {
                 return ResourceManager.GetString("Taskbar_ToggleTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal.
+        /// </summary>
+        public static string Terminal {
+            get {
+                return ResourceManager.GetString("Terminal", resourceCulture);
             }
         }
         

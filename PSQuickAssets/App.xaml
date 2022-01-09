@@ -13,12 +13,15 @@
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Texts.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Tooltip.xaml" />
+                <ResourceDictionary Source="Resources/Styles/ContextMenu.xaml" />
 
                 <ResourceDictionary Source="Resources/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Services.xaml" />
 
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+
 
             <DropShadowEffect
                 x:Key="WindowDropShadow"
