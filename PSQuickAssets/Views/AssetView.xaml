@@ -78,9 +78,11 @@
 
                 <Separator />
                 <MenuItem
+                    x:Name="OpenInExplorerMenuItem"
                     Command="{x:Static commands:OpenInExplorerCommand.Instance}"
-                    CommandParameter="{Binding Path}"
-                    Header="{lex:Loc PSQuickAssets:Strings:OpenFileLocation}">
+                    CommandParameter="{Binding}"
+                    Header="{lex:Loc PSQuickAssets:Strings:OpenFileLocation}"
+                    InputGestureText="Ctrl+E">
                     <MenuItem.Icon>
                         <Path
                             Width="20"
@@ -92,6 +94,7 @@
                 </MenuItem>
                 <Separator />
                 <MenuItem
+                    x:Name="RemoveAssetMenuItem"
                     Command="{Binding Path=Tag.RemoveAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                     CommandParameter="{Binding}"
                     Header="{lex:Loc PSQuickAssets:Strings:Remove}">

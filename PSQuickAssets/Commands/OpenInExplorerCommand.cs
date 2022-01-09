@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSQuickAssets.Assets;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
 
@@ -26,8 +27,8 @@ public class OpenInExplorerCommand : ICommand
         if (parameter is null)
             throw new ArgumentNullException(nameof(parameter));
 
-        string filePath = (string)parameter;
-        string args = $"/e, /select, \"{filePath}\"";
+        var asset = (Asset)parameter;
+        string args = $"/e, /select, \"{asset.Path}\"";
 
         ProcessStartInfo info = new("explorer", args);
         Process.Start(info);

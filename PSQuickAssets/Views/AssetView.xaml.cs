@@ -1,15 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace PSQuickAssets.Views
+namespace PSQuickAssets.Views;
+
+public partial class AssetView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AssetView.xaml
-    /// </summary>
-    public partial class AssetView : UserControl
+    public AssetView()
     {
-        public AssetView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

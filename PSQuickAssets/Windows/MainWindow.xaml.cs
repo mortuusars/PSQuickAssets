@@ -1,5 +1,6 @@
 ﻿using AsyncAwaitBestPractices;
 using PSQuickAssets.Controls;
+using PSQuickAssets.Views;
 using PSQuickAssets.Windows.State;
 using PSQuickAssets.WPF;
 using System;
@@ -185,6 +186,29 @@ namespace PSQuickAssets.Windows
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
                 CloseButton.ActivateAlternativeStyle = true;
+            else if (e.Key == Key.E && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                //TODO: Refactor
+                var pos = Mouse.GetPosition(this);
+                var hitTest = VisualTreeHelper.HitTest(this, pos);
+
+                DependencyObject? element = ((FrameworkElement)hitTest.VisualHit).Parent;
+
+                do
+                {
+                    if (element is AssetView)
+                        break;
+                    else
+                        element = VisualTreeHelper.GetParent(element);
+                }
+                while (element is not MainWindow);
+
+                if (element is AssetView assetView)
+                {
+                    var menuItem = assetView.OpenInExplorerMenuItem;
+                    menuItem.Command.Execute(assetView.DataContext);
+                }
+            }
         }
 
         private void window_KeyUp(object sender, KeyEventArgs e)
