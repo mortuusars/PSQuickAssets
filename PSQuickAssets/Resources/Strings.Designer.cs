@@ -440,6 +440,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debug Mode.
+        /// </summary>
+        public static string Settings_DebugMode {
+            get {
+                return ResourceManager.GetString("Settings_DebugMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide window if clicked outside.
         /// </summary>
         public static string Settings_HideIfClickedOutside {
@@ -532,11 +541,29 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Terminal.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
-        public static string Taskbar_ToggleTerminal {
+        public static string Taskbar_Settings {
             get {
-                return ResourceManager.GetString("Taskbar_ToggleTerminal", resourceCulture);
+                return ResourceManager.GetString("Taskbar_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show main window.
+        /// </summary>
+        public static string Taskbar_ShowMainWindow {
+            get {
+                return ResourceManager.GetString("Taskbar_ShowMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Terminal.
+        /// </summary>
+        public static string Taskbar_ShowTerminal {
+            get {
+                return ResourceManager.GetString("Taskbar_ShowTerminal", resourceCulture);
             }
         }
         

@@ -46,37 +46,41 @@
                 FontSize="13"
                 Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
 
+                <!--  Add as layer  -->
                 <MenuItem
                     Command="{Binding Path=Tag.PhotoshopCommands.AddImageAsLayerCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                     CommandParameter="{Binding}"
-                    Header="{lex:Loc AddAsLayer}"
-                    InputGestureText="{lex:Loc Click}">
+                    Header="{lex:Loc PSQuickAssets:Strings:AddAsLayer}"
+                    InputGestureText="{lex:Loc PSQuickAssets:Strings:Click}">
                     <MenuItem.Icon>
                         <Viewbox Width="17">
                             <Path
-                                Data="{StaticResource PlusIconGeometry}"
-                                Stroke="{DynamicResource ForegroundMainBrush}"
-                                StrokeThickness="2.5" />
+                                Data="{StaticResource AddAsLayerIconGeometry}"
+                                Fill="{StaticResource ForegroundMainBrush}"
+                                Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
                 </MenuItem>
 
+                <!--  Open as new document  -->
                 <MenuItem
                     Command="{Binding Path=Tag.PhotoshopCommands.OpenImageCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                     CommandParameter="{Binding}"
-                    Header="{lex:Loc OpenAsNewDoc}"
-                    InputGestureText="{lex:Loc CtrlClick}">
+                    Header="{lex:Loc PSQuickAssets:Strings:OpenAsNewDoc}"
+                    InputGestureText="{lex:Loc PSQuickAssets:Strings:CtrlClick}">
                     <MenuItem.Icon>
                         <Viewbox Width="17">
                             <Path
-                                Data="{StaticResource PlusIconGeometry}"
-                                Stroke="{DynamicResource ForegroundMainBrush}"
-                                StrokeThickness="2.5" />
+                                Data="{StaticResource OpenIconGeometry}"
+                                Fill="{StaticResource ForegroundMainBrush}"
+                                Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
                 </MenuItem>
 
                 <Separator />
+
+                <!--  Show in explorer  -->
                 <MenuItem
                     x:Name="OpenInExplorerMenuItem"
                     Command="{x:Static commands:OpenInExplorerCommand.Instance}"
@@ -84,22 +88,30 @@
                     Header="{lex:Loc PSQuickAssets:Strings:OpenFileLocation}"
                     InputGestureText="Ctrl+E">
                     <MenuItem.Icon>
-                        <Path
-                            Width="20"
-                            Height="20"
-                            Data="{StaticResource FolderIcon}"
-                            Fill="#6d90a1"
-                            Stretch="Uniform" />
+                        <Viewbox Width="17">
+                            <Path
+                                Data="{StaticResource FolderIcon}"
+                                Fill="#6d90a1"
+                                Stretch="Uniform" />
+                        </Viewbox>
                     </MenuItem.Icon>
                 </MenuItem>
+
                 <Separator />
+
+                <!--  Remove  -->
                 <MenuItem
                     x:Name="RemoveAssetMenuItem"
                     Command="{Binding Path=Tag.RemoveAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                     CommandParameter="{Binding}"
                     Header="{lex:Loc PSQuickAssets:Strings:Remove}">
                     <MenuItem.Icon>
-                        <Image Width="20" Source="{StaticResource RecycleBinIcon}" />
+                        <Viewbox Width="14">
+                            <Path
+                                Data="{StaticResource RecycleBinIconGeometry}"
+                                Fill="#c56060"
+                                Stretch="Uniform" />
+                        </Viewbox>
                     </MenuItem.Icon>
                 </MenuItem>
             </ContextMenu>
@@ -128,7 +140,7 @@
         <!--  THUMBNAIL  -->
         <Border
             x:Name="ThumbContainer"
-            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ThumbnailSize}"
+            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Config.ThumbnailSize}"
             MinWidth="60"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"

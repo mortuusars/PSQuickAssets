@@ -1,0 +1,22 @@
+﻿<UserControl
+    x:Class="PSQuickAssets.Controls.PathIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PSQuickAssets.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="root"
+    d:DesignHeight="30"
+    d:DesignWidth="30"
+    mc:Ignorable="d">
+
+    <Viewbox>
+        <Grid x:Name="box" Background="Transparent">
+            <Path
+                x:Name="path"
+                Data="{Binding Data, ElementName=root}"
+                Fill="{Binding Fill, ElementName=root}"
+                Stretch="Uniform" />
+        </Grid>
+    </Viewbox>
+</UserControl>

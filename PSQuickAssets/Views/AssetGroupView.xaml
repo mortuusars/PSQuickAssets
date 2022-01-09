@@ -94,17 +94,17 @@
                 </controls:ImageButton.RenderTransform>
                 <controls:ImageButton.Style>
                     <Style TargetType="controls:ImageButton">
-                        <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}"/>
+                        <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsExpanded}" Value="True">
-                                <Setter Property="ToolTip" Value="{lex:Loc Collapse}"/>
+                                <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                                                 To="360"
-                                                Duration="0:0:0.12"/>
+                                                Duration="0:0:0.12" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
@@ -120,7 +120,7 @@
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsExpanded}" Value="False">
-                                <Setter Property="ToolTip" Value="{lex:Loc Expand}"/>
+                                <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

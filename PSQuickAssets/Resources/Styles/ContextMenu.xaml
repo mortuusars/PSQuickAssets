@@ -76,9 +76,8 @@
                     PopupAnimation="Fade">
                     <Border
                         Name="SubmenuBorder"
-                        Background="{StaticResource ContextMenuBackground}"
-                        BorderBrush="{StaticResource ContextMenuBorder}"
-                        BorderThickness="1"
+                        Background="{StaticResource BackgroundCloserBrush}"
+                        BorderThickness="0"
                         SnapsToDevicePixels="True">
                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
                     </Border>
@@ -98,7 +97,7 @@
                 <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,0,0,3" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{StaticResource ContextMenuBorder}" />
+                <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

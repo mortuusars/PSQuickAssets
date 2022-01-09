@@ -17,6 +17,8 @@ internal interface IConfig : INotifyPropertyChanged
     bool AlwaysOnTop { get; set; }
     bool HideWindowIfClickedOutside { get; set; }
     bool AddMaskIfDocumentHasSelection { get; set; }
+    
+    bool DebugMode { get; set; }
     bool CheckUpdates { get; set; }
 
     void Save();
@@ -29,6 +31,7 @@ internal class Config : ConfigBase, IConfig
     public bool AlwaysOnTop { get => _alwaysOnTop.Value; set => _alwaysOnTop.SetValue(value); }
     public bool HideWindowIfClickedOutside { get => _hideWindowIfClickedOutside.Value; set => _hideWindowIfClickedOutside.SetValue(value); }
     public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
+    public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
     public bool CheckUpdates { get => _checkUpdates.Value; set => _checkUpdates.SetValue(value); }
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
@@ -36,6 +39,7 @@ internal class Config : ConfigBase, IConfig
     private readonly ConfigProperty<bool> _alwaysOnTop;
     private readonly ConfigProperty<bool> _hideWindowIfClickedOutside;
     private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
+    private readonly ConfigProperty<bool> _debugMode;
     private readonly ConfigProperty<bool> _checkUpdates;
 
     private ILogger? _logger;
@@ -48,6 +52,7 @@ internal class Config : ConfigBase, IConfig
         _alwaysOnTop = RegisterProperty(nameof(AlwaysOnTop), true);
         _hideWindowIfClickedOutside = RegisterProperty(nameof(HideWindowIfClickedOutside), true);
         _addMaskIfDocumentHasSelection = RegisterProperty(nameof(AddMaskIfDocumentHasSelection), true);
+        _debugMode = RegisterProperty(nameof(DebugMode), false);
         _checkUpdates = RegisterProperty(nameof(CheckUpdates), true);
 
         Serializer = new JsonConfigSerializer(msg => _logger?.Error($"[Config] {msg}"))

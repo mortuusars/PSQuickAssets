@@ -244,6 +244,9 @@ Ctrl+Click: Exit</value>
   <data name="Settings_CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
+  <data name="Settings_DebugMode" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
   <data name="Settings_HideIfClickedOutside" xml:space="preserve">
     <value>Hide window if clicked outside</value>
   </data>
@@ -276,8 +279,14 @@ Esc to cancel.</value>
   <data name="Taskbar_Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="Taskbar_ToggleTerminal" xml:space="preserve">
-    <value>Toggle Terminal</value>
+  <data name="Taskbar_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Taskbar_ShowMainWindow" xml:space="preserve">
+    <value>Show main window</value>
+  </data>
+  <data name="Taskbar_ShowTerminal" xml:space="preserve">
+    <value>Show Terminal</value>
   </data>
   <data name="Terminal" xml:space="preserve">
     <value>Terminal</value>

@@ -34,7 +34,7 @@
     PreviewKeyUp="window_KeyUp"
     PreviewMouseLeftButtonDown="window_PreviewMouseLeftButtonDown"
     TextOptions.TextFormattingMode="Ideal"
-    Topmost="{Binding AlwaysOnTop}"
+    Topmost="{Binding Config.AlwaysOnTop}"
     UseLayoutRounding="True"
     WindowStartupLocation="Manual"
     WindowStyle="None"
@@ -205,20 +205,25 @@
                     Orientation="Horizontal">
 
                     <!--  SETTINGS  -->
-                    <controls:ImageButton
+                    <controls:PathIcon
                         Width="17"
-                        Margin="5,0,0,0"
+                        Margin="6,-1,0,0"
                         Command="{Binding SettingsCommand}"
-                        Source="{StaticResource SettingsIcon}"
+                        Data="{StaticResource SettingsIconGeometry}"
+                        Fill="{StaticResource ForegroundLighterBrush}"
+                        FillMouseOver="{StaticResource ForegroundMainBrush}"
                         ToolTip="{lex:Loc Settings}" />
 
-                    <controls:ImageButton
-                        Width="17"
-                        Margin="5,0,0,0"
+                    <!--  Terminal  -->
+                    <controls:PathIcon
+                        Width="18"
+                        Margin="8,0,0,0"
                         Command="{Binding ToggleTerminalCommand}"
-                        Source="{StaticResource CornerResizeIcon}"
-                        ToolTip="{lex:Loc Terminal}" />
-
+                        Data="{StaticResource TerminalIconGeomerty}"
+                        Fill="{StaticResource ForegroundLighterBrush}"
+                        FillMouseOver="{StaticResource ForegroundMainBrush}"
+                        ToolTip="{lex:Loc Terminal}"
+                        Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}" />
                 </StackPanel>
 
                 <StackPanel
@@ -414,21 +419,11 @@
 
                                 <Viewbox Margin="12">
                                     <Path
-                                        Data="M 15 0 L 15 30 M 0 15 L 30 15"
+                                        Data="{StaticResource PlusIconGeometry}"
                                         IsHitTestVisible="False"
                                         Stroke="{StaticResource ForegroundLighterBrush}"
                                         StrokeThickness="3.5" />
                                 </Viewbox>
-
-                                <!--<TextBlock
-                                    Margin="1,-4,0,0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontFamily="{StaticResource FontRegular}"
-                                    FontSize="30"
-                                    Foreground="{StaticResource ForegroundLighter}"
-                                    IsHitTestVisible="False"
-                                    Text="+" />-->
                             </Grid>
                         </ControlTemplate>
                     </ToggleButton.Template>

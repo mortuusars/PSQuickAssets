@@ -22,6 +22,7 @@ public partial class App : Application
     public Version Version { get; }
     public string Build { get; }
 
+    public static bool IsDebugMode;
     public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
     public IServiceProvider ServiceProvider { get; private set; }
@@ -40,6 +41,8 @@ public partial class App : Application
 
         Config = ServiceProvider.GetRequiredService<IConfig>();
         Logger = ServiceProvider.GetRequiredService<ILogger>();
+
+        //IsDebugMode = Config.
     }
 
     protected override void OnStartup(StartupEventArgs e)

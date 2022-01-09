@@ -28,7 +28,9 @@
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
+    TextOptions.TextFormattingMode="Ideal"
     Topmost="True"
+    UseLayoutRounding="True"
     WindowStartupLocation="CenterOwner"
     WindowStyle="None"
     mc:Ignorable="d">
@@ -58,7 +60,7 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{StaticResource BackgroundDark}"
+            Background="{StaticResource BackgroundFarBrush}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"
@@ -78,11 +80,11 @@
             <Grid>
                 <!--  TITLE  -->
                 <StackPanel Orientation="Horizontal">
-                    <Image
-                        Height="16"
-                        Margin="6,0,0,0"
-                        Opacity=".4"
-                        Source="../Resources/Images/settings.png" />
+                    <controls:PathIcon
+                        Width="17"
+                        Margin="5,0,0,1"
+                        Data="{StaticResource SettingsIconGeometry}"
+                        Fill="{StaticResource ForegroundLighterBrush}" />
                     <TextBlock
                         Margin="6,-1,0,0"
                         HorizontalAlignment="Left"
@@ -218,6 +220,23 @@
 
                     <TextBlock
                         Style="{StaticResource TextLight}"
+                        Text="{lex:Loc Settings_DebugMode}"
+                        TextWrapping="Wrap" />
+                    <controls:ToggleSwitch
+                        x:Name="DebugModeToggle"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        IsOn="{Binding Config.DebugMode, Mode=TwoWay}" />
+                </Grid>
+
+                <Grid Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Style="{StaticResource TextLight}"
                         Text="{lex:Loc Settings_CheckForUpdates}"
                         TextWrapping="Wrap" />
                     <controls:ToggleSwitch
@@ -228,7 +247,7 @@
                 </Grid>
             </StackPanel>
 
-
+            <!--  OK  -->
             <Button
                 x:Name="okButton"
                 Grid.Row="1"
