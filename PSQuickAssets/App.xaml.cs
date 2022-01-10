@@ -22,7 +22,6 @@ public partial class App : Application
     public Version Version { get; }
     public string Build { get; }
 
-    public static bool IsDebugMode;
     public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
     public IServiceProvider ServiceProvider { get; private set; }
@@ -40,9 +39,15 @@ public partial class App : Application
         ServiceProvider = DIKernel.ServiceProvider;
 
         Config = ServiceProvider.GetRequiredService<IConfig>();
+        Config.PropertyChanged += (s, e) =>
+        {
+            if (nameof(Config.DebugMode).Equals(e.PropertyName))
+            {
+                if (Logger is not null)
+                Logger.Level = Config.DebugMode ? LogLevel.Debug : LogLevel.Info;
+            }
+        };
         Logger = ServiceProvider.GetRequiredService<ILogger>();
-
-        //IsDebugMode = Config.
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -59,7 +64,6 @@ public partial class App : Application
         Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
         Terminal.Commands.Add(new TerminalCommand("updatewindow", "Show update window", (_) => windowManager.ShowUpdateWindow(Version, new Version("99.99.99"), "Nothing changed.")));
         Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
-
 
         SetupGlobalHotkeys(windowManager);
 

@@ -247,6 +247,10 @@ Ctrl+Click: Exit</value>
   <data name="Settings_DebugMode" xml:space="preserve">
     <value>Debug Mode</value>
   </data>
+  <data name="Settings_DebugMode_Tooltip" xml:space="preserve">
+    <value>Debug mode allows to open Terminal window
+and causes logger to log more information</value>
+  </data>
   <data name="Settings_HideIfClickedOutside" xml:space="preserve">
     <value>Hide window if clicked outside</value>
   </data>

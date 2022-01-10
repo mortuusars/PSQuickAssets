@@ -7,7 +7,6 @@
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource FontRegular}" />
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="Placement" Value="Right" />
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Template">
             <Setter.Value>

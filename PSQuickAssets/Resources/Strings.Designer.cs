@@ -449,6 +449,16 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debug mode allows to open Terminal window
+        ///and causes logger to log more information.
+        /// </summary>
+        public static string Settings_DebugMode_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_DebugMode_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide window if clicked outside.
         /// </summary>
         public static string Settings_HideIfClickedOutside {

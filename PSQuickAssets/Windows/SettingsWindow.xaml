@@ -212,7 +212,7 @@
                     Fill="{StaticResource TextColorBrush}"
                     Opacity="0.5" />
 
-                <Grid Margin="0,4">
+                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_DebugMode_Tooltip}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
