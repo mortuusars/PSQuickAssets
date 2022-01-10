@@ -75,7 +75,10 @@ public partial class PathIcon : UserControl
     private void Box_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (Command is not null)
+        {
+            e.Handled = true;
             Command.Execute(CommandParameter);
+        }
     }
 
     private void Box_MouseEnter(object sender, MouseEventArgs e)

@@ -81,7 +81,53 @@
             </Grid.ColumnDefinitions>
 
             <!--  EXPAND  -->
-            <controls:ImageButton
+            <controls:PathIcon
+                Width="16"
+                Height="16"
+                Margin="0,0,4,0"
+                Command="{Binding ToggleExpandedCommand}"
+                Data="{StaticResource CollapseExpandIconGeometry}"
+                Fill="{DynamicResource ForegroundLighterBrush}"
+                FillMouseOver="{DynamicResource ForegroundMainBrush}"
+                RenderTransformOrigin="0.5, 0.5">
+                <controls:PathIcon.RenderTransform>
+                    <RotateTransform Angle="270" />
+                </controls:PathIcon.RenderTransform>
+                <controls:PathIcon.Style>
+                    <Style TargetType="{x:Type controls:PathIcon}">
+                        <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                To="360"
+                                                Duration="0:0:0.12" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                To="270"
+                                                Duration="0:0:0.12" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                                <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:PathIcon.Style>
+            </controls:PathIcon>
+            <!--<controls:ImageButton
                 x:Name="expandButton"
                 Grid.Column="0"
                 Width="16"
@@ -126,7 +172,7 @@
                     </Style>
                 </controls:ImageButton.Style>
 
-            </controls:ImageButton>
+            </controls:ImageButton>-->
 
             <!--  NAME  -->
             <controls:EditableTextBlock
@@ -153,11 +199,12 @@
                 </StackPanel.Style>
 
                 <!--  REMOVE GROUP  -->
-                <controls:ImageButton
-                    Width="16"
+                <controls:PathIcon
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
                     CommandParameter="{Binding}"
-                    Source="{StaticResource CloseIcon}"
+                    Data="{StaticResource CloseIconGeometry}"
+                    Fill="{DynamicResource ForegroundLighterBrush}"
+                    FillMouseOver="{DynamicResource ForegroundMainBrush}"
                     ToolTip="{lex:Loc RemoveGroup}" />
             </StackPanel>
 

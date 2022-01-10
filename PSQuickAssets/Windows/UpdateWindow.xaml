@@ -9,7 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mdxaml="clr-namespace:MdXaml;assembly=MdXaml"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
-    Title="UpdateWindow"
+    x:Name="updateWindow"
+    Title="{lex:Loc UpdateWindow_Title}"
     Width="650"
     Height="800"
     lex:LocalizeDictionary.DesignCulture="en"
@@ -19,6 +20,7 @@
     Background="{x:Null}"
     ShowActivated="False"
     SnapsToDevicePixels="True"
+    TextOptions.TextFormattingMode="Ideal"
     Topmost="True"
     UseLayoutRounding="True"
     WindowStartupLocation="CenterScreen"
@@ -108,7 +110,7 @@
             Grid.RowSpan="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="{StaticResource BackgroundDark}"
+            Background="{StaticResource BackgroundFarBrush}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
             CornerRadius="8"
@@ -116,52 +118,42 @@
 
         <!--  HEADER  -->
         <Border
-            x:Name="HeaderContainer"
+            x:Name="headerBG"
             Grid.Row="0"
             Margin="2,2,2,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
-            Background="#343434"
+            Background="{DynamicResource MainBorder}"
             CornerRadius="6 6 0 0"
             MouseDown="Header_MouseDown">
 
-            <Grid>
+            <Grid x:Name="headerContainer" Margin="5,4">
                 <!--  TITLE  -->
                 <StackPanel Orientation="Horizontal">
-                    <Image
-                        Height="16"
-                        Margin="6,0,0,0"
-                        Opacity=".4"
-                        Source="../Resources/Images/refresh_32.png" />
+                    <controls:PathIcon
+                        Width="16"
+                        Margin="0,-1,0,0"
+                        Data="{StaticResource UpdateIconGeometry}"
+                        Fill="{DynamicResource ForegroundLighterBrush}" />
                     <TextBlock
                         Margin="6,-1,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         d:Text="PSQuickAssets Update"
                         Style="{StaticResource TextLight}"
-                        Text="{Binding WindowTitle}" />
+                        Text="{Binding Title, ElementName=updateWindow}" />
                 </StackPanel>
 
                 <!--  HEADER BUTTONS  -->
-                <StackPanel
-                    Margin="2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <!--  CLOSE BTN  -->
-                    <Image
-                        Width="18"
-                        Height="18"
-                        Margin="2"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        MouseDown="CloseButton_MouseDown"
-                        Source="/Resources/Images/close_24.png"
-                        Style="{StaticResource ImageButtons}">
-                        <Image.ToolTip>
-                            <TextBlock Text="Close" />
-                        </Image.ToolTip>
-                    </Image>
+                    <controls:PathIcon
+                        Width="15"
+                        Height="15"
+                        Data="{StaticResource CloseIconGeometry}"
+                        Fill="{DynamicResource ForegroundLighterBrush}"
+                        FillMouseOver="{DynamicResource ForegroundMainBrush}"
+                        MouseLeftButtonDown="CloseButton_MouseDown" />
                 </StackPanel>
             </Grid>
         </Border>

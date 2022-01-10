@@ -52,12 +52,14 @@ public partial class App : Application
         SetTooltipDelay(650);
         var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
-        Console.SetOut(Terminal.Out);
-        Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
-        Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
-
         var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
         windowManager.ShowMainWindow();
+
+        Console.SetOut(Terminal.Out);
+        Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
+        Terminal.Commands.Add(new TerminalCommand("updatewindow", "Show update window", (_) => windowManager.ShowUpdateWindow(Version, new Version("99.99.99"), "Nothing changed.")));
+        Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => Shutdown()));
+
 
         SetupGlobalHotkeys(windowManager);
 

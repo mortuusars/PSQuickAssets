@@ -26,6 +26,9 @@ namespace PSQuickAssets.Windows
 
         public static readonly DependencyProperty IsShownProperty =
             DependencyProperty.Register(nameof(IsShowing), typeof(bool), typeof(MainWindow), new PropertyMetadata(false, OnIsShowingChanged));
+        
+        public static readonly DependencyProperty IsCtrlHeldProperty =
+            DependencyProperty.Register(nameof(IsCtrlHeld), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 
         /// <summary>
         /// Indicates whether the window is currently showing.
@@ -34,6 +37,12 @@ namespace PSQuickAssets.Windows
         {
             get { return (bool)GetValue(IsShownProperty); }
             set { SetValue(IsShownProperty, value); }
+        }
+
+        public bool IsCtrlHeld
+        {
+            get { return (bool)GetValue(IsCtrlHeldProperty); }
+            set { SetValue(IsCtrlHeldProperty, value); }
         }
 
         public MainWindow()
@@ -185,7 +194,7 @@ namespace PSQuickAssets.Windows
         private void window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
-                CloseButton.ActivateAlternativeStyle = true;
+                IsCtrlHeld = true;
             else if (e.Key == Key.E && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 //TODO: Refactor
@@ -214,7 +223,7 @@ namespace PSQuickAssets.Windows
         private void window_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
-                CloseButton.ActivateAlternativeStyle = false;
+                IsCtrlHeld = false;
         }
 
         private void AddAssets_MouseDown(object sender, MouseButtonEventArgs e)

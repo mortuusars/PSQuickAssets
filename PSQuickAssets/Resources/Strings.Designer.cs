@@ -622,6 +622,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PSQuickAssets Update.
+        /// </summary>
+        public static string UpdateWindow_Title {
+            get {
+                return ResourceManager.GetString("UpdateWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PSQuickAssets.
         /// </summary>
         public static string Window_MainWindow {

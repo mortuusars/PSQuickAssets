@@ -9,14 +9,20 @@
     d:DesignHeight="30"
     d:DesignWidth="30"
     mc:Ignorable="d">
+    <Grid
+        x:Name="box"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Background="Transparent">
+        <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Viewbox>
-        <Grid x:Name="box" Background="Transparent">
             <Path
                 x:Name="path"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
                 Data="{Binding Data, ElementName=root}"
                 Fill="{Binding Fill, ElementName=root}"
                 Stretch="Uniform" />
-        </Grid>
-    </Viewbox>
+        </Viewbox>
+    </Grid>
 </UserControl>

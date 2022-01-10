@@ -197,7 +197,7 @@
             MouseDown="BG_MouseDown">
 
             <!--  HEADER BUTTONS  -->
-            <Grid>
+            <Grid Margin="5 4">
 
                 <StackPanel
                     HorizontalAlignment="Left"
@@ -207,7 +207,6 @@
                     <!--  SETTINGS  -->
                     <controls:PathIcon
                         Width="17"
-                        Margin="6,-1,0,0"
                         Command="{Binding SettingsCommand}"
                         Data="{StaticResource SettingsIconGeometry}"
                         Fill="{StaticResource ForegroundLighterBrush}"
@@ -216,8 +215,9 @@
 
                     <!--  Terminal  -->
                     <controls:PathIcon
-                        Width="18"
-                        Margin="8,0,0,0"
+                        Width="19"
+                        Height="19"
+                        Margin="8,-1,0,0"
                         Command="{Binding ToggleTerminalCommand}"
                         Data="{StaticResource TerminalIconGeomerty}"
                         Fill="{StaticResource ForegroundLighterBrush}"
@@ -227,13 +227,34 @@
                 </StackPanel>
 
                 <StackPanel
-                    Margin="3"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
 
+                    <controls:PathIcon
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Stretch"
+                        Fill="{DynamicResource ForegroundLighterBrush}"
+                        FillMouseOver="{DynamicResource ForegroundMainBrush}"
+                        ToolTip="{lex:Loc Main_Close_Tooltip}">
+                        <controls:PathIcon.Style>
+                            <Style TargetType="{x:Type controls:PathIcon}">
+                                <Setter Property="Data" Value="{StaticResource CollapseExpandIconGeometry}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCtrlHeld, ElementName=window}" Value="True">
+                                        <Setter Property="Data" Value="{StaticResource CloseIconGeometry}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:PathIcon.Style>
+                        <controls:PathIcon.InputBindings>
+                            <MouseBinding Command="{Binding HideCommand}" Gesture="LeftClick" />
+                            <MouseBinding Command="{Binding ShutdownCommand}" Gesture="Control+LeftClick" />
+                        </controls:PathIcon.InputBindings>
+                    </controls:PathIcon>
                     <!--  CLOSE BTN  -->
-                    <controls:ImageButton
+                    <!--<controls:ImageButton
                         x:Name="CloseButton"
                         Width="18"
                         Margin="1"
@@ -244,7 +265,7 @@
                             <MouseBinding Command="{Binding HideCommand}" Gesture="LeftClick" />
                             <MouseBinding Command="{Binding ShutdownCommand}" Gesture="Control+LeftClick" />
                         </controls:ImageButton.InputBindings>
-                    </controls:ImageButton>
+                    </controls:ImageButton>-->
                 </StackPanel>
             </Grid>
         </Border>
