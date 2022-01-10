@@ -56,7 +56,7 @@
                         <Viewbox Width="17">
                             <Path
                                 Data="{StaticResource AddAsLayerIconGeometry}"
-                                Fill="{StaticResource ForegroundMainBrush}"
+                                Fill="#39a3d4"
                                 Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
@@ -72,7 +72,7 @@
                         <Viewbox Width="17">
                             <Path
                                 Data="{StaticResource OpenIconGeometry}"
-                                Fill="{StaticResource ForegroundMainBrush}"
+                                Fill="#39a3d4"
                                 Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
@@ -80,18 +80,34 @@
 
                 <Separator />
 
+                <!--  Open with shell  -->
+                <MenuItem
+                    x:Name="OpenWithShellMenuItem"
+                    Command="{x:Static commands:OpenAssetWithShellCommand.Instance}"
+                    CommandParameter="{Binding}"
+                    Header="{lex:Loc PSQuickAssets:Strings:Asset_OpenWithShell}">
+                    <MenuItem.Icon>
+                        <Viewbox Width="17">
+                            <Path
+                                Data="{StaticResource ViewIconGeometry}"
+                                Fill="{StaticResource ForegroundMainBrush}"
+                                Stretch="Uniform" />
+                        </Viewbox>
+                    </MenuItem.Icon>
+                </MenuItem>
+
                 <!--  Show in explorer  -->
                 <MenuItem
                     x:Name="OpenInExplorerMenuItem"
-                    Command="{x:Static commands:OpenInExplorerCommand.Instance}"
+                    Command="{x:Static commands:ShowAssetInExplorerCommand.Instance}"
                     CommandParameter="{Binding}"
-                    Header="{lex:Loc PSQuickAssets:Strings:OpenFileLocation}"
+                    Header="{lex:Loc PSQuickAssets:Strings:Asset_ShowFileLocation}"
                     InputGestureText="Ctrl+E">
                     <MenuItem.Icon>
                         <Viewbox Width="17">
                             <Path
                                 Data="{StaticResource FolderIcon}"
-                                Fill="#6d90a1"
+                                Fill="{StaticResource ForegroundMainBrush}"
                                 Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>

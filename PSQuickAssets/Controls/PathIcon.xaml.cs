@@ -50,8 +50,8 @@ public partial class PathIcon : UserControl
 
     public object CommandParameter
     {
-        get { return GetValue(CommandProperty); }
-        set { SetValue(CommandProperty, value); }
+        get { return GetValue(CommandParameterProperty); }
+        set { SetValue(CommandParameterProperty, value); }
     }
 
     private SolidColorBrush _brush;

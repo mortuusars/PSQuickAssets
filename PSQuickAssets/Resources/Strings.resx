@@ -138,6 +138,12 @@
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>
+  <data name="Asset_OpenWithShell" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Asset_ShowFileLocation" xml:space="preserve">
+    <value>Show file location</value>
+  </data>
   <data name="Click" xml:space="preserve">
     <value>Click</value>
   </data>
@@ -174,9 +180,6 @@ Ctrl+Click: Exit</value>
   </data>
   <data name="OpenAsNewDoc" xml:space="preserve">
     <value>Open as new document</value>
-  </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>Open file location</value>
   </data>
   <data name="PSStatus_Busy" xml:space="preserve">
     <value>Photoshop is busy</value>

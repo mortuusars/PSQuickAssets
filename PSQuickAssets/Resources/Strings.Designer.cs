@@ -79,6 +79,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Asset_OpenWithShell {
+            get {
+                return ResourceManager.GetString("Asset_OpenWithShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show file location.
+        /// </summary>
+        public static string Asset_ShowFileLocation {
+            get {
+                return ResourceManager.GetString("Asset_ShowFileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_AddFiles {
@@ -229,15 +247,6 @@ namespace PSQuickAssets.Resources {
         public static string OpenAsNewDoc {
             get {
                 return ResourceManager.GetString("OpenAsNewDoc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open file location.
-        /// </summary>
-        public static string OpenFileLocation {
-            get {
-                return ResourceManager.GetString("OpenFileLocation", resourceCulture);
             }
         }
         

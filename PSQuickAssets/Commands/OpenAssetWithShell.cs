@@ -1,24 +1,29 @@
 ﻿using PSQuickAssets.Assets;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace PSQuickAssets.Commands;
-public class OpenInExplorerCommand : ICommand
+
+public class OpenAssetWithShellCommand : ICommand
 {
 #pragma warning disable CS0067
     public event EventHandler? CanExecuteChanged;
 #pragma warning restore CS0067
-    public static OpenInExplorerCommand Instance
+    public static OpenAssetWithShellCommand Instance
     {
         get
         {
             if (_instance is null)
-                _instance = new OpenInExplorerCommand();
+                _instance = new OpenAssetWithShellCommand();
             return _instance;
         }
     }
-    private static OpenInExplorerCommand? _instance;
+    private static OpenAssetWithShellCommand? _instance;
 
     public bool CanExecute(object? parameter) => true;
 
@@ -28,9 +33,8 @@ public class OpenInExplorerCommand : ICommand
             throw new ArgumentNullException(nameof(parameter));
 
         var asset = (Asset)parameter;
-        string args = $"/e, /select, \"{asset.Path}\"";
 
-        ProcessStartInfo info = new("explorer", args);
+        ProcessStartInfo info = new(asset.Path) { UseShellExecute = true };
         Process.Start(info);
     }
 }
