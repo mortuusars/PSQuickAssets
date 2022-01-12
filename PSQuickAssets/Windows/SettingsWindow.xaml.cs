@@ -24,6 +24,7 @@ namespace PSQuickAssets.Windows
         private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //TODO: Capture Mouse in a HotkeyPicker
+            // Can't x:Name controls that are part of a UserControl.
             //if (e.OriginalSource is FrameworkElement element && element != HotkeyPicker)
                 //FocusManager.SetFocusedElement(this, this);
         }

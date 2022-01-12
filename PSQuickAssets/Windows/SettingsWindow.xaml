@@ -232,6 +232,7 @@
                                     </Style>
                                 </Border.Style>
                                 <mglobalhotkeys:HotkeyPicker
+                                    x:Name="hotkeyPicker"
                                     MinWidth="110"
                                     Margin="4"
                                     ClearFocusOnCancel="True"
@@ -284,7 +285,7 @@
 
                 </TabItem>
                 <TabItem Header="Assets">
-                    <StackPanel Margin="10">
+                    <StackPanel>
 
                         <Separator Width="200" />
 
