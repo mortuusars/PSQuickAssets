@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+    xmlns:custom="clr-namespace:ToggleSwitchControl;assembly=ToggleSwitchControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -10,10 +11,9 @@
     xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     Title="Settings"
+    Width="500"
     MinWidth="300"
     MinHeight="200"
-    MaxWidth="600"
-    MaxHeight="800"
     d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -23,15 +23,16 @@
     DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
     FontFamily="{StaticResource FontRegular}"
     FontSize="14"
+    Foreground="{StaticResource ForegroundMainBrush}"
     Loaded="Window_Loaded"
     PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
-    ResizeMode="NoResize"
+    ResizeMode="CanResize"
     ShowInTaskbar="False"
-    SizeToContent="WidthAndHeight"
+    SizeToContent="Height"
     TextOptions.TextFormattingMode="Ideal"
     Topmost="True"
     UseLayoutRounding="True"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="Manual"
     WindowStyle="None"
     mc:Ignorable="d">
 
@@ -44,6 +45,91 @@
             x:Key="{x:Type ToolTip}"
             BasedOn="{StaticResource DarkToolTip}"
             TargetType="ToolTip" />
+
+        <Style TargetType="custom:ToggleSwitch">
+            <Setter Property="Background" Value="{StaticResource BackgroundNearBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CheckedBackground" Value="{StaticResource ForegroundLighterBrush}" />
+            <Setter Property="CheckedForeground" Value="{StaticResource ForegroundIntenseBrush}" />
+            <Setter Property="AnimationDuration" Value="0:0:0.5" />
+        </Style>
+
+        <Style TargetType="{x:Type Separator}">
+            <Setter Property="Height" Value="3" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Background" Value="{StaticResource BackgroundCloserBrush}" />
+        </Style>
+
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0" />
+            <Style.Resources>
+                <Style TargetType="{x:Type TabPanel}">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundMainBrush}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid x:Name="Root">
+                            <Border
+                                x:Name="Border"
+                                Margin="4"
+                                CornerRadius="4">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{StaticResource BackgroundCloserColor}" />
+                                </Border.Background>
+
+                                <ContentPresenter
+                                    x:Name="ContentSite"
+                                    Grid.Row="0"
+                                    Margin="18,6"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    ContentSource="Header"
+                                    RecognizesAccessKey="True" />
+                            </Border>
+
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundNearColor}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BackgroundNearColor}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Panel.ZIndex" Value="100" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
     <Grid
@@ -89,7 +175,7 @@
                         Margin="6,-1,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource TextLight}"
+                        FontSize="18"
                         Text="{lex:Loc Settings}" />
                 </StackPanel>
 
@@ -119,152 +205,101 @@
             </Grid>
         </Border>
 
-        <Grid
-            x:Name="MidContainer"
-            Grid.Row="1"
-            Margin="10,4,10,10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
+        <!--  Settings  -->
 
-            <!--  SETTINGS  -->
-            <StackPanel Grid.Row="0">
-                <Grid
-                    Name="Hotkey"
-                    Margin="0,4"
-                    ToolTip="{lex:Loc Settings_ToggleWindowHotkey_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
+        <Grid x:Name="settingsLayoutRoot" Grid.Row="1">
 
-                    <TextBlock
-                        Margin="0,0,20,0"
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_ToggleWindowHotkey}"
-                        TextWrapping="Wrap" />
+            <TabControl Margin="8,12,8,8" Background="Transparent">
+                <TabItem Header="General">
 
-                    <mglobalhotkeys:HotkeyPicker
-                        x:Name="HotkeyPicker"
-                        Grid.Column="1"
-                        MinWidth="110"
-                        ClearFocusOnCancel="True"
-                        ClearFocusOnClear="True"
-                        Foreground="{StaticResource TextColorBrush}"
-                        Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}" />
-                </Grid>
+                    <StackPanel x:Name="generalSettingsPanel">
 
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AlwaysOnTop_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <Separator Width="200" />
 
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_AlwaysOnTop}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="AlwaysOnTopToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding Config.AlwaysOnTop, Mode=TwoWay}" />
-                </Grid>
+                        <controls:SettingItem Text="{lex:Loc Settings_ToggleMainWindowHotkey}">
+                            <Border
+                                Grid.Column="1"
+                                Background="{StaticResource BackgroundCloserBrush}"
+                                CornerRadius="5">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{StaticResource BackgroundCloserBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource BackgroundCloserHighlightBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <mglobalhotkeys:HotkeyPicker
+                                    MinWidth="110"
+                                    Margin="4"
+                                    ClearFocusOnCancel="True"
+                                    ClearFocusOnClear="True"
+                                    Foreground="{StaticResource ForegroundMainBrush}"
+                                    Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}"
+                                    ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
+                            </Border>
+                        </controls:SettingItem>
 
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_HideIfClickedOutside_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <Separator />
 
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_HideIfClickedOutside}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="HideWindowIfClickedOutsideToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding Config.HideWindowIfClickedOutside, Mode=TwoWay}" />
-                </Grid>
+                        <controls:SettingItem Info="{lex:Loc Settings_AlwaysOnTop_Tooltip}" Text="{lex:Loc Settings_AlwaysOnTop}">
+                            <custom:ToggleSwitch
+                                Width="48"
+                                Height="24"
+                                IsChecked="{Binding Config.AlwaysOnTop}" />
+                        </controls:SettingItem>
 
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <Separator />
 
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_AddMaskIfDocumentHasSelection}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="AddMaskToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding Config.AddMaskIfDocumentHasSelection, Mode=TwoWay}" />
-                </Grid>
+                        <controls:SettingItem Info="{lex:Loc Settings_HideIfClickedOutside_Tooltip}" Text="{lex:Loc Settings_HideIfClickedOutside}">
+                            <custom:ToggleSwitch
+                                Width="48"
+                                Height="24"
+                                IsChecked="{Binding Config.HideWindowIfClickedOutside}" />
+                        </controls:SettingItem>
 
-                <Rectangle
-                    Height="1.5"
-                    Margin="0,4"
-                    Fill="{StaticResource TextColorBrush}"
-                    Opacity="0.5" />
+                        <Separator />
 
-                <Grid Margin="0,4" ToolTip="{lex:Loc Settings_DebugMode_Tooltip}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <controls:SettingItem Info="{lex:Loc Settings_CheckForUpdates_Info}" Text="{lex:Loc Settings_CheckForUpdates}">
+                            <custom:ToggleSwitch
+                                Width="48"
+                                Height="24"
+                                IsChecked="{Binding Config.CheckUpdates}" />
+                        </controls:SettingItem>
 
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_DebugMode}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="DebugModeToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding Config.DebugMode, Mode=TwoWay}" />
-                </Grid>
+                        <Separator />
 
-                <Grid Margin="0,4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                        <controls:SettingItem
+                            Margin="0,16,0,0"
+                            Info="{lex:Loc Settings_DebugMode_Tooltip}"
+                            Text="{lex:Loc Settings_DebugMode}">
+                            <custom:ToggleSwitch
+                                Width="48"
+                                Height="24"
+                                IsChecked="{Binding Config.DebugMode}" />
+                        </controls:SettingItem>
+                    </StackPanel>
 
-                    <TextBlock
-                        Style="{StaticResource TextLight}"
-                        Text="{lex:Loc Settings_CheckForUpdates}"
-                        TextWrapping="Wrap" />
-                    <controls:ToggleSwitch
-                        x:Name="CheckUpdatesToggle"
-                        Grid.Column="1"
-                        HorizontalAlignment="Right"
-                        IsOn="{Binding Config.CheckUpdates, Mode=TwoWay}" />
-                </Grid>
-            </StackPanel>
+                </TabItem>
+                <TabItem Header="Assets">
+                    <StackPanel Margin="10">
 
-            <!--  OK  -->
-            <Button
-                x:Name="okButton"
-                Grid.Row="1"
-                MinWidth="70"
-                MaxWidth="180"
-                Margin="0,20,0,0"
-                HorizontalAlignment="Right"
-                Content="{lex:Loc OK}"
-                Foreground="{StaticResource TextColorBrush}"
-                ToolTip="{lex:Loc Settings_SaveAndClose}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction Command="{Binding SaveCommand}" />
-                        <i:InvokeCommandAction Command="ApplicationCommands.Close" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+                        <Separator Width="200" />
+
+                        <controls:SettingItem Info="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}" Text="{lex:Loc Settings_AddMaskIfDocumentHasSelection}">
+                            <custom:ToggleSwitch
+                                Width="48"
+                                Height="24"
+                                IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
+                        </controls:SettingItem>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+
         </Grid>
+
+
     </Grid>
 </Window>

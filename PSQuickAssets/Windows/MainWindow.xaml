@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:coll="clr-namespace:System.Collections.ObjectModel;assembly=System"
     xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+    xmlns:custom="clr-namespace:ToggleSwitchControl;assembly=ToggleSwitchControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -192,12 +193,12 @@
             dd:DragDrop.DragHandler="{Binding}"
             dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDropTarget="True"
-            Background="#343434"
+            Background="{StaticResource MainBorder}"
             CornerRadius="6 6 0 0"
             MouseDown="BG_MouseDown">
 
             <!--  HEADER BUTTONS  -->
-            <Grid Margin="5 4">
+            <Grid Margin="5,4">
 
                 <StackPanel
                     HorizontalAlignment="Left"
@@ -224,6 +225,21 @@
                         FillMouseOver="{StaticResource ForegroundMainBrush}"
                         ToolTip="{lex:Loc Terminal}"
                         Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}" />
+
+                    <!--<custom:ToggleSwitch
+                        Width="80"
+                        Height="30"
+                        Margin="10"
+                        BorderThickness="2"
+                        IsChecked="True" />
+
+                    <custom:ToggleSwitch
+                        Width="80"
+                        Height="30"
+                        Margin="10"
+                        BorderThickness="2"
+                        IsEnabled="False" />-->
+
                 </StackPanel>
 
                 <StackPanel

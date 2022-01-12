@@ -26,7 +26,8 @@
     <Color x:Key="ForegroundDisabled">#666</Color>
     <SolidColorBrush x:Key="ForegroundDisabledBrush" Color="{StaticResource ForegroundDisabled}" />
 
-
+    <Color x:Key="ForegroundIntense">#eee</Color>
+    <SolidColorBrush x:Key="ForegroundIntenseBrush" Color="{StaticResource ForegroundIntense}" />
 
     <Color x:Key="ForegroundLighterColor">#7a7a7a</Color>
     <SolidColorBrush x:Key="ForegroundLighterBrush" Color="{StaticResource ForegroundLighterColor}" />

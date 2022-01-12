@@ -431,7 +431,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keeps assets window above all other windows.
+        ///   Looks up a localized string similar to Keep window above all other windows.
         /// </summary>
         public static string Settings_AlwaysOnTop_Tooltip {
             get {
@@ -449,6 +449,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checks if Github has a new version of the app.
+        /// </summary>
+        public static string Settings_CheckForUpdates_Info {
+            get {
+                return ResourceManager.GetString("Settings_CheckForUpdates_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug Mode.
         /// </summary>
         public static string Settings_DebugMode {
@@ -458,7 +467,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug mode allows to open Terminal window
+        ///   Looks up a localized string similar to Allows to open Terminal window
         ///and causes logger to log more information.
         /// </summary>
         public static string Settings_DebugMode_Tooltip {
@@ -482,6 +491,17 @@ namespace PSQuickAssets.Resources {
         public static string Settings_HideIfClickedOutside_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_HideIfClickedOutside_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press a key combination to assign.
+        ///Delete or Backspace to clear.
+        ///Esc to cancel..
+        /// </summary>
+        public static string Settings_HotkeyPicker_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HotkeyPicker_Tooltip", resourceCulture);
             }
         }
         
@@ -524,20 +544,18 @@ namespace PSQuickAssets.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Window open/close hotkey.
         /// </summary>
-        public static string Settings_ToggleWindowHotkey {
+        public static string Settings_ToggleMainWindowHotkey {
             get {
-                return ResourceManager.GetString("Settings_ToggleWindowHotkey", resourceCulture);
+                return ResourceManager.GetString("Settings_ToggleMainWindowHotkey", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press a key combination to assign.
-        ///Delete or Backspace to clear.
-        ///Esc to cancel..
+        ///   Looks up a localized string similar to Works globally.
         /// </summary>
-        public static string Settings_ToggleWindowHotkey_Tooltip {
+        public static string Settings_ToggleMainWindowHotkey_Info {
             get {
-                return ResourceManager.GetString("Settings_ToggleWindowHotkey_Tooltip", resourceCulture);
+                return ResourceManager.GetString("Settings_ToggleMainWindowHotkey_Info", resourceCulture);
             }
         }
         

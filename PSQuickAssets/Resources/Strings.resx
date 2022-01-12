@@ -242,16 +242,19 @@ Ctrl+Click: Exit</value>
     <value>Always On Top</value>
   </data>
   <data name="Settings_AlwaysOnTop_Tooltip" xml:space="preserve">
-    <value>Keeps assets window above all other windows</value>
+    <value>Keep window above all other windows</value>
   </data>
   <data name="Settings_CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
+  </data>
+  <data name="Settings_CheckForUpdates_Info" xml:space="preserve">
+    <value>Checks if Github has a new version of the app</value>
   </data>
   <data name="Settings_DebugMode" xml:space="preserve">
     <value>Debug Mode</value>
   </data>
   <data name="Settings_DebugMode_Tooltip" xml:space="preserve">
-    <value>Debug mode allows to open Terminal window
+    <value>Allows to open Terminal window
 and causes logger to log more information</value>
   </data>
   <data name="Settings_HideIfClickedOutside" xml:space="preserve">
@@ -259,6 +262,11 @@ and causes logger to log more information</value>
   </data>
   <data name="Settings_HideIfClickedOutside_Tooltip" xml:space="preserve">
     <value>Main window will hide if deactivated</value>
+  </data>
+  <data name="Settings_HotkeyPicker_Tooltip" xml:space="preserve">
+    <value>Press a key combination to assign.
+Delete or Backspace to clear.
+Esc to cancel.</value>
   </data>
   <data name="Settings_SaveAndClose" xml:space="preserve">
     <value>Save settings and close this window</value>
@@ -272,16 +280,14 @@ and causes logger to log more information</value>
   <data name="Settings_ThumbnailSize" xml:space="preserve">
     <value>Thumbnail Size</value>
   </data>
-  <data name="Settings_ToggleWindowHotkey" xml:space="preserve">
+  <data name="Settings_ToggleMainWindowHotkey" xml:space="preserve">
     <value>Window open/close hotkey</value>
+  </data>
+  <data name="Settings_ToggleMainWindowHotkey_Info" xml:space="preserve">
+    <value>Works globally</value>
   </data>
   <data name="Settings_ToggleWindowHotkeyFailed" xml:space="preserve">
     <value>Failed to change "Window open/close hotkey":</value>
-  </data>
-  <data name="Settings_ToggleWindowHotkey_Tooltip" xml:space="preserve">
-    <value>Press a key combination to assign.
-Delete or Backspace to clear.
-Esc to cancel.</value>
   </data>
   <data name="Taskbar_Exit" xml:space="preserve">
     <value>Exit</value>
