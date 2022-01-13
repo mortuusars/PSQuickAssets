@@ -65,7 +65,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libraries\MTerminal.WPF\MTerminal.WPF\MTerminal.WPF.csproj" />
-		<ProjectReference Include="..\..\..\Libraries\WPF_Controls\ToggleSwitchControl\ToggleSwitchControl.csproj" />
 		<ProjectReference Include="..\LoadingSpinnerControl\LoadingSpinnerControl.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.Assets\PSQuickAssets.Assets.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj" />

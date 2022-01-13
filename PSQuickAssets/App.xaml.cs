@@ -17,6 +17,27 @@ using System.Windows.Markup;
 
 namespace PSQuickAssets;
 
+//TODO: Use this
+//public class Result<TValue, TError>
+//{
+//    public TValue Value { get; }
+//    public TError? Error { get; }
+
+//    public bool HasValue { get => Error is null; }
+
+//    public Result(TValue value)
+//    {
+//        Value = value;
+//        Error = default;
+//    }
+
+//    public Result(TError error, TValue defaultValue)
+//    {
+//        Value = defaultValue;
+//        Error = error;
+//    }
+//}
+
 public partial class App : Application
 {
     public const string AppName = "PSQuickAssets";

@@ -2,16 +2,12 @@
     x:Class="PSQuickAssets.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:coll="clr-namespace:System.Collections.ObjectModel;assembly=System"
     xmlns:controls="clr-namespace:PSQuickAssets.Controls"
-    xmlns:custom="clr-namespace:ToggleSwitchControl;assembly=ToggleSwitchControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:loadingspinnercontrol="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:PSQuickAssets.Models"
-    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:views="clr-namespace:PSQuickAssets.Views"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
@@ -225,21 +221,6 @@
                         FillMouseOver="{StaticResource ForegroundMainBrush}"
                         ToolTip="{lex:Loc Terminal}"
                         Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}" />
-
-                    <!--<custom:ToggleSwitch
-                        Width="80"
-                        Height="30"
-                        Margin="10"
-                        BorderThickness="2"
-                        IsChecked="True" />
-
-                    <custom:ToggleSwitch
-                        Width="80"
-                        Height="30"
-                        Margin="10"
-                        BorderThickness="2"
-                        IsEnabled="False" />-->
-
                 </StackPanel>
 
                 <StackPanel

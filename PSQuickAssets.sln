@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Assets", "PSQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTerminal.WPF", "..\..\Libraries\MTerminal.WPF\MTerminal.WPF\MTerminal.WPF.csproj", "{6C57D928-5B30-4F25-89FC-B56B390A864D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleSwitchControl", "..\..\Libraries\WPF_Controls\ToggleSwitchControl\ToggleSwitchControl.csproj", "{ADD060ED-3488-4DFA-A375-33FDD55F4E08}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{6C57D928-5B30-4F25-89FC-B56B390A864D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C57D928-5B30-4F25-89FC-B56B390A864D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C57D928-5B30-4F25-89FC-B56B390A864D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADD060ED-3488-4DFA-A375-33FDD55F4E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADD060ED-3488-4DFA-A375-33FDD55F4E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADD060ED-3488-4DFA-A375-33FDD55F4E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADD060ED-3488-4DFA-A375-33FDD55F4E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
