@@ -1,4 +1,4 @@
-﻿using MLogger;
+﻿using Serilog;
 using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.Assets.Thumbnails

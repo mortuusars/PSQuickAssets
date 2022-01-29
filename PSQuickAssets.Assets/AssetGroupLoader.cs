@@ -1,4 +1,4 @@
-﻿using MLogger;
+﻿using Serilog;
 using System.IO;
 using System.Text.Json;
 
@@ -33,7 +33,7 @@ internal class AssetGroupLoader
 
         if (group.Assets.Count == 0)
         {
-            _logger.Warn($"[Assset Group Loading] Group '{group.Name}' was loaded, but contains no assets.");
+            _logger.Warning($"[Assset Group Loading] Group '{group.Name}' was loaded, but contains no assets.");
             return new Result<AssetGroup>(false, group);
         }
 
@@ -45,7 +45,7 @@ internal class AssetGroupLoader
             {
                 if (!File.Exists(asset.Path))
                 {
-                    _logger.Warn($"[Assset Group Loading] Cannot load asset '{asset.Path}'. File does not exist. Asset will be removed.");
+                    _logger.Warning($"[Assset Group Loading] Cannot load asset '{asset.Path}'. File does not exist. Asset will be removed.");
                     failedAssets.Add(asset);
                 }
             }

@@ -2,7 +2,7 @@
 using AsyncAwaitBestPractices.MVVM;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MLogger;
+using Serilog;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Commands;
 using PSQuickAssets.Resources;
@@ -100,7 +100,7 @@ internal class AssetsViewModel : ObservableObject
         bool isRemoved = assetGroupViewModel is not null && AssetGroups.Remove(assetGroupViewModel);
         if (isRemoved)
         {
-            _logger.Info($"[Asset Groups] Removed group '{assetGroupViewModel!.Name}'.");
+            _logger.Information($"[Asset Groups] Removed group '{assetGroupViewModel!.Name}'.");
             SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         }
         return isRemoved;
@@ -208,7 +208,7 @@ internal class AssetsViewModel : ObservableObject
         var groupViewModel = new AssetGroupViewModel(assetGroup, PhotoshopCommands, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
-        _logger.Info($"[Asset Groups] Group '{groupName}' created.");
+        _logger.Information($"[Asset Groups] Group '{groupName}' created.");
         return groupViewModel;
     }
     /// <summary>

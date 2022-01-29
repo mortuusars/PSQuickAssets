@@ -1,4 +1,4 @@
-﻿using MLogger;
+﻿using Serilog;
 using PSQuickAssets.Services;
 using System;
 using System.Net.Http;

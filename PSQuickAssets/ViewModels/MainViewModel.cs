@@ -30,7 +30,7 @@ internal class MainViewModel : ObservableObject
         IncreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Up));
         DecreaseThumbnailSizeCommand = new RelayCommand(() => ChangeThumbnailSize(MouseWheelDirection.Down));
         SettingsCommand = new RelayCommand(_windowManager.ToggleSettingsWindow);
-        ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
+        ToggleTerminalCommand = new RelayCommand(_windowManager.ToggleTerminalWindow);
         HideCommand = new RelayCommand(_windowManager.HideMainWindow);
         ShutdownCommand = new RelayCommand(App.Current.Shutdown);
     }

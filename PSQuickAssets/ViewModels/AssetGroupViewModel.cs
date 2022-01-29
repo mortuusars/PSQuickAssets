@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MLogger;
+using Serilog;
 using PSQuickAssets.Assets;
 using System;
 using System.Collections.Generic;
@@ -91,7 +91,7 @@ internal class AssetGroupViewModel : ObservableObject
         bool result = asset is not null && Group.Assets.Remove(asset);
         if (result)
         {
-            _logger.Info($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
+            _logger.Information($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
             OnPropertyChanged(nameof(Assets));
         }
         return result;
@@ -120,7 +120,7 @@ internal class AssetGroupViewModel : ObservableObject
 
         string oldName = Name;
         Group.Name = name;
-        _logger.Info($"[Group] '{oldName}' was renamed to '{name}'");
+        _logger.Information($"[Group] '{oldName}' was renamed to '{name}'");
         OnPropertyChanged(nameof(Name));
     }
 }

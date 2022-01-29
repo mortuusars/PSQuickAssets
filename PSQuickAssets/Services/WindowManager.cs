@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.ViewModels;
+﻿using MTerminal.WPF;
+using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System;
 using System.Linq;
@@ -69,6 +70,14 @@ public class WindowManager
         UpdateWindow updateWindow = new();
         updateWindow.DataContext = new UpdateViewModel(currentVersion, newVersion, changelog);
         updateWindow.Show();
+    }
+
+    internal void ToggleTerminalWindow()
+    {
+        if (!Terminal.IsOpen || !Terminal.IsVisible)
+            Terminal.Show();
+        else
+            Terminal.Close();
     }
 
     /// <summary>

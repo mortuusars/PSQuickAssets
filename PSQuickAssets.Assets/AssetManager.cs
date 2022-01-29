@@ -1,5 +1,5 @@
-﻿using MLogger;
-using PSQuickAssets.Assets.Thumbnails;
+﻿using PSQuickAssets.Assets.Thumbnails;
+using Serilog;
 using System.IO;
 
 namespace PSQuickAssets.Assets;
@@ -9,15 +9,14 @@ namespace PSQuickAssets.Assets;
 /// </summary>
 public class AssetManager
 {
-    private string _savedAssetsFolder;
-
     private readonly IAssetCreator _assetCreator;
     private readonly IAssetSaver _assetGroupSaver;
     private readonly AssetGroupLoader _assetGroupLoader;
     private readonly ThumbnailManager _thumbnailManager;
     private readonly AssetDataLoader _assetDataLoader;
 
-    private ILogger _logger;
+    private readonly string _savedAssetsFolder;
+    private readonly ILogger _logger;
 
     /// <summary>
     /// Creates an instance of Asset Manager.
@@ -64,7 +63,7 @@ public class AssetManager
         }
         catch (Exception ex)
         {
-            _logger.Error($"Failed to load asset '{filePath}':\n{ex}");
+            _logger.Error($"Failed to load asset '{filePath}': {ex.Message}", ex);
             return new Result<Asset>(false, Asset.Empty, ex);
         }
     }

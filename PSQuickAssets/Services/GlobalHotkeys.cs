@@ -1,5 +1,5 @@
 ﻿using MGlobalHotkeys.WPF;
-using MLogger;
+using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -64,14 +64,14 @@ internal class GlobalHotkeys : IDisposable
 
         if (hotkey.Key is System.Windows.Input.Key.None)
         {
-            _logger.Info("Hotkey <None> will not be registered.");
+            _logger.Information("Hotkey <None> will not be registered.");
             return;
         }
 
         if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))
         {
             _registeredHotkeys.Add(use, hotkey);
-            _logger.Info($"Registered <{hotkey}> for <{use}>.");
+            _logger.Information($"Registered <{hotkey}> for <{use}>.");
         }
         else
         {

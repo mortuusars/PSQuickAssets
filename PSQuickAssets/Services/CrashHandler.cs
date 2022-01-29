@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace PSQuickAssets.Services
 {
@@ -30,8 +32,7 @@ namespace PSQuickAssets.Services
                 MessageBox.Show(message, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            try { ((App)App.Current).Logger.Fatal(message, e.Exception); }
-            catch (Exception) { }
+            DIKernel.ServiceProvider.GetRequiredService<ILogger>().Fatal(message, e.Exception);
 
             App.Current.Shutdown();
             Environment.Exit(-1);
@@ -46,10 +47,8 @@ namespace PSQuickAssets.Services
 
                 reportFilePath = Path.Combine(reportsFolder, $"crash-{DateTime.Now:yyyyMMdd-HHmmss}.txt");
 
-                var app = (App)App.Current;
-
                 string report = $"Crash Report - {DateTime.Now}" +
-                            $"\n\n{App.AppName} Version: {app.Version}-{app.Build}" +
+                            $"\n\n{App.AppName} Version: {App.Version}-{App.Build}" +
                             $"\n\nMessage:\n\t{exception.Message}\n\nStackTrace:\n{exception.StackTrace}\n\n{exception.InnerException}";
 
                 File.WriteAllText(reportFilePath, report);

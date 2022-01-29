@@ -1,4 +1,4 @@
-﻿using MLogger;
+﻿using Serilog;
 using PSQuickAssets.Assets.Thumbnails;
 using System.Drawing;
 using System.IO;

@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MLogger;
+//using Serilog;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
+using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
+using Serilog;
 using System;
+using System.IO;
 
 namespace PSQuickAssets;
 
@@ -17,11 +20,12 @@ internal static class DIKernel
         IServiceCollection services = new ServiceCollection();
 
         services.AddSingleton<INotificationService, TaskbarNotificationService>();
-        services.AddSingleton<ILogger>((provider) => LoggerSetup.CreateLogger(LogLevel.Debug, provider.GetRequiredService<INotificationService>()));
-
+        services.AddSingleton<ILogger>(Logging.CreateLogger());
         services.AddSingleton<IConfig>(p => Config.Deserialize(p.GetRequiredService<ILogger>()));
+        services.AddSingleton<ConfigChangeListener>();
 
         services.AddSingleton<WindowManager>();
+        services.AddSingleton<TerminalHandler>();
         services.AddSingleton<GlobalHotkeys>((provider) =>
                 new GlobalHotkeys(provider.GetRequiredService<WindowManager>().GetMainWindowHandle(),
                     provider.GetRequiredService<INotificationService>(),

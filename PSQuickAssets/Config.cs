@@ -1,8 +1,10 @@
 ﻿using AsyncAwaitBestPractices;
-using MLogger;
 using Mortuus.Config;
 using Mortuus.Config.Deserialization;
 using Mortuus.Config.Serialization;
+using PSQuickAssets.Services;
+using Serilog;
+using Serilog.Events;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
@@ -82,4 +84,27 @@ internal class Config : ConfigBase, IConfig
     private async Task SaveAsync(string serializedConfig) => await File.WriteAllTextAsync(_configFilePath, serializedConfig);
 
     internal void SetLogger(ILogger logger) => _logger = logger;
+}
+
+internal class ConfigChangeListener
+{
+    private readonly IConfig _config;
+    private readonly ILogger _logger;
+
+    public ConfigChangeListener(IConfig config, ILogger logger)
+    {
+        _config = config;
+        _logger = logger;
+    }
+
+    public void Listen()
+    {
+        _config.PropertyChanged += _config_PropertyChanged;
+    }
+
+    private void _config_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (nameof(IConfig.DebugMode).Equals(e.PropertyName))
+            Logging.LogLevelSwitch.MinimumLevel = _config.DebugMode ? LogEventLevel.Verbose : LogEventLevel.Information;
+    }
 }

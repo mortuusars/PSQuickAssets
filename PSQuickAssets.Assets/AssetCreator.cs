@@ -1,4 +1,4 @@
-﻿using MLogger;
+﻿using Serilog;
 using System.IO;
 
 namespace PSQuickAssets.Assets;

@@ -7,6 +7,8 @@ namespace PSQuickAssets.ViewModels;
 
 internal class TaskBarViewModel
 {
+    private readonly WindowManager _windowManager;
+
     public string AppName { get; set; }
     public string ToggleWindow { get; set; }
     public string ToggleTerminalWindow { get; set; }
@@ -29,10 +31,12 @@ internal class TaskBarViewModel
         Settings = Localization.Instance["Taskbar_Settings"];
         Exit = Localization.Instance["Taskbar_Exit"];
 
-        ShowWindowCommand = new RelayCommand(windowManager.ToggleMainWindow);
-        ToggleTerminalCommand = new RelayCommand(App.ToggleTerminalWindow);
-        SettingsCommand = new RelayCommand(windowManager.ToggleSettingsWindow);
-        ExitCommand = new RelayCommand(App.Current.Shutdown);
+        _windowManager = windowManager;
         Config = config;
+
+        ShowWindowCommand = new RelayCommand(_windowManager.ToggleMainWindow);
+        ToggleTerminalCommand = new RelayCommand(_windowManager.ToggleTerminalWindow);
+        SettingsCommand = new RelayCommand(_windowManager.ToggleSettingsWindow);
+        ExitCommand = new RelayCommand(App.Current.Shutdown);
     }
 }
