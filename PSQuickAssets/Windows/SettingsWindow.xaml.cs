@@ -22,18 +22,18 @@ public partial class SettingsWindow : Window
         }
     }
 
+    private void CloseButton_Click(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+        this.Close();
+    }
+
     private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         //TODO: Capture Mouse in a HotkeyPicker
         // Can't x:Name controls that are part of a UserControl.
         //if (e.OriginalSource is FrameworkElement element && element != HotkeyPicker)
         //FocusManager.SetFocusedElement(this, this);
-    }
-
-    private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-        e.Handled = true;
-        this.Close();
     }
 
     void Window_Loaded(object sender, RoutedEventArgs e)
@@ -110,4 +110,5 @@ public partial class SettingsWindow : Window
     public static extern void SetLastError(int dwErrorCode);
 
     #endregion
+
 }

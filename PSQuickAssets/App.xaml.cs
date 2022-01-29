@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 
 namespace PSQuickAssets;
 
@@ -40,7 +39,7 @@ namespace PSQuickAssets;
 
 public partial class App : Application
 {
-    public const string AppName = "PSQuickAssets";
+    public static string AppName { get; } = "PSQuickAssets";
     public Version Version { get; }
     public string Build { get; }
 
@@ -66,10 +65,11 @@ public partial class App : Application
             if (nameof(Config.DebugMode).Equals(e.PropertyName))
             {
                 if (Logger is not null)
-                Logger.Level = Config.DebugMode ? LogLevel.Debug : LogLevel.Info;
+                    Logger.Level = Config.DebugMode ? LogLevel.Debug : LogLevel.Info;
             }
         };
         Logger = ServiceProvider.GetRequiredService<ILogger>();
+
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -107,26 +107,17 @@ public partial class App : Application
         Process.Start(processStartInfo);
     }
 
-    private static bool _isTerminalOpen;
-
     internal static void ToggleTerminalWindow()
     {
-        if (_isTerminalOpen)
-        {
-            Terminal.CloseWindow();
-            _isTerminalOpen = false;
-        }
+        if (!Terminal.IsOpen || !Terminal.IsVisible)
+            Terminal.Show();
         else
-        {
-            Terminal.ShowWindow();
-            _isTerminalOpen = true;
-        }
+            Terminal.Close();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
-        try { Config?.Save(); }
-        catch (Exception) { }
+        Config?.Save();
         base.OnExit(e);
     }
 

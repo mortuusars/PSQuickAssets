@@ -47,7 +47,7 @@ internal class TerminalLogger : ILogWriter
             LogLevel.Warning => Colors.LightYellow,
             LogLevel.Error => Colors.Red,
             LogLevel.Fatal => Colors.OrangeRed,
-            _ => Terminal.ForegroundColor
+            //_ => Terminal.ForegroundColor
         };
 
         Terminal.WriteLine(message, color);

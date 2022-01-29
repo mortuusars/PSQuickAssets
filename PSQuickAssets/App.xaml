@@ -9,14 +9,10 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Fonts.xaml" />
                 <ResourceDictionary Source="Resources/Icons.xaml" />
-                <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Texts.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Tooltip.xaml" />
-                <ResourceDictionary Source="Resources/Styles/ContextMenu.xaml" />
 
-                <ResourceDictionary Source="Resources/Styles/Controls/ToggleButton.xaml" />
-
+                <ResourceDictionary Source="Resources/Templates.xaml" />
                 <ResourceDictionary Source="Resources/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Services.xaml" />
 
@@ -38,8 +34,9 @@
                 Opacity="0.45"
                 ShadowDepth="2" />
 
+            <SineEase x:Key="EaseIn" EasingMode="EaseIn" />
+            <SineEase x:Key="EaseOut" EasingMode="EaseOut" />
             <SineEase x:Key="EaseInOut" EasingMode="EaseInOut" />
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

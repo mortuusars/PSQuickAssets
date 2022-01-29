@@ -175,7 +175,7 @@
             Background="{StaticResource BackgroundFarBrush}"
             BorderBrush="{StaticResource MainBorder}"
             BorderThickness="2"
-            CornerRadius="8"
+            CornerRadius="0"
             Effect="{StaticResource WindowDropShadow}"
             IsHitTestVisible="False" />
 
@@ -190,7 +190,6 @@
             dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDropTarget="True"
             Background="{StaticResource MainBorder}"
-            CornerRadius="6 6 0 0"
             MouseDown="BG_MouseDown">
 
             <!--  HEADER BUTTONS  -->

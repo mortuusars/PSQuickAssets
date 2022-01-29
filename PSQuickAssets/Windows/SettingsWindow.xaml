@@ -1,13 +1,12 @@
 ﻿<Window
     x:Class="PSQuickAssets.Windows.SettingsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
+    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     Title="Settings"
     Width="500"
@@ -35,11 +34,58 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <Window.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.Close" Executed="CloseCommand_Executed" />
-    </Window.CommandBindings>
-
     <Window.Resources>
+
+
+        <Style TargetType="{x:Type controls:SettingItemControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:SettingItemControl}">
+                        <Grid VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Margin="6"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top">
+                                <TextBlock
+                                    FontSize="17"
+                                    Text="{TemplateBinding Header}"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Margin="0,6,0,0"
+                                    FontSize="13"
+                                    Opacity="0.6"
+                                    Text="{TemplateBinding Description}"
+                                    TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text.Length, RelativeSource={RelativeSource Self}}" Value="0">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                            <ContentPresenter
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="6"
+                                VerticalAlignment="Top"
+                                ContentSource="Content" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
         <Style
             x:Key="{x:Type ToolTip}"
             BasedOn="{StaticResource DarkToolTip}"
@@ -61,8 +107,8 @@
         </Style>
 
         <Style TargetType="{x:Type TabItem}">
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundMainBrush}" />
             <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabItem}">
@@ -182,13 +228,8 @@
                             Data="{StaticResource CloseIconGeometry}"
                             Fill="{StaticResource ForegroundLighterBrush}"
                             FillMouseOver="{StaticResource ForegroundMainBrush}"
-                            ToolTip="{lex:Loc Close}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="ApplicationCommands.Close" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </controls:PathIcon>
+                            MouseLeftButtonDown="CloseButton_Click"
+                            ToolTip="{lex:Loc Close}" />
                     </Viewbox>
                 </StackPanel>
             </Grid>
@@ -198,76 +239,97 @@
 
         <Grid x:Name="settingsLayoutRoot" Grid.Row="1">
 
-            <TabControl Margin="8,12,8,8" Background="Transparent">
+            <TabControl
+                Margin="8,12,8,8"
+                Background="Transparent"
+                Foreground="{StaticResource ForegroundMainBrush}">
                 <TabItem Header="General">
 
                     <StackPanel x:Name="generalSettingsPanel">
 
                         <Separator Width="200" />
 
-                        <controls:SettingItem Text="{lex:Loc Settings_ToggleMainWindowHotkey}">
+                        <controls:SettingItemControl Header="{lex:Loc Settings_ToggleMainWindowHotkey}">
                             <Border
-                                Grid.Column="1"
-                                Background="{StaticResource BackgroundCloserBrush}"
-                                CornerRadius="5">
+                                x:Name="windowHotkeyPickerBorder"
+                                Margin="0,-4,0,0"
+                                Padding="4"
+                                CornerRadius="6">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{StaticResource BackgroundCloserColor}" />
+                                </Border.Background>
                                 <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="{StaticResource BackgroundCloserBrush}" />
+                                    <Style TargetType="{x:Type Border}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource BackgroundCloserHighlightBrush}" />
-                                            </DataTrigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                To="{StaticResource BackgroundCloserHighlightColor}"
+                                                                Duration="0:0:0.05" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation
+                                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                To="{StaticResource BackgroundCloserColor}"
+                                                                Duration="0:0:0.3" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
                                 <mglobalhotkeys:HotkeyPicker
+                                    x:Name="hotkeyPicker"
                                     MinWidth="110"
-                                    Margin="4"
                                     ClearFocusOnCancel="True"
                                     ClearFocusOnClear="True"
                                     Foreground="{StaticResource ForegroundMainBrush}"
                                     Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}"
                                     ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
                             </Border>
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
 
                         <Separator />
 
-                        <controls:SettingItem Info="{lex:Loc Settings_AlwaysOnTop_Tooltip}" Text="{lex:Loc Settings_AlwaysOnTop}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}" Header="{lex:Loc Settings_AlwaysOnTop}">
                             <ToggleButton IsChecked="{Binding Config.AlwaysOnTop}" />
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
 
                         <Separator />
 
-                        <controls:SettingItem Info="{lex:Loc Settings_HideIfClickedOutside_Tooltip}" Text="{lex:Loc Settings_HideIfClickedOutside}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_HideIfClickedOutside_Tooltip}" Header="{lex:Loc Settings_HideIfClickedOutside}">
                             <ToggleButton IsChecked="{Binding Config.HideWindowIfClickedOutside}" />
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
 
                         <Separator />
 
-                        <controls:SettingItem Info="{lex:Loc Settings_CheckForUpdates_Info}" Text="{lex:Loc Settings_CheckForUpdates}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_CheckForUpdates_Info}" Header="{lex:Loc Settings_CheckForUpdates}">
                             <ToggleButton IsChecked="{Binding Config.CheckUpdates}" />
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
 
                         <Separator />
 
-                        <controls:SettingItem
-                            Margin="0,16,0,0"
-                            Info="{lex:Loc Settings_DebugMode_Tooltip}"
-                            Text="{lex:Loc Settings_DebugMode}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_DebugMode_Tooltip}" Header="{lex:Loc Settings_DebugMode}">
                             <ToggleButton IsChecked="{Binding Config.DebugMode}" />
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
                     </StackPanel>
 
                 </TabItem>
                 <TabItem Header="Assets">
                     <StackPanel>
-
                         <Separator Width="200" />
 
-                        <controls:SettingItem Info="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}" Text="{lex:Loc Settings_AddMaskIfDocumentHasSelection}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}" Header="{lex:Loc Settings_AddMaskIfDocumentHasSelection}">
                             <ToggleButton IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
-                        </controls:SettingItem>
+                        </controls:SettingItemControl>
                     </StackPanel>
                 </TabItem>
             </TabControl>

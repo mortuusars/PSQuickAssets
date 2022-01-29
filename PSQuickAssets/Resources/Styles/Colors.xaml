@@ -20,7 +20,7 @@
 
 
 
-    <Color x:Key="ForegroundMain">#aaa</Color>
+    <Color x:Key="ForegroundMain">#bbb</Color>
     <SolidColorBrush x:Key="ForegroundMainBrush" Color="{StaticResource ForegroundMain}" />
 
     <Color x:Key="ForegroundDisabled">#666</Color>

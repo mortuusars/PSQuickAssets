@@ -3,10 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:Double x:Key="ButtonsRestOpacity">0.15</sys:Double>
-    <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
-
     <Style x:Key="ImageButtons" TargetType="Image">
+        <Style.Resources>
+            <sys:Double x:Key="ButtonsRestOpacity">0.15</sys:Double>
+            <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
+        </Style.Resources>
         <Setter Property="Opacity" Value="0.2" />
 
         <Style.Triggers>

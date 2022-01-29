@@ -8,8 +8,34 @@
     Title="ErrorDialog"
     Width="500"
     Height="300"
-    Template="{DynamicResource WindowTemplate}"
     mc:Ignorable="d">
+
+    <Window.Template>
+        <ControlTemplate TargetType="{x:Type Window}">
+            <ControlTemplate.Resources>
+                <DropShadowEffect x:Key="ActiveShadow" BlurRadius="18" ShadowDepth="2" Direction="-70" Opacity="0.5"/>
+                <DropShadowEffect x:Key="InactiveShadow" BlurRadius="18" ShadowDepth="2" Direction="-70" Opacity="0.5"/>
+            </ControlTemplate.Resources>
+            <Grid x:Name="Root"
+                Background="#C17575">
+                <Grid x:Name="VisibleArea"
+                      Margin="20" Background="#A1DCA1">
+                    <Border x:Name="WindowBackground"
+                            Background="#85A8C6">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Effect" Value="{StaticResource ActiveShadow}"/>
+                                <Style.Triggers>
+                                    
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                </Grid>
+            </Grid>
+        </ControlTemplate>
+    </Window.Template>
+    
     <Grid Background="Transparent">
         <Button
             Width="150"

@@ -5,7 +5,7 @@ namespace PSQuickAssets.WPF
 {
     public static class WpfElementUtils
     {
-        public static T GetParentOfType<T>(FrameworkElement element) where T : FrameworkElement
+        public static T? GetParentOfType<T>(FrameworkElement element) where T : FrameworkElement
         {
             DependencyObject parent = element;
 
@@ -24,7 +24,7 @@ namespace PSQuickAssets.WPF
             return null;
         }
 
-        public static T GetParentOfTypeByName<T>(FrameworkElement element, string name) where T : FrameworkElement
+        public static T? GetParentOfTypeByName<T>(FrameworkElement element, string name) where T : FrameworkElement
         {
             DependencyObject parent = element;
 
