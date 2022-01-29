@@ -1,12 +1,12 @@
 ﻿<Window
     x:Class="PSQuickAssets.Windows.SettingsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
     xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mglobalhotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     Title="Settings"
     Width="500"
@@ -253,7 +253,6 @@
                             <Border
                                 x:Name="windowHotkeyPickerBorder"
                                 Margin="0,-4,0,0"
-                                Padding="4"
                                 CornerRadius="6">
                                 <Border.Background>
                                     <SolidColorBrush Color="{StaticResource BackgroundCloserColor}" />
@@ -286,11 +285,15 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
+
                                 <mglobalhotkeys:HotkeyPicker
                                     x:Name="hotkeyPicker"
                                     MinWidth="110"
+                                    Padding="6,4"
+                                    BorderThickness="2"
                                     ClearFocusOnCancel="True"
                                     ClearFocusOnClear="True"
+                                    CornerRadius="6"
                                     Foreground="{StaticResource ForegroundMainBrush}"
                                     Hotkey="{Binding ToggleMainWindowHotkey, UpdateSourceTrigger=LostFocus}"
                                     ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
