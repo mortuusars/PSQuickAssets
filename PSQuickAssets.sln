@@ -19,7 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadingSpinnerControl", "Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Assets", "PSQuickAssets.Assets\PSQuickAssets.Assets.csproj", "{8B0B115D-1D26-433F-AC2E-B7F0C592A0F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSQuickAssets.Core", "PSQuickAssets.Core\PSQuickAssets.Core.csproj", "{D878F399-2696-48C0-B8C6-374B6099671B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Core", "PSQuickAssets.Core\PSQuickAssets.Core.csproj", "{D878F399-2696-48C0-B8C6-374B6099671B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI", "..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj", "{16055389-476F-4ABC-9D08-CB3D1D7442A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI.Controls", "..\..\Libraries\MortuusUI\MortuusUI.Controls\MortuusUI.Controls.csproj", "{1C04268B-E784-4116-833B-232D27B67899}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI.WindowTemplates", "..\..\Libraries\MortuusUI\MortuusUI.WindowTemplates\MortuusUI.WindowTemplates.csproj", "{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,18 @@ Global
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C04268B-E784-4116-833B-232D27B67899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C04268B-E784-4116-833B-232D27B67899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C04268B-E784-4116-833B-232D27B67899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C04268B-E784-4116-833B-232D27B67899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

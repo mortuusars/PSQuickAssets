@@ -2,41 +2,57 @@
     x:Class="PSQuickAssets.Windows.ErrorDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PSQuickAssets.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="ErrorDialog"
     Width="500"
     Height="300"
+    Background="{StaticResource BackgroundFarBrush}"
+    BorderBrush="{StaticResource MainBorder}"
+    BorderThickness="2"
+    Topmost="False"
     mc:Ignorable="d">
 
-    <Window.Template>
-        <ControlTemplate TargetType="{x:Type Window}">
-            <ControlTemplate.Resources>
-                <DropShadowEffect x:Key="ActiveShadow" BlurRadius="18" ShadowDepth="2" Direction="-70" Opacity="0.5"/>
-                <DropShadowEffect x:Key="InactiveShadow" BlurRadius="18" ShadowDepth="2" Direction="-70" Opacity="0.5"/>
-            </ControlTemplate.Resources>
-            <Grid x:Name="Root"
-                Background="#C17575">
-                <Grid x:Name="VisibleArea"
-                      Margin="20" Background="#A1DCA1">
-                    <Border x:Name="WindowBackground"
-                            Background="#85A8C6">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Effect" Value="{StaticResource ActiveShadow}"/>
-                                <Style.Triggers>
-                                    
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
-                </Grid>
-            </Grid>
-        </ControlTemplate>
-    </Window.Template>
-    
-    <Grid Background="Transparent">
+    <!--<windowTemplates:WindowBase.Style>
+        <Style BasedOn="{StaticResource {x:Type windowTemplates:WindowBase}}" TargetType="{x:Type local:ErrorDialog}">
+            <Setter Property="HeaderContent">
+                <Setter.Value>
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PathIcon
+                            Width="17"
+                            Data="{StaticResource SettingsIconGeometry}"
+                            Fill="{StaticResource ForegroundLighterBrush}"
+                            FillMouseOver="{StaticResource ForegroundMainBrush}" />
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                            <controls:PathIcon
+                                Width="17"
+                                Data="{StaticResource CollapseExpandIconGeometry}"
+                                Fill="{StaticResource ForegroundLighterBrush}"
+                                FillMouseOver="{StaticResource ForegroundMainBrush}" />
+
+                            <controls:PathIcon
+                                Width="17"
+                                Data="{StaticResource CloseIconGeometry}"
+                                Fill="{StaticResource ForegroundLighterBrush}"
+                                FillMouseOver="{StaticResource ForegroundMainBrush}" />
+                        </StackPanel>
+
+                    </Grid>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </windowTemplates:WindowBase.Style>-->
+
+    <Grid>
         <Button
             Width="150"
             Height="40"

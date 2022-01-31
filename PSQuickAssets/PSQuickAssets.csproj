@@ -68,6 +68,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Libraries\MortuusUI\MortuusUI.Controls\MortuusUI.Controls.csproj" />
+		<ProjectReference Include="..\..\..\Libraries\MortuusUI\MortuusUI.WindowTemplates\MortuusUI.WindowTemplates.csproj" />
+		<ProjectReference Include="..\..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj" />
 		<ProjectReference Include="..\LoadingSpinnerControl\LoadingSpinnerControl.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.Assets\PSQuickAssets.Assets.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.Core\PSQuickAssets.Core.csproj" />

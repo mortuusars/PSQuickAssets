@@ -17,8 +17,6 @@
                 <ResourceDictionary Source="Resources/Services.xaml" />
 
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
-
-                <ResourceDictionary Source="Resources/Styles/WindowTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DropShadowEffect

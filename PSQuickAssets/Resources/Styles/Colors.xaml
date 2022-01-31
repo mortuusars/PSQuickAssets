@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Color x:Key="BackgroundFarColor">#282828</Color>
+    <Color x:Key="BackgroundFarColor">#252525</Color>
     <Color x:Key="BackgroundCloserColor">#353535</Color>
     <Color x:Key="BackgroundCloserHighlightColor">#444</Color>
     <Color x:Key="BackgroundNearColor">#464646</Color>
@@ -13,14 +13,14 @@
 
 
 
-    <SolidColorBrush x:Key="MainBorder" Color="#343434" />
+    <SolidColorBrush x:Key="MainBorder" Color="#3a3a3a" />
     <SolidColorBrush x:Key="BorderLighter" Color="#5a5a5a" />
     <SolidColorBrush x:Key="TextColorBrush" Color="#9f9f9f" />
 
 
 
 
-    <Color x:Key="ForegroundMain">#bbb</Color>
+    <Color x:Key="ForegroundMain">#bababa</Color>
     <SolidColorBrush x:Key="ForegroundMainBrush" Color="{StaticResource ForegroundMain}" />
 
     <Color x:Key="ForegroundDisabled">#666</Color>

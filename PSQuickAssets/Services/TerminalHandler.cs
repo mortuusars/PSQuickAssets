@@ -1,4 +1,5 @@
 ﻿using MTerminal.WPF;
+using PSQuickAssets.Windows;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -18,6 +19,7 @@ internal class TerminalHandler
 
     internal void Setup()
     {
+        Terminal.Commands.Add(new TerminalCommand("errorDialog", "Test window", (_) => new ErrorDialog().Show()));
         Terminal.Commands.Add(new TerminalCommand("log", "Prints last log file contents", (_) => PrintLastLog()));
         Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
         Terminal.Commands.Add(new TerminalCommand("updatewindow", "Show update window", (_) => _windowManager.ShowUpdateWindow(App.Version, new Version("99.99.99"), "Nothing changed.")));

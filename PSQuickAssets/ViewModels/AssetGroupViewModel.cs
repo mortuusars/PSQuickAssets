@@ -1,7 +1,7 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Serilog;
 using PSQuickAssets.Assets;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
