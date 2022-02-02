@@ -10,7 +10,8 @@
     <SolidColorBrush x:Key="BackgroundCloserHighlightBrush" Color="{StaticResource BackgroundCloserHighlightColor}" />
     <SolidColorBrush x:Key="BackgroundNearBrush" Color="{StaticResource BackgroundNearColor}" />
 
-
+    <Color x:Key="WindowBorder">#555</Color>
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorder}" />
 
 
     <SolidColorBrush x:Key="MainBorder" Color="#3a3a3a" />

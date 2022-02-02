@@ -17,6 +17,9 @@
                 <ResourceDictionary Source="Resources/Services.xaml" />
 
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Themes/Generic.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
 
             <DropShadowEffect
