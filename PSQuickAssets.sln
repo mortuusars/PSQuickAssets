@@ -23,10 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Core", "PSQui
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI", "..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj", "{16055389-476F-4ABC-9D08-CB3D1D7442A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI.Controls", "..\..\Libraries\MortuusUI\MortuusUI.Controls\MortuusUI.Controls.csproj", "{1C04268B-E784-4116-833B-232D27B67899}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI.WindowTemplates", "..\..\Libraries\MortuusUI\MortuusUI.WindowTemplates\MortuusUI.WindowTemplates.csproj", "{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,14 +57,6 @@ Global
 		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C04268B-E784-4116-833B-232D27B67899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C04268B-E784-4116-833B-232D27B67899}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C04268B-E784-4116-833B-232D27B67899}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C04268B-E784-4116-833B-232D27B67899}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFE6A8EB-4938-4958-B073-3FCAAD30DBA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

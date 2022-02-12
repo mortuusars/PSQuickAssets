@@ -2,122 +2,133 @@
     x:Class="PSQuickAssets.Windows.AssetsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
-    xmlns:controls1="clr-namespace:MortuusUI.Controls;assembly=MortuusUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:local="clr-namespace:PSQuickAssets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mui="clr-namespace:MortuusUI;assembly=MortuusUI"
+    xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
+    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
+    x:Name="Window"
     Title="AssetsWindow"
     Width="500"
     Height="300"
+    d:Background="#1a1a1a"
     d:BorderThickness="0"
+    d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:WindowStyle="None"
-    Background="#2a2a2a"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    Background="#222"
+    BorderBrush="#1a1a1a"
+    BorderThickness="2"
+    Foreground="{StaticResource ForegroundMainBrush}"
     SavesState="True"
-    TitleBackground="#222"
+    TitleBackground="#1a1a1a"
+    Topmost="{Binding Config.AlwaysOnTop}"
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
 
-    <b:Interaction.Behaviors>
-        <mui:WindowChromeRenderedBehavior />
-    </b:Interaction.Behaviors>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
+        <KeyBinding
+            Key="Esc"
+            Command="{x:Static local:GeneralCommands.ShutdownCommand}"
+            Modifiers="Shift" />
+
+        <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
+        <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
+
+        <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Down, Keys=Ctrl}" />
+        <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Up, Keys=Ctrl}" />
+    </Window.InputBindings>
 
     <mui:WindowBase.Resources>
 
-        <Path
-            x:Key="CollapsePath"
-            Width="24"
-            Height="24"
-            HorizontalAlignment="Center"
-            Data="{StaticResource CollapseExpandIconGeometry}"
-            Fill="{StaticResource ForegroundMainBrush}" />
-
-        <Path
-            x:Key="ClosePath"
-            Width="24"
-            Height="24"
-            Data="{StaticResource CloseIconGeometry}"
-            Fill="{StaticResource ForegroundMainBrush}" />
-
-
-        <!--
-            Due to the bug in XAML code generation - to use event handlers
-            we need to define TitleContent of the window as a separate resource
-        -->
-        <StackPanel
-            x:Key="TitleContent"
-            d:Background="#222"
-            WindowChrome.IsHitTestVisibleInChrome="True">
-
-
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
-                <controls1:PathButton
-                    x:Name="MinimizeWindowButton"
-                    Width="23"
-                    Height="23"
-                    Padding="3"
+        <!--  TITLE  -->
+        <Grid x:Key="TitleBarContent" Margin="0,0,0,2">
+            <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
+                <Button
+                    Padding="4"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    mui:Commands.LeftClickCommand="{x:Static mui:WindowCommands.MinimizeWindow}"
-                    Path="{StaticResource CollapsePath}"
-                    Stretch="Uniform">
-                    <controls1:PathButton.Style>
-                        <Style TargetType="{x:Type controls1:PathButton}">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=IsCtrlPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls1:PathButton.Style>
-
-                </controls1:PathButton>
-
-                <controls1:PathButton
-                    x:Name="CloseWindowButton"
-                    Width="23"
-                    Height="23"
-                    Padding="0"
+                    Style="{StaticResource OpacityButton}">
+                    <Button.Content>
+                        <Path
+                            Height="16"
+                            Data="{StaticResource SettingsIconGeometry}"
+                            Fill="{StaticResource ForegroundMainBrush}"
+                            Stretch="Uniform" />
+                    </Button.Content>
+                </Button>
+                <Button
+                    Padding="4"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    mui:Commands.LeftClickCommand="{x:Static mui:WindowCommands.CloseWindow}"
-                    Path="{StaticResource ClosePath}"
-                    Stretch="Uniform">
-                    <controls1:PathButton.Style>
-                        <Style TargetType="{x:Type controls1:PathButton}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=IsCtrlPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls1:PathButton.Style>
-                </controls1:PathButton>
-
+                    Command="{x:Static local:GeneralCommands.ToggleTerminalWindow}"
+                    Style="{StaticResource OpacityButton}"
+                    ToolTip="{lex:Loc Terminal}"
+                    Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+                    <Button.Content>
+                        <Path
+                            Height="16"
+                            Data="{StaticResource TerminalIconGeomerty}"
+                            Fill="{StaticResource ForegroundMainBrush}"
+                            Stretch="Uniform" />
+                    </Button.Content>
+                </Button>
             </StackPanel>
 
-            <Rectangle
-                Height="1"
-                VerticalAlignment="Bottom"
-                Fill="#1a1a1a" />
-
-        </StackPanel>
-
-
+            <Button
+                Height="26"
+                Padding="0,0,6,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Style="{StaticResource OpacityButton}">
+                <Button.Content>
+                    <Path Fill="{StaticResource ForegroundMainBrush}" Stretch="Uniform">
+                        <Path.Style>
+                            <Style TargetType="Path">
+                                <Setter Property="Data" Value="{StaticResource CollapseExpandIconGeometry}" />
+                                <Setter Property="Width" Value="17" />
+                                <Setter Property="Height" Value="17" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCtrlPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=windows:AssetsWindow}}" Value="True">
+                                        <Setter Property="Data" Value="{StaticResource CloseIconGeometry}" />
+                                        <Setter Property="Width" Value="15" />
+                                        <Setter Property="Height" Value="15" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button.Content>
+                <Button.InputBindings>
+                    <MouseBinding Command="{x:Static mui:WindowCommands.MinimizeWindow}" Gesture="LeftClick" />
+                    <MouseBinding Command="{x:Static mui:WindowCommands.CloseWindow}" Gesture="Ctrl+LeftClick" />
+                </Button.InputBindings>
+            </Button>
+        </Grid>
 
     </mui:WindowBase.Resources>
 
     <mui:WindowBase.Style>
-        <Style TargetType="mui:WindowBase">
-            <Setter Property="BorderBrush" Value="#1a1a1a" />
-            <Setter Property="BorderInactiveBrush" Value="#2a2a2a" />
-            <Setter Property="TitleContent" Value="{StaticResource TitleContent}" />
+        <Style TargetType="{x:Type mui:WindowBase}">
+            <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
         </Style>
     </mui:WindowBase.Style>
 
-    <Grid Background="Transparent">
-        <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleContent}" />
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--  TITLE PREVIEW  -->
+        <d:Border Margin="0,-32,0,0" Background="{StaticResource BackgroundFarBrush}">
+            <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
+        </d:Border>
+
+
+
     </Grid>
 </mui:WindowBase>

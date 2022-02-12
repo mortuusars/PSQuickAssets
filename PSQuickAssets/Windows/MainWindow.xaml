@@ -8,9 +8,10 @@
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:loadingspinnercontrol="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mortuusui="clr-namespace:MortuusUI;assembly=MortuusUI"
+    xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
     xmlns:views="clr-namespace:PSQuickAssets.Views"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
-    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
     x:Name="window"
     Title="PSQuickAssets"
     Width="600"
@@ -158,8 +159,8 @@
         -->
 
         <Grid.InputBindings>
-            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Down, Keys=Ctrl}" />
-            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{wpf:MouseWheel Direction=Up, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Down, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Up, Keys=Ctrl}" />
         </Grid.InputBindings>
 
         <Grid.RowDefinitions>
@@ -534,7 +535,17 @@
             Visibility="{Binding AssetsViewModel.IsLoading, Converter={StaticResource BoolToVisibility}}">
 
             <StackPanel Orientation="Horizontal">
-                <loadingspinnercontrol:LoadingSpinner
+
+                <mortuusui:Spinner IsSpinning="{Binding AssetsViewModel.IsLoading}" SpinningSpeed="1.5">
+                    <Ellipse
+                        Width="20"
+                        Height="20"
+                        Stroke="{StaticResource ForegroundMainBrush}"
+                        StrokeDashArray="15 5"
+                        StrokeThickness="2" />
+                </mortuusui:Spinner>
+
+                <!--<loadingspinnercontrol:LoadingSpinner
                     Name="Spinner"
                     VerticalAlignment="Center"
                     d:IsLoading="True"
@@ -544,12 +555,13 @@
                     IsLoading="{Binding AssetsViewModel.IsLoading}"
                     LineRatio="0.65"
                     RotationSpeed="1.5"
-                    Thickness="1.5" />
+                    Thickness="1.5" />-->
 
                 <TextBlock
                     Margin="8,-1,0,0"
                     FontFamily="{StaticResource FontRegular}"
                     FontSize="18"
+                    Foreground="{StaticResource ForegroundMainBrush}"
                     Style="{StaticResource TextLight}"
                     Text="{lex:Loc Loading}" />
             </StackPanel>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MortuusUI.Extensions;
 using PSQuickAssets.Services;
 using PSQuickAssets.WPF;
 using System.Windows.Input;

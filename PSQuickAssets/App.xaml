@@ -2,6 +2,7 @@
     x:Class="PSQuickAssets.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mortuusui="clr-namespace:MortuusUI;assembly=MortuusUI"
     ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
@@ -18,7 +19,10 @@
 
                 <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
 
-                <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Themes/Generic.xaml" />
+                <x:Static Member="mortuusui:Resources.Instance" />
+
+                <!--<ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/ResourcesDictionary.xaml" />-->
 
             </ResourceDictionary.MergedDictionaries>
 
