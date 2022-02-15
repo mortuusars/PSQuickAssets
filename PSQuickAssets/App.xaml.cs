@@ -62,7 +62,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         ShutdownIfAlreadyOpen();
-        SetTooltipDelay(650);
+        SetTooltipDelay(300);
         var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
         var windowManager = ServiceProvider.GetRequiredService<WindowManager>();

@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels">
+    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+    xmlns:cmds="clr-namespace:PSQuickAssets.Commands">
 
     <vm:ViewModelLocator x:Key="ViewModelLocator" />
+    <cmds:WindowManagerCommands x:Key="WindowManagerCommands"/>
 
 </ResourceDictionary>

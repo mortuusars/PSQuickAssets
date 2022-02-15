@@ -1,43 +1,42 @@
-﻿<mui:WindowBase
-    x:Class="PSQuickAssets.Windows.AssetsWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:local="clr-namespace:PSQuickAssets"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mui="clr-namespace:MortuusUI;assembly=MortuusUI"
-    xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
-    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
-    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
-    x:Name="Window"
-    Title="AssetsWindow"
-    Width="500"
-    Height="300"
-    d:Background="#1a1a1a"
-    d:BorderThickness="0"
-    d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
-                                     IsDesignTimeCreatable=True}"
-    d:WindowStyle="None"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-    Background="#222"
-    BorderBrush="#1a1a1a"
-    BorderThickness="2"
-    Foreground="{StaticResource ForegroundMainBrush}"
-    SavesState="True"
-    TitleBackground="#1a1a1a"
-    Topmost="{Binding Config.AlwaysOnTop}"
-    WindowStyle="SingleBorderWindow"
-    mc:Ignorable="d">
+﻿<mui:WindowBase x:Class="PSQuickAssets.Windows.AssetsWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                xmlns:local="clr-namespace:PSQuickAssets"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:mui="clr-namespace:MortuusUI;assembly=MortuusUI"
+                xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
+                xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+                xmlns:windows="clr-namespace:PSQuickAssets.Windows"
+                xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
+                mc:Ignorable="d"
+                lex:LocalizeDictionary.DesignCulture="en"
+                lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+                lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+                x:Name="Window"
+                Title="AssetsWindow"
+                Width="500"
+                Height="300"
+                Topmost="{Binding Config.AlwaysOnTop}"
+                SavesState="True"
+                d:Background="#1a1a1a"
+                d:BorderThickness="0"
+                d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
+                                                 IsDesignTimeCreatable=True}"
+                d:WindowStyle="None"
+                Foreground="{StaticResource ForegroundMainBrush}"
+                Background="#222"
+                BorderBrush="#1a1a1a"
+                BorderThickness="2"
+                TitleBackground="#1a1a1a"
+                DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
-        <KeyBinding
-            Key="Esc"
-            Command="{x:Static local:GeneralCommands.ShutdownCommand}"
-            Modifiers="Shift" />
+        <KeyBinding Key="Esc"
+                    
+                    Modifiers="Shift" />
 
         <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
         <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
@@ -49,56 +48,61 @@
     <mui:WindowBase.Resources>
 
         <!--  TITLE  -->
-        <Grid x:Key="TitleBarContent" Margin="0,0,0,2">
+        <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
             <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
-                <Button
-                    Padding="4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource OpacityButton}">
+
+                <!--  SETTINGS BUTTON  -->
+                <Button Padding="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        ToolTip="{lex:Loc Settings}"
+                        Style="{StaticResource OpacityButton}"
+                        Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
                     <Button.Content>
-                        <Path
-                            Height="16"
-                            Data="{StaticResource SettingsIconGeometry}"
-                            Fill="{StaticResource ForegroundMainBrush}"
-                            Stretch="Uniform" />
+                        <Path Height="16"
+                              Data="{StaticResource SettingsIconGeometry}"
+                              Fill="{StaticResource ForegroundMainBrush}"
+                              Stretch="Uniform" />
                     </Button.Content>
                 </Button>
-                <Button
-                    Padding="4"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Command="{x:Static local:GeneralCommands.ToggleTerminalWindow}"
-                    Style="{StaticResource OpacityButton}"
-                    ToolTip="{lex:Loc Terminal}"
-                    Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+
+                <!--  TERMINAL BUTTON  -->
+                <Button Padding="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource OpacityButton}"
+                        Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
+                        ToolTip="{lex:Loc Terminal}"
+                        Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
                     <Button.Content>
-                        <Path
-                            Height="16"
-                            Data="{StaticResource TerminalIconGeomerty}"
-                            Fill="{StaticResource ForegroundMainBrush}"
-                            Stretch="Uniform" />
+                        <Path Height="16"
+                              Data="{StaticResource TerminalIconGeomerty}"
+                              Fill="{StaticResource ForegroundMainBrush}"
+                              Stretch="Uniform" />
                     </Button.Content>
                 </Button>
             </StackPanel>
 
-            <Button
-                Height="26"
-                Padding="0,0,6,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Style="{StaticResource OpacityButton}">
+            <!--  HIDE/CLOSE BUTTON  -->
+            <Button Height="26"
+                    Padding="5,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    ToolTip="{lex:Loc Main_Close_Tooltip}"
+                    Style="{StaticResource OpacityButton}">
                 <Button.Content>
-                    <Path Fill="{StaticResource ForegroundMainBrush}" Stretch="Uniform">
+                    <Path Margin="-1,-1,0,0"
+                          Fill="{StaticResource ForegroundMainBrush}"
+                          Stretch="Uniform">
                         <Path.Style>
                             <Style TargetType="Path">
                                 <Setter Property="Data" Value="{StaticResource CollapseExpandIconGeometry}" />
-                                <Setter Property="Width" Value="17" />
-                                <Setter Property="Height" Value="17" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsCtrlPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=windows:AssetsWindow}}" Value="True">
                                         <Setter Property="Data" Value="{StaticResource CloseIconGeometry}" />
-                                        <Setter Property="Width" Value="15" />
+                                        <Setter Property="Width" Value="16" />
                                         <Setter Property="Height" Value="15" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -108,7 +112,7 @@
                 </Button.Content>
                 <Button.InputBindings>
                     <MouseBinding Command="{x:Static mui:WindowCommands.MinimizeWindow}" Gesture="LeftClick" />
-                    <MouseBinding Command="{x:Static mui:WindowCommands.CloseWindow}" Gesture="Ctrl+LeftClick" />
+                    <MouseBinding Command="{x:Static cmds:GeneralCommands.ShutdownCommand}" Gesture="Ctrl+LeftClick" />
                 </Button.InputBindings>
             </Button>
         </Grid>
@@ -122,13 +126,14 @@
     </mui:WindowBase.Style>
 
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+
         <!--  TITLE PREVIEW  -->
         <d:Border Margin="0,-32,0,0" Background="{StaticResource BackgroundFarBrush}">
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
 
-
+        <ItemsControl/>
 
     </Grid>
 </mui:WindowBase>

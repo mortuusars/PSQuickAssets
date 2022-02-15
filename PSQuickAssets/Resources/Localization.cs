@@ -3,6 +3,7 @@ using WPFLocalizeExtension.Engine;
 
 namespace PSQuickAssets.Resources
 {
+    //TODO: Default lang file. Folder.
     public class Localization
     {
         public static Localization Instance { get; } = new Localization();

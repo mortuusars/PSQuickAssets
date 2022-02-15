@@ -11,6 +11,7 @@ public partial class SettingsWindow : Window
     public SettingsWindow()
     {
         InitializeComponent();
+        //TODO: Placement
     }
 
     private void HeaderContainer_MouseMove(object sender, MouseEventArgs e)
@@ -38,7 +39,7 @@ public partial class SettingsWindow : Window
 
     void Window_Loaded(object sender, RoutedEventArgs e)
     {
-
+        //TODO: Create attached property?
         // Remove from ALT+TAB
         WindowInteropHelper wndHelper = new WindowInteropHelper(this);
         int exStyle = (int)GetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE);

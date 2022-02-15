@@ -7,23 +7,22 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Fonts.xaml" />
-                <ResourceDictionary Source="Resources/Icons.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Texts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Resources.xaml" />
 
+                <ResourceDictionary Source="Resources/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Icons.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Texts.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Tooltip.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ContextMenu.xaml" />
+                
                 <ResourceDictionary Source="Resources/Templates.xaml" />
                 <ResourceDictionary Source="Resources/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Services.xaml" />
 
-                <ResourceDictionary Source="Resources/TaskBarIcon.xaml" />
-
-                <x:Static Member="mortuusui:Resources.Instance" />
-
-                <!--<ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Themes/Generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/ResourcesDictionary.xaml" />-->
-
+                <ResourceDictionary Source="Resources/Styles/TaskBarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DropShadowEffect

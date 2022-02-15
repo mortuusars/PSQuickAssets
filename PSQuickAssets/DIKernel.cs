@@ -37,6 +37,8 @@ internal static class DIKernel
         services.AddSingleton<AssetsViewModel>();
         services.AddSingleton<MainViewModel>();
 
+        services.AddTransient<AssetsWindowViewModel>();
+
         services.AddTransient<TaskBarViewModel>();
 
         services.AddTransient<SettingsViewModel>();

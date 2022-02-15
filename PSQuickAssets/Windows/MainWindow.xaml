@@ -48,7 +48,7 @@
     <Window.Resources>
         <Style
             x:Key="{x:Type ToolTip}"
-            BasedOn="{StaticResource DarkToolTip}"
+            BasedOn="{StaticResource DefaultToolTip}"
             TargetType="ToolTip" />
 
         <Style

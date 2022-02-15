@@ -4,11 +4,15 @@ using System.Diagnostics;
 using System.Windows.Input;
 
 namespace PSQuickAssets.Commands;
+
 public class ShowAssetInExplorerCommand : ICommand
 {
-#pragma warning disable CS0067
-    public event EventHandler? CanExecuteChanged;
-#pragma warning restore CS0067
+    public event EventHandler? CanExecuteChanged
+    {
+        add { CommandManager.RequerySuggested += value; }
+        remove { CommandManager.RequerySuggested -= value; }
+    }
+
     public static ShowAssetInExplorerCommand Instance
     {
         get
@@ -20,7 +24,12 @@ public class ShowAssetInExplorerCommand : ICommand
     }
     private static ShowAssetInExplorerCommand? _instance;
 
-    public bool CanExecute(object? parameter) => true;
+    private ShowAssetInExplorerCommand() { }
+
+    public bool CanExecute(object? parameter)
+    {
+        return true;
+    }
 
     public void Execute(object? parameter)
     {

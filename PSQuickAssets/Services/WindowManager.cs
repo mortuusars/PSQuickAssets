@@ -1,8 +1,10 @@
-﻿using MTerminal.WPF;
+﻿using CommunityToolkit.Mvvm.Input;
+using MTerminal.WPF;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
@@ -30,14 +32,49 @@ public class WindowManager
         if (MainWindow?.IsShowing ?? false) HideMainWindow();
         else ShowMainWindow();
     }
+
     /// <summary>
     /// Hides main window.
     /// </summary>
     public void HideMainWindow() => MainWindow?.HideWithAnimation();
+
     /// <summary>
     /// Closes main window.
     /// </summary>
     public void CloseMainWindow() => MainWindow?.Close();
+
+    /// <summary>
+    /// Creates and shows <see cref="SettingsWindow"/>. If window is already opened - it will be activated and brought to foreground.
+    /// </summary>
+    internal void ShowSettingsWindow()
+    {
+        if (App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault() is SettingsWindow settingsWindow)
+        {
+            settingsWindow.Show();
+            settingsWindow.Activate();
+            return;
+        }
+
+        settingsWindow = new SettingsWindow();
+        settingsWindow.Owner = MainWindow;
+        settingsWindow.Show();
+    }
+
+    /// <summary>
+    /// Closes <see cref="SettingsWindow"/> if it was opened.
+    /// </summary>
+    /// <returns><see langword="true"/> if closed successfully.</returns>
+    internal bool CloseSettingsWindow()
+    {
+        if (App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault() is SettingsWindow settingsWindow)
+        {
+            settingsWindow.Close();
+            return true;
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Toggle state of the settings window. If settings window is closed - opens it. If opened - closes.
     /// </summary>
