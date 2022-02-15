@@ -10,6 +10,10 @@
                 xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                 xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                 xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
+                xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+                xmlns:local1="clr-namespace:PSQuickAssets.Views"
+                xmlns:assets="clr-namespace:PSQuickAssets.Assets;assembly=PSQuickAssets.Assets"
+                xmlns:system="clr-namespace:System;assembly=System.Runtime"
                 mc:Ignorable="d"
                 lex:LocalizeDictionary.DesignCulture="en"
                 lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -30,13 +34,12 @@
                 BorderBrush="#1a1a1a"
                 BorderThickness="2"
                 TitleBackground="#1a1a1a"
+                FontFamily="{StaticResource FontLight}"
                 DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
-        <KeyBinding Key="Esc"
-                    
-                    Modifiers="Shift" />
+        <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.ShutdownCommand}" />
 
         <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
         <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
@@ -133,7 +136,312 @@
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
 
-        <ItemsControl/>
+        <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
+                 Background="{x:Null}"
+                 BorderThickness="0"
+                 Margin="6"
+                 Foreground="{StaticResource ForegroundMainBrush}"
+                 SelectionMode="Extended"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.CanContentScroll="False"
+                 IsTabStop="False">
+
+            <d:ListBox.ItemsSource>
+                <x:Array Type="{x:Type assets:AssetGroup}">
+                    <assets:AssetGroup Name="Group">
+                        <assets:AssetGroup.Assets>
+                            <assets:Asset Path="Test asset" />
+                        </assets:AssetGroup.Assets>
+                    </assets:AssetGroup>
+                </x:Array>
+            </d:ListBox.ItemsSource>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+
+                    <!--  GROUP  -->
+                    <StackPanel>
+
+                        <Grid x:Name="GroupHeader" VerticalAlignment="Top">
+
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalAlignment="Left">
+
+                                <!--  EXPAND/COLLAPSE ASSETS  -->
+                                <Button x:Name="AssetsCollapser"
+                                        VerticalAlignment="Center"
+                                        Content="&#xE76C;"
+                                        FontFamily="{StaticResource SegoeMDL2Icons}"
+                                        FontSize="17"
+                                        FontWeight="Bold"
+                                        Padding="2"
+                                        RenderTransformOrigin="0.5, 0.5"
+                                        Command="{Binding ToggleExpandedCommand}">
+                                    <Button.RenderTransform>
+                                        <RotateTransform />
+                                    </Button.RenderTransform>
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource OpacityButton}">
+                                            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                                    <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                 By="90"
+                                                                                 Duration="0:0:0.12" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                 By="-90"
+                                                                                 Duration="0:0:0.12" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                                                    <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!--  GROUP NAME  -->
+                                <TextBlock Text="{Binding Name}"
+                                           Margin="6 0 0 0"
+                                           FontFamily="Lexend Regular"
+                                           VerticalAlignment="Center"
+                                           Opacity="0.6"
+                                           FontSize="15" />
+                            </StackPanel>
+                        </Grid>
+
+                        <ListBox ItemsSource="{Binding Assets}"
+                                 Background="{x:Null}"
+                                 BorderThickness="0"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 IsTabStop="False">
+
+                            <ListBox.CacheMode>
+                                <BitmapCache />
+                            </ListBox.CacheMode>
+
+                            <ListBox.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter />
+                                </ControlTemplate>
+                            </ListBox.Template>
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Background="{x:Null}"
+                                               IsItemsHost="True"
+                                               Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Focusable" Value="False" />
+                                    <Setter Property="Margin" Value="2"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border Name="ItemBorder"
+                                                        CornerRadius="5">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                                            <Setter Property="BorderThickness" Value="4"/>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="ItemBorder" Property="Background" Value="#555" />
+                                                        <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#555" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <!--  ASSET  -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <local1:AssetView SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+
+                        <!--  GROUP  -->
+                        <StackPanel Visibility="Collapsed">
+                            <!--  HEADER  -->
+                            <Grid Margin="3,7,3,0"
+                                  HorizontalAlignment="Stretch"
+                                  Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  EXPAND/COLLAPSE ASSETS  -->
+                                <controls:PathIcon Width="16"
+                                                   Height="16"
+                                                   Margin="0,0,4,0"
+                                                   Command="{Binding ToggleExpandedCommand}"
+                                                   Data="{StaticResource CollapseExpandIconGeometry}"
+                                                   Fill="{DynamicResource ForegroundLighterBrush}"
+                                                   FillMouseOver="{DynamicResource ForegroundMainBrush}"
+                                                   RenderTransformOrigin="0.5, 0.5">
+                                    <controls:PathIcon.RenderTransform>
+                                        <RotateTransform Angle="270" />
+                                    </controls:PathIcon.RenderTransform>
+                                    <controls:PathIcon.Style>
+                                        <Style TargetType="{x:Type controls:PathIcon}">
+                                            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                                    <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                 To="360"
+                                                                                 Duration="0:0:0.12" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                 To="270"
+                                                                                 Duration="0:0:0.12" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                                                    <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </controls:PathIcon.Style>
+                                </controls:PathIcon>
+
+                                <!--  NAME  -->
+                                <controls:EditableTextBlock Grid.Column="1"
+                                                            Margin="2,0"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            Foreground="{StaticResource TextColorBrush}"
+                                                            RenameValidation="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}, Path=DataContext.AssetsViewModel.IsGroupNameValid}"
+                                                            Text="{Binding Name}" />
+
+                                <!--  BUTTONS  -->
+                                <StackPanel x:Name="GroupButtons"
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            d:Visibility="Visible"
+                                            Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Style>
+                                    </StackPanel.Style>
+
+                                    <!--  REMOVE GROUP  -->
+                                    <controls:PathIcon Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.AssetsViewModel.RemoveGroupCommand}"
+                                                       CommandParameter="{Binding}"
+                                                       Data="{StaticResource CloseIconGeometry}"
+                                                       Fill="{DynamicResource ForegroundLighterBrush}"
+                                                       FillMouseOver="{DynamicResource ForegroundMainBrush}"
+                                                       ToolTip="{lex:Loc RemoveGroup}" />
+                                </StackPanel>
+
+
+                            </Grid>
+
+                            <ListBox x:Name="FileList"
+                                     d:ItemsSource="{Binding Assets}"
+                                     Background="{x:Null}"
+                                     BorderThickness="0"
+                                     Focusable="False"
+                                     ItemsSource="{Binding Assets}"
+                                     Visibility="{Binding IsExpanded, Converter={StaticResource BoolToVisibility}}">
+
+                                <ListBox.CacheMode>
+                                    <BitmapCache />
+                                </ListBox.CacheMode>
+
+                                <ListBox.Template>
+                                    <ControlTemplate>
+                                        <ItemsPresenter />
+                                    </ControlTemplate>
+                                </ListBox.Template>
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Margin="1"
+                                                   Background="{x:Null}"
+                                                   IsItemsHost="True"
+                                                   Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+
+                                <!--  ASSET  -->
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <local1:AssetView SnapsToDevicePixels="True" UseLayoutRounding="True" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Focusable" Value="False" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border Name="_Border"
+                                                            Padding="4"
+                                                            CornerRadius="5">
+                                                        <ContentPresenter />
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="true">
+                                                            <Setter TargetName="_Border" Property="Background" Value="#555" />
+                                                            <Setter TargetName="_Border" Property="BorderBrush" Value="#555" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+
+                        </StackPanel>
+                    </StackPanel>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+
+        </ListBox>
 
     </Grid>
 </mui:WindowBase>

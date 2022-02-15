@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MTerminal.WPF;
 
 namespace PSQuickAssets.ViewModels;
 
@@ -59,6 +60,19 @@ internal class AssetsViewModel : ObservableObject
         SaveGroupsAsyncCommand = new SaveGroupsAsyncCommand(this, assetManager, notificationService);
 
         LoadStoredGroupsAsync().SafeFireAndForget(ex => _notificationService.Notify("Failed to load saved asset groups: " + ex.Message, NotificationIcon.Error));
+
+        Terminal.Commands.Add(new TerminalCommand("sort", (_) =>
+        {
+            foreach (var group in AssetGroups)
+            {
+                var coll = group.Group.Assets;
+                var asset = coll.FirstOrDefault();
+                coll.Remove(asset);
+                coll.Insert(3, asset);
+
+
+            }
+        }));
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MTerminal.WPF;
 using PSQuickAssets.Assets;
 using Serilog;
 using System;
