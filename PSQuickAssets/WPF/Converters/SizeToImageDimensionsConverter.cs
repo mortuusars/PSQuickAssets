@@ -26,7 +26,7 @@ public class SizeToImageDimensionsConverter : IValueConverter
         if (size.IsEmpty)
             return "-";
 
-        return $"{size.Width}x{size.Height}";
+        return $"{size.Width}x{size.Height} px";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

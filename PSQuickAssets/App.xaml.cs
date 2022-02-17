@@ -74,8 +74,6 @@ public partial class App : Application
 
         if (Config.CheckUpdates)
             ServiceProvider.GetRequiredService<UpdateChecker>().CheckUpdatesAsync(Version).SafeFireAndForget();
-
-        new AssetsWindow().Show();
     }
 
     private void SetupGlobalHotkeys(WindowManager windowManager)

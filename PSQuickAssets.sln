@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		changelog.md = changelog.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadingSpinnerControl", "LoadingSpinnerControl\LoadingSpinnerControl.csproj", "{F105FED5-753F-4A4D-AE42-EDAC9DC9011C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Assets", "PSQuickAssets.Assets\PSQuickAssets.Assets.csproj", "{8B0B115D-1D26-433F-AC2E-B7F0C592A0F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Core", "PSQuickAssets.Core\PSQuickAssets.Core.csproj", "{D878F399-2696-48C0-B8C6-374B6099671B}"
@@ -41,10 +39,6 @@ Global
 		{84EF055D-901A-48B8-97EE-FF17E631D507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84EF055D-901A-48B8-97EE-FF17E631D507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84EF055D-901A-48B8-97EE-FF17E631D507}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F105FED5-753F-4A4D-AE42-EDAC9DC9011C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F105FED5-753F-4A4D-AE42-EDAC9DC9011C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F105FED5-753F-4A4D-AE42-EDAC9DC9011C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F105FED5-753F-4A4D-AE42-EDAC9DC9011C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B0B115D-1D26-433F-AC2E-B7F0C592A0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B0B115D-1D26-433F-AC2E-B7F0C592A0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B0B115D-1D26-433F-AC2E-B7F0C592A0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU

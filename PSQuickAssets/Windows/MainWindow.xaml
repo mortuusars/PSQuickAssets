@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="urn:gong-wpf-dragdrop"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:loadingspinnercontrol="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mortuusui="clr-namespace:MortuusUI;assembly=MortuusUI"
     xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
@@ -174,7 +173,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="{StaticResource BackgroundFarBrush}"
-            BorderBrush="{StaticResource MainBorder}"
+            BorderBrush="{StaticResource BorderMainBrush}"
             BorderThickness="2"
             CornerRadius="0"
             Effect="{StaticResource WindowDropShadow}"
@@ -190,7 +189,7 @@
             dd:DragDrop.DragHandler="{Binding}"
             dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDropTarget="True"
-            Background="{StaticResource MainBorder}"
+            Background="{StaticResource BorderMainBrush}"
             MouseDown="BG_MouseDown">
 
             <!--  HEADER BUTTONS  -->
@@ -273,8 +272,7 @@
             Grid.Row="1"
             Margin="8,0,8,8"
             VerticalAlignment="Top"
-            d:DataContext="{d:DesignInstance Type=vm:TestAssetsViewModel,
-                                             IsDesignTimeCreatable=True}"
+            d:DataContext="{d:DesignInstance Type=vm:TestAssetsViewModel, IsDesignTimeCreatable=True}"
             d:ItemsSource="{Binding AssetGroups}"
             Background="{x:Null}"
             BorderThickness="0"
@@ -527,7 +525,7 @@
             Padding="8,6"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Background="{StaticResource MainBorder}"
+            Background="{StaticResource BorderMainBrush}"
             BorderBrush="{StaticResource BorderLighter}"
             BorderThickness="2"
             CornerRadius="6"

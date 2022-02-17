@@ -121,6 +121,17 @@
                                     <SolidColorBrush Color="{StaticResource BackgroundCloserColor}" />
                                 </Border.Background>
 
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Opacity" Value="0.7"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
                                 <ContentPresenter
                                     x:Name="ContentSite"
                                     Grid.Row="0"
@@ -145,7 +156,7 @@
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="MouseOver"/>
                                     <VisualState x:Name="Disabled">
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
@@ -318,21 +329,37 @@
                             <ToggleButton IsChecked="{Binding Config.CheckUpdates}" />
                         </controls:SettingItemControl>
 
-                        <Separator />
-
-                        <controls:SettingItemControl Description="{lex:Loc Settings_DebugMode_Tooltip}" Header="{lex:Loc Settings_DebugMode}">
-                            <ToggleButton IsChecked="{Binding Config.DebugMode}" />
-                        </controls:SettingItemControl>
+                        
                     </StackPanel>
 
                 </TabItem>
+                
                 <TabItem Header="Assets">
                     <StackPanel>
                         <Separator Width="200" />
 
-                        <controls:SettingItemControl Description="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}" Header="{lex:Loc Settings_AddMaskIfDocumentHasSelection}">
+                        <controls:SettingItemControl Description="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}" 
+                                                     Header="{lex:Loc Settings_AddMaskIfDocumentHasSelection}">
                             <ToggleButton IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
                         </controls:SettingItemControl>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Experimental">
+                    <StackPanel>
+                        <Separator Width="200" />
+
+                        <controls:SettingItemControl Description="{lex:Loc Settings_DebugMode_Tooltip}" Header="{lex:Loc Settings_DebugMode}">
+                            <ToggleButton IsChecked="{Binding Config.DebugMode}" />
+                        </controls:SettingItemControl>
+                        
+                        <Separator />
+                        
+                        <controls:SettingItemControl Description="{lex:Loc Settings_MaximizedBorderFix_Tooltip}" 
+                                                     Header="{lex:Loc Settings_MaximizedBorderFix}">
+                            <ToggleButton IsChecked="{Binding Config.MaximizedWindowBorderFix}" />
+                        </controls:SettingItemControl>
+
                     </StackPanel>
                 </TabItem>
             </TabControl>

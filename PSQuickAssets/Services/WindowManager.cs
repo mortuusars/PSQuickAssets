@@ -11,17 +11,17 @@ namespace PSQuickAssets.Services;
 
 public class WindowManager
 {
-    public static MainWindow? MainWindow { get; private set; }
+    internal AssetsWindow? AssetsWindow { get; private set; }
 
     /// <summary>
     /// Shows main window. Creates it if needed.
     /// </summary>
     public void ShowMainWindow()
     {
-        if (MainWindow is null)
-            MainWindow = new MainWindow();
+        if (AssetsWindow is null)
+            AssetsWindow = new AssetsWindow();
 
-        MainWindow.Show();
+        AssetsWindow.Show();
     }
 
     /// <summary>
@@ -29,19 +29,28 @@ public class WindowManager
     /// </summary>
     public void ToggleMainWindow()
     {
-        if (MainWindow?.IsShowing ?? false) HideMainWindow();
-        else ShowMainWindow();
+        if (AssetsWindow?.IsVisible is true)
+            HideMainWindow();
+        else 
+            ShowMainWindow();
     }
 
     /// <summary>
     /// Hides main window.
     /// </summary>
-    public void HideMainWindow() => MainWindow?.HideWithAnimation();
+    public void HideMainWindow()
+    {
+        AssetsWindow?.Hide();
+    }
 
     /// <summary>
     /// Closes main window.
     /// </summary>
-    public void CloseMainWindow() => MainWindow?.Close();
+    public void CloseMainWindow()
+    {
+        AssetsWindow?.Close();
+        AssetsWindow = null;
+    }
 
     /// <summary>
     /// Creates and shows <see cref="SettingsWindow"/>. If window is already opened - it will be activated and brought to foreground.
@@ -56,7 +65,7 @@ public class WindowManager
         }
 
         settingsWindow = new SettingsWindow();
-        settingsWindow.Owner = MainWindow;
+        settingsWindow.Owner = AssetsWindow;
         settingsWindow.Show();
     }
 
@@ -86,7 +95,7 @@ public class WindowManager
         {
             settingsWindow = new SettingsWindow();
             settingsWindow.Show();
-            settingsWindow.Owner = MainWindow;
+            settingsWindow.Owner = AssetsWindow;
             settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
             settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 60;
         }
@@ -124,6 +133,6 @@ public class WindowManager
     /// <exception cref="Exception">Thrown if getting failed.</exception>
     public IntPtr GetMainWindowHandle()
     {
-        return new WindowInteropHelper(MainWindow).Handle;
+        return new WindowInteropHelper(AssetsWindow).Handle;
     }
 }

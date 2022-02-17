@@ -241,7 +241,7 @@ namespace PSQuickAssets.Windows
 
         private void ItemsContainer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            // Properly raize mouse scroll event without interfering with other controls.
+            // Properly raise mouse scroll event without interfering with other controls.
             if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
             {
                 e.Handled = true;

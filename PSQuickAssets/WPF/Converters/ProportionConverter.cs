@@ -15,6 +15,7 @@ namespace PSQuickAssets.WPF.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            //TODO: Fix:
             if (values.Length < 2)
                 throw new ArgumentException("'values' must contain two items: BitmapImage and double");
 

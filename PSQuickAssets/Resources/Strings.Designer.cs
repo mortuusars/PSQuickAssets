@@ -506,6 +506,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alternative maximized behavior.
+        /// </summary>
+        public static string Settings_MaximizedBorderFix {
+            get {
+                return ResourceManager.GetString("Settings_MaximizedBorderFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn this on if window is not displayed correctly when maximized..
+        /// </summary>
+        public static string Settings_MaximizedBorderFix_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_MaximizedBorderFix_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save settings and close this window.
         /// </summary>
         public static string Settings_SaveAndClose {
