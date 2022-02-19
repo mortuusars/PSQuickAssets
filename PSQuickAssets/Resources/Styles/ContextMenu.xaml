@@ -290,4 +290,14 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ContentMenuItem" TargetType="{x:Type MenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <ContentPresenter Content="{TemplateBinding Header}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

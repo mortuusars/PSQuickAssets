@@ -97,6 +97,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assets.
+        /// </summary>
+        public static string Assets {
+            get {
+                return ResourceManager.GetString("Assets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_AddFiles {
@@ -142,15 +151,6 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click.
-        /// </summary>
-        public static string Click {
-            get {
-                return ResourceManager.GetString("Click", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
@@ -169,11 +169,20 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ctrl+Click.
+        ///   Looks up a localized string similar to Copy.
         /// </summary>
-        public static string CtrlClick {
+        public static string Copy {
             get {
-                return ResourceManager.GetString("CtrlClick", resourceCulture);
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy name.
+        /// </summary>
+        public static string CopyName {
+            get {
+                return ResourceManager.GetString("CopyName", resourceCulture);
             }
         }
         
@@ -220,6 +229,33 @@ namespace PSQuickAssets.Resources {
         public static string Main_Close_Tooltip {
             get {
                 return ResourceManager.GetString("Main_Close_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click.
+        /// </summary>
+        public static string Mouse_Click {
+            get {
+                return ResourceManager.GetString("Mouse_Click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ctrl+Click.
+        /// </summary>
+        public static string Mouse_CtrlClick {
+            get {
+                return ResourceManager.GetString("Mouse_CtrlClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double Click.
+        /// </summary>
+        public static string Mouse_DoubleClick {
+            get {
+                return ResourceManager.GetString("Mouse_DoubleClick", resourceCulture);
             }
         }
         
@@ -373,6 +409,15 @@ namespace PSQuickAssets.Resources {
         public static string RemoveGroup {
             get {
                 return ResourceManager.GetString("RemoveGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        public static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
             }
         }
         

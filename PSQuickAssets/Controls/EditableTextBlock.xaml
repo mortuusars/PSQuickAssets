@@ -12,12 +12,11 @@
     MouseLeftButtonDown="root_MouseLeftButtonDown"
     mc:Ignorable="d">
 
-    <Grid MinWidth="10">
+    <Grid MinWidth="10" Cursor="IBeam">
         <TextBlock
             Name="DisplayBox"
             d:Text="Testing"
             Background="Transparent"
-            Cursor="IBeam"
             Foreground="{Binding Foreground, ElementName=root}"
             Text="{Binding Text, ElementName=root}"
             Visibility="{Binding IsEditing, ElementName=root, Converter={StaticResource BoolToVisibilityInverted}}" />

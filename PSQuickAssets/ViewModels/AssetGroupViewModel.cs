@@ -2,6 +2,8 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using MTerminal.WPF;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Resources;
+using PSQuickAssets.Utils.SystemDialogs;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,8 @@ internal class AssetGroupViewModel : ObservableObject
 
     public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
 
+    public int AssetCount { get => Group.Assets.Count; }
+
     public AssetGroup Group { get; }
     public PhotoshopCommandsViewModel PhotoshopCommands { get; }
     public ICommand ToggleExpandedCommand { get; }
@@ -46,6 +50,12 @@ internal class AssetGroupViewModel : ObservableObject
 
         ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
         RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
+
+
+        Group.Assets.CollectionChanged += (s, e) =>
+        {
+            OnPropertyChanged(nameof(AssetCount));
+        };
     }
 
     /// <summary>

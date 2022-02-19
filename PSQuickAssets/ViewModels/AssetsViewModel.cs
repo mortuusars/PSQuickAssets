@@ -27,6 +27,8 @@ internal class AssetsViewModel : ObservableObject
     public Func<string, bool> IsGroupNameValid { get; }
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
+    public ICommand SelectAndAddFilesToGroupCommand { get; }
+
     public ICommand AddFolderCommand { get; }
     public ICommand AddFolderWithSubfoldersCommand { get; }
     public ICommand AddFilesCommand { get; }
@@ -51,6 +53,11 @@ internal class AssetsViewModel : ObservableObject
         _logger = logger;
 
         IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
+
+        SelectAndAddFilesToGroupCommand = new RelayCommand<AssetGroupViewModel>(
+            (group) => SelectAndAddFilesToGroup(group).SafeFireAndForget(ex => 
+                    notificationService.Notify("Error occured while adding assets to the group:\n" + ex.Message, NotificationIcon.Error)));
+
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
         AddEmptyGroupCommand = new RelayCommand(() => CreateEmptyGroup());
@@ -61,18 +68,34 @@ internal class AssetsViewModel : ObservableObject
 
         LoadStoredGroupsAsync().SafeFireAndForget(ex => _notificationService.Notify("Failed to load saved asset groups: " + ex.Message, NotificationIcon.Error));
 
-        Terminal.Commands.Add(new TerminalCommand("sort", (_) =>
-        {
-            foreach (var group in AssetGroups)
-            {
-                var coll = group.Group.Assets;
-                var asset = coll.FirstOrDefault();
-                coll.Remove(asset);
-                coll.Insert(3, asset);
+        //Terminal.Commands.Add(new TerminalCommand("sort", (_) =>
+        //{
+        //    foreach (var group in AssetGroups)
+        //    {
+        //        var coll = group.Group.Assets;
+        //        var asset = coll.FirstOrDefault();
+        //        coll.Remove(asset);
+        //        coll.Insert(3, asset);
 
 
-            }
-        }));
+        //    }
+        //}));
+    }
+
+    private async Task SelectAndAddFilesToGroup(AssetGroupViewModel? group)
+    {
+        if (group is null)
+            throw new ArgumentNullException(nameof(group));
+
+        string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+
+        if (files.Length == 0)
+            return;
+
+        //TODO: Better IsLoading:
+        _isLoading = true;
+        await AddAssetsToGroup(group, files);
+        _isLoading = false;
     }
 
     /// <summary>
@@ -96,6 +119,8 @@ internal class AssetsViewModel : ObservableObject
         IsLoading = true;
         await _assetManager.LoadGroupsToCollectionAsync(populatedCollection);
         IsLoading = false;
+
+        SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
     }
 
     /// <summary>

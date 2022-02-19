@@ -123,6 +123,9 @@
   <data name="AddAsLayer" xml:space="preserve">
     <value>Add as layer</value>
   </data>
+  <data name="Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
   <data name="Assets_AddFiles" xml:space="preserve">
     <value>Add Files</value>
   </data>
@@ -144,17 +147,17 @@
   <data name="Asset_ShowFileLocation" xml:space="preserve">
     <value>Show file location</value>
   </data>
-  <data name="Click" xml:space="preserve">
-    <value>Click</value>
-  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
   </data>
-  <data name="CtrlClick" xml:space="preserve">
-    <value>Ctrl+Click</value>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CopyName" xml:space="preserve">
+    <value>Copy name</value>
   </data>
   <data name="Expand" xml:space="preserve">
     <value>Expand</value>
@@ -171,6 +174,15 @@
   <data name="Main_Close_Tooltip" xml:space="preserve">
     <value>Hide
 Ctrl+Click: Exit</value>
+  </data>
+  <data name="Mouse_Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="Mouse_CtrlClick" xml:space="preserve">
+    <value>Ctrl+Click</value>
+  </data>
+  <data name="Mouse_DoubleClick" xml:space="preserve">
+    <value>Double Click</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
@@ -222,6 +234,9 @@ Ctrl+Click: Exit</value>
   </data>
   <data name="RemoveGroup" xml:space="preserve">
     <value>Remove Group</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
   </data>
   <data name="SelectAssets" xml:space="preserve">
     <value>Select Assets</value>

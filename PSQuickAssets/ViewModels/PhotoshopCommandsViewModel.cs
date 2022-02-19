@@ -23,6 +23,7 @@ internal class PhotoshopCommandsViewModel
     private readonly INotificationService _notificationService;
     private readonly IConfig _config;
 
+    // TODO: Redo. This is hardly resembling a viewmodel.
     public PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, IConfig config)
     {
         _windowManager = windowManager;

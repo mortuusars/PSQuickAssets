@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mui="clr-namespace:MortuusUI;assembly=MortuusUI"
     xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
+    xmlns:muicontrols="clr-namespace:MortuusUI.Controls;assembly=MortuusUI"
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     xmlns:windows="clr-namespace:PSQuickAssets.Windows"
     xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
@@ -15,7 +16,7 @@
     xmlns:local1="clr-namespace:PSQuickAssets.Views"
     xmlns:assets="clr-namespace:PSQuickAssets.Assets;assembly=PSQuickAssets.Assets"
     xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime" 
     mc:Ignorable="d"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -130,7 +131,8 @@
 
 
     <Grid x:Name="ContentRoot"
-          Background="Transparent"> <!-- Background must be set to "Transparent" for InputBindings to work on whole area.-->
+          Background="Transparent">
+        <!-- Background must be set to "Transparent" for InputBindings to work on whole area.-->
         <Grid.InputBindings>
             <!-- Defining scroll size-change hotkeys in the "Content" grid because WindowChrome's CaptionHeight prevents 
                  hotkey working in the empty space of title bar, only when mouse is over some control.  -->
@@ -142,6 +144,8 @@
         <d:Border Margin="0,-32,0,0" Background="{StaticResource BackgroundFarBrush}">
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
+
+
 
         <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
                  Background="{x:Null}"
@@ -185,7 +189,81 @@
                 <DataTemplate>
 
                     <!--  GROUP  -->
-                    <StackPanel>
+                    <StackPanel Background="Transparent"
+                                Tag="{Binding ElementName=GroupName}">
+                        <StackPanel.ContextMenu>
+                            <ContextMenu FontSize="13"
+                                         FontFamily="{StaticResource FontMedium}">
+
+                                <!-- GROUP INFO -->
+                                <MenuItem Style="{StaticResource ContentMenuItem}">
+                                    <MenuItem.Header>
+                                        <StackPanel Margin="8"
+                                                    VerticalAlignment="Top"
+                                                    HorizontalAlignment="Stretch">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}"
+                                                       FontSize="16"
+                                                           Grid.Column="0"
+                                                       VerticalAlignment="Top"
+                                                       HorizontalAlignment="Left"/>
+                                                <StackPanel Orientation="Horizontal"
+                                                            Grid.Column="1"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Right">
+                                                    <TextBlock Text="{Binding AssetCount}"
+                                                           Margin="30 0 4 0"/>
+                                                    <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Assets}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </MenuItem.Header>
+                                </MenuItem>
+
+                                <Separator/>
+
+                                <!--SELECT AND ADD ASSETS-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
+                                          Command="{Binding AssetsViewModel.SelectAndAddFilesToGroupCommand, Source={StaticResource ViewModelLocator}}"
+                                          CommandParameter="{Binding Path=PlacementTarget.DataContext, 
+                                                    RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xF8AA;" FontSize="15" FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   Foreground="{StaticResource ForegroundMainBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                
+                                <Separator/>
+
+                                <!--RENAME-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}"
+                                          Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE8AC;" FontSize="17" FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   Foreground="#99A8D6"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <Separator/>
+
+                                <!--REMOVE-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:RemoveGroup}"
+                                          Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
+                                          CommandParameter="{Binding Path=PlacementTarget.DataContext, 
+                                                    RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE74D;" FontSize="17" FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   Foreground="#DC6767"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
 
                         <Grid x:Name="GroupHeader" VerticalAlignment="Top">
 
@@ -199,7 +277,7 @@
                                         VerticalAlignment="Center"
                                         Content="&#xE76C;"
                                         FontFamily="{StaticResource SegoeMDL2Icons}"
-                                        FontSize="17"
+                                        FontSize="16"
                                         FontWeight="Bold"
                                         Padding="2"
                                         RenderTransformOrigin="0.5, 0.5"
@@ -240,13 +318,35 @@
                                     </Button.Style>
                                 </Button>
 
-                                <!--  GROUP NAME  -->
-                                <TextBlock Text="{Binding Name}"
-                                           Margin="5 0 0 0"
-                                           FontFamily="{StaticResource FontMedium}"
-                                           VerticalAlignment="Center"
-                                           Opacity="0.6"
-                                           FontSize="14" />
+                                <muicontrols:ToggleTextBox x:Name="GroupName"
+                                                           Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                           Margin="5 0 0 0"
+                                                           FontFamily="{StaticResource FontMedium}"
+                                                           FontSize="14"
+                                                           Opacity="0.6"
+                                                           BorderThickness="0"
+                                                           Background="Transparent"
+                                                           Foreground="{StaticResource ForegroundMainBrush}"
+                                                           FocusVisualStyle="{StaticResource BracketsFocusVisual}"
+                                                           SelectionBrush="{StaticResource ForegroundIntenseBrush}">
+                                    <muicontrols:ToggleTextBox.EditModeActivationGesture>
+                                        <MouseGesture MouseAction="LeftDoubleClick"/>
+                                    </muicontrols:ToggleTextBox.EditModeActivationGesture>
+                                    <muicontrols:ToggleTextBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Copy}"
+                                                      InputGestureText="Ctrl+C"
+                                                      Command="{x:Static cmds:GeneralCommands.TextBoxCopyCommand}"
+                                                      CommandParameter="{Binding Path=PlacementTarget, 
+                                                                  RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="&#xE8C8;" FontSize="17" FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   Foreground="#78B4D9"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </muicontrols:ToggleTextBox.ContextMenu>
+                                </muicontrols:ToggleTextBox>
                             </StackPanel>
                         </Grid>
 
@@ -311,6 +411,15 @@
 
                                     <Grid x:Name="AssetRoot" Cursor="Hand">
 
+                                        <Grid.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" 
+                                                          Command="{Binding Path=AssetsViewModel.PhotoshopCommands.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
+                                                          CommandParameter="{Binding}"/>
+                                            <MouseBinding Gesture="Ctrl+LeftClick"
+                                                          Command="{Binding Path=AssetsViewModel.PhotoshopCommands.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </Grid.InputBindings>
+                                        
                                         <Grid.ToolTip>
                                             <StackPanel MaxWidth="400">
                                                 <TextBlock FontSize="16"
@@ -380,7 +489,7 @@
                                                        Foreground="{StaticResource ForegroundMainBrush}"
                                                        FontFamily="{StaticResource FontMedium}"
                                                        TextAlignment="Justify"
-                                                       TextWrapping="Wrap" />
+                                                       TextWrapping="NoWrap"/>
                                         </StackPanel>
 
                                     </Grid>

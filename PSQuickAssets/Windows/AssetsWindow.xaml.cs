@@ -71,10 +71,4 @@ public partial class AssetsWindow : WindowBase
             parent?.RaiseEvent(eventArg);
         }
     }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        bool prev = (bool)GetValue(WindowChromeFix.FixMaximizedOverflowProperty);
-        this.SetValue(WindowChromeFix.FixMaximizedOverflowProperty, !prev);
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using Ookii.Dialogs.Wpf;
 using System;
+using System.Windows.Markup;
 
 namespace PSQuickAssets.Utils.SystemDialogs
 {
