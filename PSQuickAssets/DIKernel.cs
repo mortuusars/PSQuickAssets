@@ -45,8 +45,6 @@ internal static class DIKernel
 
         services.AddTransient<AssetsWindowViewModel>();
 
-        services.AddTransient<TaskBarViewModel>();
-
         services.AddTransient<SettingsViewModel>();
 
         services.AddTransient<UpdateChecker>();

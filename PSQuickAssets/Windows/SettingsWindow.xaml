@@ -310,6 +310,12 @@
                                     ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
                             </Border>
                         </controls:SettingItemControl>
+                        
+                        <Separator />
+
+                        <controls:SettingItemControl Description="{lex:Loc Settings_MinimizeInsteadOfHiding_Tooltip}" Header="{lex:Loc Settings_MinimizeInsteadOfHiding}">
+                            <ToggleButton IsChecked="{Binding Config.MinimizeWindowInsteadOfHiding}" />
+                        </controls:SettingItemControl>
 
                         <Separator />
 

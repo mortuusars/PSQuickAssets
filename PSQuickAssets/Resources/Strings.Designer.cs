@@ -614,7 +614,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Window open/close hotkey.
+        ///   Looks up a localized string similar to Window show/hide hotkey.
         /// </summary>
         public static string Settings_ToggleMainWindowHotkey {
             get {

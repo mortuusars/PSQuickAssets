@@ -98,6 +98,25 @@
                               Stretch="Uniform" />
                     </Button.Content>
                 </Button>
+
+                <!--<Separator />-->
+
+                <!--  ADD BUTTON  -->
+                <!--<Button Padding="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource OpacityButton}"
+                        Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
+                        ToolTip="{lex:Loc Terminal}"
+                        Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+                    <Button.Content>
+                        <Path Height="16"
+                              Data="{StaticResource TerminalIconGeomerty}"
+                              Fill="{StaticResource ForegroundMainBrush}"
+                              Stretch="Uniform" />
+                    </Button.Content>
+                </Button>-->
+                
             </StackPanel>
 
             <!--  HIDE/CLOSE BUTTON  -->
@@ -128,7 +147,7 @@
                     </Path>
                 </Button.Content>
                 <Button.InputBindings>
-                    <MouseBinding Command="{x:Static mui:WindowCommands.MinimizeWindow}" Gesture="LeftClick" />
+                    <MouseBinding Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}" Gesture="LeftClick" />
                     <MouseBinding Command="{x:Static cmds:GeneralCommands.Shutdown}" Gesture="Ctrl+LeftClick" />
                 </Button.InputBindings>
             </Button>

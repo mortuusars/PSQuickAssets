@@ -15,6 +15,7 @@ namespace PSQuickAssets;
 internal interface IConfig : INotifyPropertyChanged
 {
     string ShowHideWindowHotkey { get; set; }
+    bool MinimizeWindowInsteadOfHiding { get; set; }
     double ThumbnailSize { get; set; }
     bool AlwaysOnTop { get; set; }
     bool HideWindowIfClickedOutside { get; set; }
@@ -30,24 +31,26 @@ internal interface IConfig : INotifyPropertyChanged
 internal class Config : ConfigBase, IConfig
 {
     public string ShowHideWindowHotkey { get => _showHideWindowHotkey.Value; set => _showHideWindowHotkey.SetValue(value); }
+    public bool MinimizeWindowInsteadOfHiding { get => _minimizeWindowInsteadOfHiding.Value; set => _minimizeWindowInsteadOfHiding.SetValue(value); }
     public double ThumbnailSize { get => _thumbnailSize.Value; set => _thumbnailSize.SetValue(value); }
     public bool AlwaysOnTop { get => _alwaysOnTop.Value; set => _alwaysOnTop.SetValue(value); }
     public bool HideWindowIfClickedOutside { get => _hideWindowIfClickedOutside.Value; set => _hideWindowIfClickedOutside.SetValue(value); }
     public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
-    public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
     public bool CheckUpdates { get => _checkUpdates.Value; set => _checkUpdates.SetValue(value); }
 
     // Experimental settings:
+    public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
     public bool MaximizedWindowBorderFix { get => _maximizedWindowBorderFix.Value; set => _maximizedWindowBorderFix.SetValue(value); }
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
+    private readonly ConfigProperty<bool> _minimizeWindowInsteadOfHiding;
     private readonly ConfigProperty<double> _thumbnailSize;
     private readonly ConfigProperty<bool> _alwaysOnTop;
     private readonly ConfigProperty<bool> _hideWindowIfClickedOutside;
     private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
-    private readonly ConfigProperty<bool> _debugMode;
     private readonly ConfigProperty<bool> _checkUpdates;
 
+    private readonly ConfigProperty<bool> _debugMode;
     private readonly ConfigProperty<bool> _maximizedWindowBorderFix;
 
     private ILogger? _logger;
@@ -56,12 +59,14 @@ internal class Config : ConfigBase, IConfig
     public Config()
     {
         _showHideWindowHotkey = RegisterProperty(nameof(ShowHideWindowHotkey), "Ctrl + Alt + A");
+        _minimizeWindowInsteadOfHiding = RegisterProperty(nameof(MinimizeWindowInsteadOfHiding), true);
         _thumbnailSize = RegisterProperty(nameof(ThumbnailSize), 60.0);
         _alwaysOnTop = RegisterProperty(nameof(AlwaysOnTop), true);
         _hideWindowIfClickedOutside = RegisterProperty(nameof(HideWindowIfClickedOutside), true);
         _addMaskIfDocumentHasSelection = RegisterProperty(nameof(AddMaskIfDocumentHasSelection), true);
-        _debugMode = RegisterProperty(nameof(DebugMode), false);
         _checkUpdates = RegisterProperty(nameof(CheckUpdates), true);
+
+        _debugMode = RegisterProperty(nameof(DebugMode), false);
         _maximizedWindowBorderFix = RegisterProperty(nameof(MaximizedWindowBorderFix), true);
 
         Serializer = new JsonConfigSerializer(msg => _logger?.Error($"[Config] {msg}"))

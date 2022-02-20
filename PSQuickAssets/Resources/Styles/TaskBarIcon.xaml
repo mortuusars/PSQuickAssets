@@ -7,9 +7,8 @@
                     xmlns:local="clr-namespace:PSQuickAssets">
 
     <tb:TaskbarIcon x:Key="TaskBarIcon"
-                    DataContext="{Binding TaskBarViewModel, Source={StaticResource ViewModelLocator}}"
                     IconSource="../Images/psquickassets-size.ico"
-                    LeftClickCommand="{Binding ShowWindowCommand}"
+                    LeftClickCommand="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}"
                     lex:LocalizeDictionary.DesignCulture="en"
                     lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                     lex:ResxLocalizationProvider.DefaultDictionary="Strings">
@@ -20,14 +19,13 @@
         </tb:TaskbarIcon.TrayToolTip>
 
         <tb:TaskbarIcon.ContextMenu>
-            <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13"
-                         DataContext="{Binding TaskBarViewModel, Source={StaticResource ViewModelLocator}}">
+            <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
 
 
-                <!--  MAIN WINDOW  -->
+                <!-- SHOW/HIDE MAIN WINDOW  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_ShowMainWindow}"
-                          Command="{Binding ShowWindowCommand}"
-                          InputGestureText="{Binding Config.ShowHideWindowHotkey}">
+                          Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}"
+                          InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="15"
                                            Data="{StaticResource OpenIconGeometry}"
@@ -35,10 +33,10 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <!--  TERMINAL  -->
+                <!-- SHOW/HIDE TERMINAL  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_ShowTerminal}" 
                           Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
-                          Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+                          Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="15"
                                            Data="{StaticResource TerminalIconGeomerty}"
@@ -48,9 +46,9 @@
 
                 <Separator />
 
-                <!--  SETTINGS  -->
+                <!-- SHOW/HIDE SETTINGS  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_Settings}" 
-                          Command="{Binding SettingsCommand}">
+                          Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="15"
                                            Data="{StaticResource SettingsIconGeometry}"

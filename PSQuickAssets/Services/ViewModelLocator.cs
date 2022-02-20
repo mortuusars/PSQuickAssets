@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PSQuickAssets.ViewModels;
 using System;
 
-namespace PSQuickAssets.ViewModels;
+namespace PSQuickAssets.Services;
 
 internal class ViewModelLocator
 {

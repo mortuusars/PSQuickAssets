@@ -305,7 +305,7 @@ Esc to cancel.</value>
     <value>Thumbnail Size</value>
   </data>
   <data name="Settings_ToggleMainWindowHotkey" xml:space="preserve">
-    <value>Window open/close hotkey</value>
+    <value>Window show/hide hotkey</value>
   </data>
   <data name="Settings_ToggleMainWindowHotkey_Info" xml:space="preserve">
     <value>Works globally</value>

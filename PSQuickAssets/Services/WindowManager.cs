@@ -29,10 +29,12 @@ public class WindowManager
     /// </summary>
     public void ToggleMainWindow()
     {
-        if (AssetsWindow?.IsVisible is true)
-            HideMainWindow();
-        else 
-            ShowMainWindow();
+        AssetsWindow?.ToggleVisibility();
+
+        //if (AssetsWindow?.IsVisible is true)
+        //    HideMainWindow();
+        //else 
+        //    ShowMainWindow();
     }
 
     /// <summary>
