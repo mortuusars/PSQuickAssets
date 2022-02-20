@@ -214,8 +214,8 @@ namespace PSQuickAssets.Windows
 
                 if (element is AssetView assetView)
                 {
-                    var menuItem = assetView.OpenInExplorerMenuItem;
-                    menuItem.Command.Execute(assetView.DataContext);
+                    //var menuItem = assetView.OpenInExplorerMenuItem;
+                    //menuItem.Command.Execute(assetView.DataContext);
                 }
             }
         }

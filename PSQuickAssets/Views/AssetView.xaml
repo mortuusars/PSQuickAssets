@@ -81,7 +81,7 @@
 
                 <Separator />
 
-                <!--  Open with shell  -->
+                <!--  Open with shell  --><!--
                 <MenuItem
                     x:Name="OpenWithShellMenuItem"
                     Command="{x:Static commands:OpenAssetWithShellCommand.Instance}"
@@ -95,10 +95,10 @@
                                 Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
 
                 <!--  Show in explorer  -->
-                <MenuItem
+                <!--<MenuItem
                     x:Name="OpenInExplorerMenuItem"
                     Command="{x:Static commands:ShowAssetInExplorerCommand.Instance}"
                     CommandParameter="{Binding}"
@@ -112,7 +112,7 @@
                                 Stretch="Uniform" />
                         </Viewbox>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
 
                 <Separator />
 

@@ -1,9 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MTerminal.WPF;
 using PSQuickAssets.Assets;
-using PSQuickAssets.Resources;
-using PSQuickAssets.Utils.SystemDialogs;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -16,8 +13,6 @@ namespace PSQuickAssets.ViewModels;
 
 internal class AssetGroupViewModel : ObservableObject
 {
-    private readonly ILogger _logger;
-
     public string Name { get => Group.Name; set => Rename(value); }
 
     public bool IsExpanded
@@ -39,8 +34,11 @@ internal class AssetGroupViewModel : ObservableObject
 
     public AssetGroup Group { get; }
     public PhotoshopCommandsViewModel PhotoshopCommands { get; }
+
     public ICommand ToggleExpandedCommand { get; }
     public ICommand RemoveAssetCommand { get; }
+
+    private readonly ILogger _logger;
 
     public AssetGroupViewModel(AssetGroup assetGroup, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
     {

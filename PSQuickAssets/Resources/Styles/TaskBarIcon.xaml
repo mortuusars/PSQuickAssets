@@ -62,7 +62,7 @@
 
                 <!--  EXIT  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_Exit}" 
-                          Command="{x:Static cmds:GeneralCommands.ShutdownCommand}">
+                          Command="{x:Static cmds:GeneralCommands.Shutdown}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="12"
                                            Data="{StaticResource CloseIconGeometry}"

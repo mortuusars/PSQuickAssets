@@ -187,6 +187,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error occured while adding assets.
+        /// </summary>
+        public static string Error_AddingAssetsFailed {
+            get {
+                return ResourceManager.GetString("Error_AddingAssetsFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand.
         /// </summary>
         public static string Expand {

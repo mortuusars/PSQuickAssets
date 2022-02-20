@@ -27,6 +27,13 @@ internal class AssetsViewModel : ObservableObject
     public Func<string, bool> IsGroupNameValid { get; }
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
+
+    
+
+
+    public ICommand AddNewGroupFromFilesCommand { get; set; } 
+
+
     public ICommand SelectAndAddFilesToGroupCommand { get; }
 
     public ICommand AddFolderCommand { get; }
@@ -43,7 +50,8 @@ internal class AssetsViewModel : ObservableObject
     private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
 
-    public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel, INotificationService notificationService, ILogger logger)
+    public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel, 
+        INotificationService notificationService, ILogger logger, SelectAndAddAssetsToGroupCommand selectAndAddAssetsToGroup)
     {
         AssetGroups = new ObservableCollection<AssetGroupViewModel>();
         PhotoshopCommands = photoshopCommandsViewModel;
@@ -54,9 +62,11 @@ internal class AssetsViewModel : ObservableObject
 
         IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
 
-        SelectAndAddFilesToGroupCommand = new RelayCommand<AssetGroupViewModel>(
-            (group) => SelectAndAddFilesToGroup(group).SafeFireAndForget(ex => 
-                    notificationService.Notify("Error occured while adding assets to the group:\n" + ex.Message, NotificationIcon.Error)));
+        SelectAndAddFilesToGroupCommand = selectAndAddAssetsToGroup;
+
+        //SelectAndAddFilesToGroupCommand = new RelayCommand<AssetGroupViewModel>(
+        //    (group) => SelectAndAddFilesToGroup(group).SafeFireAndForget(ex => 
+        //            notificationService.Notify("Error occured while adding assets to the group:\n" + ex.Message, NotificationIcon.Error)));
 
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
@@ -67,6 +77,8 @@ internal class AssetsViewModel : ObservableObject
         SaveGroupsAsyncCommand = new SaveGroupsAsyncCommand(this, assetManager, notificationService);
 
         LoadStoredGroupsAsync().SafeFireAndForget(ex => _notificationService.Notify("Failed to load saved asset groups: " + ex.Message, NotificationIcon.Error));
+
+        AddNewGroupFromFilesCommand = new RelayCommand<string[]>((files) => AddGroupFromFiles(files.ToList()).SafeFireAndForget());
 
         //Terminal.Commands.Add(new TerminalCommand("sort", (_) =>
         //{

@@ -159,6 +159,9 @@
   <data name="CopyName" xml:space="preserve">
     <value>Copy name</value>
   </data>
+  <data name="Error_AddingAssetsFailed" xml:space="preserve">
+    <value>Error occured while adding assets</value>
+  </data>
   <data name="Expand" xml:space="preserve">
     <value>Expand</value>
   </data>

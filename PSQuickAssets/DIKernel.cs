@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 //using Serilog;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Commands;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.Utils;
@@ -19,6 +20,7 @@ internal static class DIKernel
     {
         IServiceCollection services = new ServiceCollection();
 
+        services.AddSingleton<IStatusService, StatusService>();
         services.AddSingleton<INotificationService, TaskbarNotificationService>();
         services.AddSingleton<ILogger>(Logging.CreateLogger());
         services.AddSingleton<IConfig>(p => Config.Deserialize(p.GetRequiredService<ILogger>()));
@@ -34,6 +36,10 @@ internal static class DIKernel
         services.AddSingleton<AssetManager>((provider) => new AssetManager(App.AppDataFolder + "/assets/", provider.GetRequiredService<ILogger>()));
         services.AddSingleton<PhotoshopCommandsViewModel>();
 
+
+        RegisterCommands(services);
+
+
         services.AddSingleton<AssetsViewModel>();
         services.AddSingleton<MainViewModel>();
 
@@ -46,5 +52,10 @@ internal static class DIKernel
         services.AddTransient<UpdateChecker>();
 
         return services.BuildServiceProvider();
+    }
+
+    private static void RegisterCommands(IServiceCollection services)
+    {
+        services.AddTransient<SelectAndAddAssetsToGroupCommand>();
     }
 }
