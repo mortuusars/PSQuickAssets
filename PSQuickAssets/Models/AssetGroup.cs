@@ -1,9 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using PSQuickAssets.Assets;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace PSQuickAssets.Assets;
+namespace PSQuickAssets.Models;
 
-public class AssetGroup
+internal class AssetGroup
 {
     /// <summary>
     /// Name of the group.
@@ -26,35 +31,26 @@ public class AssetGroup
     /// <param name="name">Name of the group.</param>
     /// <param name="assets">Asset collection.</param>
     /// <param name="isExpanded">Indicates whether the group contents is expanded.</param>
-    public AssetGroup(string name, ObservableCollection<Asset> assets, bool isExpanded)
+    public AssetGroup(string name, ObservableCollection<Asset> assets)
     {
         Name = name;
         Assets = assets;
-        IsExpanded = isExpanded;
+        IsExpanded = true;
     }
 
     /// <summary>
     /// Initializes new instance of Asset Group.
     /// </summary>
-    public AssetGroup()
-    {
-        Name = string.Empty;
-        Assets = new ObservableCollection<Asset>();
-        IsExpanded = true;
-    }
+    public AssetGroup() : this(string.Empty, new ObservableCollection<Asset>()) { }
 
     /// <summary>
     /// Initializes new instance of Asset Group with a specified name.
     /// </summary>
-    public AssetGroup(string name) : this()
-    {
-        Name = name;
-    }
+    public AssetGroup(string name) : this(name, new ObservableCollection<Asset>()) { }
 
     /// <summary>
     /// Prints group name and all of group's assets.
     /// </summary>
-    /// <returns></returns>
     public override string ToString()
     {
         StringBuilder sb = new();

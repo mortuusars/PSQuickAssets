@@ -1,4 +1,5 @@
-﻿using AsyncAwaitBestPractices.MVVM;
+﻿using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices.MVVM;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
@@ -26,11 +27,7 @@ internal class SaveGroupsAsyncCommand : IAsyncCommand
     }
 
     public bool CanExecute(object? parameter) => true;
-
-    public void Execute(object? parameter)
-    {
-        ExecuteAsync().GetAwaiter().GetResult();
-    }
+    public void Execute(object? parameter) => ExecuteAsync().SafeFireAndForget();
 
     public async Task ExecuteAsync()
     {

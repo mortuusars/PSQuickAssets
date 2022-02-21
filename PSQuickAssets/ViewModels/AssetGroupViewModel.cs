@@ -11,10 +11,44 @@ using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
 
+/// <summary>
+/// Describes how duplicates should be handled.
+/// </summary>
+public enum DuplicateHandling
+{
+    Deny,
+    Allow
+}
+
 internal class AssetGroupViewModel : ObservableObject
 {
-    public string Name { get => Group.Name; set => Rename(value); }
+    public PhotoshopCommandsViewModel PhotoshopCommands { get; }
 
+    /// <summary>
+    /// Gets or sets name of the group.
+    /// </summary>
+    public string Name
+    {
+        get => Group.Name;
+        set
+        {
+            if (Group.Name == value)
+                return;
+
+            _logger.Information($"[Group] Renaming group '{Name}' to '{value}'");
+            Group.Name = value;
+            OnPropertyChanged(nameof(Name));
+        }
+    }
+
+    /// <summary>
+    /// Gets the Collection view of the assets in a group.
+    /// </summary>
+    public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
+
+    /// <summary>
+    /// Gets or sets the property that indicates that the group contents should be visible.
+    /// </summary>
     public bool IsExpanded
     {
         get => Group.IsExpanded;
@@ -27,33 +61,33 @@ internal class AssetGroupViewModel : ObservableObject
             }
         }
     }
-
-    public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
-
     public int AssetCount { get => Group.Assets.Count; }
 
+    /// <summary>
+    /// Gets the group instance.
+    /// </summary>
     public AssetGroup Group { get; }
-    public PhotoshopCommandsViewModel PhotoshopCommands { get; }
 
+    //TODO: Hotkey to collapse
     public ICommand ToggleExpandedCommand { get; }
     public ICommand RemoveAssetCommand { get; }
 
+
+    private readonly Func<string, List<string>> _groupNameValidation;
     private readonly ILogger _logger;
 
-    public AssetGroupViewModel(AssetGroup assetGroup, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
+    public AssetGroupViewModel(AssetGroup assetGroup, Func<string, List<string>> groupNameValidation, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
     {
         Group = assetGroup;
         PhotoshopCommands = photoshopCommandsViewModel;
+
+        _groupNameValidation = groupNameValidation;
         _logger = logger;
 
         ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
         RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
 
-
-        Group.Assets.CollectionChanged += (s, e) =>
-        {
-            OnPropertyChanged(nameof(AssetCount));
-        };
+        Group.Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));
     }
 
     /// <summary>
@@ -116,20 +150,5 @@ internal class AssetGroupViewModel : ObservableObject
             throw new ArgumentNullException(nameof(filePath));
 
         return Group.Assets.Any(a => a.Path == filePath);
-    }
-
-    /// <summary>
-    /// Renames asset group.
-    /// </summary>
-    /// <param name="name"></param>
-    public void Rename(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name) || Group.Name.Equals(name))
-            return;
-
-        string oldName = Name;
-        Group.Name = name;
-        _logger.Information($"[Group] '{oldName}' was renamed to '{name}'");
-        OnPropertyChanged(nameof(Name));
     }
 }

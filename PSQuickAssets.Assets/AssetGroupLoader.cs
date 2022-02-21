@@ -29,7 +29,7 @@ internal class AssetGroupLoader
         AssetGroup? group = await LoadGroupFromFile(filePath);
 
         if (group is null)
-            return new Result<AssetGroup>(false, AssetGroup.Empty);
+            return new Result<AssetGroup>(false, new AssetGroup());
 
         if (group.Assets.Count == 0)
         {

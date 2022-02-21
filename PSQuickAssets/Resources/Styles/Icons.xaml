@@ -4,6 +4,10 @@
     <system:String x:Key="PlusIcon">&#xF8AA;</system:String>
     <system:String x:Key="RenameIcon">&#xE8AC;</system:String>
     <system:String x:Key="TrashCanIcon">&#xE74D;</system:String>
+    <system:String x:Key="ArrowUpIcon">&#xE971;</system:String>
+    <system:String x:Key="ArrowDownIcon">&#xE972;</system:String>
+    <system:String x:Key="ArrowLeftIcon">&#xE973;</system:String>
+    <system:String x:Key="ArrowRightIcon">&#xE974;</system:String>
     
     <!--  Folder  -->
     <PathGeometry x:Key="FolderIcon"

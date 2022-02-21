@@ -2,36 +2,34 @@
 using AsyncAwaitBestPractices.MVVM;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Serilog;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Commands;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils.SystemDialogs;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MTerminal.WPF;
 
 namespace PSQuickAssets.ViewModels;
 
 internal class AssetsViewModel : ObservableObject
 {
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; private set; }
+
     public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
     public Func<string, bool> IsGroupNameValid { get; }
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
 
-    
 
-
-    public ICommand AddNewGroupFromFilesCommand { get; set; } 
+    public ICommand AddNewGroupFromFilesCommand { get; set; }
 
 
     public ICommand SelectAndAddFilesToGroupCommand { get; }
@@ -46,14 +44,18 @@ internal class AssetsViewModel : ObservableObject
 
     private bool _isLoading;
 
+    private Func<string, List<string>> _isGroupNameValid;
+
     private readonly AssetManager _assetManager;
     private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
 
-    public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel, 
+    public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel,
         INotificationService notificationService, ILogger logger, SelectAndAddAssetsToGroupCommand selectAndAddAssetsToGroup)
     {
         AssetGroups = new ObservableCollection<AssetGroupViewModel>();
+        //GroupNameValidationRule = new GroupNameValidationRule((name) => name.Length > 0 && !AssetGroups.Any(g => g.Name == name));
+
         PhotoshopCommands = photoshopCommandsViewModel;
 
         _assetManager = assetManager;
@@ -62,11 +64,20 @@ internal class AssetsViewModel : ObservableObject
 
         IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
 
-        SelectAndAddFilesToGroupCommand = selectAndAddAssetsToGroup;
+        _isGroupNameValid = (name) =>
+        {
+            List<string> errors = new();
 
-        //SelectAndAddFilesToGroupCommand = new RelayCommand<AssetGroupViewModel>(
-        //    (group) => SelectAndAddFilesToGroup(group).SafeFireAndForget(ex => 
-        //            notificationService.Notify("Error occured while adding assets to the group:\n" + ex.Message, NotificationIcon.Error)));
+            if (string.IsNullOrWhiteSpace(name))
+                errors.Add(Localization.Instance["Group_NameCannotBeEmpty"]);
+
+            if (IsGroupExists(name))
+                errors.Add(Localization.Instance["Group_NameAlreadyExists"]);
+
+            return errors;
+        };
+
+        SelectAndAddFilesToGroupCommand = selectAndAddAssetsToGroup;
 
         AddFolderCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: false));
         AddFolderWithSubfoldersCommand = new RelayCommand(() => SelectAndAddFolders(includeSubfolders: true));
@@ -79,19 +90,6 @@ internal class AssetsViewModel : ObservableObject
         LoadStoredGroupsAsync().SafeFireAndForget(ex => _notificationService.Notify("Failed to load saved asset groups: " + ex.Message, NotificationIcon.Error));
 
         AddNewGroupFromFilesCommand = new RelayCommand<string[]>((files) => AddGroupFromFiles(files.ToList()).SafeFireAndForget());
-
-        //Terminal.Commands.Add(new TerminalCommand("sort", (_) =>
-        //{
-        //    foreach (var group in AssetGroups)
-        //    {
-        //        var coll = group.Group.Assets;
-        //        var asset = coll.FirstOrDefault();
-        //        coll.Remove(asset);
-        //        coll.Insert(3, asset);
-
-
-        //    }
-        //}));
     }
 
     private async Task SelectAndAddFilesToGroup(AssetGroupViewModel? group)
@@ -195,11 +193,11 @@ internal class AssetsViewModel : ObservableObject
 
         if (files.Length != 0)
         {
-            AssetGroupViewModel group = CreateEmptyGroup(new DirectoryInfo(folderPath).Name);
-            await AddAssetsToGroup(group, files);
+            AssetGroupViewModel groupVM = CreateEmptyGroup(new DirectoryInfo(folderPath).Name);
+            await AddAssetsToGroup(groupVM, files);
 
-            if (group.Group.Assets.Count == 0)
-                RemoveGroup(group);
+            if (groupVM.Group.Assets.Count == 0)
+                RemoveGroup(groupVM);
         }
 
         if (includeSubfolders)
@@ -256,7 +254,7 @@ internal class AssetsViewModel : ObservableObject
             assetGroup.Name = groupName;
         }
 
-        var groupViewModel = new AssetGroupViewModel(assetGroup, PhotoshopCommands, _logger);
+        var groupViewModel = new AssetGroupViewModel(assetGroup, _isGroupNameValid, PhotoshopCommands, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
         _logger.Information($"[Asset Groups] Group '{groupName}' created.");

@@ -8,7 +8,7 @@ namespace PSQuickAssets.Tests.AssetTests
 {
     public class AssetGroupTests
     {
-        public AssetGroup _sut = new AssetGroup("test");
+        //public AssetGroup _sut = new AssetGroup("test");
 
         #region Group Changed Event
 

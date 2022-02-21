@@ -33,6 +33,7 @@ public partial class AssetsWindow : WindowBase
     {
         _windowStateBeforeHiding = this.WindowState;
         base.Hide();
+        _isHidden = true;
     }
 
     private bool _isHidden;
