@@ -24,7 +24,6 @@ internal class AssetsViewModel : ObservableObject
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; private set; }
 
     public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
-    public Func<string, bool> IsGroupNameValid { get; }
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
 
@@ -44,7 +43,7 @@ internal class AssetsViewModel : ObservableObject
 
     private bool _isLoading;
 
-    private Func<string, List<string>> _isGroupNameValid;
+    public Func<string, List<string>> IsGroupNameValid { get; }
 
     private readonly AssetManager _assetManager;
     private readonly INotificationService _notificationService;
@@ -62,9 +61,7 @@ internal class AssetsViewModel : ObservableObject
         _notificationService = notificationService;
         _logger = logger;
 
-        IsGroupNameValid = new Func<string, bool>((s) => !string.IsNullOrWhiteSpace(s) && !IsGroupExists(s));
-
-        _isGroupNameValid = (name) =>
+        IsGroupNameValid = (name) =>
         {
             List<string> errors = new();
 
@@ -254,7 +251,7 @@ internal class AssetsViewModel : ObservableObject
             assetGroup.Name = groupName;
         }
 
-        var groupViewModel = new AssetGroupViewModel(assetGroup, _isGroupNameValid, PhotoshopCommands, _logger);
+        var groupViewModel = new AssetGroupViewModel(assetGroup, IsGroupNameValid, PhotoshopCommands, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
         _logger.Information($"[Asset Groups] Group '{groupName}' created.");

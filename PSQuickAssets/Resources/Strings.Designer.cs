@@ -223,6 +223,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group with that name already exists.
+        /// </summary>
+        public static string Group_NameAlreadyExists {
+            get {
+                return ResourceManager.GetString("Group_NameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name cannot be empty.
+        /// </summary>
+        public static string Group_NameCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("Group_NameCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {

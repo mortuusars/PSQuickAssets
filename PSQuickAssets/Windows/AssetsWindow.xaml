@@ -267,7 +267,7 @@
                         <StackPanel.ContextMenu>
                             <ContextMenu FontSize="13" FontFamily="{StaticResource FontMedium}">
 
-                                <!--  GROUP INFO  -->
+                                <!--  INFO ABOUT THE GROUP  -->
                                 <MenuItem Style="{StaticResource ContentMenuItem}">
                                     <MenuItem.Header>
                                         <StackPanel Margin="8"
@@ -299,9 +299,9 @@
 
                                 <!--  SELECT AND ADD ASSETS  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
+                                          CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}"
                                           Command="{Binding AssetsViewModel.SelectAndAddFilesToGroupCommand,
-                                                                Source={StaticResource ViewModelLocator}}"
-                                          CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}">
+                                                                Source={StaticResource ViewModelLocator}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource PlusIcon}"
                                                    FontSize="15"
@@ -444,10 +444,10 @@
                                     </CheckBox.Style>
                                 </CheckBox>
 
-                                 <!--GROUP NAME--> 
+                                <!--GROUP NAME-->
                                 <muicontrols:ToggleTextBox x:Name="GroupName"
-                                                           Text="{Binding Name,
-                                                            ValidatesOnNotifyDataErrors=True}"
+                                                           Text="{Binding Name}"
+                                                           wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
                                                            Margin="5 0 0 0"
                                                            FontFamily="{StaticResource FontMedium}"
                                                            FontSize="14"
@@ -457,6 +457,57 @@
                                                            Foreground="{StaticResource ForegroundMainBrush}"
                                                            FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                                                            SelectionBrush="{StaticResource ForegroundIntenseBrush}">
+                                    <muicontrols:ToggleTextBox.Style>
+                                        <Style TargetType="{x:Type muicontrols:ToggleTextBox}">
+                                            <Setter Property="Validation.ErrorTemplate">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="auto"/>
+                                                                <RowDefinition Height="*"/>
+                                                            </Grid.RowDefinitions>
+                                                            <AdornedElementPlaceholder x:Name="adorner"
+                                                                                       Grid.Row="0"
+                                                                                       Grid.Column="0"
+                                                                                       Margin="0 0 0 4"/>
+                                                            <Rectangle Grid.Row="0"
+                                                                       Grid.Column="0"
+                                                                       Height="2" 
+                                                                       Fill="IndianRed"
+                                                                       RadiusX="1.5"
+                                                                       RadiusY="1.5"
+                                                                       Margin="2 4 2 0"
+                                                                       HorizontalAlignment="Stretch"
+                                                                       VerticalAlignment="Bottom"/>
+                                                            <Border CornerRadius="5"
+                                                                    Grid.ColumnSpan="2"
+                                                                    Grid.Row="1"
+                                                                    Margin="0 2 0 0"
+                                                                    Background="{StaticResource BackgroundCloserBrush}"
+                                                                    Effect="{StaticResource WindowDropShadow}">
+                                                                <ItemsControl ItemsSource="{Binding Path=AdornedElement.(Validation.Errors), ElementName=adorner}">
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <TextBlock Text="{Binding ErrorContent}"
+                                                                                       Margin="10 7"
+                                                                                       Foreground="IndianRed"
+                                                                                       FontSize="14"
+                                                                                       FontFamily="{StaticResource FontMedium}"/>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
+                                                            </Border>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </muicontrols:ToggleTextBox.Style>
                                     <muicontrols:ToggleTextBox.EditModeActivationGesture>
                                         <MouseGesture MouseAction="LeftDoubleClick" />
                                     </muicontrols:ToggleTextBox.EditModeActivationGesture>

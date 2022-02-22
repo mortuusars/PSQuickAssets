@@ -171,6 +171,12 @@
   <data name="Group" xml:space="preserve">
     <value>Group</value>
   </data>
+  <data name="Group_NameAlreadyExists" xml:space="preserve">
+    <value>Group with that name already exists</value>
+  </data>
+  <data name="Group_NameCannotBeEmpty" xml:space="preserve">
+    <value>Name cannot be empty</value>
+  </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading</value>
   </data>

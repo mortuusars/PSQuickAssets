@@ -40,7 +40,7 @@ internal class SelectAndAddAssetsToGroupCommand : IAsyncCommand<AssetGroupViewMo
 
     public async Task ExecuteAsync(AssetGroupViewModel parameter)
     {
-        string[] files = SystemDialogs.SelectFiles(string.Empty, FileFilters.Images, SelectionMode.Multiple);
+        string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images, SelectionMode.Multiple);
         if (files.Length == 0)
             return;
 
