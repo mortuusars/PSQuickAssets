@@ -251,7 +251,7 @@ internal class AssetsViewModel : ObservableObject
             assetGroup.Name = groupName;
         }
 
-        var groupViewModel = new AssetGroupViewModel(assetGroup, IsGroupNameValid, PhotoshopCommands, _logger);
+        var groupViewModel = new AssetGroupViewModel(assetGroup, PhotoshopCommands, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
         _logger.Information($"[Asset Groups] Group '{groupName}' created.");

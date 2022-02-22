@@ -73,15 +73,13 @@ internal class AssetGroupViewModel : ObservableObject
     public ICommand RemoveAssetCommand { get; }
 
 
-    private readonly Func<string, List<string>> _groupNameValidation;
     private readonly ILogger _logger;
 
-    public AssetGroupViewModel(AssetGroup assetGroup, Func<string, List<string>> groupNameValidation, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
+    public AssetGroupViewModel(AssetGroup assetGroup, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
     {
         Group = assetGroup;
         PhotoshopCommands = photoshopCommandsViewModel;
 
-        _groupNameValidation = groupNameValidation;
         _logger = logger;
 
         ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);

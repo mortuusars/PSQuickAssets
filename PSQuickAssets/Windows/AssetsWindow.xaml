@@ -45,6 +45,12 @@
         <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
         <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
 
+        <wpf:MouseOverKeyBinding Gesture="Ctrl+M" 
+                                 ElementName="GroupRoot"
+                                 PassedObjectType="DataContext"
+                                 Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
+                                 CommandParameter="{Binding ElementName=MainWindow}"/>
+
         <wpf:MouseOverKeyBinding Gesture="F2" 
                                  ElementName="GroupRoot"
                                  PassedObjectType="Element"
@@ -311,6 +317,38 @@
                                 </MenuItem>
 
                                 <Separator />
+
+                                <!--  COLLAPSE/EXPAND CONTENT  -->
+                                <MenuItem Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
+                                          CommandParameter="{Binding Path=PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                          InputGestureText="Ctrl+M">
+                                    <MenuItem.Style>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Expand}"/>
+                                            <Setter Property="Icon">
+                                                <Setter.Value>
+                                                    <TextBlock Text="{StaticResource ArrowDownIcon}"
+                                                               FontSize="17"
+                                                               FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                               Foreground="{StaticResource ForegroundMainBrush}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Data.IsExpanded, Source={StaticResource AssetGroupBindingProxy}}" Value="True">
+                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Collapse}"/>
+                                                    <Setter Property="Icon">
+                                                        <Setter.Value>
+                                                            <TextBlock Text="{StaticResource ArrowUpIcon}"
+                                                               FontSize="17"
+                                                               FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                               Foreground="{StaticResource ForegroundMainBrush}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </MenuItem.Style>
+                                </MenuItem>
 
                                 <!--  RENAME  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}" 

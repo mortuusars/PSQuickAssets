@@ -2,8 +2,10 @@
 using MortuusUI.Controls;
 using MortuusUI.Extensions;
 using PSQuickAssets.Assets;
+using PSQuickAssets.ViewModels;
 using System.Media;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PSQuickAssets.Commands;
@@ -30,6 +32,12 @@ internal static class AssetCommands
         }
 
         GeneralCommands.OpenInShell.Execute(a.Path);
+    });
+
+    public static ICommand CollapseExpandGroup { get; } = new RelayCommand<object>((groupViewModel) =>
+    {
+        if (groupViewModel is AssetGroupViewModel groupVM)
+            groupVM.IsExpanded = !groupVM.IsExpanded;
     });
 
     public static ICommand RenameGroup { get; } = new RelayCommand<FrameworkElement>((element) =>
