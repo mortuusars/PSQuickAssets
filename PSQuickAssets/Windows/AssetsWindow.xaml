@@ -439,7 +439,7 @@
                                                                         <Storyboard>
                                                                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                                                                                              Storyboard.TargetName="viewbox"
-                                                                                             By="180"
+                                                                                             To="0"
                                                                                              Duration="0:0:0.45"
                                                                                              EasingFunction="{StaticResource BackEasing}"/>
                                                                         </Storyboard>

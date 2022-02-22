@@ -51,7 +51,7 @@ internal class HitTestWrapperCommand : ICommand
         var mousePos = Mouse.GetPosition(window);
         var hitTestResult = VisualTreeHelper.HitTest(window, mousePos);
 
-        if (hitTestResult.VisualHit is Visual hitTestVisual && GetMatchedElement(hitTestVisual) is Visual matchedElement)
+        if (hitTestResult is not null && hitTestResult.VisualHit is Visual hitTestVisual && GetMatchedElement(hitTestVisual) is Visual matchedElement)
         {
             if (PassedObjectType == PassedObjectType.Element)
             {

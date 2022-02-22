@@ -29,15 +29,22 @@ public partial class AssetsWindow : WindowBase
 
     #region Hiding/Showing
 
+    /// <summary>
+    /// Hides the Window.
+    /// </summary>
     public new void Hide()
     {
         _windowStateBeforeHiding = this.WindowState;
+        this.WindowState = WindowState.Minimized;
         base.Hide();
         _isHidden = true;
     }
 
     private bool _isHidden;
     private WindowState _windowStateBeforeHiding;
+    /// <summary>
+    /// Shows/Hides the window depending on which state it is currently in.
+    /// </summary>
     public void ToggleVisibility()
     {
         bool minimizeInsteadOfHiding = ((App)App.Current).Config.MinimizeWindowInsteadOfHiding;
@@ -47,8 +54,7 @@ public partial class AssetsWindow : WindowBase
             _isHidden = false;
 
             // Minimize before showing to avoid window flickering:
-            if (!minimizeInsteadOfHiding)
-                WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
 
             this.Show();
             if (WindowState == WindowState.Minimized)
