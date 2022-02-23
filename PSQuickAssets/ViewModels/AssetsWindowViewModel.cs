@@ -29,12 +29,16 @@ internal class AssetsWindowViewModel
     /// <summary>
     /// Constructor for Designer. Do not use when app is running.
     /// </summary>
-    #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public AssetsWindowViewModel()
-    #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         if (!App.Current.IsInDesignMode())
             throw new InvalidOperationException("This constructor is only for DesignTime.");
+
+        AssetsViewModel = null!;
+        StatusService = null!;
+        Config = null!;
+        IncreaseThumbnailSizeCommand = null!;
+        DecreaseThumbnailSizeCommand = null!;
     }
 
     private void ChangeThumbnailSize(MouseWheelDirection direction)

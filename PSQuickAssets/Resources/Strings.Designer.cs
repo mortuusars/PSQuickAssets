@@ -241,21 +241,20 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        public static string Hide {
+            get {
+                return ResourceManager.GetString("Hide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hide
-        ///Ctrl+Click: Exit.
-        /// </summary>
-        public static string Main_Close_Tooltip {
-            get {
-                return ResourceManager.GetString("Main_Close_Tooltip", resourceCulture);
             }
         }
         

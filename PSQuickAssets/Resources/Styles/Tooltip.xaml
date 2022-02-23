@@ -9,7 +9,7 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Foreground" Value="{StaticResource TextColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource FontRegular}" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="HasDropShadow" Value="True" />

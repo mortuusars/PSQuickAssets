@@ -40,7 +40,7 @@
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
-        <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
+        <KeyBinding Gesture="Ctrl+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
         <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
         <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
@@ -133,7 +133,6 @@
                     Padding="5,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    ToolTip="{lex:Loc Main_Close_Tooltip}"
                     Style="{StaticResource OpacityButton}">
                 <Button.Content>
                     <Path Margin="-1,-1,0,0"
@@ -155,6 +154,37 @@
                         </Path.Style>
                     </Path>
                 </Button.Content>
+                <Button.ToolTip>
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Hide}"
+                                   Grid.Row="0"/>
+                        <TextBlock Text="Esc"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   Margin="24 0 0 0"
+                                   Opacity="0.6"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1">
+                            <TextBlock Text="Ctrl:" Opacity="0.6" Margin="0 0 4 0"/>
+                            <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}"/>
+                        </StackPanel>
+                        <TextBlock Text="Ctrl+Esc"
+                                   Grid.Column="1"
+                                   Grid.Row="1"
+                                   Margin="24 0 0 0"
+                                   Opacity="0.6"/>
+                    </Grid>
+                    
+                </Button.ToolTip>
                 <Button.InputBindings>
                     <MouseBinding Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}" Gesture="LeftClick" />
                     <MouseBinding Command="{x:Static cmds:GeneralCommands.Shutdown}" Gesture="Ctrl+LeftClick" />
