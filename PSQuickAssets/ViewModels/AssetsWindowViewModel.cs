@@ -32,7 +32,7 @@ internal class AssetsWindowViewModel
     public AssetsWindowViewModel()
     {
         if (!App.Current.IsInDesignMode())
-            throw new InvalidOperationException("This constructor is only for DesignTime.");
+            throw new InvalidOperationException("This constructor is only for Designer.");
 
         AssetsViewModel = null!;
         StatusService = null!;

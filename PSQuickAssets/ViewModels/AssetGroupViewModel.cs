@@ -66,6 +66,7 @@ internal class AssetGroupViewModel : ObservableObject
     /// </summary>
     public AssetGroup Group { get; }
 
+    //public ICommand ToggleExpandedCommand { get; }
     public ICommand RemoveAssetCommand { get; }
 
 
@@ -76,6 +77,7 @@ internal class AssetGroupViewModel : ObservableObject
         Group = assetGroup;
         _logger = logger;
 
+        //ToggleExpandedCommand = new RelayCommand<AssetGroupViewModel>()
         RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
 
         Group.Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));

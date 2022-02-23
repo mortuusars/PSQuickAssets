@@ -5,7 +5,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:lex="http://wpflocalizeextension.codeplex.com"
                 xmlns:muicontrols="clr-namespace:MortuusUI.Controls;assembly=MortuusUI"
-                xmlns:muiext="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
+                xmlns:mExtensions="clr-namespace:MortuusUI.Extensions;assembly=MortuusUI"
                 xmlns:mui="clr-namespace:MortuusUI;assembly=MortuusUI"
                 xmlns:assetcontrol="clr-namespace:PSQuickAssets.AssetControl;assembly=PSQuickAssets.AssetControl"
                 xmlns:assets="clr-namespace:PSQuickAssets.Assets;assembly=PSQuickAssets.Assets"
@@ -14,7 +14,7 @@
                 xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                 xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                 xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
+                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters" 
                 mc:Ignorable="d"
                 lex:LocalizeDictionary.DesignCulture="en"
                 lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -40,32 +40,30 @@
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
-        <KeyBinding Gesture="Ctrl+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
+        <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
-        <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Control+OemPlus" />
-        <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Control+OemMinus" />
+        <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Ctrl+OemPlus" />
+        <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Ctrl+OemMinus" />
 
-        <wpf:MouseOverKeyBinding Gesture="Ctrl+M" 
-                                 ElementName="GroupRoot"
-                                 PassedObjectType="DataContext"
-                                 Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
-                                 CommandParameter="{Binding ElementName=MainWindow}"/>
+        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+M"
+                                         ElementName="GroupRoot"
+                                         Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
+                                         PassedParameter="DataContext"/>
 
-        <wpf:MouseOverKeyBinding Gesture="F2" 
-                                 ElementName="GroupRoot"
-                                 PassedObjectType="Element"
-                                 Command="{x:Static commands:AssetCommands.RenameGroup}"
-                                 CommandParameter="{Binding ElementName=MainWindow}"/>
+        <mExtensions:MouseOverKeyBinding Key="F2" 
+                                         ElementName="GroupRoot"
+                                         PassedParameter="Element"
+                                         Command="{x:Static commands:AssetCommands.RenameGroup}"/>
 
-        <wpf:MouseOverKeyBinding Gesture="Control+E" 
-                                 ElementType="{x:Type assetcontrol:AssetControl}"
-                                 Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                 CommandParameter="{Binding ElementName=MainWindow}"/>
+        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+E" 
+                                         ElementType="{x:Type assetcontrol:AssetControl}"
+                                         Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
+                                         PassedParameter="DataContext"/>
 
-        <wpf:MouseOverKeyBinding Gesture="Control+O" 
-                                 ElementType="{x:Type assetcontrol:AssetControl}"
-                                 Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                 CommandParameter="{Binding ElementName=MainWindow}"/>
+        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+O" 
+                                         ElementType="{x:Type assetcontrol:AssetControl}"
+                                         Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                                         PassedParameter="DataContext"/>
     </Window.InputBindings>
 
     <mui:WindowBase.Resources>
@@ -177,7 +175,7 @@
                             <TextBlock Text="Ctrl:" Opacity="0.6" Margin="0 0 4 0"/>
                             <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}"/>
                         </StackPanel>
-                        <TextBlock Text="Ctrl+Esc"
+                        <TextBlock Text="Shift+Esc"
                                    Grid.Column="1"
                                    Grid.Row="1"
                                    Margin="24 0 0 0"
@@ -224,8 +222,8 @@
                 Defining scroll size-change hotkeys in the "Content" grid because WindowChrome's CaptionHeight prevents
                 hotkey working in the empty space of title bar, only when mouse is over some control.
             -->
-            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Up, Keys=Ctrl}" />
-            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{muiext:MouseWheel Direction=Down, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{mExtensions:MouseWheel Direction=Up, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{mExtensions:MouseWheel Direction=Down, Keys=Ctrl}" />
         </Grid.InputBindings>
 
         <!--  TITLE PREVIEW  -->
@@ -296,7 +294,7 @@
                                 Tag="{Binding ElementName=GroupName}">
 
                         <StackPanel.Resources>
-                            <wpf:BindingProxy x:Key="AssetGroupBindingProxy" Data="{Binding}"/>
+                            <mExtensions:BindingProxy x:Key="AssetGroupBindingProxy" Data="{Binding}"/>
                         </StackPanel.Resources>
 
                         <!--  GROUP CONTEXT MENU  -->

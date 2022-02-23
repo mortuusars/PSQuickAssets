@@ -90,6 +90,11 @@ public partial class AssetsWindow : WindowBase
     {
         if (e.Key is Key.LeftCtrl or Key.RightCtrl)
             IsCtrlPressed = false;
+
+        if (e.Key is Key.Space)
+        {
+            //var active = App.Current.GetActiveWindow();
+        }
     }
 
     private void AssetsWindow_PreviewKeyDown(object sender, KeyEventArgs e)

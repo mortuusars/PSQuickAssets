@@ -38,6 +38,8 @@ internal static class AssetCommands
     {
         if (groupViewModel is AssetGroupViewModel groupVM)
             groupVM.IsExpanded = !groupVM.IsExpanded;
+        else
+            SystemSounds.Asterisk.Play();
     });
 
     public static ICommand RenameGroup { get; } = new RelayCommand<FrameworkElement>((element) =>

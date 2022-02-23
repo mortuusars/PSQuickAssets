@@ -4,6 +4,7 @@ using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
@@ -43,11 +44,6 @@ internal class WindowManager
     public void ToggleMainWindow()
     {
         AssetsWindow?.ToggleVisibility();
-
-        //if (AssetsWindow?.IsVisible is true)
-        //    HideMainWindow();
-        //else 
-        //    ShowMainWindow();
     }
 
     /// <summary>
