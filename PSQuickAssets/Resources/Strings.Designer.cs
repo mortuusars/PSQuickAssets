@@ -567,6 +567,24 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide window when adding asset.
+        /// </summary>
+        public static string Settings_HideWindowWhenAddingAsset {
+            get {
+                return ResourceManager.GetString("Settings_HideWindowWhenAddingAsset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window will be hidden when asset is added to Photoshop.
+        /// </summary>
+        public static string Settings_HideWindowWhenAddingAsset_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HideWindowWhenAddingAsset_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press a key combination to assign.
         ///Delete or Backspace to clear.
         ///Esc to cancel..
@@ -592,6 +610,24 @@ namespace PSQuickAssets.Resources {
         public static string Settings_MaximizedBorderFix_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_MaximizedBorderFix_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize instead of hiding.
+        /// </summary>
+        public static string Settings_MinimizeWindowInsteadOfHiding {
+            get {
+                return ResourceManager.GetString("Settings_MinimizeWindowInsteadOfHiding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep window icon on taskbar when hidden.
+        /// </summary>
+        public static string Settings_MinimizeWindowInsteadOfHiding_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_MinimizeWindowInsteadOfHiding_Tooltip", resourceCulture);
             }
         }
         

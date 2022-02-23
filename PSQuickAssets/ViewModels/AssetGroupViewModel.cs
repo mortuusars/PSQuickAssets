@@ -22,8 +22,6 @@ public enum DuplicateHandling
 
 internal class AssetGroupViewModel : ObservableObject
 {
-    public PhotoshopCommandsViewModel PhotoshopCommands { get; }
-
     /// <summary>
     /// Gets or sets name of the group.
     /// </summary>
@@ -68,21 +66,16 @@ internal class AssetGroupViewModel : ObservableObject
     /// </summary>
     public AssetGroup Group { get; }
 
-    //TODO: Hotkey to collapse
-    public ICommand ToggleExpandedCommand { get; }
     public ICommand RemoveAssetCommand { get; }
 
 
     private readonly ILogger _logger;
 
-    public AssetGroupViewModel(AssetGroup assetGroup, PhotoshopCommandsViewModel photoshopCommandsViewModel, ILogger logger)
+    public AssetGroupViewModel(AssetGroup assetGroup, ILogger logger)
     {
         Group = assetGroup;
-        PhotoshopCommands = photoshopCommandsViewModel;
-
         _logger = logger;
 
-        ToggleExpandedCommand = new RelayCommand(() => IsExpanded = !IsExpanded);
         RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
 
         Group.Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));
@@ -100,6 +93,7 @@ internal class AssetGroupViewModel : ObservableObject
             return false;
 
         Group.Assets.Add(asset);
+        _logger.Information($"[Group] Added {asset.FileName} to group '{Name}'");
         return true;
     }
 
@@ -119,6 +113,7 @@ internal class AssetGroupViewModel : ObservableObject
                 notAddedList.Add(asset);
         }
 
+        _logger.Information($"[Group] Added {assets.Count() - notAddedList.Count} assets to group '{Name}'");
         return notAddedList;
     }
 
@@ -131,10 +126,7 @@ internal class AssetGroupViewModel : ObservableObject
     {
         bool result = asset is not null && Group.Assets.Remove(asset);
         if (result)
-        {
             _logger.Information($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
-            OnPropertyChanged(nameof(Assets));
-        }
         return result;
     }
 
@@ -142,6 +134,7 @@ internal class AssetGroupViewModel : ObservableObject
     /// Checks if asset with the same FILEPATH is already in the group.
     /// </summary>
     /// <returns><see langword="true"/> if asset is in the group. Otherwise <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException">If filepath is <see langword="null"/>.</exception>
     public bool HasAsset(string filePath)
     {
         if (filePath is null)

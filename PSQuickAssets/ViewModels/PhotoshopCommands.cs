@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-internal class PhotoshopCommandsViewModel
+internal class PhotoshopCommands
 {
     public IList<PhotoshopAction> GlobalActions { get; }
 
-    public AsyncCommand<Asset> OpenImageCommand { get; }
-    public AsyncCommand<Asset> AddImageAsLayerCommand { get; }
-    public AsyncCommand<PhotoshopAction> ExecuteActionCommand { get; }
+    public IAsyncCommand<Asset> OpenImageCommand { get; }
+    public IAsyncCommand<Asset> AddImageAsLayerCommand { get; }
+    public IAsyncCommand<PhotoshopAction> ExecuteActionCommand { get; }
 
     private readonly IPhotoshopInterop _photoshopInterop;
-    private readonly WindowManager _windowManager;
+
+    private readonly Action _focusPhotoshopAction;
     private readonly INotificationService _notificationService;
     private readonly IConfig _config;
 
-    // TODO: Redo. This is hardly resembling a viewmodel.
-    public PhotoshopCommandsViewModel(WindowManager windowManager, INotificationService notificationService, IConfig config)
+    public PhotoshopCommands(Action focusPhotoshopAction, INotificationService notificationService, IConfig config)
     {
-        _windowManager = windowManager;
+        _focusPhotoshopAction = focusPhotoshopAction;
         _notificationService = notificationService;
         _config = config;
 
@@ -41,20 +41,20 @@ internal class PhotoshopCommandsViewModel
         ExecuteActionCommand = new AsyncCommand<PhotoshopAction>(action => ExecuteActionAsync(action!));
     }
 
+
     private async Task<bool> OpenImageAsNewDocumentAsync(Asset asset)
     {
         FocusPhotoshop();
 
         var result = await _photoshopInterop.OpenImageAsNewDocumentAsync(asset.Path);
 
-        if (result.IsSuccessful)
-            return true;
-        else
+        if (result.IsSuccessful is false)
         {
             string errorMessage = Resources.Localization.Instance[$"PSStatus_{result.Status}"];
             _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-            return false;
         }
+
+        return result.IsSuccessful;
     }
 
     private async Task<bool> AddImageToPhotoshopAsync(Asset asset)
@@ -88,14 +88,13 @@ internal class PhotoshopCommandsViewModel
     {
         PSResult result = await _photoshopInterop.ExecuteActionAsync(action.Action, action.Set);
 
-        if (result.IsSuccessful)
-            return true;
-        else
+        if (result.IsSuccessful is false)
         {
             string errorMessage = String.Format(Resources.Localization.Instance["Assets_CannotExecuteActionFromSet"], action.Action, action.Set) + $"\n{result.Message}";
             _notificationService.Notify(App.AppName, errorMessage, NotificationIcon.Error);
-            return false;
         }
+
+        return result.IsSuccessful;
     }
 
     private async Task<bool> ExecuteGlobalActions()
@@ -108,10 +107,8 @@ internal class PhotoshopCommandsViewModel
         return true;
     }
 
-    private void FocusPhotoshop()
-    {
-        //TODO: Decouple from this class. Add an option to not hide assets window on placing.
-        _windowManager.HideMainWindow();
-        WindowControl.FocusWindow("photoshop");
-    }
+    /// <summary>
+    /// Focuses Photoshop window.
+    /// </summary>
+    private void FocusPhotoshop() => _focusPhotoshopAction.Invoke();
 }

@@ -34,7 +34,9 @@ internal static class DIKernel
                     provider.GetRequiredService<ILogger>()));
 
         services.AddSingleton<AssetManager>((provider) => new AssetManager(App.AppDataFolder + "/assets/", provider.GetRequiredService<ILogger>()));
-        services.AddSingleton<PhotoshopCommandsViewModel>();
+        services.AddSingleton<PhotoshopCommands>((provider) => new PhotoshopCommands(provider.GetRequiredService<WindowManager>().FocusPhotoshop, 
+            provider.GetRequiredService<INotificationService>(),
+            provider.GetRequiredService<IConfig>()));
 
 
         RegisterCommands(services);

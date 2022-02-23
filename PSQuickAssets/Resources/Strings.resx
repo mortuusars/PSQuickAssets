@@ -287,6 +287,12 @@ and causes logger to log more information</value>
   <data name="Settings_HideIfClickedOutside_Tooltip" xml:space="preserve">
     <value>Main window will hide if deactivated</value>
   </data>
+  <data name="Settings_HideWindowWhenAddingAsset" xml:space="preserve">
+    <value>Hide window when adding asset</value>
+  </data>
+  <data name="Settings_HideWindowWhenAddingAsset_Tooltip" xml:space="preserve">
+    <value>Window will be hidden when asset is added to Photoshop</value>
+  </data>
   <data name="Settings_HotkeyPicker_Tooltip" xml:space="preserve">
     <value>Press a key combination to assign.
 Delete or Backspace to clear.
@@ -297,6 +303,12 @@ Esc to cancel.</value>
   </data>
   <data name="Settings_MaximizedBorderFix_Tooltip" xml:space="preserve">
     <value>Turn this on if window is not displayed correctly when maximized.</value>
+  </data>
+  <data name="Settings_MinimizeWindowInsteadOfHiding" xml:space="preserve">
+    <value>Minimize instead of hiding</value>
+  </data>
+  <data name="Settings_MinimizeWindowInsteadOfHiding_Tooltip" xml:space="preserve">
+    <value>Keep window icon on taskbar when hidden</value>
   </data>
   <data name="Settings_SaveAndClose" xml:space="preserve">
     <value>Save settings and close this window</value>

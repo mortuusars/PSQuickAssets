@@ -16,11 +16,13 @@ internal interface IConfig : INotifyPropertyChanged
 {
     string ShowHideWindowHotkey { get; set; }
     bool MinimizeWindowInsteadOfHiding { get; set; }
+    public bool HideWindowWhenAddingAsset { get; set; }
     double ThumbnailSize { get; set; }
     bool AlwaysOnTop { get; set; }
     bool HideWindowIfClickedOutside { get; set; }
-    bool AddMaskIfDocumentHasSelection { get; set; }
     bool CheckUpdates { get; set; }
+
+    bool AddMaskIfDocumentHasSelection { get; set; }
 
     bool DebugMode { get; set; }
     public bool MaximizedWindowBorderFix { get; set; }
@@ -30,13 +32,17 @@ internal interface IConfig : INotifyPropertyChanged
 
 internal class Config : ConfigBase, IConfig
 {
+    // General
     public string ShowHideWindowHotkey { get => _showHideWindowHotkey.Value; set => _showHideWindowHotkey.SetValue(value); }
     public bool MinimizeWindowInsteadOfHiding { get => _minimizeWindowInsteadOfHiding.Value; set => _minimizeWindowInsteadOfHiding.SetValue(value); }
+    public bool HideWindowWhenAddingAsset { get => _hideWindowWhenAddingAsset.Value; set => _hideWindowWhenAddingAsset.SetValue(value); }
     public double ThumbnailSize { get => _thumbnailSize.Value; set => _thumbnailSize.SetValue(value); }
     public bool AlwaysOnTop { get => _alwaysOnTop.Value; set => _alwaysOnTop.SetValue(value); }
     public bool HideWindowIfClickedOutside { get => _hideWindowIfClickedOutside.Value; set => _hideWindowIfClickedOutside.SetValue(value); }
-    public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
     public bool CheckUpdates { get => _checkUpdates.Value; set => _checkUpdates.SetValue(value); }
+
+    // Assets
+    public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
 
     // Experimental settings:
     public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
@@ -44,12 +50,14 @@ internal class Config : ConfigBase, IConfig
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
     private readonly ConfigProperty<bool> _minimizeWindowInsteadOfHiding;
+    private readonly ConfigProperty<bool> _hideWindowWhenAddingAsset;
     private readonly ConfigProperty<double> _thumbnailSize;
     private readonly ConfigProperty<bool> _alwaysOnTop;
     private readonly ConfigProperty<bool> _hideWindowIfClickedOutside;
-    private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
     private readonly ConfigProperty<bool> _checkUpdates;
 
+    private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
+    
     private readonly ConfigProperty<bool> _debugMode;
     private readonly ConfigProperty<bool> _maximizedWindowBorderFix;
 
@@ -60,6 +68,7 @@ internal class Config : ConfigBase, IConfig
     {
         _showHideWindowHotkey = RegisterProperty(nameof(ShowHideWindowHotkey), "Ctrl + Alt + A");
         _minimizeWindowInsteadOfHiding = RegisterProperty(nameof(MinimizeWindowInsteadOfHiding), true);
+        _hideWindowWhenAddingAsset = RegisterProperty(nameof(HideWindowWhenAddingAsset), true);
         _thumbnailSize = RegisterProperty(nameof(ThumbnailSize), 60.0);
         _alwaysOnTop = RegisterProperty(nameof(AlwaysOnTop), true);
         _hideWindowIfClickedOutside = RegisterProperty(nameof(HideWindowIfClickedOutside), true);
@@ -117,6 +126,9 @@ internal class ConfigChangeListener
     private void _config_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (nameof(IConfig.DebugMode).Equals(e.PropertyName))
+        {
             Logging.LogLevelSwitch.MinimumLevel = _config.DebugMode ? LogEventLevel.Verbose : LogEventLevel.Information;
+            _logger.Information($"[Logger] Changed minimum log level to '{Logging.LogLevelSwitch.MinimumLevel}'.");
+        }
     }
 }

@@ -21,9 +21,8 @@ namespace PSQuickAssets.ViewModels;
 
 internal class AssetsViewModel : ObservableObject
 {
-    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; private set; }
+    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; }
 
-    public PhotoshopCommandsViewModel PhotoshopCommands { get; set; }
     public bool IsLoading { get => _isLoading; set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
 
 
@@ -49,13 +48,9 @@ internal class AssetsViewModel : ObservableObject
     private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
 
-    public AssetsViewModel(AssetManager assetManager, PhotoshopCommandsViewModel photoshopCommandsViewModel,
-        INotificationService notificationService, ILogger logger, SelectAndAddAssetsToGroupCommand selectAndAddAssetsToGroup)
+    public AssetsViewModel(AssetManager assetManager, INotificationService notificationService, ILogger logger, SelectAndAddAssetsToGroupCommand selectAndAddAssetsToGroup)
     {
         AssetGroups = new ObservableCollection<AssetGroupViewModel>();
-        //GroupNameValidationRule = new GroupNameValidationRule((name) => name.Length > 0 && !AssetGroups.Any(g => g.Name == name));
-
-        PhotoshopCommands = photoshopCommandsViewModel;
 
         _assetManager = assetManager;
         _notificationService = notificationService;
@@ -233,11 +228,13 @@ internal class AssetsViewModel : ObservableObject
         AssetGroup group = new(groupName);
         return CreateGroup(group);
     }
+
     /// <summary>
     /// Creates empty group with a generic name. Group will be added to <see cref="AssetGroups"/>.
     /// </summary>
     /// <returns>Created group.</returns>
     private AssetGroupViewModel CreateEmptyGroup() => CreateEmptyGroup(GenericGroupName());
+
     /// <summary>
     /// Creates empty group from existing <see cref="AssetGroup"/>. Group will be added to <see cref="AssetGroups"/>.
     /// </summary>
@@ -251,12 +248,13 @@ internal class AssetsViewModel : ObservableObject
             assetGroup.Name = groupName;
         }
 
-        var groupViewModel = new AssetGroupViewModel(assetGroup, PhotoshopCommands, _logger);
+        var groupViewModel = new AssetGroupViewModel(assetGroup, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
         _logger.Information($"[Asset Groups] Group '{groupName}' created.");
         return groupViewModel;
     }
+
     /// <summary>
     /// Generates generic name for a new group. 
     /// </summary>

@@ -1,17 +1,30 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using MTerminal.WPF;
+﻿using MTerminal.WPF;
+using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System;
 using System.Linq;
-using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
 
-public class WindowManager
+internal class WindowManager
 {
+    private readonly IConfig _config;
+
     internal AssetsWindow? AssetsWindow { get; private set; }
+
+    public WindowManager(IConfig config)
+    {
+        _config = config;
+    }
+
+    public void FocusPhotoshop()
+    {
+        if (_config.HideWindowWhenAddingAsset)
+            AssetsWindow?.Hide();
+        WindowControl.FocusWindow("photoshop");
+    }
 
     /// <summary>
     /// Shows main window. Creates it if needed.
