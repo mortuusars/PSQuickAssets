@@ -426,7 +426,8 @@
                                           FontWeight="Bold"
                                           VerticalAlignment="Stretch"
                                           FontSize="16"
-                                          Padding="2">
+                                          Padding="2"
+                                          FocusVisualStyle="{StaticResource BracketsFocusVisual}">
                                     <CheckBox.Style>
                                         <Style TargetType="CheckBox">
                                             <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
