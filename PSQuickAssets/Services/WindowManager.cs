@@ -4,7 +4,6 @@ using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System;
 using System.Linq;
-using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
@@ -105,10 +104,8 @@ internal class WindowManager
         if (settingsWindow is null)
         {
             settingsWindow = new SettingsWindow();
-            settingsWindow.Show();
             settingsWindow.Owner = AssetsWindow;
-            settingsWindow.Left = WpfScreenHelper.MouseHelper.MousePosition.X;
-            settingsWindow.Top = WpfScreenHelper.MouseHelper.MousePosition.Y - 60;
+            settingsWindow.Show();
         }
         else
         {

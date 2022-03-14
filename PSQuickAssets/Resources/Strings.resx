@@ -259,7 +259,7 @@
     <value>Add mask from selection</value>
   </data>
   <data name="Settings_AddMaskIfDocumentHasSelection_Tooltip" xml:space="preserve">
-    <value>If document has a selection, a mask will be applied to added layer</value>
+    <value>If document has a selection, mask from this selection will be applied to the added layer</value>
   </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>Always On Top</value>

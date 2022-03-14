@@ -484,7 +484,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If document has a selection, a mask will be applied to added layer.
+        ///   Looks up a localized string similar to If document has a selection, mask from this selection will be applied to the added layer.
         /// </summary>
         public static string Settings_AddMaskIfDocumentHasSelection_Tooltip {
             get {
