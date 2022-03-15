@@ -5,33 +5,26 @@ using PSQuickAssets.Assets;
 using PSQuickAssets.ViewModels;
 using System.Media;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PSQuickAssets.Commands;
 
 internal static class AssetCommands
 {
-    public static ICommand ShowAssetInExplorer { get; } = new RelayCommand<Asset>((a) =>
+    public static ICommand ShowAssetInExplorer { get; } = new RelayCommand<object>((obj) =>
     {
-        if (a is null)
-        {
+        if (obj is Asset asset)
+            GeneralCommands.ShowInExplorer.Execute(asset.Path);
+        else
             SystemSounds.Exclamation.Play();
-            return;
-        }
-
-        GeneralCommands.ShowInExplorer.Execute(a.Path);
     });
 
-    public static ICommand OpenAssetInShell { get; } = new RelayCommand<Asset>((a) =>
+    public static ICommand OpenAssetInShell { get; } = new RelayCommand<object>((obj) =>
     {
-        if (a is null)
-        {
+        if (obj is Asset asset)
+            GeneralCommands.OpenInShell.Execute(asset.Path);
+        else
             SystemSounds.Exclamation.Play();
-            return;
-        }
-
-        GeneralCommands.OpenInShell.Execute(a.Path);
     });
 
     public static ICommand CollapseExpandGroup { get; } = new RelayCommand<object>((groupViewModel) =>

@@ -57,10 +57,8 @@ public partial class AssetsWindow : WindowBase
             WindowState = WindowState.Minimized;
 
             this.Show();
-            if (WindowState == WindowState.Minimized)
-            {
-                WindowState = _windowStateBeforeHiding != WindowState.Minimized ? _windowStateBeforeHiding : WindowState.Normal;
-            }
+            this.Activate();
+            WindowState = _windowStateBeforeHiding != WindowState.Minimized ? _windowStateBeforeHiding : WindowState.Normal;
         }
         else
         {
