@@ -14,7 +14,7 @@
                 xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                 xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                 xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters" 
+                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
                 mc:Ignorable="d"
                 lex:LocalizeDictionary.DesignCulture="en"
                 lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -48,32 +48,87 @@
         <mExtensions:MouseOverKeyBinding Gesture="Ctrl+M"
                                          ElementName="GroupRoot"
                                          Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
-                                         PassedParameter="DataContext"/>
+                                         PassedParameter="DataContext" />
 
-        <mExtensions:MouseOverKeyBinding Key="F2" 
+        <mExtensions:MouseOverKeyBinding Key="F2"
                                          ElementName="GroupRoot"
                                          PassedParameter="Element"
-                                         Command="{x:Static commands:AssetCommands.RenameGroup}"/>
+                                         Command="{x:Static commands:AssetCommands.RenameGroup}" />
 
-        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+E" 
+        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+E"
                                          ElementType="{x:Type assetcontrol:AssetControl}"
                                          Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                         PassedParameter="DataContext"/>
+                                         PassedParameter="DataContext" />
 
-        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+O" 
+        <mExtensions:MouseOverKeyBinding Gesture="Ctrl+O"
                                          ElementType="{x:Type assetcontrol:AssetControl}"
                                          Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                         PassedParameter="DataContext"/>
+                                         PassedParameter="DataContext" />
     </Window.InputBindings>
 
     <mui:WindowBase.Resources>
 
         <!--  TITLE  -->
         <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
-            <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
+            <StackPanel Margin="4,0,0,0" Orientation="Horizontal">
+
+                <Button Padding="4"
+                        VerticalAlignment="Center"
+                        ToolTip="{lex:Loc Menu}"
+                        Style="{StaticResource OpacityButton}"
+                        mExtensions:ClickContextMenu.OpenOnLeftClick="True">
+                    <Button.Content>
+                        <TextBlock Text="&#xE700;"
+                                   FontFamily="{StaticResource SegoeMDL2Icons}"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </Button.Content>
+
+                    <Button.ContextMenu>
+                        <ContextMenu>
+
+                            <!-- ADD EMPTY GROUP -->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" 
+                                      Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
+                                <MenuItem.Icon>
+                                    <TextBlock Text="&#xECC8;"
+                                               FontFamily="{StaticResource SegoeMDL2Icons}"
+                                               FontSize="19"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                            <Separator />
+
+                            <!--SETTINGS-->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" 
+                                      Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
+                                <MenuItem.Icon>
+                                    <Path Height="16"
+                                          Width="16"
+                                          Data="{StaticResource SettingsIconGeometry}"
+                                          Fill="{StaticResource ForegroundMainBrush}"
+                                          Stretch="Uniform" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                            <!--TERMINAL-->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Terminal}"
+                                      Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
+                                      Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+                                <MenuItem.Icon>
+                                    <Path Height="16"
+                                          Width="16"
+                                          Data="{StaticResource TerminalIconGeomerty}"
+                                          Fill="{StaticResource ForegroundMainBrush}"
+                                          Stretch="Uniform" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
 
                 <!--  SETTINGS BUTTON  -->
-                <Button Padding="4"
+                <!--<Button Padding="4"
                         VerticalAlignment="Center"
                         ToolTip="{lex:Loc Settings}"
                         Style="{StaticResource OpacityButton}"
@@ -84,10 +139,10 @@
                               Fill="{StaticResource ForegroundMainBrush}"
                               Stretch="Uniform" />
                     </Button.Content>
-                </Button>
+                </Button>-->
 
                 <!--  TERMINAL BUTTON  -->
-                <Button Padding="4"
+                <!--<Button Padding="4"
                         VerticalAlignment="Center"
                         Style="{StaticResource OpacityButton}"
                         Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
@@ -99,7 +154,7 @@
                               Fill="{StaticResource ForegroundMainBrush}"
                               Stretch="Uniform" />
                     </Button.Content>
-                </Button>
+                </Button>-->
 
                 <!--<Rectangle Fill="{StaticResource ForegroundMainBrush}"
                            Width="1"
@@ -107,7 +162,9 @@
                            Margin="6 0 4 0"
                            Opacity="0.2"/>
 
-                --><!--  ADD BUTTON  --><!--
+                -->
+                <!--  ADD BUTTON  -->
+                <!--
                 <Button Padding="4"
                         VerticalAlignment="Center"
                         Style="{StaticResource OpacityButton}"
@@ -155,33 +212,33 @@
                 <Button.ToolTip>
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Hide}"
-                                   Grid.Row="0"/>
+                        <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Hide}" Grid.Row="0" />
                         <TextBlock Text="Esc"
                                    Grid.Column="1"
                                    Grid.Row="0"
                                    Margin="24 0 0 0"
-                                   Opacity="0.6"/>
+                                   Opacity="0.6" />
 
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="1">
-                            <TextBlock Text="Ctrl:" Opacity="0.6" Margin="0 0 4 0"/>
-                            <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <TextBlock Text="Ctrl:"
+                                       Opacity="0.6"
+                                       Margin="0 0 4 0" />
+                            <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}" />
                         </StackPanel>
                         <TextBlock Text="Shift+Esc"
                                    Grid.Column="1"
                                    Grid.Row="1"
                                    Margin="24 0 0 0"
-                                   Opacity="0.6"/>
+                                   Opacity="0.6" />
                     </Grid>
-                    
+
                 </Button.ToolTip>
                 <Button.InputBindings>
                     <MouseBinding Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}" Gesture="LeftClick" />
@@ -194,14 +251,13 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <muicontrols:DashBorder
-                                Stroke="{StaticResource ForegroundMainBrush}"
-                                Margin="-2"
-                                StrokeDashLine="20"
-                                StrokeOnlyCorners="True"
-                                StrokeThickness="3"
-                            CornerRadius="8"
-                                Opacity="0.8"/>
+                        <muicontrols:DashBorder Stroke="{StaticResource ForegroundMainBrush}"
+                                                Margin="-2"
+                                                StrokeDashLine="20"
+                                                StrokeOnlyCorners="True"
+                                                StrokeThickness="3"
+                                                CornerRadius="8"
+                                                Opacity="0.8" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -227,7 +283,9 @@
         </Grid.InputBindings>
 
         <!--  TITLE PREVIEW  -->
-        <d:Border Margin="0,-27,0,0" Background="{StaticResource BorderMainBrush}" VerticalAlignment="Top">
+        <d:Border Margin="0,-27,0,0"
+                  Background="{StaticResource BorderMainBrush}"
+                  VerticalAlignment="Top">
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
 
@@ -289,12 +347,12 @@
                 <DataTemplate>
 
                     <!--  GROUP  -->
-                    <StackPanel Background="Transparent" 
+                    <StackPanel Background="Transparent"
                                 x:Name="GroupRoot"
                                 Tag="{Binding ElementName=GroupName}">
 
                         <StackPanel.Resources>
-                            <mExtensions:BindingProxy x:Key="AssetGroupBindingProxy" Data="{Binding}"/>
+                            <mExtensions:BindingProxy x:Key="AssetGroupBindingProxy" Data="{Binding}" />
                         </StackPanel.Resources>
 
                         <!--  GROUP CONTEXT MENU  -->
@@ -334,8 +392,7 @@
                                 <!--  SELECT AND ADD ASSETS  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
                                           CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}"
-                                          Command="{Binding AssetsViewModel.SelectAndAddFilesToGroupCommand,
-                                                                Source={StaticResource ViewModelLocator}}">
+                                          Command="{Binding AssetsViewModel.SelectAndAddFilesToGroupCommand, Source={StaticResource ViewModelLocator}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource PlusIcon}"
                                                    FontSize="15"
@@ -352,7 +409,7 @@
                                           InputGestureText="Ctrl+M">
                                     <MenuItem.Style>
                                         <Style TargetType="MenuItem">
-                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Expand}"/>
+                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Expand}" />
                                             <Setter Property="Icon">
                                                 <Setter.Value>
                                                     <TextBlock Text="{StaticResource ArrowDownIcon}"
@@ -363,13 +420,13 @@
                                             </Setter>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Data.IsExpanded, Source={StaticResource AssetGroupBindingProxy}}" Value="True">
-                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Collapse}"/>
+                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Collapse}" />
                                                     <Setter Property="Icon">
                                                         <Setter.Value>
                                                             <TextBlock Text="{StaticResource ArrowUpIcon}"
-                                                               FontSize="17"
-                                                               FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                               Foreground="{StaticResource ForegroundMainBrush}" />
+                                                                       FontSize="17"
+                                                                       FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                                       Foreground="{StaticResource ForegroundMainBrush}" />
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -379,9 +436,8 @@
                                 </MenuItem>
 
                                 <!--  RENAME  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}" 
-                                          Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, 
-                                            RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}"
+                                          Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           InputGestureText="F2">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource RenameIcon}"
@@ -395,8 +451,7 @@
 
                                 <!--  REMOVE  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:RemoveGroup}"
-                                          Command="{Binding AssetsViewModel.RemoveGroupCommand, 
-                                            Source={StaticResource ViewModelLocator}}"
+                                          Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
                                           CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource TrashCanIcon}"
@@ -429,14 +484,14 @@
                                           Padding="2"
                                           FocusVisualStyle="{StaticResource BracketsFocusVisual}">
                                     <CheckBox.InputBindings>
-                                        <KeyBinding Gesture="Enter" 
+                                        <KeyBinding Gesture="Enter"
                                                     Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
-                                                    CommandParameter="{Binding}"/>
+                                                    CommandParameter="{Binding}" />
                                     </CheckBox.InputBindings>
                                     <CheckBox.Style>
                                         <Style TargetType="CheckBox">
                                             <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
-                                            <Setter Property="Opacity" Value="0.6"/>
+                                            <Setter Property="Opacity" Value="0.6" />
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="CheckBox">
@@ -445,15 +500,17 @@
                                                                      x:Name="viewbox"
                                                                      RenderTransformOrigin="0.5,0.5">
                                                                 <Viewbox.RenderTransform>
-                                                                    <RotateTransform Angle="0"/>
+                                                                    <RotateTransform Angle="0" />
                                                                 </Viewbox.RenderTransform>
                                                                 <ContentPresenter Content="{TemplateBinding Content}"
                                                                                   VerticalAlignment="Center"
-                                                                                  HorizontalAlignment="Center"/>
+                                                                                  HorizontalAlignment="Center" />
                                                             </Viewbox>
                                                         </Grid>
                                                         <ControlTemplate.Resources>
-                                                            <BackEase x:Key="BackEasing" Amplitude="0.25" EasingMode="EaseOut"/>
+                                                            <BackEase x:Key="BackEasing"
+                                                                      Amplitude="0.25"
+                                                                      EasingMode="EaseOut" />
                                                         </ControlTemplate.Resources>
                                                         <ControlTemplate.Triggers>
                                                             <Trigger Property="IsChecked" Value="True">
@@ -464,7 +521,7 @@
                                                                                              Storyboard.TargetName="viewbox"
                                                                                              By="180"
                                                                                              Duration="0:0:0.45"
-                                                                                             EasingFunction="{StaticResource BackEasing}"/>
+                                                                                             EasingFunction="{StaticResource BackEasing}" />
                                                                         </Storyboard>
                                                                     </BeginStoryboard>
                                                                 </Trigger.EnterActions>
@@ -475,7 +532,7 @@
                                                                                              Storyboard.TargetName="viewbox"
                                                                                              To="0"
                                                                                              Duration="0:0:0.45"
-                                                                                             EasingFunction="{StaticResource BackEasing}"/>
+                                                                                             EasingFunction="{StaticResource BackEasing}" />
                                                                         </Storyboard>
                                                                     </BeginStoryboard>
                                                                 </Trigger.ExitActions>
@@ -488,7 +545,7 @@
                                                 <Trigger Property="IsChecked" Value="True">
                                                     <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
                                                 </Trigger>
-                                                <Trigger  Property="IsChecked" Value="False">
+                                                <Trigger Property="IsChecked" Value="False">
                                                     <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
@@ -497,7 +554,7 @@
                                                             <Storyboard>
                                                                 <DoubleAnimation Duration="0:0:0.1"
                                                                                  To="1"
-                                                                                 Storyboard.TargetProperty="Opacity"/>
+                                                                                 Storyboard.TargetProperty="Opacity" />
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </Trigger.EnterActions>
@@ -506,7 +563,7 @@
                                                             <Storyboard>
                                                                 <DoubleAnimation Duration="0:0:0.1"
                                                                                  To="0.6"
-                                                                                 Storyboard.TargetProperty="Opacity"/>
+                                                                                 Storyboard.TargetProperty="Opacity" />
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </Trigger.ExitActions>
@@ -516,7 +573,7 @@
                                     </CheckBox.Style>
                                 </CheckBox>
 
-                                <!--GROUP NAME-->
+                                <!--  GROUP NAME  -->
                                 <muicontrols:ToggleTextBox x:Name="GroupName"
                                                            Text="{Binding Name}"
                                                            wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
@@ -536,26 +593,26 @@
                                                     <ControlTemplate>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto"/>
-                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="auto"/>
-                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="auto" />
+                                                                <RowDefinition Height="*" />
                                                             </Grid.RowDefinitions>
                                                             <AdornedElementPlaceholder x:Name="adorner"
                                                                                        Grid.Row="0"
                                                                                        Grid.Column="0"
-                                                                                       Margin="0 0 0 4"/>
+                                                                                       Margin="0 0 0 4" />
                                                             <Rectangle Grid.Row="0"
                                                                        Grid.Column="0"
-                                                                       Height="2" 
+                                                                       Height="2"
                                                                        Fill="IndianRed"
                                                                        RadiusX="1.5"
                                                                        RadiusY="1.5"
                                                                        Margin="2 4 2 0"
                                                                        HorizontalAlignment="Stretch"
-                                                                       VerticalAlignment="Bottom"/>
+                                                                       VerticalAlignment="Bottom" />
                                                             <Border CornerRadius="5"
                                                                     Grid.ColumnSpan="2"
                                                                     Grid.Row="1"
@@ -569,7 +626,7 @@
                                                                                        Margin="10 7"
                                                                                        Foreground="IndianRed"
                                                                                        FontSize="14"
-                                                                                       FontFamily="{StaticResource FontMedium}"/>
+                                                                                       FontFamily="{StaticResource FontMedium}" />
                                                                         </DataTemplate>
                                                                     </ItemsControl.ItemTemplate>
                                                                 </ItemsControl>
@@ -612,7 +669,9 @@
                             <ListBox.Style>
                                 <Style TargetType="ListBox">
                                     <Style.Resources>
-                                        <BackEase x:Key="BackEasing" Amplitude="0.5" EasingMode="EaseInOut"/>
+                                        <BackEase x:Key="BackEasing"
+                                                  Amplitude="0.5"
+                                                  EasingMode="EaseInOut" />
                                     </Style.Resources>
                                     <Setter Property="RenderTransform">
                                         <Setter.Value>
@@ -627,9 +686,10 @@
                                                         <DoubleAnimation Duration="0:0:0.2"
                                                                          To="0"
                                                                          Storyboard.TargetProperty="Opacity" />
-                                                        <DoubleAnimation Duration="0:0:0.3" To="0.6"
+                                                        <DoubleAnimation Duration="0:0:0.3"
+                                                                         To="0.6"
                                                                          Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                         EasingFunction="{StaticResource BackEasing}"/>
+                                                                         EasingFunction="{StaticResource BackEasing}" />
                                                         <ObjectAnimationUsingKeyFrames Duration="0:0:0"
                                                                                        BeginTime="0:0:0.35"
                                                                                        Storyboard.TargetProperty="Visibility">
@@ -646,9 +706,10 @@
                                                                                        Storyboard.TargetProperty="Visibility">
                                                             <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
                                                         </ObjectAnimationUsingKeyFrames>
-                                                        <DoubleAnimation Duration="0:0:0.15" To="1"
+                                                        <DoubleAnimation Duration="0:0:0.15"
+                                                                         To="1"
                                                                          Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                         EasingFunction="{StaticResource BackEasing}"/>
+                                                                         EasingFunction="{StaticResource BackEasing}" />
                                                         <DoubleAnimation Duration="0:0:0.15"
                                                                          To="1"
                                                                          Storyboard.TargetProperty="Opacity" />
@@ -711,7 +772,7 @@
                                                                MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                                                MaximumWidthToHeightRatio="2.5"
                                                                FocusVisualStyle="{StaticResource AssetFocusVisual}"
-                                                               Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" >
+                                                               Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
 
                                         <assetcontrol:AssetControl.Style>
                                             <Style TargetType="{x:Type assetcontrol:AssetControl}">
@@ -735,10 +796,10 @@
                                                           Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
                                                           CommandParameter="{Binding}" />
 
-                                            <KeyBinding Gesture="Enter" 
+                                            <KeyBinding Gesture="Enter"
                                                         Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
                                                         CommandParameter="{Binding}" />
-                                            <KeyBinding Gesture="Ctrl+Enter" 
+                                            <KeyBinding Gesture="Ctrl+Enter"
                                                         Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
                                                         CommandParameter="{Binding}" />
                                         </assetcontrol:AssetControl.InputBindings>
@@ -749,8 +810,7 @@
                                                          Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
 
                                                 <!--  Add as layer  -->
-                                                <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, 
-                                                            Source={StaticResource ViewModelLocator}}"
+                                                <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Strings:AddAsLayer}"
                                                           InputGestureText="{lex:Loc PSQuickAssets:Strings:Mouse_Click}">
@@ -764,8 +824,7 @@
                                                 </MenuItem>
 
                                                 <!--  Open as new document  -->
-                                                <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, 
-                                                            Source={StaticResource ViewModelLocator}}"
+                                                <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Strings:OpenAsNewDoc}"
                                                           InputGestureText="{lex:Loc PSQuickAssets:Strings:Mouse_CtrlClick}">
