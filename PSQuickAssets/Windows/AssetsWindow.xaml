@@ -39,7 +39,7 @@
                 d:WindowStyle="None">
 
     <Window.InputBindings>
-        <KeyBinding Key="Esc" Command="{x:Static mui:WindowCommands.MinimizeWindow}" />
+        <KeyBinding Key="Esc" Command="{Binding Source={StaticResource WindowManagerCommands}, Path=ToggleMainWindowCommand}" />
         <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
         <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Ctrl+OemPlus" />
@@ -428,6 +428,11 @@
                                           FontSize="16"
                                           Padding="2"
                                           FocusVisualStyle="{StaticResource BracketsFocusVisual}">
+                                    <CheckBox.InputBindings>
+                                        <KeyBinding Gesture="Enter" 
+                                                    Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
+                                                    CommandParameter="{Binding}"/>
+                                    </CheckBox.InputBindings>
                                     <CheckBox.Style>
                                         <Style TargetType="CheckBox">
                                             <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
@@ -706,7 +711,7 @@
                                                                MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                                                MaximumWidthToHeightRatio="2.5"
                                                                FocusVisualStyle="{StaticResource AssetFocusVisual}"
-                                                               Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
+                                                               Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" >
 
                                         <assetcontrol:AssetControl.Style>
                                             <Style TargetType="{x:Type assetcontrol:AssetControl}">

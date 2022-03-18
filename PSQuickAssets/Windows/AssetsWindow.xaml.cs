@@ -1,4 +1,6 @@
 ﻿using MortuusUI;
+using MortuusUI.Extensions;
+using PSQuickAssets.Assets;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,16 +11,6 @@ namespace PSQuickAssets.Windows;
 
 public partial class AssetsWindow : WindowBase
 {
-    //TODO: This is ugly:
-    public bool IsCtrlPressed
-    {
-        get { return (bool)GetValue(IsCtrlPressedProperty); }
-        set { SetValue(IsCtrlPressedProperty, value); }
-    }
-
-    public static readonly DependencyProperty IsCtrlPressedProperty =
-        DependencyProperty.Register(nameof(IsCtrlPressed), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
-
     public AssetsWindow()
     {
         InitializeComponent();
@@ -47,6 +39,7 @@ public partial class AssetsWindow : WindowBase
     /// </summary>
     public void ToggleVisibility()
     {
+        //TODO: still some glitches when hiding. Wrong showing after minimized by clicking on task bar.
         bool minimizeInsteadOfHiding = ((App)App.Current).Config.MinimizeWindowInsteadOfHiding;
 
         if (_isHidden)
@@ -84,6 +77,17 @@ public partial class AssetsWindow : WindowBase
 
     #endregion
 
+    #region CtrlHeld
+    //TODO: This is ugly:
+    public bool IsCtrlPressed
+    {
+        get { return (bool)GetValue(IsCtrlPressedProperty); }
+        set { SetValue(IsCtrlPressedProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsCtrlPressedProperty =
+        DependencyProperty.Register(nameof(IsCtrlPressed), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
+
     private void AssetsWindow_PreviewKeyUp(object sender, KeyEventArgs e)
     {
         if (e.Key is Key.LeftCtrl or Key.RightCtrl)
@@ -100,6 +104,8 @@ public partial class AssetsWindow : WindowBase
         if (e.Key is Key.LeftCtrl or Key.RightCtrl)
             IsCtrlPressed = true;
     }
+
+    #endregion
 
     //TODO: Move to attached property?
     private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
