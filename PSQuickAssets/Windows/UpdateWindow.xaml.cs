@@ -1,30 +1,29 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MortuusUI;
+using PSQuickAssets.Services;
+using System.Diagnostics;
 
-namespace PSQuickAssets.Windows
+namespace PSQuickAssets.Windows;
+
+public partial class UpdateWindow : WindowBase
 {
-    public partial class UpdateWindow : Window
+    public UpdateWindow()
     {
-        public UpdateWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-
-        private void CloseButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    {
+        e.Handled = true;
+        try
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
-            e.Handled = true;
         }
+        catch (System.Exception ex)
+        {
+            DIKernel.ServiceProvider.GetRequiredService<INotificationService>().Notify(ex.Message, NotificationIcon.Error);
+        }
+
+        this.Close();
     }
 }

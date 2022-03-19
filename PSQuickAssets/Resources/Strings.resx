@@ -355,7 +355,7 @@ Esc to cancel.</value>
     <value>PSQuickAssets Update</value>
   </data>
   <data name="Update_Available" xml:space="preserve">
-    <value>Update available</value>
+    <value>New version available:</value>
   </data>
   <data name="Update_Current" xml:space="preserve">
     <value>Current:</value>

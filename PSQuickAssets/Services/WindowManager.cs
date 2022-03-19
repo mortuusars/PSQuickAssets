@@ -122,7 +122,12 @@ internal class WindowManager
     public void ShowUpdateWindow(Version currentVersion, Version newVersion, string changelog)
     {
         UpdateWindow updateWindow = new();
-        updateWindow.DataContext = new UpdateViewModel(currentVersion, newVersion, changelog);
+        updateWindow.DataContext = new UpdateViewModel
+        {
+            CurrentVersion = currentVersion,
+            NewVersion = newVersion,
+            Changelog = changelog
+        };
         updateWindow.Show();
     }
 

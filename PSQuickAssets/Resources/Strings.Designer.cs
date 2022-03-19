@@ -757,7 +757,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update available.
+        ///   Looks up a localized string similar to New version available:.
         /// </summary>
         public static string Update_Available {
             get {
