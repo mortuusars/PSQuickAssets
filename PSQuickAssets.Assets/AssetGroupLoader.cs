@@ -60,6 +60,37 @@ internal class AssetGroupLoader
         return new Result<AssetGroup>(true, group);
     }
 
+    public async IAsyncEnumerable<AssetGroup?> LoadStoredGroupsAsync(string assetGroupsFolder)
+    {
+        string[] files = GetDirectoryFiles(assetGroupsFolder);
+
+        if (files.Length == 0)
+            yield break;
+
+        foreach (var groupFile in files)
+        {
+            AssetGroup? group = await LoadGroupFromFile(groupFile);
+
+            if (group is null)
+                continue;
+
+            for (int i = group.Assets.Count - 1; i >= 0; i--)
+            {
+                Asset asset = group.Assets[i];
+
+                if (File.Exists(asset.Path))
+                    await Task.Run(() => _assetDataLoader.LoadData(asset)); // Loads thumbnail and other asset info
+                else
+                {
+                    _logger.Warning($"[Assset Group Loading] Cannot load asset '{asset.Path}'. File does not exist. Asset will be removed.");
+                    group.Assets.Remove(asset);
+                }
+            }
+
+            yield return group;
+        }
+    }
+
     /// <summary>
     /// Asynchronously loads all Asset Groups from specified folder. Thumbnails included.
     /// </summary>

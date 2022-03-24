@@ -151,6 +151,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load saved asset groups:.
+        /// </summary>
+        public static string Assets_FailedToLoadStoredGroups {
+            get {
+                return ResourceManager.GetString("Assets_FailedToLoadStoredGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {

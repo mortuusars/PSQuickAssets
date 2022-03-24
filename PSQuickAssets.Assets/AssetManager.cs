@@ -107,6 +107,11 @@ public class AssetManager
     /// <returns>Collection of asset groups with all its assets and their thumbnails.</returns>
     public Task<Result<IEnumerable<AssetGroup>>> LoadGroupsAsync() => _assetGroupLoader.LoadGroupsAsync(_savedAssetsFolder);
 
+    public IAsyncEnumerable<AssetGroup?> LoadStoredGroupsAsync()
+    {
+        return _assetGroupLoader.LoadStoredGroupsAsync(_savedAssetsFolder);
+    }
+
     /// <summary>
     /// Asynchronously loads stored asset groups and adds them to provided collection one by one.
     /// </summary>

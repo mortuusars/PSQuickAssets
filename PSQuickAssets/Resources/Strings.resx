@@ -141,6 +141,9 @@
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>
+  <data name="Assets_FailedToLoadStoredGroups" xml:space="preserve">
+    <value>Failed to load saved asset groups:</value>
+  </data>
   <data name="Asset_OpenWithShell" xml:space="preserve">
     <value>Preview</value>
   </data>

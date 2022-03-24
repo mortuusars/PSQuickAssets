@@ -9,14 +9,14 @@ namespace PSQuickAssets.ViewModels;
 
 internal class AssetsWindowViewModel
 {
-    public AssetsViewModel AssetsViewModel { get; }
+    public NewAssetsViewModel AssetsViewModel { get; }
     public IStatusService StatusService { get; }
     public IConfig Config { get; }
 
     public ICommand IncreaseThumbnailSizeCommand { get; }
     public ICommand DecreaseThumbnailSizeCommand { get; }
 
-    public AssetsWindowViewModel(AssetsViewModel assetsViewModel, IStatusService statusService, IConfig config)
+    public AssetsWindowViewModel(NewAssetsViewModel assetsViewModel, IStatusService statusService, IConfig config)
     {
         AssetsViewModel = assetsViewModel;
         StatusService = statusService;

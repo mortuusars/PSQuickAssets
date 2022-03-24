@@ -43,6 +43,7 @@ internal static class DIKernel
 
 
         services.AddSingleton<AssetsViewModel>();
+        services.AddSingleton<NewAssetsViewModel>();
         services.AddSingleton<MainViewModel>();
 
         services.AddTransient<AssetsWindowViewModel>();
