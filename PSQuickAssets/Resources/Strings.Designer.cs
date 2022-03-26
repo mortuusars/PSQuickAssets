@@ -106,6 +106,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Assets.
+        /// </summary>
+        public static string Assets_AddAssets {
+            get {
+                return ResourceManager.GetString("Assets_AddAssets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_AddFiles {
@@ -142,6 +151,15 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding Assets.
+        /// </summary>
+        public static string Assets_AddingAssets {
+            get {
+                return ResourceManager.GetString("Assets_AddingAssets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute action &apos;{0}&apos; from set &apos;{1}&apos;.
         /// </summary>
         public static string Assets_CannotExecuteActionFromSet {
@@ -153,9 +171,18 @@ namespace PSQuickAssets.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Failed to load saved asset groups:.
         /// </summary>
-        public static string Assets_FailedToLoadStoredGroups {
+        public static string Assets_FailedToLoadStoredAssetGroups {
             get {
-                return ResourceManager.GetString("Assets_FailedToLoadStoredGroups", resourceCulture);
+                return ResourceManager.GetString("Assets_FailedToLoadStoredAssetGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Assets.
+        /// </summary>
+        public static string Assets_LoadingAssets {
+            get {
+                return ResourceManager.GetString("Assets_LoadingAssets", resourceCulture);
             }
         }
         

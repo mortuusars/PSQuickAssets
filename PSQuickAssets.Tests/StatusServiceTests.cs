@@ -1,9 +1,4 @@
 ﻿using PSQuickAssets.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace PSQuickAssets.Tests;
@@ -15,7 +10,7 @@ public class StatusServiceTests
     [Fact]
     public void LoadingShouldSetIsLoadingToTrue()
     {
-        using (var _ = _statusService.LoadingStatus())
+        using (var _ = _statusService.Loading("asd"))
         {
             Assert.True(_statusService.IsLoading);
         }
@@ -26,11 +21,11 @@ public class StatusServiceTests
     [Fact]
     public void LoadingMultipleTasksShouldIsLoadingShouldStayTrue()
     {
-        using (var _ = _statusService.LoadingStatus())
+        using (var _ = _statusService.Loading("asd"))
         {
             Assert.True(_statusService.IsLoading);
 
-            using (var asd = _statusService.LoadingStatus())
+            using (var asd = _statusService.Loading("asdasd"))
             {
                 Assert.True(_statusService.IsLoading);
             }

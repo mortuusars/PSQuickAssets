@@ -14,42 +14,51 @@ internal interface IStatusService : INotifyPropertyChanged
     bool IsLoading { get; }
 
     /// <summary>
+    /// Collection of currently active loading tasks.
+    /// </summary>
+    ObservableCollection<ITask> LoadingTasks { get; }
+
+    /// <summary>
     /// Represetns a task that is considered in progress when created, and finished when disposed.
     /// </summary>
-    IDisposable LoadingStatus();
+    IDisposable Loading(string taskName);
 }
 
-internal class StatusService : ObservableObject, IStatusService
+internal interface ITask
 {
-    private bool _isLoading;
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set
-        {
-            if (_isLoading != value)
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-    }
+    event EventHandler? Finished;
+    string Name { get; }
+    DateTime StartTime { get; }
+}
 
-    private readonly ObservableCollection<object> _loadingTasks = new();
+internal partial class StatusService : ObservableObject, IStatusService
+{
+    [ObservableProperty]
+    private bool _isLoading;
+
+    [ObservableProperty]
+    private ObservableCollection<ITask> _loadingTasks = new();
 
     public StatusService()
     {
-        _loadingTasks.CollectionChanged += (s, e) =>
-        {
-            IsLoading = _loadingTasks.Any();
-        };
+        _loadingTasks.CollectionChanged += (s, e) => IsLoading = _loadingTasks.Any();
     }
 
-    public IDisposable LoadingStatus()
+    public IDisposable Loading(string taskName)
     {
-        var status = new LoadingTask(this);
-        _loadingTasks.Add(status);
-        return status;
+        var loadingTask = new LoadingTask(taskName);
+        loadingTask.Finished += LoadingTask_Finished;
+        _loadingTasks.Add(loadingTask);
+        return loadingTask;
+    }
+
+    private void LoadingTask_Finished(object? sender, EventArgs e)
+    {
+        if (sender is ITask task)
+        {
+            task.Finished -= LoadingTask_Finished;
+            _loadingTasks.Remove(task);
+        }
     }
 
     private void LoadingTaskFinished(LoadingTask task)
@@ -57,14 +66,21 @@ internal class StatusService : ObservableObject, IStatusService
         _loadingTasks.Remove(task);
     }
 
-    private class LoadingTask : IDisposable
+    private class LoadingTask : ITask, IDisposable
     {
-        private readonly StatusService _statusService;
-        public LoadingTask(StatusService statusService) => _statusService = statusService;
+        public event EventHandler? Finished;
+        public string Name { get; init; }
+        public DateTime StartTime { get; init; }
+
+        public LoadingTask(string name)
+        {
+            Name = name;
+            StartTime = DateTime.Now;
+        }
 
         public void Dispose()
         {
-            _statusService.LoadingTaskFinished(this);
+            Finished?.Invoke(this, EventArgs.Empty);
         }
     }
 }

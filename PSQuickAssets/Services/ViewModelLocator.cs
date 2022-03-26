@@ -7,7 +7,7 @@ namespace PSQuickAssets.Services;
 internal class ViewModelLocator
 {
     public AssetsWindowViewModel AssetsWindowViewModel { get => DIKernel.ServiceProvider.GetRequiredService<AssetsWindowViewModel>(); }
-    public AssetsViewModel AssetsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<AssetsViewModel>(); }
+    public NewAssetsViewModel AssetsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<NewAssetsViewModel>(); }
     public PhotoshopCommands PhotoshopCommandsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<PhotoshopCommands>(); }
 
     public MainViewModel MainViewModel { get => DIKernel.ServiceProvider.GetRequiredService<MainViewModel>(); }

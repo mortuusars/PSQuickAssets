@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PSQuickAssets.Commands;
 
@@ -33,28 +34,20 @@ internal class SaveGroupsAsyncCommand : IAsyncCommand
     {
         List<AssetGroup> groups = _assetsViewModel.AssetGroups.Select(g => g.Group).ToList();
 
-        Result saveResult = await _assetManager.SaveAsync(groups);
+        AssetSavingResult saveResult = await _assetManager.SaveAsync(groups);
 
         if (saveResult.IsSuccessful)
             return;
 
-        if (saveResult.Exception is AggregateException aggregateException)
-        {
-            if (aggregateException.InnerExceptions.Count == _assetsViewModel.AssetGroups.Count)
-                _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAllGroups"], NotificationIcon.Error);
-            else
-            {
-                string failedGroups = "";
-                foreach (var exception in aggregateException.InnerExceptions)
-                {
-                    failedGroups += exception.Message;
-                }
+        string errorMessage = Resources.Localization.Instance["FailedToSaveGroups"];
 
-                _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveGroups"] + $"\n<{failedGroups}>", NotificationIcon.Error);
-            }
+        foreach (var group in saveResult.FailedGroups)
+        {
+            errorMessage += $"\n{group.Key.Name} : {group.Value.Message}";
         }
-        else
-            _notificationService.Notify(App.AppName, Localization.Instance["FailedToSaveAssetGroups"] + saveResult.Exception?.Message, NotificationIcon.Error);
+
+        _notificationService.Notify(errorMessage, NotificationIcon.Error, 
+            () => MessageBox.Show(errorMessage, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error));
     }
 
     public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);

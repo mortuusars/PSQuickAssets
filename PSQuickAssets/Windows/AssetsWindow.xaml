@@ -14,7 +14,7 @@
                 xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                 xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                 xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
+                xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters" xmlns:system="clr-namespace:System;assembly=mscorlib"
                 mc:Ignorable="d"
                 lex:LocalizeDictionary.DesignCulture="en"
                 lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -68,6 +68,9 @@
 
     <mui:WindowBase.Resources>
 
+        <system:Boolean x:Key="IncludeSubfolders">True</system:Boolean>
+        <system:Boolean x:Key="DoNotIncludeSubfolders">False</system:Boolean>
+        
         <!--  TITLE  -->
         <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
             <StackPanel Margin="4,0,0,0" Orientation="Horizontal">
@@ -87,21 +90,60 @@
                     <Button.ContextMenu>
                         <ContextMenu>
 
-                            <!-- ADD EMPTY GROUP -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" 
-                                      Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
+                            <!--  ADD ASSETS  -->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
+                                <MenuItem.Icon>
+                                    <TextBlock Text="{StaticResource PlusIcon}"
+                                               FontFamily="{StaticResource SegoeMDL2Icons}"
+                                               FontSize="17" />
+                                </MenuItem.Icon>
+
+                                <!--FILES-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
+                                          Command="{Binding AssetsViewModel.NewGroupFromFilesCommand}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE82E;"
+                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   FontSize="17" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                
+                                <!--FOLDER-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolder}"
+                                          Command="{Binding AssetsViewModel.NewGroupFromFolderCommand}"
+                                          CommandParameter="{StaticResource DoNotIncludeSubfolders}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE8F4;"
+                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   FontSize="17" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <!--+SUBFOLDERS-->
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolderWithSubfolders}"
+                                          Command="{Binding AssetsViewModel.NewGroupFromFolderCommand}"
+                                          CommandParameter="{StaticResource IncludeSubfolders}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xED43;"
+                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
+                                                   FontSize="17" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+
+                            <!--  ADD EMPTY GROUP  -->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" Command="{Binding AssetsViewModel.CreateEmptyGroupCommand}">
                                 <MenuItem.Icon>
                                     <TextBlock Text="&#xECC8;"
                                                FontFamily="{StaticResource SegoeMDL2Icons}"
-                                               FontSize="19"/>
+                                               FontSize="19" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
                             <Separator />
 
-                            <!--SETTINGS-->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" 
-                                      Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
+                            <!--  SETTINGS  -->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
                                 <MenuItem.Icon>
                                     <Path Height="16"
                                           Width="16"
@@ -111,7 +153,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <!--TERMINAL-->
+                            <!--  TERMINAL  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Terminal}"
                                       Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
                                       Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
@@ -392,7 +434,7 @@
                                 <!--  SELECT AND ADD ASSETS  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
                                           CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}"
-                                          Command="{Binding AssetsViewModel.SelectAndAddFilesToGroupCommand, Source={StaticResource ViewModelLocator}}">
+                                          Command="{Binding AssetsViewModel.AddFilesToGroupCommand, Source={StaticResource ViewModelLocator}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource PlusIcon}"
                                                    FontSize="15"

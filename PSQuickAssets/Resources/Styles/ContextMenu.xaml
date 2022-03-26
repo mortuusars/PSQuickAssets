@@ -4,7 +4,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Grid.IsSharedSizeScope" Value="true" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundMainBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -12,7 +12,7 @@
                     <Border
                         x:Name="Border"
                         Padding="6"
-                        Background="{DynamicResource BackgroundCloserBrush}"
+                        Background="{StaticResource BackgroundCloserBrush}"
                         BorderThickness="0"
                         CornerRadius="8">
                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
@@ -27,7 +27,7 @@
                                     <DropShadowEffect
                                         BlurRadius="20"
                                         Direction="-90"
-                                        Opacity="0.35"
+                                        Opacity="0.4"
                                         ShadowDepth="1" />
                                 </Setter.Value>
                             </Setter>

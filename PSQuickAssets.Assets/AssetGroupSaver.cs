@@ -11,13 +11,13 @@ internal interface IAssetSaver
     /// </summary>
     /// <param name="assetGroups">Collection to save.</param>
     /// <returns>Result of saving.</returns>
-    Result Save(IEnumerable<AssetGroup> assetGroups);
+    AssetSavingResult Save(IEnumerable<AssetGroup> assetGroups);
     /// <summary>
     /// Asynchronously saves collection of asset groups.
     /// </summary>
     /// <param name="assetGroups">Collection to save.</param>
     /// <returns>Result of saving.</returns>
-    Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups);
+    Task<AssetSavingResult> SaveAsync(IEnumerable<AssetGroup> assetGroups);
 }
 
 internal class AssetGroupSaver : IAssetSaver
@@ -33,29 +33,29 @@ internal class AssetGroupSaver : IAssetSaver
         _logger = logger;
     }
 
-    public async Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups)
+    public async Task<AssetSavingResult> SaveAsync(IEnumerable<AssetGroup> assetGroups)
     {
         return await Task.Run(() => Save(assetGroups));
     }
 
-    public Result Save(IEnumerable<AssetGroup> assetGroups)
+    public AssetSavingResult Save(IEnumerable<AssetGroup> assetGroups)
     {
         var options = new JsonSerializerOptions() { WriteIndented = true };
-        var exceptions = new List<Exception>();
+        
+        AssetSavingResult result = new(true, "");
 
         lock (_savingLock)
         {
-            if (!CreateDirectoryIfNotExists(_assetsFolderPath))
-                return new Result(false);
+            if (CreateDirectoryIfNotExists(_assetsFolderPath) is Exception except)
+                return new(false, except.Message);
 
             BackupOldFiles(_assetsFolderPath, Path.Combine(_assetsFolderPath, "backup"));
             DeleteAllFiles(_assetsFolderPath);
 
             int groupIndex = 0;
 
-            AssetGroup[] groups = assetGroups.ToArray();
 
-            foreach (var group in groups)
+            foreach (var group in assetGroups.ToArray())
             {
                 try
                 {
@@ -65,9 +65,9 @@ internal class AssetGroupSaver : IAssetSaver
                 }
                 catch (Exception ex)
                 {
-                    var exception = new Exception(group.Name, ex);
-                    _logger.Error($"[Asset Group Saving] Failed to save AssetGroup '{group.Name}':\n{exception}");
-                    exceptions.Add(ex);
+                    result.IsSuccessful = false;
+                    result.FailedGroups.Add(group, ex);
+                    _logger.Error($"[Asset Group Saving] Failed to save AssetGroup '{group.Name}':\n{ex}");
                 }
             }
 
@@ -75,18 +75,15 @@ internal class AssetGroupSaver : IAssetSaver
             _logger.Debug($"[Asset Group Saving] Saved {groupIndex++} {groupWord}.");
         }
 
-        if (exceptions.Count > 0)
-        {
-            var aggregateException = new AggregateException(exceptions);
-            return new Result(false, aggregateException);
-        }
+        if (result.FailedGroups.Count == 0)
+            return new AssetSavingResult(true, "");
 
-        return new Result(true);
+        return result;
     }
 
     private void BackupOldFiles(string sourceDirectoryPath, string destinationDirectoryPath)
     {
-        if (!CreateDirectoryIfNotExists(destinationDirectoryPath))
+        if (CreateDirectoryIfNotExists(destinationDirectoryPath) is Exception)
             return;
 
         foreach (var file in GetDirectoryFiles(destinationDirectoryPath))
@@ -115,17 +112,17 @@ internal class AssetGroupSaver : IAssetSaver
         }
     }
 
-    private bool CreateDirectoryIfNotExists(string directoryPath)
+    private Exception? CreateDirectoryIfNotExists(string directoryPath)
     {
         try
         {
             Directory.CreateDirectory(directoryPath);
-            return true;
+            return null;
         }
         catch (Exception ex)
         {
             _logger.Error($"[Asset Group Saving] Failed to create directory '{Path.GetDirectoryName(directoryPath)}': {ex.Message}");
-            return false;
+            return ex;
         }
     }
 
@@ -140,5 +137,18 @@ internal class AssetGroupSaver : IAssetSaver
             _logger.Error("[Asset Group Saving] Failed to get directory files: " + ex.Message);
             return Array.Empty<string>();
         }
+    }
+}
+
+public class AssetSavingResult
+{
+    public bool IsSuccessful { get; set; }
+    public string Message { get; set; }
+    public Dictionary<AssetGroup, Exception> FailedGroups { get; } = new();
+
+    public AssetSavingResult(bool isSuccessful, string message)
+    {
+        IsSuccessful = isSuccessful;
+        Message = message;
     }
 }

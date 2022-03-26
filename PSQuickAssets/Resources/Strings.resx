@@ -126,6 +126,9 @@
   <data name="Assets" xml:space="preserve">
     <value>Assets</value>
   </data>
+  <data name="Assets_AddAssets" xml:space="preserve">
+    <value>Add Assets</value>
+  </data>
   <data name="Assets_AddFiles" xml:space="preserve">
     <value>Add Files</value>
   </data>
@@ -138,11 +141,17 @@
   <data name="Assets_AddGroup" xml:space="preserve">
     <value>New Group</value>
   </data>
+  <data name="Assets_AddingAssets" xml:space="preserve">
+    <value>Adding Assets</value>
+  </data>
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>
-  <data name="Assets_FailedToLoadStoredGroups" xml:space="preserve">
+  <data name="Assets_FailedToLoadStoredAssetGroups" xml:space="preserve">
     <value>Failed to load saved asset groups:</value>
+  </data>
+  <data name="Assets_LoadingAssets" xml:space="preserve">
+    <value>Loading Assets</value>
   </data>
   <data name="Asset_OpenWithShell" xml:space="preserve">
     <value>Preview</value>

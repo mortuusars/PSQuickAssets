@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
+using PSQuickAssets.Utils.SystemDialogs;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,14 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-[INotifyPropertyChanged]
+//[INotifyPropertyChanged]
 internal partial class NewAssetsViewModel
 {
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new();
 
+    public Func<string, List<string>> IsGroupNameValid { get; }
+
+    private readonly AssetGroupHandler _assetGroupHandler;
     private readonly AssetManager _assetManager;
     private readonly INotificationService _notificationService;
     private readonly IStatusService _statusService;
@@ -30,55 +34,116 @@ internal partial class NewAssetsViewModel
         _notificationService = notificationService;
         _statusService = statusService;
         _logger = logger;
+        _assetGroupHandler = new AssetGroupHandler(AssetGroups, assetManager, logger);
+
+        IsGroupNameValid = IsNameForAGroupValid;
 
         LoadStoredAssetsAsync().SafeFireAndForget(ex => _notificationService.Notify(
-            Localization.Instance["Assets_FailedToLoadStoredGroups"] + " " + ex.Message, NotificationIcon.Error));
+            $"{Localization.Instance["Assets_FailedToLoadStoredAssetGroups"]} {ex.Message}", NotificationIcon.Error));
     }
 
     private async Task LoadStoredAssetsAsync()
     {
-        using (_statusService.LoadingStatus())
+        using (_statusService.Loading(Localization.Instance["Assets_LoadingAssets"]))
         {
-            await foreach (var group in _assetManager.LoadStoredGroupsAsync())
-            {
-                if (group is not null)
-                    AssetGroups.Add(CreateGroupViewModel(group));
-            }
+            await _assetGroupHandler.LoadStoredGroupsAsync();
         }
     }
 
-    /// <summary>
-    /// Creates a group view model from existing <see cref="AssetGroup"/>.
-    /// </summary>
-    /// <returns>Created group viewmodel.</returns>
-    private AssetGroupViewModel CreateGroupViewModel(AssetGroup assetGroup)
+    private async Task SaveGroupsAsync()
     {
-        string groupName = assetGroup.Name;
-        if (IsGroupExists(groupName))
+        var result = await _assetGroupHandler.SaveGroupsAsync();
+
+        if (result.IsSuccessful)
+            return;
+
+        string errorMessage = Localization.Instance["FailedToSaveGroups"];
+
+        foreach (var group in result.FailedGroups)
         {
-            groupName = $"{groupName} {Localization.Instance["New"]}";
-            assetGroup.Name = groupName;
+            errorMessage += $"\n{group.Key.Name} : {group.Value.Message}";
         }
 
-        _logger.Information($"[Asset Groups] Group '{groupName}' created.");
-        return new AssetGroupViewModel(assetGroup, _logger);
+        _notificationService.Notify(errorMessage, NotificationIcon.Error,
+            () => System.Windows.MessageBox.Show(errorMessage, App.AppName, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error));
     }
 
-    /// <summary>
-    /// Removes group from <see cref="AssetGroups"/>.
-    /// </summary>
-    /// <param name="assetGroupViewModel">Group to remove.</param>
-    /// <returns><see langword="true"/> if group was removed.</returns>
+    [ICommand]
+    private void CreateEmptyGroup(string groupName)
+    {
+        _assetGroupHandler.CreateEmptyGroup(groupName);
+        SaveGroupsAsync().SafeFireAndForget();
+    }
+
     [ICommand]
     private void RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
     {
-        if (assetGroupViewModel is not null && AssetGroups.Remove(assetGroupViewModel))
-            _logger.Information($"[Asset Groups] Removed group '{assetGroupViewModel!.Name}'.");
+        _assetGroupHandler.RemoveGroup(assetGroupViewModel);
+        SaveGroupsAsync().SafeFireAndForget();
     }
 
-    /// <summary>
-    /// Checks if a group with specified name exists in <see cref="AssetGroups"/>.
-    /// </summary>
-    /// <returns><see langword="true"/> if group with that name exists.</returns>
-    private bool IsGroupExists(string groupName) => AssetGroups.Any(group => group.Name.Equals(groupName));
+    [ICommand]
+    private async Task AddFilesToGroup(AssetGroupViewModel? group)
+    {
+        if (group is null)
+            throw new ArgumentNullException(nameof(group));
+
+        string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+
+        if (files.Length == 0)
+            return;
+
+        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+        {
+            await _assetGroupHandler.AddAssetsToGroupAsync(group, files);
+        }
+        SaveGroupsAsync().SafeFireAndForget();
+    }
+
+    [ICommand]
+    private async Task NewGroupFromFiles()
+    {
+        string[] filePaths = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"],
+            FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+
+        if (filePaths.Length == 0)
+            return;
+
+        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+        {
+            await _assetGroupHandler.AddGroupFromFilesAsync(filePaths);
+        }
+        SaveGroupsAsync().SafeFireAndForget();
+    }
+
+    [ICommand]
+    private async void NewGroupFromFolder(bool includeSubfolders = false)
+    {
+        string[] folderPaths = SystemDialogs.SelectFolder(Localization.Instance["SelectFolder"], SelectionMode.Multiple);
+
+        if (folderPaths.Length == 0)
+            return;
+
+        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+        {
+            foreach (var path in folderPaths)
+            {
+                await _assetGroupHandler.AddGroupFromFolderAsync(path, includeSubfolders);
+            }
+        }
+        SaveGroupsAsync().SafeFireAndForget();
+    }
+
+    private List<string> IsNameForAGroupValid(string name)
+    {
+        List<string> errors = new();
+
+        if (string.IsNullOrWhiteSpace(name))
+            errors.Add(Localization.Instance["Group_NameCannotBeEmpty"]);
+
+        if (_assetGroupHandler.IsGroupExists(name))
+            errors.Add(Localization.Instance["Group_NameAlreadyExists"]);
+
+        return errors;
+    }
 }

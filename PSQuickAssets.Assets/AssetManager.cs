@@ -92,14 +92,14 @@ public class AssetManager
     /// </summary>
     /// <param name="assetGroups">Collection of asset groups.</param>
     /// <returns>Result of the saving.</returns>
-    public Result Save(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.Save(assetGroups);
+    public AssetSavingResult Save(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.Save(assetGroups);
 
     /// <summary>
     /// Asynchronously saves collection of asset groups to file system.
     /// </summary>
     /// <param name="assetGroups">Collection of asset groups.</param>
     /// <returns>Result of the saving.</returns>
-    public Task<Result> SaveAsync(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.SaveAsync(assetGroups);
+    public Task<AssetSavingResult> SaveAsync(IEnumerable<AssetGroup> assetGroups) => _assetGroupSaver.SaveAsync(assetGroups);
 
     /// <summary>
     /// Asynchronously loads stored asset groups.

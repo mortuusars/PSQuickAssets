@@ -44,7 +44,7 @@ internal class SelectAndAddAssetsToGroupCommand : IAsyncCommand<AssetGroupViewMo
         if (files.Length == 0)
             return;
 
-        using (var _ = _statusService.LoadingStatus())
+        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
         {
             try
             {

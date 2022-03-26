@@ -1,6 +1,4 @@
 ﻿using MortuusUI;
-using MortuusUI.Extensions;
-using PSQuickAssets.Assets;
 using System;
 using System.Windows;
 using System.Windows.Controls;
