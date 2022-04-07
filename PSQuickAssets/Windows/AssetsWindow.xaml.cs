@@ -1,5 +1,6 @@
 ﻿using MortuusUI;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,68 +10,68 @@ namespace PSQuickAssets.Windows;
 
 public partial class AssetsWindow : WindowBase
 {
+    public bool ShouldMinimizeInsteadOfHiding
+    {
+        get { return (bool)GetValue(ShouldMinimizeInsteadOfHidingProperty); }
+        set { SetValue(ShouldMinimizeInsteadOfHidingProperty, value); }
+    }
+
+    public static readonly DependencyProperty ShouldMinimizeInsteadOfHidingProperty =
+        DependencyProperty.Register(nameof(ShouldMinimizeInsteadOfHiding), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
+
     public AssetsWindow()
     {
         InitializeComponent();
         this.PreviewKeyDown += AssetsWindow_PreviewKeyDown;
         this.PreviewKeyUp += AssetsWindow_PreviewKeyUp;
-        this.ContentRendered += (_, _) => _windowStateBeforeHiding = WindowState;
+        this.StateLoaded += (_, _) =>
+        {
+            _restoreWindowState = WindowState;
+        };
     }
 
     #region Hiding/Showing
 
-    /// <summary>
-    /// Hides the Window.
-    /// </summary>
+    private bool _isHidden;
+    private WindowState _restoreWindowState;
+
     public new void Hide()
     {
-        _windowStateBeforeHiding = this.WindowState;
-        this.WindowState = WindowState.Minimized;
-        base.Hide();
         _isHidden = true;
+        _restoreWindowState = WindowState;
+        WindowState = WindowState.Minimized;
+
+        if (!ShouldMinimizeInsteadOfHiding)
+        {
+            // Hide window after a delay to allow minimizing animation to play.
+            var hidingTimer = new DispatcherTimer();
+            hidingTimer.Interval = TimeSpan.FromSeconds(0.3);
+            hidingTimer.Tick += (s, e) =>
+            {
+                if (_isHidden) // Check if still hidden.
+                    base.Hide();
+
+                hidingTimer.Stop();
+            };
+            hidingTimer.Start();
+        }
     }
 
-    private bool _isHidden;
-    private WindowState _windowStateBeforeHiding;
-    /// <summary>
-    /// Shows/Hides the window depending on which state it is currently in.
-    /// </summary>
+    public new void Show()
+    {
+        _isHidden = false;
+        base.Show();
+        WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
+    }
+
     public void ToggleVisibility()
     {
-        //TODO: still some glitches when hiding. Wrong showing after minimized by clicking on task bar.
-        bool minimizeInsteadOfHiding = ((App)App.Current).Config.MinimizeWindowInsteadOfHiding;
-
         if (_isHidden)
-        {
-            _isHidden = false;
-
-            // Minimize before showing to avoid window flickering:
-            WindowState = WindowState.Minimized;
-
-            this.Show();
-            this.Activate();
-            WindowState = _windowStateBeforeHiding != WindowState.Minimized ? _windowStateBeforeHiding : WindowState.Normal;
-        }
+            Show();
+        else if (WindowState == WindowState.Minimized)
+            WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
         else
-        {
-            _windowStateBeforeHiding = WindowState;
-            WindowState = WindowState.Minimized;
-            _isHidden = true;
-
-            if (!minimizeInsteadOfHiding)
-            {
-                var hidingTimer = new DispatcherTimer();
-                hidingTimer.Interval = TimeSpan.FromSeconds(0.3);
-                hidingTimer.Tick += (s, e) =>
-                {
-                    if (_isHidden) // Check if still hidden.
-                        this.Hide();
-
-                    hidingTimer.Stop();
-                };
-                hidingTimer.Start();
-            }
-        }
+            Hide();
     }
 
     #endregion

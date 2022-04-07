@@ -70,7 +70,7 @@
 
         <system:Boolean x:Key="IncludeSubfolders">True</system:Boolean>
         <system:Boolean x:Key="DoNotIncludeSubfolders">False</system:Boolean>
-        
+
         <!--  TITLE  -->
         <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
             <StackPanel Margin="4,0,0,0" Orientation="Horizontal">
@@ -107,7 +107,7 @@
                                                    FontSize="17" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                
+
                                 <!--FOLDER-->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolder}"
                                           Command="{Binding AssetsViewModel.NewGroupFromFolderCommand}"
@@ -308,8 +308,9 @@
     </mui:WindowBase.Resources>
 
     <mui:WindowBase.Style>
-        <Style TargetType="{x:Type mui:WindowBase}">
+        <Style TargetType="{x:Type windows:AssetsWindow}">
             <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
+            <Setter Property="ShouldMinimizeInsteadOfHiding" Value="{Binding Config.MinimizeWindowInsteadOfHiding}"/>
         </Style>
     </mui:WindowBase.Style>
 
