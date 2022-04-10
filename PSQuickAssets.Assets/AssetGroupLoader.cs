@@ -152,6 +152,17 @@ internal class AssetGroupLoader
             _logger.Error("Failed to load AssetGroup:\n" + ex);
             return null;
         }
+
+        try
+        {
+            using var stream = File.OpenRead(filePath);
+            return await JsonSerializer.DeserializeAsync<AssetGroup>(stream);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Failed to load AssetGroup:\n" + ex);
+            return null;
+        }
     }
 
     /// <summary>

@@ -18,25 +18,23 @@ namespace PSQuickAssets.ViewModels;
 //[INotifyPropertyChanged]
 internal partial class NewAssetsViewModel
 {
-    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new();
+    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; }
 
     public Func<string, List<string>> IsGroupNameValid { get; }
 
     private readonly AssetGroupHandler _assetGroupHandler;
-    private readonly AssetManager _assetManager;
     private readonly INotificationService _notificationService;
     private readonly IStatusService _statusService;
-    private readonly ILogger _logger;
 
-    public NewAssetsViewModel(AssetManager assetManager, INotificationService notificationService, IStatusService statusService, ILogger logger)
+    public NewAssetsViewModel(ObservableCollection<AssetGroupViewModel> assetGroups, 
+        AssetGroupHandler assetGroupHandler, INotificationService notificationService, IStatusService statusService)
     {
-        _assetManager = assetManager;
+        AssetGroups = assetGroups;
+        _assetGroupHandler = assetGroupHandler;
         _notificationService = notificationService;
         _statusService = statusService;
-        _logger = logger;
-        _assetGroupHandler = new AssetGroupHandler(AssetGroups, assetManager, logger);
 
-        IsGroupNameValid = IsNameForAGroupValid;
+        IsGroupNameValid = ValidateGroupName;
 
         LoadStoredAssetsAsync().SafeFireAndForget(ex => _notificationService.Notify(
             $"{Localization.Instance["Assets_FailedToLoadStoredAssetGroups"]} {ex.Message}", NotificationIcon.Error));
@@ -50,37 +48,11 @@ internal partial class NewAssetsViewModel
         }
     }
 
-    private async Task SaveGroupsAsync()
-    {
-        var result = await _assetGroupHandler.SaveGroupsAsync();
-
-        if (result.IsSuccessful)
-            return;
-
-        string errorMessage = Localization.Instance["FailedToSaveGroups"];
-
-        foreach (var group in result.FailedGroups)
-        {
-            errorMessage += $"\n{group.Key.Name} : {group.Value.Message}";
-        }
-
-        _notificationService.Notify(errorMessage, NotificationIcon.Error,
-            () => System.Windows.MessageBox.Show(errorMessage, App.AppName, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error));
-    }
+    [ICommand]
+    private void CreateEmptyGroup(string groupName) => _assetGroupHandler.CreateEmptyGroup(groupName);
 
     [ICommand]
-    private void CreateEmptyGroup(string groupName)
-    {
-        _assetGroupHandler.CreateEmptyGroup(groupName);
-        SaveGroupsAsync().SafeFireAndForget();
-    }
-
-    [ICommand]
-    private void RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
-    {
-        _assetGroupHandler.RemoveGroup(assetGroupViewModel);
-        SaveGroupsAsync().SafeFireAndForget();
-    }
+    private void RemoveGroup(AssetGroupViewModel? assetGroupViewModel) => _assetGroupHandler.RemoveGroup(assetGroupViewModel);
 
     [ICommand]
     private async Task AddFilesToGroup(AssetGroupViewModel? group)
@@ -97,7 +69,6 @@ internal partial class NewAssetsViewModel
         {
             await _assetGroupHandler.AddAssetsToGroupAsync(group, files);
         }
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
     [ICommand]
@@ -113,7 +84,6 @@ internal partial class NewAssetsViewModel
         {
             await _assetGroupHandler.AddGroupFromFilesAsync(filePaths);
         }
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
     [ICommand]
@@ -131,10 +101,13 @@ internal partial class NewAssetsViewModel
                 await _assetGroupHandler.AddGroupFromFolderAsync(path, includeSubfolders);
             }
         }
-        SaveGroupsAsync().SafeFireAndForget();
     }
 
-    private List<string> IsNameForAGroupValid(string name)
+    /// <summary>
+    /// Validates new name for a group.
+    /// </summary>
+    /// <returns>List of errors if not valid. Empty list if name is valid.</returns>
+    private List<string> ValidateGroupName(string name)
     {
         List<string> errors = new();
 

@@ -25,7 +25,6 @@ internal interface IConfig : INotifyPropertyChanged
     bool AddMaskIfDocumentHasSelection { get; set; }
 
     bool DebugMode { get; set; }
-    public bool MaximizedWindowBorderFix { get; set; }
 
     void Save();
 }
@@ -46,7 +45,6 @@ internal class Config : ConfigBase, IConfig
 
     // Experimental settings:
     public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
-    public bool MaximizedWindowBorderFix { get => _maximizedWindowBorderFix.Value; set => _maximizedWindowBorderFix.SetValue(value); }
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
     private readonly ConfigProperty<bool> _minimizeWindowInsteadOfHiding;
@@ -59,7 +57,6 @@ internal class Config : ConfigBase, IConfig
     private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
     
     private readonly ConfigProperty<bool> _debugMode;
-    private readonly ConfigProperty<bool> _maximizedWindowBorderFix;
 
     private ILogger? _logger;
     private static readonly string _configFilePath = Path.Combine(App.AppDataFolder, "config.json");
@@ -76,7 +73,6 @@ internal class Config : ConfigBase, IConfig
         _checkUpdates = RegisterProperty(nameof(CheckUpdates), true);
 
         _debugMode = RegisterProperty(nameof(DebugMode), false);
-        _maximizedWindowBorderFix = RegisterProperty(nameof(MaximizedWindowBorderFix), true);
 
         Serializer = new JsonConfigSerializer(msg => _logger?.Error($"[Config] {msg}"))
         {

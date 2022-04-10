@@ -1,6 +1,8 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AsyncAwaitBestPractices;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Assets;
+using PSQuickAssets.Services;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,9 @@ public enum DuplicateHandling
     Allow
 }
 
-internal class AssetGroupViewModel : ObservableObject
+
+[INotifyPropertyChanged]
+public partial class AssetGroupViewModel
 {
     /// <summary>
     /// Gets or sets name of the group.
@@ -35,12 +39,13 @@ internal class AssetGroupViewModel : ObservableObject
 
             _logger.Information($"[Group] Renaming group '{Name}' to '{value}'");
             Group.Name = value;
+            _assetGroupHandler.SaveGroupsAsync().SafeFireAndForget();
             OnPropertyChanged(nameof(Name));
         }
     }
 
     /// <summary>
-    /// Gets the Collection view of the assets in a group.
+    /// Gets the <see cref="ICollectionView"/> of the assets in a group.
     /// </summary>
     public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
 
@@ -52,32 +57,34 @@ internal class AssetGroupViewModel : ObservableObject
         get => Group.IsExpanded;
         set
         {
-            if (Group.IsExpanded != value)
-            {
-                Group.IsExpanded = value;
-                OnPropertyChanged(nameof(IsExpanded));
-            }
+            Group.IsExpanded = value;
+            _assetGroupHandler.SaveGroupsAsync().SafeFireAndForget();
+            OnPropertyChanged(nameof(IsExpanded));
         }
     }
+
+    /// <summary>
+    /// Gets the number of assets currently in a group.
+    /// </summary>
     public int AssetCount { get => Group.Assets.Count; }
 
     /// <summary>
-    /// Gets the group instance.
+    /// Gets the group instance of this viewmodel.
     /// </summary>
     public AssetGroup Group { get; }
 
-    //public ICommand ToggleExpandedCommand { get; }
     public ICommand RemoveAssetCommand { get; }
 
-
+    
+    private readonly AssetGroupHandler _assetGroupHandler;
     private readonly ILogger _logger;
 
-    public AssetGroupViewModel(AssetGroup assetGroup, ILogger logger)
+    internal AssetGroupViewModel(AssetGroup assetGroup, AssetGroupHandler assetGroupHandler, ILogger logger)
     {
         Group = assetGroup;
+        _assetGroupHandler = assetGroupHandler;
         _logger = logger;
 
-        //ToggleExpandedCommand = new RelayCommand<AssetGroupViewModel>()
         RemoveAssetCommand = new RelayCommand<Asset>(a => RemoveAsset(a));
 
         Group.Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));
@@ -96,6 +103,7 @@ internal class AssetGroupViewModel : ObservableObject
 
         Group.Assets.Add(asset);
         _logger.Information($"[Group] Added {asset.FileName} to group '{Name}'");
+        _assetGroupHandler.SaveGroupsAsync().SafeFireAndForget();
         return true;
     }
 
@@ -116,6 +124,7 @@ internal class AssetGroupViewModel : ObservableObject
         }
 
         _logger.Information($"[Group] Added {assets.Count() - notAddedList.Count} assets to group '{Name}'");
+        _assetGroupHandler.SaveGroupsAsync().SafeFireAndForget();
         return notAddedList;
     }
 
@@ -128,7 +137,10 @@ internal class AssetGroupViewModel : ObservableObject
     {
         bool result = asset is not null && Group.Assets.Remove(asset);
         if (result)
+        {
             _logger.Information($"[Group] Removed Asset '{asset!.FileName}' from group '{Name}'");
+            _assetGroupHandler.SaveGroupsAsync().SafeFireAndForget();
+        }
         return result;
     }
 

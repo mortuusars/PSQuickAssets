@@ -8,6 +8,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Resources.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PureUI;component/Resources.xaml" />
+
+                <ResourceDictionary Source="Resources/Themes/Dark.xaml"/>
 
                 <ResourceDictionary Source="Resources/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Icons.xaml" />

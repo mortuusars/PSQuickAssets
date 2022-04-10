@@ -248,7 +248,8 @@ internal class AssetsViewModel : ObservableObject
             assetGroup.Name = groupName;
         }
 
-        var groupViewModel = new AssetGroupViewModel(assetGroup, _logger);
+        //TODO: remove
+        var groupViewModel = new AssetGroupViewModel(assetGroup, null, _logger);
         groupViewModel.PropertyChanged += (s, e) => SaveGroupsAsyncCommand.ExecuteAsync().SafeFireAndForget();
         AssetGroups.Add(groupViewModel);
         _logger.Information($"[Asset Groups] Group '{groupName}' created.");

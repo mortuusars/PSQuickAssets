@@ -8,6 +8,7 @@ using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using Serilog;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace PSQuickAssets;
@@ -41,7 +42,9 @@ internal static class DIKernel
 
         RegisterCommands(services);
 
+        services.AddSingleton<ObservableCollection<AssetGroupViewModel>>();
 
+        services.AddSingleton<AssetGroupHandler>();
         services.AddSingleton<AssetsViewModel>();
         services.AddSingleton<NewAssetsViewModel>();
         services.AddSingleton<MainViewModel>();

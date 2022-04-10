@@ -1,9 +1,11 @@
-﻿using PSQuickAssets.Assets;
+﻿using AsyncAwaitBestPractices;
+using PSQuickAssets.Assets;
 using PSQuickAssets.Resources;
 using PSQuickAssets.ViewModels;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,13 +15,13 @@ namespace PSQuickAssets.Services;
 
 internal class AssetGroupHandler
 {
-    private readonly ICollection<AssetGroupViewModel> _assetGroupsCollection;
+    private readonly ObservableCollection<AssetGroupViewModel> _assetGroupsCollection;
     private readonly AssetManager _assetManager;
     private readonly ILogger _logger;
 
-    public AssetGroupHandler(ICollection<AssetGroupViewModel> assetGroupsCollection, AssetManager assetManager, ILogger logger)
+    public AssetGroupHandler(ObservableCollection<AssetGroupViewModel> assetGroups, AssetManager assetManager, ILogger logger)
     {
-        _assetGroupsCollection = assetGroupsCollection;
+        _assetGroupsCollection = assetGroups;
         _assetManager = assetManager;
         _logger = logger;
     }
@@ -27,7 +29,7 @@ internal class AssetGroupHandler
     /// <summary>
     /// Saves asset groups.
     /// </summary>
-    /// <returns>Exception if something failed or <see langword="null"/> if saved successfully.</returns>
+    /// <returns>Result of saving.</returns>
     public async Task<AssetSavingResult> SaveGroupsAsync()
     {
         AssetGroup[] groups = _assetGroupsCollection.Select(g => g.Group).ToArray();
@@ -59,6 +61,7 @@ internal class AssetGroupHandler
     {
         var assets = await Task.Run(() => _assetManager.Load(filePaths));
         group.AddAssets(assets, DuplicateHandling.Deny);
+        SaveGroupsAsync().SafeFireAndForget();
     }
 
     /// <summary>
@@ -73,6 +76,7 @@ internal class AssetGroupHandler
         AssetGroupViewModel group = CreateEmptyGroup(GenerateNewGroupName());
 
         await AddAssetsToGroupAsync(group, filePaths);
+        SaveGroupsAsync().SafeFireAndForget();
     }
 
     /// <summary>
@@ -101,6 +105,7 @@ internal class AssetGroupHandler
             foreach (var folder in Directory.GetDirectories(folderPath))
                 await AddGroupFromFolderAsync(folder, includeSubfolders);
         }
+        SaveGroupsAsync().SafeFireAndForget();
     }
 
     /// <summary>
@@ -116,6 +121,7 @@ internal class AssetGroupHandler
         var vm = CreateGroupViewModel(group);
         _assetGroupsCollection.Add(vm);
         _logger.Debug("[Asset Groups] Empty asset group created.");
+        SaveGroupsAsync().SafeFireAndForget();
         return vm;
     }
 
@@ -128,6 +134,7 @@ internal class AssetGroupHandler
     {
         if (assetGroupViewModel is not null && _assetGroupsCollection.Remove(assetGroupViewModel))
             _logger.Information($"[Asset Groups] Removed group '{assetGroupViewModel.Name}'.");
+        SaveGroupsAsync().SafeFireAndForget();
     }
 
     /// <summary>
@@ -144,7 +151,7 @@ internal class AssetGroupHandler
         }
 
         _logger.Information($"[Asset Groups] Group view model '{groupName}' created.");
-        return new AssetGroupViewModel(assetGroup, _logger);
+        return new AssetGroupViewModel(assetGroup, this, _logger);
     }
 
     /// <summary>

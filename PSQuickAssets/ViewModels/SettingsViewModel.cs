@@ -1,8 +1,6 @@
 ﻿using MGlobalHotkeys.WPF;
 using Microsoft.Toolkit.Mvvm.Input;
-using Mortuus.Config;
 using PSQuickAssets.Services;
-using System.IO;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;

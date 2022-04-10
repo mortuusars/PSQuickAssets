@@ -1,0 +1,34 @@
+﻿<themes:ThemeResourceDictionary xmlns:themes="clr-namespace:PureUI.Themes;assembly=PureUI.Themes"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <!--COLORS-->
+    <Color x:Key="Colors.Background.0">#232323</Color>
+    <Color x:Key="Colors.Background.1">#333333</Color>
+    <Color x:Key="Colors.Background.2">#3c3c3c</Color>
+    <Color x:Key="Colors.Background.3">#454545</Color>
+
+    <Color x:Key="Colors.Border.0">#151515</Color>
+    <Color x:Key="Colors.Border.1">#1c1c1c</Color>
+    <Color x:Key="Colors.Border.2">#232323</Color>
+    
+    <Color x:Key="Colors.Foreground.0">#eee</Color>
+    <Color x:Key="Colors.Foreground.1">#ccc</Color>
+    <Color x:Key="Colors.Foreground.2">#aaa</Color>
+
+
+    <!--BRUSHES-->
+    <SolidColorBrush x:Key="Brushes.Background.0" Color="{StaticResource Colors.Background.0}"/>
+    <SolidColorBrush x:Key="Brushes.Background.1" Color="{StaticResource Colors.Background.1}"/>
+    <SolidColorBrush x:Key="Brushes.Background.2" Color="{StaticResource Colors.Background.2}"/>
+    <SolidColorBrush x:Key="Brushes.Background.3" Color="{StaticResource Colors.Background.3}"/>
+
+    <SolidColorBrush x:Key="Brushes.Border.0" Color="{StaticResource Colors.Border.0}"/>
+    <SolidColorBrush x:Key="Brushes.Border.1" Color="{StaticResource Colors.Border.1}"/>
+    <SolidColorBrush x:Key="Brushes.Border.2" Color="{StaticResource Colors.Border.2}"/>
+
+    <SolidColorBrush x:Key="Brushes.Foreground.0" Color="{StaticResource Colors.Foreground.0}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.1" Color="{StaticResource Colors.Foreground.1}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.2" Color="{StaticResource Colors.Foreground.2}"/>
+
+</themes:ThemeResourceDictionary>

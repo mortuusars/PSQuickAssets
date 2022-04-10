@@ -268,12 +268,6 @@
                                                 Description="{lex:Loc Settings_DebugMode_Tooltip}"
                                                 IsChecked="{Binding Config.DebugMode}" />
 
-                    <Separator />
-
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_MaximizedBorderFix}"
-                                                Description="{lex:Loc Settings_MaximizedBorderFix_Tooltip}"
-                                                IsChecked="{Binding Config.MaximizedWindowBorderFix}" />
-
                 </StackPanel>
             </TabItem>
         </TabControl>

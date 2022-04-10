@@ -1,6 +1,5 @@
-﻿using MortuusUI;
+﻿using PureUI;
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,7 +7,7 @@ using System.Windows.Threading;
 
 namespace PSQuickAssets.Windows;
 
-public partial class AssetsWindow : WindowBase
+public partial class AssetsWindow : PureWindow
 {
     public bool ShouldMinimizeInsteadOfHiding
     {
@@ -24,10 +23,6 @@ public partial class AssetsWindow : WindowBase
         InitializeComponent();
         this.PreviewKeyDown += AssetsWindow_PreviewKeyDown;
         this.PreviewKeyUp += AssetsWindow_PreviewKeyUp;
-        this.StateLoaded += (_, _) =>
-        {
-            _restoreWindowState = WindowState;
-        };
     }
 
     #region Hiding/Showing
@@ -61,7 +56,9 @@ public partial class AssetsWindow : WindowBase
     {
         _isHidden = false;
         base.Show();
-        WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
+        if (WindowState == WindowState.Minimized)
+            WindowState = WindowState.Normal;
+        //WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
     }
 
     public void ToggleVisibility()
@@ -77,7 +74,7 @@ public partial class AssetsWindow : WindowBase
     #endregion
 
     #region CtrlHeld
-    //TODO: This is ugly:
+    //TODO: This is ugly. Keyboard hook?
     public bool IsCtrlPressed
     {
         get { return (bool)GetValue(IsCtrlPressedProperty); }
