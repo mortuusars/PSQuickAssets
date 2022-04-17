@@ -10,9 +10,8 @@ namespace PSQuickAssets.Services;
 
 internal class WindowManager
 {
+    private AssetsWindow? _assetsWindow;
     private readonly IConfig _config;
-
-    internal AssetsWindow? AssetsWindow { get; private set; }
 
     public WindowManager(IConfig config)
     {
@@ -21,8 +20,6 @@ internal class WindowManager
 
     public void FocusPhotoshop()
     {
-        if (_config.HideWindowWhenAddingAsset)
-            AssetsWindow?.Hide();
         WindowControl.FocusWindow("photoshop");
     }
 
@@ -31,10 +28,10 @@ internal class WindowManager
     /// </summary>
     public void ShowMainWindow()
     {
-        if (AssetsWindow is null)
-            AssetsWindow = new AssetsWindow();
+        if (_assetsWindow is null)
+            _assetsWindow = new AssetsWindow();
 
-        AssetsWindow.Show();
+        _assetsWindow.Show();
     }
 
     /// <summary>
@@ -42,7 +39,7 @@ internal class WindowManager
     /// </summary>
     public void ToggleMainWindow()
     {
-        AssetsWindow?.ToggleVisibility();
+        _assetsWindow?.ToggleVisibility();
     }
 
     /// <summary>
@@ -50,7 +47,7 @@ internal class WindowManager
     /// </summary>
     public void HideMainWindow()
     {
-        AssetsWindow?.Hide();
+        _assetsWindow?.Hide();
     }
 
     /// <summary>
@@ -58,8 +55,8 @@ internal class WindowManager
     /// </summary>
     public void CloseMainWindow()
     {
-        AssetsWindow?.Close();
-        AssetsWindow = null;
+        _assetsWindow?.Close();
+        _assetsWindow = null;
     }
 
     /// <summary>
@@ -75,7 +72,7 @@ internal class WindowManager
         }
 
         settingsWindow = new SettingsWindow();
-        settingsWindow.Owner = AssetsWindow;
+        settingsWindow.Owner = _assetsWindow;
         settingsWindow.Show();
     }
 
@@ -104,7 +101,7 @@ internal class WindowManager
         if (settingsWindow is null)
         {
             settingsWindow = new SettingsWindow();
-            settingsWindow.Owner = AssetsWindow;
+            settingsWindow.Owner = _assetsWindow;
             settingsWindow.Show();
         }
         else
@@ -146,6 +143,6 @@ internal class WindowManager
     /// <exception cref="Exception">Thrown if getting failed.</exception>
     public IntPtr GetMainWindowHandle()
     {
-        return new WindowInteropHelper(AssetsWindow).Handle;
+        return new WindowInteropHelper(_assetsWindow).Handle;
     }
 }

@@ -148,7 +148,7 @@
     <value>Cannot execute action '{0}' from set '{1}'</value>
   </data>
   <data name="Assets_FailedToLoadStoredAssetGroups" xml:space="preserve">
-    <value>Failed to load saved asset groups:</value>
+    <value>Failed to load saved asset groups</value>
   </data>
   <data name="Assets_LoadingAssets" xml:space="preserve">
     <value>Loading Assets</value>

@@ -32,22 +32,22 @@ internal class SaveGroupsAsyncCommand : IAsyncCommand
 
     public async Task ExecuteAsync()
     {
-        List<AssetGroup> groups = _assetsViewModel.AssetGroups.Select(g => g.Group).ToList();
+        //List<AssetGroup> groups = _assetsViewModel.AssetGroups.Select(g => g.Group).ToList();
 
-        AssetSavingResult saveResult = await _assetManager.SaveAsync(groups);
+        //AssetSavingResult saveResult = await _assetManager.SaveAsync(groups);
 
-        if (saveResult.IsSuccessful)
-            return;
+        //if (saveResult.IsSuccessful)
+        //    return;
 
-        string errorMessage = Resources.Localization.Instance["FailedToSaveGroups"];
+        //string errorMessage = Resources.Localization.Instance["FailedToSaveGroups"];
 
-        foreach (var group in saveResult.FailedGroups)
-        {
-            errorMessage += $"\n{group.Key.Name} : {group.Value.Message}";
-        }
+        //foreach (var group in saveResult.FailedGroups)
+        //{
+        //    errorMessage += $"\n{group.Key.Name} : {group.Value.Message}";
+        //}
 
-        _notificationService.Notify(errorMessage, NotificationIcon.Error, 
-            () => MessageBox.Show(errorMessage, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error));
+        //_notificationService.Notify(errorMessage, NotificationIcon.Error, 
+        //    () => MessageBox.Show(errorMessage, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error));
     }
 
     public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PureLib" Version="1.0.0" />
+    <ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
   </ItemGroup>
 
 </Project>

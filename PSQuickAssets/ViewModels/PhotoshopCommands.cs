@@ -1,50 +1,38 @@
-﻿using AsyncAwaitBestPractices.MVVM;
-using PSQuickAssets.Assets;
-using PSQuickAssets.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using PSQA.Core;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
-using PSQuickAssets.Utils;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-internal class PhotoshopCommands
+internal partial class PhotoshopCommands
 {
-    public IList<PhotoshopAction> GlobalActions { get; }
+    public ObservableCollection<PhotoshopAction> GlobalActions { get; } = new();
 
-    public IAsyncCommand<Asset> OpenImageCommand { get; }
-    public IAsyncCommand<Asset> AddImageAsLayerCommand { get; }
-    public IAsyncCommand<PhotoshopAction> ExecuteActionCommand { get; }
-
-    private readonly IPhotoshopInterop _photoshopInterop;
-
-    private readonly Action _focusPhotoshopAction;
+    private readonly IPhotoshopInterop _photoshopInterop = new PhotoshopInterop();
+    private readonly WindowManager _windowManager;
     private readonly INotificationService _notificationService;
     private readonly IConfig _config;
 
-    public PhotoshopCommands(Action focusPhotoshopAction, INotificationService notificationService, IConfig config)
+    public PhotoshopCommands(WindowManager windowManager, INotificationService notificationService, IConfig config)
     {
-        _focusPhotoshopAction = focusPhotoshopAction;
+        _windowManager = windowManager;
         _notificationService = notificationService;
         _config = config;
 
-        _photoshopInterop = new PhotoshopInterop();
-
-        GlobalActions = new List<PhotoshopAction>();
         //TODO: Global actions
         GlobalActions.Add(new PhotoshopAction("SelectRGBLayer", "Mask"));
-
-        OpenImageCommand = new AsyncCommand<Asset>(asset => OpenImageAsNewDocumentAsync(asset!));
-        AddImageAsLayerCommand = new AsyncCommand<Asset>(asset => AddImageToPhotoshopAsync(asset!));
-        ExecuteActionCommand = new AsyncCommand<PhotoshopAction>(action => ExecuteActionAsync(action!));
     }
 
-
-    private async Task<bool> OpenImageAsNewDocumentAsync(Asset asset)
+    [ICommand]
+    private async Task<bool> OpenAsNewDocumentAsync(Asset asset)
     {
-        FocusPhotoshop();
+        _windowManager.FocusPhotoshop();
+        if (_config.HideWindowWhenAddingAsset)
+            _windowManager.HideMainWindow();
 
         var result = await _photoshopInterop.OpenImageAsNewDocumentAsync(asset.Path);
 
@@ -57,18 +45,20 @@ internal class PhotoshopCommands
         return result.IsSuccessful;
     }
 
-    private async Task<bool> AddImageToPhotoshopAsync(Asset asset)
+    [ICommand]
+    private async Task<bool> AddAsLayerAsync(Asset asset)
     {
-        FocusPhotoshop();
+        _windowManager.FocusPhotoshop();
+        if (_config.HideWindowWhenAddingAsset)
+            _windowManager.HideMainWindow();
 
         if (await _photoshopInterop.HasOpenDocumentAsync() is false)
-            return await OpenImageAsNewDocumentAsync(asset);
+            return await OpenAsNewDocumentAsync(asset);
 
         PSResult result;
 
         if (_config.AddMaskIfDocumentHasSelection && await _photoshopInterop.HasSelectionAsync())
-            result = await _photoshopInterop.AddImageToDocumentWithMaskAsync(asset.Path, MaskMode.RevealSelection);
-            //TODO: Option to disable Unlink Mask
+            result = await _photoshopInterop.AddImageToDocumentWithMaskAsync(asset.Path, MaskMode.RevealSelection, unlinkMask: _config.UnlinkMask);
         else
             result = await _photoshopInterop.AddImageToDocumentAsync(asset.Path);
 
@@ -84,6 +74,7 @@ internal class PhotoshopCommands
         }
     }
 
+    [ICommand]
     private async Task<bool> ExecuteActionAsync(PhotoshopAction action)
     {
         PSResult result = await _photoshopInterop.ExecuteActionAsync(action.Action, action.Set);
@@ -97,6 +88,7 @@ internal class PhotoshopCommands
         return result.IsSuccessful;
     }
 
+    [ICommand]
     private async Task<bool> ExecuteGlobalActions()
     {
         foreach (var action in GlobalActions)
@@ -106,9 +98,4 @@ internal class PhotoshopCommands
         }
         return true;
     }
-
-    /// <summary>
-    /// Focuses Photoshop window.
-    /// </summary>
-    private void FocusPhotoshop() => _focusPhotoshopAction.Invoke();
 }

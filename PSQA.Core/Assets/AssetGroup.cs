@@ -1,14 +1,9 @@
-﻿using PSQuickAssets.Assets;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace PSQuickAssets.Models;
+namespace PSQA.Core;
 
-internal class AssetGroup
+public class AssetGroup
 {
     /// <summary>
     /// Name of the group.
@@ -31,22 +26,30 @@ internal class AssetGroup
     /// <param name="name">Name of the group.</param>
     /// <param name="assets">Asset collection.</param>
     /// <param name="isExpanded">Indicates whether the group contents is expanded.</param>
-    public AssetGroup(string name, ObservableCollection<Asset> assets)
+    public AssetGroup(string name, ObservableCollection<Asset> assets, bool isExpanded)
     {
         Name = name;
         Assets = assets;
-        IsExpanded = true;
+        IsExpanded = isExpanded;
     }
 
     /// <summary>
     /// Initializes new instance of Asset Group.
     /// </summary>
-    public AssetGroup() : this(string.Empty, new ObservableCollection<Asset>()) { }
+    public AssetGroup()
+    {
+        Name = string.Empty;
+        Assets = new ObservableCollection<Asset>();
+        IsExpanded = true;
+    }
 
     /// <summary>
     /// Initializes new instance of Asset Group with a specified name.
     /// </summary>
-    public AssetGroup(string name) : this(name, new ObservableCollection<Asset>()) { }
+    public AssetGroup(string name) : this()
+    {
+        Name = name;
+    }
 
     /// <summary>
     /// Prints group name and all of group's assets.

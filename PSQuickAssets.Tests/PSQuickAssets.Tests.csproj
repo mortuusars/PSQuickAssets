@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PSQA.Assets\PSQA.Assets.csproj" />
     <ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
     <ProjectReference Include="..\PSQuickAssets\PSQuickAssets.csproj" />
   </ItemGroup>

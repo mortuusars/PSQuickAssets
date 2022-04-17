@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PSQA.Assets;
 //using Serilog;
 using PSQuickAssets.Assets;
 using PSQuickAssets.Commands;
@@ -34,20 +35,19 @@ internal static class DIKernel
                     provider.GetRequiredService<INotificationService>(),
                     provider.GetRequiredService<ILogger>()));
 
-        services.AddSingleton<AssetManager>((provider) => new AssetManager(App.AppDataFolder + "/assets/", provider.GetRequiredService<ILogger>()));
-        services.AddSingleton<PhotoshopCommands>((provider) => new PhotoshopCommands(provider.GetRequiredService<WindowManager>().FocusPhotoshop, 
-            provider.GetRequiredService<INotificationService>(),
-            provider.GetRequiredService<IConfig>()));
+        //services.AddSingleton<AssetManager>((provider) => new AssetManager(App.AppDataFolder + "/assets/", provider.GetRequiredService<ILogger>()));
+        services.AddSingleton<PhotoshopCommands>();
 
 
         RegisterCommands(services);
 
         services.AddSingleton<ObservableCollection<AssetGroupViewModel>>();
 
+        services.AddSingleton<IAssetCatalogHandler, DirectoryAssetCatalogHandler>();
+
+        services.AddSingleton<DirectoryRepositorySaver>();
         services.AddSingleton<AssetGroupHandler>();
         services.AddSingleton<AssetsViewModel>();
-        services.AddSingleton<NewAssetsViewModel>();
-        services.AddSingleton<MainViewModel>();
 
         services.AddTransient<AssetsWindowViewModel>();
 

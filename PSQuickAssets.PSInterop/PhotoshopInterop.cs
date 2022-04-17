@@ -32,7 +32,7 @@ namespace PSQuickAssets.PSInterop
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
         /// <param name="maskMode">Mask mode.</param>
-        public async Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode)
+        public async Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode, bool unlinkMask)
         {
             return await Task.Run(() => ExecuteAction(() =>
             {
@@ -44,7 +44,9 @@ namespace PSQuickAssets.PSInterop
                 PsActions.ApplyMaskFromSelection(ps, maskMode);
 
                 PsActions.DeleteChannel(ps, _selectionChannelName);
-                PsActions.UnlinkMask(ps);
+
+                if (unlinkMask)
+                    PsActions.UnlinkMask(ps);
             }, filePath));
         }
 

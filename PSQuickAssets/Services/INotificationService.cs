@@ -2,7 +2,7 @@
 
 namespace PSQuickAssets.Services
 {
-    internal interface INotificationService
+    public interface INotificationService
     {
         /// <summary>
         /// Displays notification to the user and allows executing action when user click on displayed notification.
@@ -21,8 +21,11 @@ namespace PSQuickAssets.Services
         void Notify(string message, NotificationIcon icon, Action? onNotificationClicked = null);
     }
 
-    internal enum NotificationIcon
+    public enum NotificationIcon
     {
-        None, Info, Warning, Error
+        None,
+        Info,
+        Warning,
+        Error
     }
 }

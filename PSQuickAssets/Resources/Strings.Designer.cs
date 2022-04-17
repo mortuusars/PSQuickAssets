@@ -169,7 +169,7 @@ namespace PSQuickAssets.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load saved asset groups:.
+        ///   Looks up a localized string similar to Failed to load saved asset groups.
         /// </summary>
         public static string Assets_FailedToLoadStoredAssetGroups {
             get {

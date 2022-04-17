@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.AssetControl"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSQA.Core", "PSQA.Core\PSQA.Core.csproj", "{A05BC38C-8C37-4388-85C3-EBDD149A299D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSQA.Assets", "PSQA.Assets\PSQA.Assets.csproj", "{CC4D67CB-616D-4982-AB86-C5D674E05209}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

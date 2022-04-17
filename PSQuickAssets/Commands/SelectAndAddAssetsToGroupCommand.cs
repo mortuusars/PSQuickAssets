@@ -49,7 +49,7 @@ internal class SelectAndAddAssetsToGroupCommand : IAsyncCommand<AssetGroupViewMo
             try
             {
                 IEnumerable<Asset> assets = await Task.Run(() => _assetManager.Load(files));
-                parameter.AddAssets(assets, DuplicateHandling.Deny);
+                //parameter.AddAssets(assets, DuplicateHandling.Deny);
             }
             catch (Exception ex)
             {

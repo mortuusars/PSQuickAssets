@@ -23,6 +23,7 @@ internal interface IConfig : INotifyPropertyChanged
     bool CheckUpdates { get; set; }
 
     bool AddMaskIfDocumentHasSelection { get; set; }
+    bool UnlinkMask { get; set; }
 
     bool DebugMode { get; set; }
 
@@ -42,6 +43,7 @@ internal class Config : ConfigBase, IConfig
 
     // Assets
     public bool AddMaskIfDocumentHasSelection { get => _addMaskIfDocumentHasSelection.Value; set => _addMaskIfDocumentHasSelection.SetValue(value); }
+    public bool UnlinkMask { get => _unlinkMask.Value; set => _unlinkMask.SetValue(value); }
 
     // Experimental settings:
     public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
@@ -55,11 +57,14 @@ internal class Config : ConfigBase, IConfig
     private readonly ConfigProperty<bool> _checkUpdates;
 
     private readonly ConfigProperty<bool> _addMaskIfDocumentHasSelection;
-    
+    private readonly ConfigProperty<bool> _unlinkMask;
+
     private readonly ConfigProperty<bool> _debugMode;
 
     private ILogger? _logger;
     private static readonly string _configFilePath = Path.Combine(App.AppDataFolder, "config.json");
+
+    //TODO: Simplify config.
 
     public Config()
     {
@@ -69,8 +74,10 @@ internal class Config : ConfigBase, IConfig
         _thumbnailSize = RegisterProperty(nameof(ThumbnailSize), 60.0);
         _alwaysOnTop = RegisterProperty(nameof(AlwaysOnTop), true);
         _hideWindowIfClickedOutside = RegisterProperty(nameof(HideWindowIfClickedOutside), true);
-        _addMaskIfDocumentHasSelection = RegisterProperty(nameof(AddMaskIfDocumentHasSelection), true);
         _checkUpdates = RegisterProperty(nameof(CheckUpdates), true);
+
+        _addMaskIfDocumentHasSelection = RegisterProperty(nameof(AddMaskIfDocumentHasSelection), true);
+        _unlinkMask = RegisterProperty(nameof(UnlinkMask), true);
 
         _debugMode = RegisterProperty(nameof(DebugMode), false);
 

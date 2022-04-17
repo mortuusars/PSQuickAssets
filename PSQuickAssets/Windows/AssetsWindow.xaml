@@ -36,36 +36,39 @@
                    d:BorderThickness="0"
                    FontFamily="{StaticResource FontLight}"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
-                   d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel,
-                                                    IsDesignTimeCreatable=True}"
+                   d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding Source={StaticResource WindowManagerCommands}, Path=ToggleMainWindowCommand}" />
         <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
-        <KeyBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="Ctrl+OemPlus" />
-        <KeyBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="Ctrl+OemMinus" />
+        <KeyBinding Gesture="Ctrl+OemPlus"
+                    Command="{Binding ChangeThumbnailSizeCommand}"
+                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Up}" />
+        <KeyBinding Gesture="Ctrl+OemMinus"
+                    Command="{Binding ChangeThumbnailSizeCommand}"
+                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Down}" />
 
         <pureUI:MouseOverKeyBinding Gesture="Ctrl+M"
-                                         ElementName="GroupRoot"
-                                         Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
-                                         PassedParameter="DataContext" />
+                                    ElementName="GroupRoot"
+                                    Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
+                                    PassedParameter="DataContext" />
 
         <pureUI:MouseOverKeyBinding Key="F2"
-                                         ElementName="GroupRoot"
-                                         PassedParameter="Element"
-                                         Command="{x:Static commands:AssetCommands.RenameGroup}" />
+                                    ElementName="GroupRoot"
+                                    PassedParameter="Element"
+                                    Command="{x:Static commands:AssetCommands.RenameGroup}" />
 
         <pureUI:MouseOverKeyBinding Gesture="Ctrl+E"
-                                         ElementType="{x:Type assetcontrol:AssetControl}"
-                                         Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                         PassedParameter="DataContext" />
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
+                                    PassedParameter="DataContext" />
 
         <pureUI:MouseOverKeyBinding Gesture="Ctrl+O"
-                                         ElementType="{x:Type assetcontrol:AssetControl}"
-                                         Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                         PassedParameter="DataContext" />
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                                    PassedParameter="DataContext" />
     </Window.InputBindings>
 
     <pureUI:PureWindow.Resources>
@@ -111,7 +114,7 @@
 
                                 <!--  FOLDER  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolder}"
-                                          Command="{Binding AssetsViewModel.NewGroupFromFolderCommand}"
+                                          Command="{Binding AssetsViewModel}"
                                           CommandParameter="{StaticResource DoNotIncludeSubfolders}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE8F4;"
@@ -240,12 +243,12 @@
                 <Setter.Value>
                     <ControlTemplate>
                         <pureUIcontrols:DashBorder Stroke="{StaticResource ForegroundMainBrush}"
-                                                Margin="-2"
-                                                StrokeDashLine="20"
-                                                StrokeOnlyCorners="True"
-                                                StrokeThickness="3"
-                                                CornerRadius="8"
-                                                Opacity="0.8" />
+                                                   Margin="-2"
+                                                   StrokeDashLine="20"
+                                                   StrokeOnlyCorners="True"
+                                                   StrokeThickness="3"
+                                                   CornerRadius="8"
+                                                   Opacity="0.8" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -564,26 +567,26 @@
 
                                 <!--  GROUP NAME  -->
                                 <pureUIcontrols:ToggleTextBox x:Name="GroupName"
-                                                           Text="{Binding Name}"
-                                                           wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
-                                                           Margin="5 0 0 0"
-                                                           FontFamily="{StaticResource FontMedium}"
-                                                           FontSize="14"
-                                                           Opacity="0.6"
-                                                           BorderThickness="0"
-                                                           Background="Transparent"
-                                                           Foreground="{StaticResource ForegroundMainBrush}"
-                                                           FocusVisualStyle="{StaticResource BracketsFocusVisual}"
-                                                           SelectionBrush="{StaticResource ForegroundIntenseBrush}">
+                                                              Text="{Binding Name}"
+                                                              wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
+                                                              Margin="5 0 0 0"
+                                                              FontFamily="{StaticResource FontMedium}"
+                                                              FontSize="14"
+                                                              Opacity="0.6"
+                                                              BorderThickness="0"
+                                                              Background="Transparent"
+                                                              Foreground="{StaticResource ForegroundMainBrush}"
+                                                              FocusVisualStyle="{StaticResource BracketsFocusVisual}"
+                                                              SelectionBrush="{StaticResource ForegroundIntenseBrush}">
                                     <pureUIcontrols:ToggleTextBox.Style>
                                         <Style TargetType="{x:Type pureUIcontrols:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                            <Setter Property="MinHeight" Value="18"/>
-                                            <Setter Property="MinWidth" Value="30"/>
-                                            <Setter Property="IsReadOnly" Value="True"/>
-                                            <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}"/>
+                                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            <Setter Property="MinHeight" Value="18" />
+                                            <Setter Property="MinWidth" Value="30" />
+                                            <Setter Property="IsReadOnly" Value="True" />
+                                            <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
                                             <Setter Property="Validation.ErrorTemplate">
                                                 <Setter.Value>
                                                     <ControlTemplate>
