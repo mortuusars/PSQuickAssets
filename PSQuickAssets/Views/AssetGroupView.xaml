@@ -11,8 +11,6 @@
     xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
     xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
     x:Name="root"
-    d:DataContext="{d:DesignInstance Type=vm:TestAssetsViewModel,
-                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="350"
     d:DesignWidth="400"
     lex:LocalizeDictionary.DesignCulture="en"
@@ -195,11 +193,11 @@
             </ListBox.ItemsPanel>
 
             <!--  ASSET  -->
-            <ListBox.ItemTemplate>
+            <!--<ListBox.ItemTemplate>
                 <DataTemplate>
                     <local:AssetView />
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+            </ListBox.ItemTemplate>-->
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">

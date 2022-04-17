@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PSQA.Assets;
+using PSQA.Assets.Repository;
 //using Serilog;
-using PSQuickAssets.Assets;
-using PSQuickAssets.Commands;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
-using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using Serilog;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 
 namespace PSQuickAssets;
 
@@ -35,18 +32,12 @@ internal static class DIKernel
                     provider.GetRequiredService<INotificationService>(),
                     provider.GetRequiredService<ILogger>()));
 
-        //services.AddSingleton<AssetManager>((provider) => new AssetManager(App.AppDataFolder + "/assets/", provider.GetRequiredService<ILogger>()));
         services.AddSingleton<PhotoshopCommands>();
 
+        services.AddSingleton<IAssetRepositoryHandler>(p => 
+            new DirectoryRepositoryHandler(App.AppName + "/Catalog/", p.GetRequiredService<ILogger>()));
+        services.AddSingleton<AssetRepository>();
 
-        RegisterCommands(services);
-
-        services.AddSingleton<ObservableCollection<AssetGroupViewModel>>();
-
-        services.AddSingleton<IAssetCatalogHandler, DirectoryAssetCatalogHandler>();
-
-        services.AddSingleton<DirectoryRepositorySaver>();
-        services.AddSingleton<AssetGroupHandler>();
         services.AddSingleton<AssetsViewModel>();
 
         services.AddTransient<AssetsWindowViewModel>();
@@ -56,10 +47,5 @@ internal static class DIKernel
         services.AddTransient<UpdateChecker>();
 
         return services.BuildServiceProvider();
-    }
-
-    private static void RegisterCommands(IServiceCollection services)
-    {
-        services.AddTransient<SelectAndAddAssetsToGroupCommand>();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MortuusUI.Controls;
 using MortuusUI.Extensions;
-using PSQuickAssets.Assets;
+using PSQA.Core;
 using PSQuickAssets.ViewModels;
 using System.Media;
 using System.Windows;

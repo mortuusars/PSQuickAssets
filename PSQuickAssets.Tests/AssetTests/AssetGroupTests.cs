@@ -1,9 +1,4 @@
-﻿using PSQuickAssets.Assets;
-using System;
-using System.Collections.Generic;
-using Xunit;
-
-namespace PSQuickAssets.Tests.AssetTests
+﻿namespace PSQuickAssets.Tests.AssetTests
 {
     public class AssetGroupTests
     {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQA.Core;
-using PSQuickAssets.Assets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +13,8 @@ namespace PSQuickAssets.ViewModels;
 [INotifyPropertyChanged]
 public partial class AssetGroupViewModel
 {
+    public event EventHandler? GroupChanged;
+
     /// <summary>
     /// Gets or sets name of the group.
     /// </summary>
@@ -26,7 +27,7 @@ public partial class AssetGroupViewModel
             {
                 Group.Name = value;
                 OnPropertyChanged(nameof(Name));
-                _assetCatalogSaver.Save();
+                GroupChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -44,9 +45,12 @@ public partial class AssetGroupViewModel
         get => Group.IsExpanded;
         set
         {
-            Group.IsExpanded = value;
-            _assetCatalogSaver.Save();
-            OnPropertyChanged(nameof(IsExpanded));
+            if (Group.IsExpanded != value)
+            {
+                Group.IsExpanded = value;
+                OnPropertyChanged(nameof(IsExpanded));
+                GroupChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
@@ -60,14 +64,14 @@ public partial class AssetGroupViewModel
     /// </summary>
     public AssetGroup Group { get; }
 
-    private readonly AssetRepository _assetRepository;
-
-    internal AssetGroupViewModel(AssetGroup assetGroup, AssetRepository assetRepository)
+    internal AssetGroupViewModel(AssetGroup assetGroup)
     {
         Group = assetGroup;
-        _assetRepository = assetRepository;
-
-        Group.Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));
+        Group.Assets.CollectionChanged += (s, e) =>
+        {
+            GroupChanged?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged(nameof(AssetCount));
+        };
     }
 
     /// <summary>
@@ -75,11 +79,7 @@ public partial class AssetGroupViewModel
     /// </summary>
     /// <param name="asset">Asset to remove.</param>
     [ICommand]
-    public void RemoveAsset(Asset asset)
-    {
-        if (Group.Assets.Remove(asset))
-            _assetRepository.Save();
-    }
+    public void RemoveAsset(Asset asset) => Group.Assets.Remove(asset);
 
     /// <summary>
     /// Adds asset to the group.
@@ -94,7 +94,6 @@ public partial class AssetGroupViewModel
             return false;
 
         Group.Assets.Add(asset);
-        _assetRepository.Save();
         return true;
     }
 
@@ -103,20 +102,10 @@ public partial class AssetGroupViewModel
     /// </summary>
     /// <param name="assets">Asset collection to add.</param>
     /// <returns>List of assets that were NOT added.</returns>
-    public List<Asset> AddAssets(IEnumerable<Asset> assets)
+    public void AddAssets(IEnumerable<Asset> assets)
     {
-        var notAddedList = new List<Asset>();
-
         foreach (var asset in assets)
-        {
-            if (!AddAsset(asset))
-                notAddedList.Add(asset);
-        }
-
-        if (notAddedList.Count != assets.Count())
-            _assetRepository.Save();
-
-        return notAddedList;
+            AddAsset(asset);
     }
 
     /// <summary>
