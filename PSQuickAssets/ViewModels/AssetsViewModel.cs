@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PSQA.Assets.Repository;
 using PSQA.Core;
@@ -12,13 +13,20 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using PureUI;
+using System.Windows.Input;
+using System.Collections.Specialized;
 
 namespace PSQuickAssets.ViewModels;
 
-//[INotifyPropertyChanged]
+[INotifyPropertyChanged]
 internal partial class AssetsViewModel
 {
+    // This collection is managed by handling AssetRepository changes.
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new();
+
+    public ICommand CreateEmptyGroupCommand { get; }
+    public ICommand RemoveGroupCommand { get; }
 
     public Func<string, List<string>> IsGroupNameValid { get; }
 
@@ -29,37 +37,54 @@ internal partial class AssetsViewModel
     public AssetsViewModel(AssetRepository assetRepository, INotificationService notificationService, IStatusService statusService)
     {
         _assetRepository = assetRepository;
-        _assetRepository.AssetGroups.CollectionChanged += OnRepositoryGroupsChanged;
         _notificationService = notificationService;
         _statusService = statusService;
 
         _assetRepository.Load();
+        AddAllGroupsFromRepository();
+        _assetRepository.AssetGroups.CollectionChanged += OnRepositoryGroupsChanged;
+
+        CreateEmptyGroupCommand = new RelayCommand(() => CreateEmptyGroup(string.Empty));
+        RemoveGroupCommand = new RelayCommand<AssetGroupViewModel>((group) => RemoveGroup(group));
 
         IsGroupNameValid = ValidateGroupName;
     }
 
+    //public AssetsViewModel()
+    //{
+    //    if (!App.Current.IsInDesignMode())
+    //        throw new InvalidOperationException("This constructor only for design time and cannot be used at runtime.");
+    //    _assetRepository = null!;
+    //    _notificationService = null!;
+    //    _statusService = null!;
+    //    IsGroupNameValid = null!;
+    //}
+
     private void OnRepositoryGroupsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems is null)
-            return;
+        //if (e.NewItems is null)
+            //return;
 
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
                 {
-                    foreach (AssetGroup group in e.NewItems)
-                        AssetGroups.Add(CreateGroupViewModel(group));
+                    if (e.NewItems is not null)
+                        foreach (AssetGroup group in e.NewItems)
+                            AssetGroups.Add(CreateGroupViewModel(group));
                 }
                 break;
             case NotifyCollectionChangedAction.Remove:
                 {
-                    foreach (AssetGroup group in e.NewItems)
-                        RemoveGroup(AssetGroups.FirstOrDefault(g => g.Group == group));
+                    if (e.OldItems is not null)
+                        foreach (AssetGroup group in e.OldItems)
+                            if (AssetGroups.FirstOrDefault(g => g.Group == group) is AssetGroupViewModel vm)
+                                AssetGroups.Remove(vm);
                 }
                 break;
             case NotifyCollectionChangedAction.Replace:
                 {
-                    if (e.OldItems is null)
+                    if (e.OldItems is null || e.NewItems is null)
                         return;
 
                     for (int i = 0; i < e.OldItems.Count; i++)
@@ -76,17 +101,10 @@ internal partial class AssetsViewModel
                 }
                 break;
             case NotifyCollectionChangedAction.Move:
-                {
-                    AssetGroups.Clear();
-                    foreach (AssetGroup group in _assetRepository.AssetGroups)
-                        AssetGroups.Add(CreateGroupViewModel(group));
-                }
-                break;
             case NotifyCollectionChangedAction.Reset:
                 {
                     AssetGroups.Clear();
-                    foreach (AssetGroup group in _assetRepository.AssetGroups)
-                        AssetGroups.Add(CreateGroupViewModel(group));
+                    AddAllGroupsFromRepository();
                 }
                 break;
         }
@@ -94,7 +112,12 @@ internal partial class AssetsViewModel
         _assetRepository.SaveAsync().SafeFireAndForget();
     }
 
-    [ICommand]
+    private void AddAllGroupsFromRepository()
+    {
+        foreach (AssetGroup group in _assetRepository.AssetGroups)
+            AssetGroups.Add(CreateGroupViewModel(group));
+    }
+
     private void CreateEmptyGroup(string? groupName)
     {
         if (string.IsNullOrWhiteSpace(groupName))
@@ -103,7 +126,6 @@ internal partial class AssetsViewModel
         _assetRepository.AssetGroups.Add(new AssetGroup(groupName));
     }
 
-    [ICommand]
     private void RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
     {
         if (assetGroupViewModel is not null)
@@ -198,7 +220,7 @@ internal partial class AssetsViewModel
             assetGroup.Name = groupName;
         }
 
-        var newViewModel = new AssetGroupViewModel(assetGroup);
+        var newViewModel = new AssetGroupViewModel(assetGroup, _assetRepository);
         newViewModel.GroupChanged += (s, e) => _assetRepository.SaveAsync().SafeFireAndForget();
 
         return newViewModel;

@@ -32,4 +32,16 @@ public class AssetRepository
     }
 
     public Task<Result> SaveAsync() => _repositoryHandler.SaveAsync(AssetGroups);
+
+    public Asset CreateAsset(string filePath)
+    {
+        try
+        {
+            return new AssetCreator().Create(filePath);
+        }
+        catch (Exception ex)
+        {
+            return new Asset();
+        }
+    }
 }

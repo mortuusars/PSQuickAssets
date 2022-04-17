@@ -110,6 +110,7 @@ internal class Config : ConfigBase, IConfig
     internal void SetLogger(ILogger logger) => _logger = logger;
 }
 
+//TODO: Remove listener.
 internal class ConfigChangeListener
 {
     private readonly IConfig _config;

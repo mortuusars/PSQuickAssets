@@ -1,8 +1,8 @@
 ﻿using PSQuickAssets.Utils.SystemDialogs;
 using System;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Reflection;
 
 namespace PSQuickAssets.WPF;
 
@@ -31,8 +31,8 @@ public class OpenDialogBehavior : DependencyObject
     private static void OnDialogChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         UIElement element = (UIElement)d;
-        element.MouseLeftButtonDown -= Element_MouseLeftButtonDown;
-        element.MouseLeftButtonDown += Element_MouseLeftButtonDown;
+        element.PreviewMouseLeftButtonDown -= Element_MouseLeftButtonDown;
+        element.PreviewMouseLeftButtonDown += Element_MouseLeftButtonDown;
     }
 
     private static void Element_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -44,18 +44,26 @@ public class OpenDialogBehavior : DependencyObject
         if (dialog == DialogType.None)
             return;
 
-        ICommand? command = null;
-
-        if (GetCommand(element) is ICommand cmd)
-            command = cmd;
-        else if (element is ButtonBase btn)
-            command = btn.Command;
+        ICommand? command = GetCommand(element) ?? GetNativeCommand(element);
 
         if (command is null)
             return;
 
+        e.Handled = true;
+
         string[] dialogResult = ShowDialog(dialog);
         command.Execute(dialogResult);
+    }
+
+    private static ICommand? GetNativeCommand(object element)
+    {
+        var type = element.GetType();
+        PropertyInfo? cmdProp = type.GetProperty("Command");
+        
+        if (cmdProp?.GetValue(element) is ICommand command)
+            return command;
+
+        return null;
     }
 
     private static string[] ShowDialog(DialogType dialog)

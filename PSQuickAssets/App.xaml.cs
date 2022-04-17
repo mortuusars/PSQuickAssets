@@ -4,37 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.Utils;
-using PSQuickAssets.Windows;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace PSQuickAssets;
-
-//TODO: Use this
-//public class Result<TValue, TError>
-//{
-//    public TValue Value { get; }
-//    public TError? Error { get; }
-
-//    public bool HasValue { get => Error is null; }
-
-//    public Result(TValue value)
-//    {
-//        Value = value;
-//        Error = default;
-//    }
-
-//    public Result(TError error, TValue defaultValue)
-//    {
-//        Value = defaultValue;
-//        Error = error;
-//    }
-//}
 
 public partial class App : Application
 {
@@ -44,7 +21,7 @@ public partial class App : Application
 
     public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
-    public IServiceProvider ServiceProvider { get; private set; }
+    internal IServiceProvider ServiceProvider { get; private set; }
 
     internal IConfig Config { get; }
 
@@ -61,8 +38,10 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        
         ShutdownIfAlreadyOpen();
-        SetTooltipDelay(300);
+
+        //Initialize task bar icon:
         var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
         var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
@@ -78,20 +57,10 @@ public partial class App : Application
 
     private void SetupGlobalHotkeys(WindowManager windowManager)
     {
+        //TODO: Move to GlobalHotkeys.
         var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
         globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ToggleMainWindow());
         globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
-    }
-
-    protected override void OnExit(ExitEventArgs e)
-    {
-        Config?.Save();
-        base.OnExit(e);
-    }
-
-    private static void SetTooltipDelay(int delayMS)
-    {
-        ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(delayMS));
     }
 
     private void ShutdownIfAlreadyOpen()

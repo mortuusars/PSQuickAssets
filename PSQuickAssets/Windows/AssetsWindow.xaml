@@ -37,7 +37,8 @@
                    FontFamily="{StaticResource FontLight}"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
-                   d:WindowStyle="None">
+                   d:WindowStyle="None"
+                   ToolTipService.InitialShowDelay="350">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding Source={StaticResource WindowManagerCommands}, Path=ToggleMainWindowCommand}" />
@@ -76,6 +77,9 @@
         <system:Boolean x:Key="IncludeSubfolders">True</system:Boolean>
         <system:Boolean x:Key="DoNotIncludeSubfolders">False</system:Boolean>
 
+        <pureUI:BindingProxy x:Key="WindowViewModelProxy" Data="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+        <pureUI:BindingProxy x:Key="AssetsViewModelProxy" Data="{Binding DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+
         <!--  TITLE  -->
         <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
             <StackPanel Margin="4,0,0,0" Orientation="Horizontal">
@@ -92,10 +96,10 @@
                                    FontWeight="Bold" />
                     </Button.Content>
 
-                    <!--<Button.ContextMenu>
-                        <ContextMenu>
+                    <Button.ContextMenu>
+                        <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}">
 
-                            --><!--  ADD ASSETS  --><!--
+                            <!--  ADD ASSETS  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
                                 <MenuItem.Icon>
                                     <TextBlock Text="{StaticResource PlusIcon}"
@@ -103,17 +107,18 @@
                                                FontSize="17" />
                                 </MenuItem.Icon>
 
-                                --><!--  FILES  --><!--
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}" Command="{Binding AssetsViewModel.NewGroupFromFilesCommand}">
+                                <!--  FILES  -->
+                                <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
+                                          Command="{Binding AssetsViewModel.NewGroupFromFilesCommand}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE82E;"
                                                    FontFamily="{StaticResource SegoeMDL2Icons}"
                                                    FontSize="17" />
                                     </MenuItem.Icon>
-                                </MenuItem>
+                                </MenuItem>-->
 
-                                --><!--  FOLDER  --><!--
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolder}"
+                                <!--  FOLDER  -->
+                                <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolder}"
                                           Command="{Binding AssetsViewModel}"
                                           CommandParameter="{StaticResource DoNotIncludeSubfolders}">
                                     <MenuItem.Icon>
@@ -121,10 +126,10 @@
                                                    FontFamily="{StaticResource SegoeMDL2Icons}"
                                                    FontSize="17" />
                                     </MenuItem.Icon>
-                                </MenuItem>
+                                </MenuItem>-->
 
-                                --><!--  +SUBFOLDERS  --><!--
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolderWithSubfolders}"
+                                <!--  SUBFOLDERS  -->
+                                <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFolderWithSubfolders}"
                                           Command="{Binding AssetsViewModel.NewGroupFromFolderCommand}"
                                           CommandParameter="{StaticResource IncludeSubfolders}">
                                     <MenuItem.Icon>
@@ -132,11 +137,11 @@
                                                    FontFamily="{StaticResource SegoeMDL2Icons}"
                                                    FontSize="17" />
                                     </MenuItem.Icon>
-                                </MenuItem>
+                                </MenuItem>-->
                             </MenuItem>
 
-                            --><!--  ADD EMPTY GROUP  --><!--
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" Command="{Binding AssetsViewModel.CreateEmptyGroupCommand}">
+                            <!--  ADD EMPTY GROUP  -->
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" Command="{Binding CreateEmptyGroupCommand}">
                                 <MenuItem.Icon>
                                     <TextBlock Text="&#xECC8;"
                                                FontFamily="{StaticResource SegoeMDL2Icons}"
@@ -146,7 +151,7 @@
 
                             <Separator />
 
-                            --><!--  SETTINGS  --><!--
+                            <!--  SETTINGS  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
                                 <MenuItem.Icon>
                                     <Path Height="16"
@@ -157,10 +162,10 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            --><!--  TERMINAL  --><!--
+                            <!--  TERMINAL  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Terminal}"
                                       Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
-                                      Visibility="{Binding Config.DebugMode, Converter={StaticResource BoolToVisibility}}">
+                                      Visibility="{Binding Data.Config.DebugMode, Source={StaticResource WindowViewModelProxy}, Converter={StaticResource BoolToVisibility}}">
                                 <MenuItem.Icon>
                                     <Path Height="16"
                                           Width="16"
@@ -170,7 +175,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>
-                    </Button.ContextMenu>-->
+                    </Button.ContextMenu>
                 </Button>
             </StackPanel>
 
@@ -270,8 +275,10 @@
                 Defining scroll size-change hotkeys in the "Content" grid because WindowChrome's CaptionHeight prevents
                 hotkey working in the empty space of title bar, only when mouse is over some control.
             -->
-            <MouseBinding Command="{Binding IncreaseThumbnailSizeCommand}" Gesture="{pureUI:MouseWheel Direction=Up, Keys=Ctrl}" />
-            <MouseBinding Command="{Binding DecreaseThumbnailSizeCommand}" Gesture="{pureUI:MouseWheel Direction=Down, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding Data.ChangeThumbnailSizeCommand, Source={StaticResource WindowViewModelProxy}}" 
+                          Gesture="{pureUI:MouseWheel Direction=Up, Keys=Ctrl}" />
+            <MouseBinding Command="{Binding Data.ChangeThumbnailSizeCommand, Source={StaticResource WindowViewModelProxy}}" 
+                          Gesture="{pureUI:MouseWheel Direction=Down, Keys=Ctrl}" />
         </Grid.InputBindings>
 
         <!--  TITLE PREVIEW  -->
@@ -348,10 +355,10 @@
                         </StackPanel.Resources>
 
                         <!--  GROUP CONTEXT MENU  -->
-                        <!--<StackPanel.ContextMenu>
+                        <StackPanel.ContextMenu>
                             <ContextMenu FontSize="13" FontFamily="{StaticResource FontMedium}">
 
-                                --><!--  INFO ABOUT THE GROUP  --><!--
+                                <!--  INFO ABOUT THE GROUP  -->
                                 <MenuItem Style="{StaticResource ContentMenuItem}">
                                     <MenuItem.Header>
                                         <StackPanel Margin="8"
@@ -381,10 +388,11 @@
 
                                 <Separator />
 
-                                --><!--  SELECT AND ADD ASSETS  --><!--
+
+                                <!--  SELECT AND ADD ASSETS  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
-                                          CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}"
-                                          Command="{Binding AssetsViewModel.AddFilesToGroupCommand, Source={StaticResource ViewModelLocator}}">
+                                          Command="{Binding Path=Data.AddAssetsCommand, Source={StaticResource AssetGroupBindingProxy}}"
+                                          wpf:OpenDialogBehavior.Dialog="SelectFiles">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource PlusIcon}"
                                                    FontSize="15"
@@ -395,7 +403,7 @@
 
                                 <Separator />
 
-                                --><!--  COLLAPSE/EXPAND CONTENT  --><!--
+                                <!--  COLLAPSE/EXPAND CONTENT  -->
                                 <MenuItem Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
                                           CommandParameter="{Binding Path=PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
                                           InputGestureText="Ctrl+M">
@@ -427,7 +435,7 @@
                                     </MenuItem.Style>
                                 </MenuItem>
 
-                                --><!--  RENAME  --><!--
+                                <!--  RENAME  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}"
                                           Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           InputGestureText="F2">
@@ -441,7 +449,7 @@
 
                                 <Separator />
 
-                                --><!--  REMOVE  --><!--
+                                <!--  REMOVE  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:RemoveGroup}"
                                           Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
                                           CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}">
@@ -454,7 +462,7 @@
                                 </MenuItem>
 
                             </ContextMenu>
-                        </StackPanel.ContextMenu>-->
+                        </StackPanel.ContextMenu>
 
                         <!--  HEADER  -->
                         <Grid x:Name="GroupHeader" VerticalAlignment="Top">
@@ -808,7 +816,9 @@
                                                          FontSize="13"
                                                          Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
 
-                                                --><!--  Add as layer  --><!--
+                                        -->
+                                        <!--  Add as layer  -->
+                                        <!--
                                                 <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Strings:AddAsLayer}"
@@ -822,7 +832,9 @@
                                                     </MenuItem.Icon>
                                                 </MenuItem>
 
-                                                --><!--  Open as new document  --><!--
+                                        -->
+                                        <!--  Open as new document  -->
+                                        <!--
                                                 <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Strings:OpenAsNewDoc}"
@@ -838,7 +850,9 @@
 
                                                 <Separator />
 
-                                                --><!--  Open with shell  --><!--
+                                        -->
+                                        <!--  Open with shell  -->
+                                        <!--
                                                 <MenuItem x:Name="OpenWithShellMenuItem"
                                                           Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
                                                           CommandParameter="{Binding}"
@@ -853,7 +867,9 @@
                                                     </MenuItem.Icon>
                                                 </MenuItem>
 
-                                                --><!--  Show in explorer  --><!--
+                                        -->
+                                        <!--  Show in explorer  -->
+                                        <!--
                                                 <MenuItem x:Name="OpenInExplorerMenuItem"
                                                           Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
                                                           CommandParameter="{Binding}"
@@ -870,7 +886,9 @@
 
                                                 <Separator />
 
-                                                --><!--  Remove  --><!--
+                                        -->
+                                        <!--  Remove  -->
+                                        <!--
                                                 <MenuItem x:Name="RemoveAssetMenuItem"
                                                           Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
                                                           CommandParameter="{Binding}"

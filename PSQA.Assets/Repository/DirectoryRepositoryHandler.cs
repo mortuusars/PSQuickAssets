@@ -45,6 +45,9 @@ public class DirectoryRepositoryHandler : IAssetRepositoryHandler
         ArgumentNullException.ThrowIfNull(fileNamesSuffixProvider);
 
         _directory = new DirectoryInfo(directoryPath);
+        if (!_directory.Exists)
+            _directory.Create();
+
         _fileNamePrefix = fileNamePrefix;
         _fileNamesSuffixProvider = fileNamesSuffixProvider;
         _logger = logger;
@@ -117,8 +120,8 @@ public class DirectoryRepositoryHandler : IAssetRepositoryHandler
 
         try
         {
-            string json = assetGroups.Serialize();
-            await File.WriteAllTextAsync(json, filePath);
+            string json = assetGroups.Serialize(new System.Text.Json.JsonSerializerOptions() { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping});
+            await File.WriteAllTextAsync(filePath, json);
             return Result.Ok();
         }
         catch (Exception ex)

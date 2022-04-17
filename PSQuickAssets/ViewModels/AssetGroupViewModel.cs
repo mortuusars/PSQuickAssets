@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using PSQA.Assets.Repository;
 using PSQA.Core;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,11 @@ public partial class AssetGroupViewModel
     /// </summary>
     public AssetGroup Group { get; }
 
-    internal AssetGroupViewModel(AssetGroup assetGroup)
+    public ICommand AddAssetsCommand { get; }
+
+    private readonly AssetRepository _assetRepository;
+
+    internal AssetGroupViewModel(AssetGroup assetGroup, AssetRepository assetRepository)
     {
         Group = assetGroup;
         Group.Assets.CollectionChanged += (s, e) =>
@@ -72,6 +77,9 @@ public partial class AssetGroupViewModel
             GroupChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged(nameof(AssetCount));
         };
+        _assetRepository = assetRepository;
+
+        AddAssetsCommand = new RelayCommand<IEnumerable<string>>(files => AddAssets(files));
     }
 
     /// <summary>
@@ -106,6 +114,18 @@ public partial class AssetGroupViewModel
     {
         foreach (var asset in assets)
             AddAsset(asset);
+    }
+
+    public void AddAssets(IEnumerable<string>? filesPaths)
+    {
+        if (filesPaths is null)
+            return;
+
+        foreach (var path in filesPaths)
+        {
+            if (_assetRepository.CreateAsset(path) is Asset asset && asset.Path.Length != 0)
+                AddAsset(asset);
+        }
     }
 
     /// <summary>
