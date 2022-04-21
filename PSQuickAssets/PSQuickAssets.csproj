@@ -70,6 +70,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj" />
+		<ProjectReference Include="..\..\..\Libraries\PureConfig\PureConfig\PureConfig.csproj" />
 		<ProjectReference Include="..\PSQA.Assets\PSQA.Assets.csproj" />
 		<ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.AssetControl\PSQuickAssets.AssetControl.csproj" />
