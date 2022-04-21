@@ -15,15 +15,15 @@ namespace PSQuickAssets;
 
 public partial class App : Application
 {
-    public static string AppName { get; } = "PSQuickAssets";
-    public static Version Version { get; } = new Version(AppVersion.GetVersionFromAssembly());
-    public static string Build { get; } = AppVersion.GetLinkerTime(Assembly.GetEntryAssembly()!).ToString("yyMMddHHmmss");
+    public static string AppName { get => "PSQuickAssets"; }
+    public static Version Version { get => AppVersion.AssemblyVersion; }
+    public static DateTime Build { get => AppVersion.BuildTime; }
 
     public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
 
-    internal IServiceProvider ServiceProvider { get; private set; }
+    public IServiceProvider ServiceProvider { get; private set; }
 
-    internal IConfig Config { get; }
+    private IConfig Config { get; }
 
     public App()
     {

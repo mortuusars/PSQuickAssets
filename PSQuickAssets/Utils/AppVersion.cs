@@ -7,26 +7,51 @@ namespace PSQuickAssets.Utils;
 internal static class AppVersion
 {
     /// <summary>
+    /// Gets the version from an entry assembly.
+    /// </summary>
+    public static Version AssemblyVersion { get => GetVersionFromAssembly(); }
+    /// <summary>
+    /// Gets the lastest build time from an entry assembly.
+    /// </summary>
+    public static DateTime BuildTime { get => GetBuildTime(); }
+
+    /// <summary>
     /// Gets version number defined in .csproj file.
     /// </summary>
-    public static string GetVersionFromAssembly()
+    private static Version GetVersionFromAssembly()
     {
         try
         {
             string info = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-            return info.Substring(0, info.IndexOf('+'));
+            return new Version(info.Substring(0, info.IndexOf('+')));
         }
         catch (Exception)
         {
-            return "99.99.99";
+            return new Version("0.0.0");
         }
     }
 
     /// <summary>
-    /// Gets lates build Time.
+    /// Gets the build time from entry assembly.
     /// </summary>
-    /// <param name="assembly"></param>
-    public static DateTime GetLinkerTime(Assembly assembly)
+    private static DateTime GetBuildTime()
+    {
+        try
+        {
+            if (Assembly.GetEntryAssembly() is not Assembly assembly)
+                return DateTime.MinValue;
+            return GetLinkerTime(assembly);
+        }
+        catch (Exception)
+        {
+            return DateTime.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets latest build time from the specified assembly.
+    /// </summary>
+    private static DateTime GetLinkerTime(Assembly assembly)
     {
         const string BuildVersionMetadataPrefix = "+build";
 
@@ -42,6 +67,6 @@ internal static class AppVersion
             }
         }
 
-        return default;
+        return DateTime.MinValue;
     }
 }

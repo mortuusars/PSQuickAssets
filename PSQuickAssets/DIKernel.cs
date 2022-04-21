@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PSQA.Assets;
 using PSQA.Assets.Repository;
-//using Serilog;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.ViewModels;
 using Serilog;
 using System;
-using System.Collections.ObjectModel;
 
 namespace PSQuickAssets;
 
@@ -15,7 +12,7 @@ internal static class DIKernel
 {
     public static IServiceProvider ServiceProvider { get; } = CreateServiceProvider();
 
-    public static IServiceProvider CreateServiceProvider()
+    private static IServiceProvider CreateServiceProvider()
     {
         IServiceCollection services = new ServiceCollection();
 

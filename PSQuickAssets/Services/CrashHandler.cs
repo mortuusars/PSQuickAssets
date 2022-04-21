@@ -48,7 +48,7 @@ namespace PSQuickAssets.Services
                 reportFilePath = Path.Combine(reportsFolder, $"crash-{DateTime.Now:yyyyMMdd-HHmmss}.txt");
 
                 string report = $"Crash Report - {DateTime.Now}" +
-                            $"\n\n{App.AppName} Version: {App.Version}-{App.Build}" +
+                            $"\n\n{App.AppName} Version: {App.Version}-{App.Build:yyyyMMddss}" +
                             $"\n\nMessage:\n\t{exception.Message}\n\nStackTrace:\n{exception.StackTrace}\n\n{exception.InnerException}";
 
                 File.WriteAllText(reportFilePath, report);

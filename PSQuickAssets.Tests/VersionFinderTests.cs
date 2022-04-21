@@ -9,13 +9,13 @@ namespace PSQuickAssets.Tests
         [Fact]
         public void GetVersionShouldGetRightVersion()
         {
-            Assert.Equal(new Version("1.2.0"), UpdateVersionFinder.GetVersionFromFile("asdasdkjwlkj<Version>1.2.0</Version>"));
+            Assert.Equal(new Version("1.2.0"), CsProjVersionParser.Parse("asdasdkjwlkj<Version>1.2.0</Version>"));
         }
 
         [Fact]
         public void GetVersionThrowsIfNotFound()
         {
-            Assert.Throws<ArgumentException>(() => UpdateVersionFinder.GetVersionFromFile("asdasdkjwlkjon"));
+            Assert.Throws<ArgumentException>(() => CsProjVersionParser.Parse("asdasdkjwlkjon"));
         }
     }
 }

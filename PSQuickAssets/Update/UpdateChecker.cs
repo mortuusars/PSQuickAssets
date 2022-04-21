@@ -24,13 +24,19 @@ internal class UpdateChecker
     /// Checks if update is available by comparing current version with latest version available.
     /// </summary>
     /// <param name="currentVersion">Version of the current application.</param>
-    /// <returns></returns>
     public async Task CheckUpdatesAsync(Version currentVersion)
     {
+        if (currentVersion == new Version("0.0.0"))
+        {
+            _logger.Warning("[{0}] Updates would not be checked because current version is unknown.", this.GetType().Name);
+            return;
+        }
+
         var githubVersion = await CheckVersionFromGithubAsync();
 
         if (githubVersion > currentVersion)
         {
+            _logger.Information("[{0}] New version is found: {1}. Current version: {2}", this.GetType().Name, githubVersion, currentVersion);
             string changelog = await GetChangelogFromGithub();
             _windowManager.ShowUpdateWindow(currentVersion, githubVersion, changelog);
         }
@@ -38,25 +44,35 @@ internal class UpdateChecker
 
     private async Task<Version> CheckVersionFromGithubAsync()
     {
+        _logger.Debug("[{0}] Checking github repository for a new version...", this.GetType().Name);
+        const string url = "https://raw.githubusercontent.com/mortuusars/PSQuickAssets/master/PSQuickAssets/PSQuickAssets.csproj";
+
         try
         {
-            string file = await ReadStringFromURL("https://raw.githubusercontent.com/mortuusars/PSQuickAssets/master/PSQuickAssets/PSQuickAssets.csproj");
-            return UpdateVersionFinder.GetVersionFromFile(file);
+            string file = await ReadStringFromURL(url);
+            return CsProjVersionParser.Parse(file, _logger);
         }
         catch (Exception ex)
         {
-            _logger.Error("[Update Checker] Getting version from GitHub failed: " + ex.Message);
+            _logger.Error("[{0}] Getting version from '{1}' failed: {2}.", this.GetType().Name, url, ex.Message);
             return new Version();
         }
     }
 
     private async Task<string> GetChangelogFromGithub()
     {
-        try { return await ReadStringFromURL("https://raw.githubusercontent.com/mortuusars/PSQuickAssets/master/changelog.md"); }
-        catch (Exception ex) { _logger.Error("[Update Checker] Failed to get changelog from github: " + ex.Message); return ""; }
+        _logger.Debug("[{0}] Getting changelog file...", this.GetType().Name);
+        const string url = "https://raw.githubusercontent.com/mortuusars/PSQuickAssets/master/changelog.md";
+        try
+        {
+            return await ReadStringFromURL(url);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("[{0}] Failed to get changelog from '{1}': {2}", this.GetType().Name, url, ex.Message);
+            return string.Empty;
+        }
     }
-
-    
 
     private async Task<string> ReadStringFromURL(string url)
     {
@@ -68,7 +84,7 @@ internal class UpdateChecker
     }
 }
 
-internal class UpdateVersionFinder
+internal static class CsProjVersionParser
 {
     /// <summary>
     /// Looks for xml version tag and parses that version to the Version object.
@@ -76,23 +92,30 @@ internal class UpdateVersionFinder
     /// <param name="input">Input string.</param>
     /// <returns>Parsed version.</returns>
     /// <exception cref="Exception">When something fails.</exception>
-    public static Version GetVersionFromFile(string input)
+    public static Version Parse(string input, ILogger logger)
     {
-        string versionStartTag = "<Version>";
-        int startIndex = input.IndexOf("<Version>") + versionStartTag.Length;
-
-        int endIndex = startIndex;
-
-        while (endIndex < input.Length)
+        try
         {
-            if (input[endIndex] == '<')
-                break;
+            const string versionStartTag = "<Version>";
+            int startIndex = input.IndexOf(versionStartTag) + versionStartTag.Length;
 
-            endIndex++;
+            int endIndex = startIndex;
+
+            while (endIndex < input.Length)
+            {
+                if (input[endIndex] == '<')
+                    break;
+
+                endIndex++;
+            }
+
+            var versionString = input.Substring(startIndex, endIndex - startIndex);
+            return Version.Parse(versionString);
         }
-
-        var versionString = input.Substring(startIndex, endIndex - startIndex);
-        Version version = Version.Parse(versionString);
-        return version;
+        catch (Exception ex)
+        {
+            logger.Error("[Update] Failed to parse .csproj file for version: {0}", ex.Message);
+            return new Version("0.0.0");
+        }
     }
 }
