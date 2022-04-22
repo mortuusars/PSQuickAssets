@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace PSQuickAssets.Services
 {
@@ -14,15 +12,16 @@ namespace PSQuickAssets.Services
         {
             e.Handled = true;
 
-            string message = $"Unexpected crash has occured. Program will exit.";
+            string message = "Unexpected crash has occured. Program will exit.";
 
-            if (TrySaveCrashReport(e.Exception, out string reportFilePath) && File.Exists(reportFilePath))
+            // Try to write crash report to a file, if failed - show message box:
+            if (TrySaveCrashReport(e.Exception, out string reportFilePath))
             {
                 message += $"\n\nCrash Report has been saved to: {reportFilePath}";
 
                 if (MessageBox.Show(message + "\n\nOpen the file now?", App.AppName, MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
                 {
-                    ProcessStartInfo process = new ProcessStartInfo(reportFilePath) { UseShellExecute = true };
+                    ProcessStartInfo process = new(reportFilePath) { UseShellExecute = true };
                     Process.Start(process);
                 }
             }
@@ -32,8 +31,7 @@ namespace PSQuickAssets.Services
                 MessageBox.Show(message, App.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            DIKernel.ServiceProvider.GetRequiredService<ILogger>().Fatal(message, e.Exception);
-
+            App.ServiceProvider.GetRequiredService<ILogger>().Fatal(message, e.Exception);
             App.Current.Shutdown();
             Environment.Exit(-1);
         }
@@ -42,17 +40,11 @@ namespace PSQuickAssets.Services
         {
             try
             {
-                string reportsFolder = GetReportsFolder();
-                CleanReportsFolder(reportsFolder);
-
-                reportFilePath = Path.Combine(reportsFolder, $"crash-{DateTime.Now:yyyyMMdd-HHmmss}.txt");
-
-                string report = $"Crash Report - {DateTime.Now}" +
-                            $"\n\n{App.AppName} Version: {App.Version}-{App.Build:yyyyMMddss}" +
-                            $"\n\nMessage:\n\t{exception.Message}\n\nStackTrace:\n{exception.StackTrace}\n\n{exception.InnerException}";
-
-                File.WriteAllText(reportFilePath, report);
-
+                DirectoryInfo crashReportsDirectory = GetReportsFolder();
+                CleanReportsFolder(crashReportsDirectory);
+                reportFilePath = Path.Combine(crashReportsDirectory.FullName, $"crash-{DateTime.Now:yyyyMMdd-HHmmss}.txt");
+                CreateReportString(exception)
+                    .WriteToFile(reportFilePath);
                 return true;
             }
             catch (Exception)
@@ -62,25 +54,33 @@ namespace PSQuickAssets.Services
             }
         }
 
-        private static string GetReportsFolder()
+        private static string CreateReportString(Exception ex)
         {
-            string reportsFolder = Path.Combine(App.AppDataFolder, "crash-reports");
-            Directory.CreateDirectory(reportsFolder);
-            return reportsFolder;
+            return $"Crash Report - {DateTime.Now}" +
+                   $"\n\n{App.AppName} Version: {App.Version}-{App.Build:yyyyMMddss}" +
+                   $"\n\nMessage:\n\t{ex.Message}\n\nStackTrace:\n{ex.StackTrace}\n\n{ex.InnerException}";
         }
 
-        private static void CleanReportsFolder(string reportsFolder)
+        private static DirectoryInfo GetReportsFolder()
+        {
+            var directory = new DirectoryInfo(Folders.CrashReports);
+            if (!directory.Exists)
+                directory.Create();
+            return directory;
+        }
+
+        private static void CleanReportsFolder(DirectoryInfo crashReportsDirectory)
         {
             try
             {
-                string[] reports = Directory.GetFiles(reportsFolder);
-
-                if (reports.Length > 20)
-                {
-                    reports.OrderByDescending(f => File.GetCreationTime(f)).Take(5).ToList().ForEach(file => File.Delete(file));
-                }
+                // Leave 10 most recent files - delete rest:
+                crashReportsDirectory.GetFiles()
+                    .OrderByDescending(f => f.CreationTime)
+                    .Skip(10)
+                    .ForEach(file => file.Delete());
             }
-            catch (Exception) { }
+            catch (DirectoryNotFoundException) { }
+            catch (IOException) { }
         }
     }
 }

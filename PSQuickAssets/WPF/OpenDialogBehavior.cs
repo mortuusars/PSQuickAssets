@@ -1,8 +1,7 @@
 ﻿using PSQuickAssets.Utils.SystemDialogs;
-using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using System.Reflection;
 
 namespace PSQuickAssets.WPF;
 

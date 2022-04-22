@@ -22,7 +22,7 @@ internal class Configuration : ConfigBase, IConfig
 
     public bool DebugMode { get => GetValue(false); set => SetValue(value); }
 
-    private static readonly string _configFilePath = Path.Combine(App.AppDataFolder, "config.json");
+    private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");
     private readonly ILogger _logger;
 
     public Configuration(ILogger logger)

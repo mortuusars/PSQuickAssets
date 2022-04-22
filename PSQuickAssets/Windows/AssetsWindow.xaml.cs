@@ -21,8 +21,6 @@ public partial class AssetsWindow : PureWindow
     public AssetsWindow()
     {
         InitializeComponent();
-        this.PreviewKeyDown += AssetsWindow_PreviewKeyDown;
-        this.PreviewKeyUp += AssetsWindow_PreviewKeyUp;
     }
 
     #region Hiding/Showing
@@ -73,48 +71,18 @@ public partial class AssetsWindow : PureWindow
 
     #endregion
 
-    #region CtrlHeld
-    //TODO: This is ugly. Keyboard hook?
-    public bool IsCtrlPressed
-    {
-        get { return (bool)GetValue(IsCtrlPressedProperty); }
-        set { SetValue(IsCtrlPressedProperty, value); }
-    }
-
-    public static readonly DependencyProperty IsCtrlPressedProperty =
-        DependencyProperty.Register(nameof(IsCtrlPressed), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
-
-    private void AssetsWindow_PreviewKeyUp(object sender, KeyEventArgs e)
-    {
-        if (e.Key is Key.LeftCtrl or Key.RightCtrl)
-            IsCtrlPressed = false;
-
-        if (e.Key is Key.Space)
-        {
-            //var active = App.Current.GetActiveWindow();
-        }
-    }
-
-    private void AssetsWindow_PreviewKeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.Key is Key.LeftCtrl or Key.RightCtrl)
-            IsCtrlPressed = true;
-    }
-
-    #endregion
-
     //TODO: Move to attached property?
     private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        // Properly raise mouse scroll event without interfering with other controls when Ctrl, Shift, or Alt is pressed.
-        if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
-        {
-            e.Handled = true;
-            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-            eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-            eventArg.Source = sender;
-            var parent = ((Control)sender).Parent as UIElement;
-            parent?.RaiseEvent(eventArg);
-        }
+        //// Properly raise mouse scroll event without interfering with other controls when Ctrl, Shift, or Alt is pressed.
+        //if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
+        //{
+        //    e.Handled = true;
+        //    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+        //    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+        //    eventArg.Source = sender;
+        //    var parent = ((Control)sender).Parent as UIElement;
+        //    parent?.RaiseEvent(eventArg);
+        //}
     }
 }

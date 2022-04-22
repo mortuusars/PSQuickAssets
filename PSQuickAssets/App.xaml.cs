@@ -16,17 +16,13 @@ public partial class App : Application
     public static Version Version { get => AppVersion.AssemblyVersion; }
     public static DateTime Build { get => AppVersion.BuildTime; }
 
-    public static string AppDataFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.AppName);
-
-    public IServiceProvider ServiceProvider { get; private set; }
+    public static IServiceProvider ServiceProvider { get; private set; } = DIKernel.ServiceProvider;
 
     private IConfig Config { get; }
 
     public App()
     {
         DispatcherUnhandledException += CrashHandler.OnUnhandledException;
-
-        ServiceProvider = DIKernel.ServiceProvider;
 
         Config = ServiceProvider.GetRequiredService<IConfig>();
         ServiceProvider.GetRequiredService<ConfigChangeListener>().Listen();

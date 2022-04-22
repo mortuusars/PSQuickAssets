@@ -53,7 +53,7 @@ internal class TerminalHandler
 
     private void OpenAppdataFolder()
     {
-        ProcessStartInfo processStartInfo = new(App.AppDataFolder);
+        ProcessStartInfo processStartInfo = new(Folders.AppData);
         processStartInfo.UseShellExecute = true;
         Process.Start(processStartInfo);
     }

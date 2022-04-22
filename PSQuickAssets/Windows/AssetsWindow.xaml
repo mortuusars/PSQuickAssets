@@ -190,23 +190,12 @@
                 <Button.Content>
                     <Path Margin="-1,-1,0,0"
                           Fill="{StaticResource ForegroundMainBrush}"
-                          Stretch="Uniform">
-                        <Path.Style>
-                            <Style TargetType="Path">
-                                <Setter Property="Data" Value="{StaticResource CollapseExpandIconGeometry}" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsCtrlPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=windows:AssetsWindow}}" Value="True">
-                                        <Setter Property="Data" Value="{StaticResource CloseIconGeometry}" />
-                                        <Setter Property="Width" Value="16" />
-                                        <Setter Property="Height" Value="15" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
+                          Stretch="Uniform"
+                          Width="16"
+                          Height="16"
+                          Data="{StaticResource CollapseExpandIconGeometry}"/>
                 </Button.Content>
+                
                 <Button.ToolTip>
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.ColumnDefinitions>
@@ -230,6 +219,7 @@
                                        Margin="0 0 4 0" />
                             <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}" />
                         </StackPanel>
+                        
                         <TextBlock Text="Shift+Esc"
                                    Grid.Column="1"
                                    Grid.Row="1"
@@ -272,16 +262,16 @@
 
     <Grid x:Name="ContentRoot" Background="Transparent">
         <!--  Background must be set to "Transparent" for InputBindings to work on whole area.  -->
-        <Grid.InputBindings>
-            <!--
+        <!--<Grid.InputBindings>
+            --><!--
                 Defining scroll size-change hotkeys in the "Content" grid because WindowChrome's CaptionHeight prevents
                 hotkey working in the empty space of title bar, only when mouse is over some control.
-            -->
+            --><!--
             <MouseBinding Command="{Binding Data.ChangeThumbnailSizeCommand, Source={StaticResource WindowViewModelProxy}}" 
                           Gesture="{pureUI:MouseWheel Direction=Up, Keys=Ctrl}" />
             <MouseBinding Command="{Binding Data.ChangeThumbnailSizeCommand, Source={StaticResource WindowViewModelProxy}}" 
                           Gesture="{pureUI:MouseWheel Direction=Down, Keys=Ctrl}" />
-        </Grid.InputBindings>
+        </Grid.InputBindings>-->
 
         <!--  TITLE PREVIEW  -->
         <d:Border Margin="0,-27,0,0"
@@ -293,7 +283,6 @@
         <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
                  Background="{x:Null}"
                  BorderThickness="0"
-                 Margin="6"
                  Foreground="{StaticResource ForegroundMainBrush}"
                  SelectionMode="Extended"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -313,6 +302,12 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Margin="5"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
             <!--  DESIGN-TIME DATA  -->
             <!--<d:ListBox.ItemsSource>

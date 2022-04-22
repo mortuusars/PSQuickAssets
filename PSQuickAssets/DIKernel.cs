@@ -32,7 +32,7 @@ internal static class DIKernel
         services.AddSingleton<PhotoshopCommands>();
 
         services.AddSingleton<IAssetRepositoryHandler>(p =>
-            new DirectoryRepositoryHandler(App.AppDataFolder + "/catalog/", p.GetRequiredService<ILogger>()));
+            new DirectoryRepositoryHandler(Folders.AppData + "/catalog/", p.GetRequiredService<ILogger>()));
         services.AddSingleton<AssetRepository>();
 
         services.AddSingleton<AssetsViewModel>();

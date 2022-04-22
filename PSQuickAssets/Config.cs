@@ -62,7 +62,7 @@ internal class Config : ConfigBase, IConfig
     private readonly ConfigProperty<bool> _debugMode;
 
     private ILogger? _logger;
-    private static readonly string _configFilePath = Path.Combine(App.AppDataFolder, "config.json");
+    private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");
 
     //TODO: Simplify config.
 
