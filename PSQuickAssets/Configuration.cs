@@ -29,6 +29,8 @@ internal class Configuration : ConfigBase, IConfig
     {
         _logger = logger;
         this.PropertyChanged += (s, e) => Save();
+
+        Load();
     }
 
     public void Load()

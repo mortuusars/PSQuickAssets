@@ -101,14 +101,14 @@
                                      d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
                             <!--  ADD ASSETS  -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
+                            <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
                                 <MenuItem.Icon>
                                     <TextBlock Text="{StaticResource PlusIcon}"
                                                FontFamily="{StaticResource SegoeMDL2Icons}"
                                                FontSize="17" />
                                 </MenuItem.Icon>
 
-                                <!--  FILES  -->
+                                --><!--  FILES  -->
                                 <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
                                           Command="{Binding AssetsViewModel.NewGroupFromFilesCommand}">
                                     <MenuItem.Icon>
@@ -138,8 +138,8 @@
                                                    FontFamily="{StaticResource SegoeMDL2Icons}"
                                                    FontSize="17" />
                                     </MenuItem.Icon>
-                                </MenuItem>-->
-                            </MenuItem>
+                                </MenuItem>--><!--
+                            </MenuItem>-->
 
                             <!--  ADD EMPTY GROUP  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" 

@@ -4,11 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PSQuickAssets.Services;
 using PSQuickAssets.Update;
 using PSQuickAssets.Utils;
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 
 namespace PSQuickAssets;
