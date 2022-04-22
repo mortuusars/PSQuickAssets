@@ -50,7 +50,7 @@ internal class UpdateChecker
         try
         {
             string file = await ReadStringFromURL(url);
-            return CsProjVersionParser.Parse(file, _logger);
+            return CsProjVersionParser.Parse(file);
         }
         catch (Exception ex)
         {
@@ -92,7 +92,7 @@ internal static class CsProjVersionParser
     /// <param name="input">Input string.</param>
     /// <returns>Parsed version.</returns>
     /// <exception cref="Exception">When something fails.</exception>
-    public static Version Parse(string input, ILogger logger)
+    public static Version Parse(string input)
     {
         try
         {
@@ -112,9 +112,8 @@ internal static class CsProjVersionParser
             var versionString = input.Substring(startIndex, endIndex - startIndex);
             return Version.Parse(versionString);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            logger.Error("[Update] Failed to parse .csproj file for version: {0}", ex.Message);
             return new Version("0.0.0");
         }
     }

@@ -97,7 +97,8 @@
                     </Button.Content>
 
                     <Button.ContextMenu>
-                        <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}">
+                        <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}"
+                                     d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
                             <!--  ADD ASSETS  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
@@ -141,7 +142,8 @@
                             </MenuItem>
 
                             <!--  ADD EMPTY GROUP  -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" Command="{Binding CreateEmptyGroupCommand}">
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" 
+                                      Command="{Binding CreateEmptyGroupCommand}">
                                 <MenuItem.Icon>
                                     <TextBlock Text="&#xECC8;"
                                                FontFamily="{StaticResource SegoeMDL2Icons}"

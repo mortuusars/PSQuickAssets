@@ -6,16 +6,10 @@ using PSQA.Core;
 using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils.SystemDialogs;
-using PureLib;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Threading.Tasks;
-using PureUI;
 using System.Windows.Input;
-using System.Collections.Specialized;
 
 namespace PSQuickAssets.ViewModels;
 
@@ -24,9 +18,6 @@ internal partial class AssetsViewModel
 {
     // This collection is managed by handling AssetRepository changes.
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new();
-
-    public ICommand CreateEmptyGroupCommand { get; }
-    public ICommand RemoveGroupCommand { get; }
 
     public Func<string, List<string>> IsGroupNameValid { get; }
 
@@ -44,27 +35,11 @@ internal partial class AssetsViewModel
         AddAllGroupsFromRepository();
         _assetRepository.AssetGroups.CollectionChanged += OnRepositoryGroupsChanged;
 
-        CreateEmptyGroupCommand = new RelayCommand(() => CreateEmptyGroup(string.Empty));
-        RemoveGroupCommand = new RelayCommand<AssetGroupViewModel>((group) => RemoveGroup(group));
-
         IsGroupNameValid = ValidateGroupName;
     }
 
-    //public AssetsViewModel()
-    //{
-    //    if (!App.Current.IsInDesignMode())
-    //        throw new InvalidOperationException("This constructor only for design time and cannot be used at runtime.");
-    //    _assetRepository = null!;
-    //    _notificationService = null!;
-    //    _statusService = null!;
-    //    IsGroupNameValid = null!;
-    //}
-
     private void OnRepositoryGroupsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        //if (e.NewItems is null)
-            //return;
-
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
@@ -118,6 +93,7 @@ internal partial class AssetsViewModel
             AssetGroups.Add(CreateGroupViewModel(group));
     }
 
+    [ICommand]
     private void CreateEmptyGroup(string? groupName)
     {
         if (string.IsNullOrWhiteSpace(groupName))
@@ -126,6 +102,7 @@ internal partial class AssetsViewModel
         _assetRepository.AssetGroups.Add(new AssetGroup(groupName));
     }
 
+    [ICommand]
     private void RemoveGroup(AssetGroupViewModel? assetGroupViewModel)
     {
         if (assetGroupViewModel is not null)

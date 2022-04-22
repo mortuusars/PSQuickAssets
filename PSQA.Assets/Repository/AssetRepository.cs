@@ -39,7 +39,7 @@ public class AssetRepository
         {
             return new AssetCreator().Create(filePath);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return new Asset();
         }

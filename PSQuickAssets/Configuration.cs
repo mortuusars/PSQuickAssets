@@ -1,11 +1,9 @@
-﻿using AsyncAwaitBestPractices;
-using PureConfig;
-using Serilog;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
+using AsyncAwaitBestPractices;
+using PureConfig;
+using Serilog;
 
 namespace PSQuickAssets;
 
@@ -52,25 +50,7 @@ internal class Configuration : ConfigBase, IConfig
 
     public void Save()
     {
-        try
-        {
-            var serializer = new JsonConfigSerializer(new JsonSerializerOptions() { WriteIndented = true });
-            string? json = this.Serialize(serializer);
-            if (json is null)
-            {
-                _logger.Error("Config was not serialized properly. Serializer returned null.");
-                return;
-            }
-            SaveAsync(json).SafeFireAndForget((ex) => _logger.Error("Config was not saved: {0}", ex.Message));
-        }
-        catch (Exception ex)
-        {
-            _logger.Error("Failed to save config: {0}", ex.Message);
-        }
-    }
-
-    private async Task SaveAsync(string serializedConfig)
-    {
-        await File.WriteAllTextAsync(_configFilePath, serializedConfig);
+        this.Serialize(new JsonConfigSerializer(new JsonSerializerOptions() { WriteIndented = true }))?
+            .WriteToFileAsync(_configFilePath).SafeFireAndForget((ex) => _logger.Error("Config was not saved: {0}", ex.Message));
     }
 }
