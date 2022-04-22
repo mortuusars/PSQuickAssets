@@ -1,10 +1,9 @@
-﻿using Serilog;
-using PSQuickAssets.Services;
-using System;
+﻿using PSQuickAssets.Services;
+using Serilog;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace PSQuickAssets.Update;
+namespace PSQuickAssets;
 
 /// <summary>
 /// Provides functionality to check for a new version by looking at Github repo.

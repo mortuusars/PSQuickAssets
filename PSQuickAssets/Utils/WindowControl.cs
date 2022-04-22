@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace PSQuickAssets.Utils;
 
-public static class WindowControl
+public static class WindowUtils
 {
     [DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);

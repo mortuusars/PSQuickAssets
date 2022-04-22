@@ -20,7 +20,7 @@ internal class WindowManager
 
     public void FocusPhotoshop()
     {
-        WindowControl.FocusWindow("photoshop");
+        WindowUtils.FocusWindow("photoshop");
     }
 
     /// <summary>

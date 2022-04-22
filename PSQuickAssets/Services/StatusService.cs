@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 
 namespace PSQuickAssets.Services;
 
@@ -59,11 +57,6 @@ internal partial class StatusService : ObservableObject, IStatusService
             task.Finished -= LoadingTask_Finished;
             _loadingTasks.Remove(task);
         }
-    }
-
-    private void LoadingTaskFinished(LoadingTask task)
-    {
-        _loadingTasks.Remove(task);
     }
 
     private class LoadingTask : ITask, IDisposable

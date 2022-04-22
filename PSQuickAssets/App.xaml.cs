@@ -2,10 +2,8 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Extensions.DependencyInjection;
 using PSQuickAssets.Services;
-using PSQuickAssets.Update;
 using PSQuickAssets.Utils;
 using System.Diagnostics;
-using System.IO;
 using System.Windows;
 
 namespace PSQuickAssets;

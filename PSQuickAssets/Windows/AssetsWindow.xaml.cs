@@ -1,8 +1,5 @@
 ﻿using PureUI;
-using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace PSQuickAssets.Windows;
@@ -70,19 +67,4 @@ public partial class AssetsWindow : PureWindow
     }
 
     #endregion
-
-    //TODO: Move to attached property?
-    private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        //// Properly raise mouse scroll event without interfering with other controls when Ctrl, Shift, or Alt is pressed.
-        //if (sender is ItemsControl && !e.Handled && Keyboard.Modifiers != ModifierKeys.None)
-        //{
-        //    e.Handled = true;
-        //    var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-        //    eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-        //    eventArg.Source = sender;
-        //    var parent = ((Control)sender).Parent as UIElement;
-        //    parent?.RaiseEvent(eventArg);
-        //}
-    }
 }

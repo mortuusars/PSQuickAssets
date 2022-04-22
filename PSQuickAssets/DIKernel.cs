@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PSQA.Assets.Repository;
 using PSQuickAssets.Services;
-using PSQuickAssets.Update;
 using PSQuickAssets.ViewModels;
 using Serilog;
-using System;
 
 namespace PSQuickAssets;
 

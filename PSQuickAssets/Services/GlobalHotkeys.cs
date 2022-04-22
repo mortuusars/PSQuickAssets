@@ -1,14 +1,13 @@
 ﻿using MGlobalHotkeys.WPF;
 using Serilog;
-using System;
-using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace PSQuickAssets.Services;
 
 internal enum HotkeyUse
 {
     ToggleMainWindow
-} 
+}
 
 /// <summary>
 /// Contains all logic related to global hotkeys.
@@ -16,7 +15,7 @@ internal enum HotkeyUse
 internal class GlobalHotkeys : IDisposable
 {
     /// <summary>
-    /// Describes which action to use when registering a hotkey;
+    /// Specifies what action to use when registering a hotkey;
     /// </summary>
     public Dictionary<HotkeyUse, Action> HotkeyActions { get; }
 
@@ -62,16 +61,16 @@ internal class GlobalHotkeys : IDisposable
             }
         }
 
-        if (hotkey.Key is System.Windows.Input.Key.None)
+        if (hotkey.Key is Key.None)
         {
-            _logger.Information("Hotkey <None> will not be registered.");
+            _logger.Debug("Hotkey <None> will not be registered.");
             return;
         }
 
         if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))
         {
             _registeredHotkeys.Add(use, hotkey);
-            _logger.Information($"Registered <{hotkey}> for <{use}>.");
+            _logger.Debug($"Registered <{hotkey}> for <{use}>.");
         }
         else
         {
@@ -95,7 +94,8 @@ internal class GlobalHotkeys : IDisposable
     {
         foreach (var hotkey in _registeredHotkeys)
         {
-            _globalHotkeysHandler.TryUnregister(hotkey.Value, out string _);
+            if (!_globalHotkeysHandler.TryUnregister(hotkey.Value, out string errorMsg))
+                _logger.Warning("Hotkey '{0}' wasn't unregistered: {1}", hotkey.Value, errorMsg);
         }
     }
 }

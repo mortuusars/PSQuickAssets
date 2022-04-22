@@ -1,5 +1,4 @@
-﻿using PSQuickAssets.Update;
-using System;
+﻿using System;
 using Xunit;
 
 namespace PSQuickAssets.Tests

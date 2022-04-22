@@ -287,8 +287,7 @@
                  SelectionMode="Extended"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.CanContentScroll="False"
-                 IsTabStop="False"
-                 PreviewMouseWheel="ListBox_PreviewMouseWheel">
+                 IsTabStop="False">
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
