@@ -24,7 +24,7 @@ internal partial class AssetsWindowViewModel
         switch (direction)
         {
             case MouseWheelDirection.Up:
-                if (Config.ThumbnailSize <= 142)
+                if (Config.ThumbnailSize <= 260)
                     Config.ThumbnailSize += 8;
                 break;
             case MouseWheelDirection.Down:

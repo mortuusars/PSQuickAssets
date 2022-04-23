@@ -4,6 +4,8 @@
     xmlns:conv="clr-namespace:PSQuickAssets.WPF.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
+    <conv:PathToImageDimentionsStringConverter x:Key="PathToImageDimentions"/>
     <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityHidden" />
     <conv:BoolToVisibilityHiddenInvertedConverter x:Key="BoolToVisibilityHiddenInverted" />
     <conv:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInverted" />

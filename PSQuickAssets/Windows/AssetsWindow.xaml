@@ -765,7 +765,7 @@
                                     </d:DataTemplate.Resources>
 
                                     <assetcontrol:AssetControl Title="{Binding Name}"
-                                                               Thumbnail="{Binding Thumbnail}"
+                                                               Thumbnail="{Binding Path, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
                                                                ThumbnailSize="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                                                Foreground="{StaticResource ForegroundMainBrush}"
                                                                FontSize="13"
@@ -908,7 +908,8 @@
                                                 <Rectangle Height="1.5"
                                                            Margin="0,5,0,4"
                                                            Fill="{StaticResource BorderLighter}" />
-                                                <TextBlock Text="{Binding Dimensions, Converter={x:Static converters:SizeToImageDimensionsConverter.Instance}}" />
+                                                <!--<TextBlock Text="{Binding Dimensions, Converter={x:Static converters:SizeToImageDimensionsConverter.Instance}}" />-->
+                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToImageDimentions}, IsAsync=True}" />
                                                 <TextBlock Text="{Binding FileSize, Converter={x:Static converters:BytesToSizeConverter.Instance}}" />
                                             </StackPanel>
                                         </assetcontrol:AssetControl.ToolTip>

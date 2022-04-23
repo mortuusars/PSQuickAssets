@@ -1,32 +1,22 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Globalization;
-using System.Windows.Data;
 
 namespace PSQuickAssets.WPF.Converters;
 
 [ValueConversion(typeof(Size), typeof(string))]
-public class SizeToImageDimensionsConverter : IValueConverter
+public class SizeToDimensionsStringConverter : IValueConverter
 {
-    public static SizeToImageDimensionsConverter Instance
-    {
-        get
-        {
-            if (_instance is null)
-                _instance = new SizeToImageDimensionsConverter();
+    public static SizeToDimensionsStringConverter Instance { get => _instance ??= new SizeToDimensionsStringConverter(); }
+    private static SizeToDimensionsStringConverter? _instance;
 
-            return _instance;
-        }
+    public static string Convert(Size size)
+    {
+        return size.IsEmpty ? string.Empty : $"{size.Width}x{size.Height} px";
     }
-    private static SizeToImageDimensionsConverter? _instance;
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        var size = (Size)value;
-        if (size.IsEmpty)
-            return "-";
-
-        return $"{size.Width}x{size.Height} px";
+        return Convert((Size)value);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

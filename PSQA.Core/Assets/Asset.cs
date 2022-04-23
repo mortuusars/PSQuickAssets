@@ -11,34 +11,10 @@ public class Asset
     public string Path { get; set; }
 
     /// <summary>
-    /// Thumbnail of the asset.
-    /// </summary>
-    [JsonIgnore]
-    public virtual Thumbnail? Thumbnail { get; set; }
-
-    /// <summary>
-    /// Gets size of the image in bytes.
+    /// Gets or sets size of the image in bytes.
     /// </summary>
     [JsonIgnore]
     public long FileSize { get; set; }
-
-    /// <summary>
-    /// Gets size of the image (width and height) in pixels.
-    /// </summary>
-    [JsonIgnore]
-    public Size Dimensions { get; set; }
-
-    /// <summary>
-    /// Gets width of the image in pixels.
-    /// </summary>
-    [JsonIgnore]
-    public int Width { get => Dimensions.Width; }
-
-    /// <summary>
-    /// Gets height of the image in pixels.
-    /// </summary>
-    [JsonIgnore]
-    public int Height { get => Dimensions.Height; }
 
     /// <summary>
     /// Gets name of the file. Includes extension.
