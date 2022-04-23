@@ -9,6 +9,8 @@
                       xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                       xmlns:lex="http://wpflocalizeextension.codeplex.com"
                       xmlns:wpf="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
+                      xmlns:lang="clr-namespace:PSQuickAssets.Resources.Lang"
+                      xmlns:ext="clr-namespace:PSQuickAssets.WPF"
                       lex:LocalizeDictionary.DesignCulture="en"
                       lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                       lex:ResxLocalizationProvider.DefaultDictionary="Strings"

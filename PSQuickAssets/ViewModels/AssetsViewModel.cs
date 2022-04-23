@@ -129,7 +129,7 @@ internal partial class AssetsViewModel
     [ICommand]
     private async Task NewGroupFromFiles()
     {
-        string[] filePaths = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"],
+        string[] filePaths = SystemDialogs.SelectFiles(Localize[nameof(Lang.SelectImages)],
             FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
 
         if (filePaths.Length == 0)
