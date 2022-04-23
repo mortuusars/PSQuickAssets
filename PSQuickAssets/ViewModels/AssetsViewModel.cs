@@ -109,54 +109,54 @@ internal partial class AssetsViewModel
             _assetRepository.AssetGroups.Remove(assetGroupViewModel.Group);
     }
 
-    [ICommand]
-    private async Task AddFilesToGroup(AssetGroupViewModel? group)
-    {
-        if (group is null)
-            throw new ArgumentNullException(nameof(group));
+    //[ICommand]
+    //private async Task AddFilesToGroup(AssetGroupViewModel? group)
+    //{
+    //    if (group is null)
+    //        throw new ArgumentNullException(nameof(group));
 
-        string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+    //    string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
 
-        if (files.Length == 0)
-            return;
+    //    if (files.Length == 0)
+    //        return;
 
-        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-        {
-            //await _assetGroupHandler.AddAssetsToGroupAsync(group, files);
-        }
-    }
+    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+    //    {
+    //        //await _assetGroupHandler.AddAssetsToGroupAsync(group, files);
+    //    }
+    //}
 
-    [ICommand]
-    private async Task NewGroupFromFiles()
-    {
-        string[] filePaths = SystemDialogs.SelectFiles(Localize[nameof(Lang.SelectImages)],
-            FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
+    //[ICommand]
+    //private async Task NewGroupFromFiles()
+    //{
+    //    string[] filePaths = SystemDialogs.SelectFiles(Localize[nameof(Lang.SelectImages)],
+    //        FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
 
-        if (filePaths.Length == 0)
-            return;
+    //    if (filePaths.Length == 0)
+    //        return;
 
-        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-        {
-            //await _assetGroupHandler.AddGroupFromFilesAsync(filePaths);
-        }
-    }
+    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+    //    {
+    //        //await _assetGroupHandler.AddGroupFromFilesAsync(filePaths);
+    //    }
+    //}
 
-    [ICommand]
-    private async void NewGroupFromFolder(bool includeSubfolders = false)
-    {
-        string[] folderPaths = SystemDialogs.SelectFolder(Localization.Instance["SelectFolder"], SelectionMode.Multiple);
+    //[ICommand]
+    //private async void NewGroupFromFolder(bool includeSubfolders = false)
+    //{
+    //    string[] folderPaths = SystemDialogs.SelectFolder(Localization.Instance["SelectFolder"], SelectionMode.Multiple);
 
-        if (folderPaths.Length == 0)
-            return;
+    //    if (folderPaths.Length == 0)
+    //        return;
 
-        using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-        {
-            foreach (var path in folderPaths)
-            {
-                //await _assetGroupHandler.AddGroupFromFolderAsync(path, includeSubfolders);
-            }
-        }
-    }
+    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
+    //    {
+    //        foreach (var path in folderPaths)
+    //        {
+    //            //await _assetGroupHandler.AddGroupFromFolderAsync(path, includeSubfolders);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Checks if a group with specified name exists in <see cref="AssetGroups"/>.
@@ -192,10 +192,7 @@ internal partial class AssetsViewModel
     {
         string groupName = assetGroup.Name;
         if (IsGroupExists(groupName))
-        {
-            groupName = $"{groupName} {Localization.Instance["New"]}";
-            assetGroup.Name = groupName;
-        }
+            assetGroup.Name = $"{groupName} {Localization.Instance["New"]}";
 
         var newViewModel = new AssetGroupViewModel(assetGroup, _assetRepository);
         newViewModel.GroupChanged += (s, e) => _assetRepository.SaveAsync().SafeFireAndForget();

@@ -28,9 +28,4 @@ public static class WindowUtils
         else
             return false;
     }
-
-    public static bool IsProcessRunning(string processName)
-    {
-        return Process.GetProcessesByName(processName).Length > 0;
-    }
 }

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using AsyncAwaitBestPractices;
+﻿using AsyncAwaitBestPractices;
 using PureConfig;
 using Serilog;
+using System.IO;
+using System.Text.Json;
 
 namespace PSQuickAssets;
 
 internal class Configuration : ConfigBase, IConfig
 {
+    //General
     public string ShowHideWindowHotkey { get => GetValue("Ctrl + Alt + A"); set => SetValue(value); }
     public bool MinimizeWindowInsteadOfHiding { get => GetValue(false); set => SetValue(value); }
     public bool HideWindowWhenAddingAsset { get => GetValue(true); set => SetValue(value); }
@@ -17,9 +17,11 @@ internal class Configuration : ConfigBase, IConfig
     public bool HideWindowIfClickedOutside { get => GetValue(true); set => SetValue(value); }
     public bool CheckUpdates { get => GetValue(true); set => SetValue(value); }
     
+    //Assets
     public bool AddMaskIfDocumentHasSelection { get => GetValue(true); set => SetValue(value); }
     public bool UnlinkMask { get => GetValue(true); set => SetValue(value); }
 
+    //Experimental
     public bool DebugMode { get => GetValue(false); set => SetValue(value); }
 
     private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");

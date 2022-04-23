@@ -132,12 +132,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Resources\Sounds\click.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Page Update="Windows\AssetsWindow.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	    <SubType>Designer</SubType>

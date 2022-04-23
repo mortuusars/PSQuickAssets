@@ -4,11 +4,9 @@
     xmlns:conv="clr-namespace:PSQuickAssets.WPF.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-    <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
+    <conv:ShortenStringConverter x:Key="ShortenString" />
     <conv:PathToImageDimentionsStringConverter x:Key="PathToImageDimentions"/>
-    <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth" />
-    <conv:FilenameToShortConverter x:Key="FilenameToShort" />
-    <conv:PathToFolderNameConverter x:Key="PathToFolderName" />
+    <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
     <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter" />
 
 </ResourceDictionary>

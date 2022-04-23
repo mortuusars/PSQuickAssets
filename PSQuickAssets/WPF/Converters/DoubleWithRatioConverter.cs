@@ -14,8 +14,7 @@ namespace PSQuickAssets.WPF.Converters
             if (parameter is null) return input;
             if (parameter is not double ratio) throw new ArgumentException("Converter Parameter should be of type double");
 
-            double result = input * ratio;
-            return result;
+            return input * ratio;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
