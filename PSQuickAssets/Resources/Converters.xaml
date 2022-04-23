@@ -6,9 +6,6 @@
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
     <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
     <conv:PathToImageDimentionsStringConverter x:Key="PathToImageDimentions"/>
-    <conv:BoolToVisibilityHiddenConverter x:Key="BoolToVisibilityHidden" />
-    <conv:BoolToVisibilityHiddenInvertedConverter x:Key="BoolToVisibilityHiddenInverted" />
-    <conv:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInverted" />
     <conv:CountToMaxWidthConverter x:Key="CountToMaxWidth" />
     <conv:FilenameToShortConverter x:Key="FilenameToShort" />
     <conv:PathToFolderNameConverter x:Key="PathToFolderName" />
