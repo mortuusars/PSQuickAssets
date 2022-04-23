@@ -51,6 +51,7 @@
 		<PackageReference Include="MdXaml" Version="1.13.0" />
 		<PackageReference Include="MGlobalHotkeys.WPF" Version="1.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="Mortuus.Config" Version="1.0.1" />
 		<PackageReference Include="MTerminal.WPF" Version="0.1.3" />

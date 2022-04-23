@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PSQA.Assets.Repository;
+using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using PSQuickAssets.ViewModels;
 using Serilog;
@@ -27,7 +28,8 @@ internal static class DIKernel
                     provider.GetRequiredService<INotificationService>(),
                     provider.GetRequiredService<ILogger>()));
 
-        services.AddSingleton<PhotoshopCommands>();
+        services.AddSingleton<IPhotoshopInterop, PhotoshopInterop>();
+        services.AddSingleton<PhotoshopViewModel>();
 
         services.AddSingleton<IAssetRepositoryHandler>(p =>
             new DirectoryRepositoryHandler(Folders.AppData + "/catalog/", p.GetRequiredService<ILogger>()));

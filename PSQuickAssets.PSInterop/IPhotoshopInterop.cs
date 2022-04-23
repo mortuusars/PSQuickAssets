@@ -19,7 +19,7 @@ namespace PSQuickAssets.PSInterop
         /// <param name="filePath">Image filepath.</param>
         /// <param name="maskMode">Mask mode.</param>
         /// <param name="unlinkMask">Indicates whether mask should be unlinked after applying.</param>
-        Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode, bool unlinkMask);
+        Task<PSResult> AddAsLayerWithMaskAsync(string filePath, MaskMode maskMode, bool unlinkMask);
         /// <summary>
         /// Attempts to add given image (filepath) as layer to open document in PS.
         /// </summary>

@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PSQuickAssets.ViewModels;
-using System;
 
 namespace PSQuickAssets.Services;
 
 internal class ViewModelLocator
 {
-    public AssetsWindowViewModel AssetsWindowViewModel { get => DIKernel.ServiceProvider.GetRequiredService<AssetsWindowViewModel>(); }
-    public AssetsViewModel AssetsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<AssetsViewModel>(); }
-    public PhotoshopCommands PhotoshopCommandsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<PhotoshopCommands>(); }
+    public AssetsWindowViewModel AssetsWindowViewModel { get => App.ServiceProvider.GetRequiredService<AssetsWindowViewModel>(); }
+    public AssetsViewModel AssetsViewModel { get => App.ServiceProvider.GetRequiredService<AssetsViewModel>(); }
+    public PhotoshopViewModel PhotoshopViewModel { get => App.ServiceProvider.GetRequiredService<PhotoshopViewModel>(); }
 
-    public SettingsViewModel SettingsViewModel { get => DIKernel.ServiceProvider.GetRequiredService<SettingsViewModel>(); }
+    public SettingsViewModel SettingsViewModel { get => App.ServiceProvider.GetRequiredService<SettingsViewModel>(); }
 }

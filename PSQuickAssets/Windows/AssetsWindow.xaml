@@ -4,25 +4,24 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                   xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
-                   xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:assetcontrol="clr-namespace:PSQuickAssets.AssetControl;assembly=PSQuickAssets.AssetControl"
-                   xmlns:assets="clr-namespace:PSQA.Core;assembly=PSQA.Core"
                    xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
                    xmlns:commands="clr-namespace:PSQuickAssets.Commands"
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
                    xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
+                   xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
+                   xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    mc:Ignorable="d"
                    lex:LocalizeDictionary.DesignCulture="en"
                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
-                   lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+                   lex:ResxLocalizationProvider.DefaultDictionary="Lang"
                    x:Name="MainWindow"
                    Title="AssetsWindow"
-                   Width="500"
-                   Height="300"
+                   Width="400 "
+                   Height="250"
                    Topmost="{Binding Config.AlwaysOnTop}"
                    SaveData="True"
                    Background="{DynamicResource Brushes.Background.0}"
@@ -213,12 +212,7 @@
                                    Margin="24 0 0 0"
                                    Opacity="0.6" />
 
-                        <StackPanel Orientation="Horizontal" Grid.Row="1">
-                            <TextBlock Text="Ctrl:"
-                                       Opacity="0.6"
-                                       Margin="0 0 4 0" />
-                            <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Close}" />
-                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{lex:Loc PSQuickAssets:Strings:Close}" />
                         
                         <TextBlock Text="Shift+Esc"
                                    Grid.Column="1"
@@ -576,7 +570,6 @@
                                                               Margin="5 0 0 0"
                                                               FontFamily="{StaticResource FontMedium}"
                                                               FontSize="14"
-                                                              Opacity="0.6"
                                                               BorderThickness="0"
                                                               Background="Transparent"
                                                               Foreground="{StaticResource ForegroundMainBrush}"
@@ -584,6 +577,7 @@
                                                               SelectionBrush="{StaticResource ForegroundIntenseBrush}">
                                     <pureUIcontrols:ToggleTextBox.Style>
                                         <Style TargetType="{x:Type pureUIcontrols:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                            <Setter Property="Opacity" Value="0.6"/>
                                             <Setter Property="VerticalAlignment" Value="Stretch" />
                                             <Setter Property="HorizontalAlignment" Value="Stretch" />
                                             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -638,6 +632,11 @@
                                                     </ControlTemplate>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </pureUIcontrols:ToggleTextBox.Style>
                                     <pureUIcontrols:ToggleTextBox.EditModeActivationGesture>
@@ -791,28 +790,28 @@
                                             </Style>
                                         </assetcontrol:AssetControl.Style>
 
-                                        <!--<assetcontrol:AssetControl.InputBindings>
+                                        <assetcontrol:AssetControl.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
-                                                          Command="{Binding Path=PhotoshopCommandsViewModel.AddAsLayerAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}" />
+                                                          Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                          CommandParameter="{Binding Path}" />
                                             <MouseBinding Gesture="Ctrl+LeftClick"
-                                                          Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}" />
+                                                          Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                                          CommandParameter="{Binding Path}" />
 
                                             <KeyBinding Gesture="Enter"
-                                                        Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding}" />
+                                                        Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                        CommandParameter="{Binding Path}" />
                                             <KeyBinding Gesture="Ctrl+Enter"
-                                                        Command="{Binding Path=PhotoshopCommandsViewModel.OpenImageCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding}" />
+                                                        Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                                        CommandParameter="{Binding Path}" />
                                         </assetcontrol:AssetControl.InputBindings>
 
-                                        <assetcontrol:AssetControl.ContextMenu>
+                                        <!--<assetcontrol:AssetControl.ContextMenu>
                                             <ContextMenu FontFamily="{StaticResource FontMedium}"
                                                          FontSize="13"
-                                                         Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">
+                                                         Tag="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Mode=Self}}">-->
 
-                                        -->
+                                        
                                         <!--  Add as layer  -->
                                         <!--
                                                 <MenuItem Command="{Binding Path=PhotoshopCommandsViewModel.AddImageAsLayerCommand, Source={StaticResource ViewModelLocator}}"
@@ -924,17 +923,52 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    d:Visibility="Visible">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AssetsViewModel.AssetGroups.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <TextBlock Text="{lex:Loc Assets_NothingAdded}"
+                       FontSize="18"
+                       HorizontalAlignment="Center"
+                       Margin="6 6 6 0"/>
+            <Separator Margin="20 10"
+                       Opacity="0.3"/>
+            <Button Content="{lex:Loc Assets_CreateEmptyGroup}"
+                    Padding="10 4"
+                    FontSize="14"
+                    Background="{DynamicResource Brushes.Background.2}"
+                    Style="{StaticResource OpacityButton}"
+                    Command="{Binding AssetsViewModel.CreateEmptyGroupCommand}"/>
+        </StackPanel>
+
+        <!--LOADING-->
         <Grid VerticalAlignment="Bottom"
               HorizontalAlignment="Left"
-              Margin="16">
+              Margin="12"
+              d:Visibility="Collapsed">
 
-            <pureUIcontrols:Spinner IsSpinning="{Binding StatusService.IsLoading}" Visibility="{Binding StatusService.IsLoading, Converter={StaticResource BoolToVisibility}}">
+            <Ellipse Fill="{DynamicResource Brushes.Background.2}"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"/>
+
+            <pureUIcontrols:Spinner IsSpinning="{Binding StatusService.IsLoading}" 
+                                    Visibility="{Binding StatusService.IsLoading, Converter={StaticResource BoolToVisibility}}">
                 <pureUIcontrols:Spinner.Content>
-                    <Ellipse Width="30"
-                             Height="30"
-                             StrokeThickness="4"
-                             StrokeDashArray="10 4"
-                             Stroke="{StaticResource ForegroundMainBrush}" />
+                    <Ellipse Width="22"
+                             Height="22"
+                             Margin="5"
+                             StrokeThickness="2.4"
+                             StrokeDashArray="16 8"
+                             Stroke="{DynamicResource Brushes.Foreground.1}" />
                 </pureUIcontrols:Spinner.Content>
             </pureUIcontrols:Spinner>
         </Grid>

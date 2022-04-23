@@ -32,7 +32,7 @@ namespace PSQuickAssets.PSInterop
         /// </summary>
         /// <param name="filePath">Image filepath.</param>
         /// <param name="maskMode">Mask mode.</param>
-        public async Task<PSResult> AddImageToDocumentWithMaskAsync(string filePath, MaskMode maskMode, bool unlinkMask)
+        public async Task<PSResult> AddAsLayerWithMaskAsync(string filePath, MaskMode maskMode, bool unlinkMask)
         {
             return await Task.Run(() => ExecuteAction(() =>
             {

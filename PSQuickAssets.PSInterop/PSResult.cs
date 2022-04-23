@@ -29,7 +29,12 @@ public record PSResult
     /// <summary>
     /// Indicates whether result was successful.
     /// </summary>
-    public bool IsSuccessful { get => Status is Status.Success; }
+    public bool Success { get => Status is Status.Success; }
+
+    /// <summary>
+    /// Indicates whether result was failed.
+    /// </summary>
+    public bool Failed { get => Status is not Status.Success; }
 
     public PSResult(Status status, string filePath, string message)
     {
