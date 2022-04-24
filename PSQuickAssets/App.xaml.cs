@@ -16,21 +16,16 @@ public partial class App : Application
 
     public static IServiceProvider ServiceProvider { get; private set; } = DIKernel.ServiceProvider;
 
-    private IConfig Config { get; }
-
     public App()
     {
         DispatcherUnhandledException += CrashHandler.OnUnhandledException;
-
-        Config = ServiceProvider.GetRequiredService<IConfig>();
-        ServiceProvider.GetRequiredService<ConfigChangeListener>().Listen();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         
-        ShutdownIfAlreadyOpen();
+        ShutdownIfAnotherInstanceRunning();
 
         //Initialize task bar icon:
         var _ = (TaskbarIcon)FindResource("TaskBarIcon");
@@ -40,21 +35,21 @@ public partial class App : Application
 
         ServiceProvider.GetRequiredService<TerminalHandler>().Setup();
 
-        SetupGlobalHotkeys(windowManager);
-
-        if (Config.CheckUpdates)
+        var config = ServiceProvider.GetRequiredService<IConfig>();
+        SetupGlobalHotkeys(windowManager, config);
+        if (config.CheckUpdates)
             ServiceProvider.GetRequiredService<UpdateChecker>().CheckUpdatesAsync(Version).SafeFireAndForget();
     }
 
-    private void SetupGlobalHotkeys(WindowManager windowManager)
+    private void SetupGlobalHotkeys(WindowManager windowManager, IConfig config)
     {
         //TODO: Move to GlobalHotkeys.
         var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
         globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ToggleMainWindow());
-        globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(Config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
+        globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
     }
 
-    private void ShutdownIfAlreadyOpen()
+    private void ShutdownIfAnotherInstanceRunning()
     {
         Process current = Process.GetCurrentProcess();
         bool isAnotherOpen = Process.GetProcessesByName(current.ProcessName).Any(p => p.Id != current.Id);

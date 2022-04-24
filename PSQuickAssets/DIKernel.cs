@@ -18,8 +18,7 @@ internal static class DIKernel
         services.AddSingleton<IStatusService, StatusService>();
         services.AddSingleton<INotificationService, TaskbarNotificationService>();
         services.AddSingleton<ILogger>(Logging.CreateLogger());
-        services.AddSingleton<IConfig, Configuration>();
-        services.AddSingleton<ConfigChangeListener>();
+        services.AddSingleton<IConfig, Config>();
 
         services.AddSingleton<WindowManager>();
         services.AddSingleton<TerminalHandler>();
