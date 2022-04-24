@@ -187,7 +187,7 @@
                 <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
             </Trigger>
             <Trigger Property="IsHighlighted" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brushes.Background.4}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brushes.Background.3}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.3}" />

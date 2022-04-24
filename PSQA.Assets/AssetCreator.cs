@@ -16,27 +16,18 @@ public interface IAssetCreator
 
 public class AssetCreator : IAssetCreator
 {
-    private readonly Dictionary<string, Asset> _loadedAssets = new();
+    //private readonly Dictionary<string, Asset> _loadedAssets = new();
 
     public Asset Create(string filePath)
     {
-
-        if (_loadedAssets.TryGetValue(filePath, out Asset? loadedAsset))
-            return loadedAsset;
+        //if (_loadedAssets.TryGetValue(filePath, out Asset? loadedAsset))
+            //return loadedAsset;
 
         FileInfo file = new(filePath);
 
         if (!file.Exists)
-            throw new FileNotFoundException($"File not found: '{filePath}'");
+            throw new FileNotFoundException("File not found.", filePath);
 
-        Asset asset = new()
-        {
-            Path = file.FullName,
-            FileSize = file.Length
-        };
-
-        _loadedAssets.Add(filePath, asset);
-
-        return asset;
+        return new Asset(file.FullName);
     }
 }

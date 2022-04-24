@@ -27,6 +27,8 @@
                 <ResourceDictionary Source="Resources/Styles/TaskBarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <PopupAnimation x:Key="{x:Static SystemParameters.MenuPopupAnimationKey}">None</PopupAnimation>
+            
             <DropShadowEffect
                 x:Key="WindowDropShadow"
                 BlurRadius="30"

@@ -79,6 +79,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Files.
+        /// </summary>
+        public static string Assets_AddFiles {
+            get {
+                return ResourceManager.GetString("Assets_AddFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add asset to Photoshop.
         /// </summary>
         public static string Assets_AddingToPhotoshopFailed {
@@ -138,6 +147,33 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Assets_ShowInExplorer {
             get {
                 return ResourceManager.GetString("Assets_ShowInExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collapse.
+        /// </summary>
+        public static string Collapse {
+            get {
+                return ResourceManager.GetString("Collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand.
+        /// </summary>
+        public static string Expand {
+            get {
+                return ResourceManager.GetString("Expand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asset(s).
+        /// </summary>
+        public static string GroupAssetCount {
+            get {
+                return ResourceManager.GetString("GroupAssetCount", resourceCulture);
             }
         }
         
@@ -273,6 +309,24 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Group.
+        /// </summary>
+        public static string RemoveGroup {
+            get {
+                return ResourceManager.GetString("RemoveGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        public static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
             }
         }
         

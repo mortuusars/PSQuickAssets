@@ -123,6 +123,9 @@
   <data name="Assets_AddAsLayer" xml:space="preserve">
     <value>Add as Layer</value>
   </data>
+  <data name="Assets_AddFiles" xml:space="preserve">
+    <value>Add Files</value>
+  </data>
   <data name="Assets_AddingToPhotoshopFailed" xml:space="preserve">
     <value>Cannot add asset to Photoshop</value>
   </data>
@@ -143,6 +146,15 @@
   </data>
   <data name="Assets_ShowInExplorer" xml:space="preserve">
     <value>Show in Explorer</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="GroupAssetCount" xml:space="preserve">
+    <value>Asset(s)</value>
   </data>
   <data name="Mouse_Click" xml:space="preserve">
     <value>Click</value>
@@ -188,6 +200,12 @@
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="RemoveGroup" xml:space="preserve">
+    <value>Remove Group</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
   </data>
   <data name="SelectImages" xml:space="preserve">
     <value>Select Images</value>

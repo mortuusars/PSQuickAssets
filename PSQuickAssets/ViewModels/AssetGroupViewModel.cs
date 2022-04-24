@@ -2,11 +2,7 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQA.Assets.Repository;
 using PSQA.Core;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
@@ -65,8 +61,6 @@ public partial class AssetGroupViewModel
     /// </summary>
     public AssetGroup Group { get; }
 
-    public ICommand AddAssetsCommand { get; }
-
     private readonly AssetRepository _assetRepository;
 
     internal AssetGroupViewModel(AssetGroup assetGroup, AssetRepository assetRepository)
@@ -78,14 +72,14 @@ public partial class AssetGroupViewModel
             OnPropertyChanged(nameof(AssetCount));
         };
         _assetRepository = assetRepository;
-
-        AddAssetsCommand = new RelayCommand<IEnumerable<string>>(files => AddAssets(files));
     }
 
-    /// <summary>
-    /// Removes asset from a group.
-    /// </summary>
-    /// <param name="asset">Asset to remove.</param>
+    [ICommand]
+    private void ToggleExpanded()
+    {
+        IsExpanded = !IsExpanded;
+    }
+
     [ICommand]
     public void RemoveAsset(Asset asset) => Group.Assets.Remove(asset);
 
@@ -105,17 +99,7 @@ public partial class AssetGroupViewModel
         return true;
     }
 
-    /// <summary>
-    /// Adds multiple assets to the group.
-    /// </summary>
-    /// <param name="assets">Asset collection to add.</param>
-    /// <returns>List of assets that were NOT added.</returns>
-    public void AddAssets(IEnumerable<Asset> assets)
-    {
-        foreach (var asset in assets)
-            AddAsset(asset);
-    }
-
+    [ICommand]
     public void AddAssets(IEnumerable<string>? filesPaths)
     {
         if (filesPaths is null)

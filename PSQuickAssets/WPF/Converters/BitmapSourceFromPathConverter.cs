@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Windows.Media.Imaging;
+using PureUI;
 
 namespace PSQuickAssets.WPF.Converters;
 
@@ -10,6 +11,10 @@ internal class BitmapSourceFromPathConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
+        // Design time thumbnails:
+        if (App.Current.IsInDesignMode())
+            return new BitmapImage(new Uri("pack://application:,,,/PSQuickAssets;component/Resources/Images/test.jpg", UriKind.Absolute));
+
         if (value is not string filePath)
             throw new ArgumentException("value should be string filePath.");
 

@@ -14,12 +14,13 @@
                    xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
                    mc:Ignorable="d"
                    lex:LocalizeDictionary.DesignCulture="en"
                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                    lex:ResxLocalizationProvider.DefaultDictionary="Lang"
                    x:Name="MainWindow"
-                   Title="AssetsWindow"
+                   Title="PSQuickAssets"
                    Width="400 "
                    Height="250"
                    Topmost="{Binding Config.AlwaysOnTop}"
@@ -305,37 +306,25 @@
             </ListBox.ItemsPanel>
 
             <!--  DESIGN-TIME DATA  -->
-            <!--<d:ListBox.ItemsSource>
-                <x:Array Type="{x:Type assets:AssetGroup}">
-                    <assets:AssetGroup Name="Group">
-                        <assets:AssetGroup.Assets>
-                            <assets:Asset Path="Test asset">
-                                <assets:Asset.Thumbnail>
-                                    <BitmapImage UriSource="../Resources/Images/test.jpg" />
-                                </assets:Asset.Thumbnail>
-                            </assets:Asset>
-                            <assets:Asset Path="Asset 2">
-                                <assets:Asset.Thumbnail>
-                                    <BitmapImage UriSource="../Resources/Images/test.jpg" />
-                                </assets:Asset.Thumbnail>
-                            </assets:Asset>
-                        </assets:AssetGroup.Assets>
-                    </assets:AssetGroup>
+            <d:ListBox.ItemsSource>
+                <x:Array Type="{x:Type core:AssetGroup}">
+                    <core:AssetGroup Name="Group">
+                        <core:AssetGroup.Assets>
+                            <core:Asset Path="../Resources/Images/test.jpg"/>
+                            <core:Asset Path="../Resources/Images/test.jpg"/>
+                        </core:AssetGroup.Assets>
+                    </core:AssetGroup>
 
-                    <assets:AssetGroup Name="Group 2">
-                        <assets:AssetGroup.Assets>
-                            <assets:Asset Path="Asset 1">
-                                <assets:Asset.Thumbnail>
-                                    <BitmapImage UriSource="../Resources/Images/test.jpg" />
-                                </assets:Asset.Thumbnail>
-                            </assets:Asset>
-                        </assets:AssetGroup.Assets>
-                    </assets:AssetGroup>
+                    <core:AssetGroup Name="Group 2">
+                        <core:AssetGroup.Assets>
+                            <core:Asset Path="../Resources/Images/test.jpg"/>
+                        </core:AssetGroup.Assets>
+                    </core:AssetGroup>
                 </x:Array>
-            </d:ListBox.ItemsSource>-->
+            </d:ListBox.ItemsSource>
 
             <ListBox.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type vm:AssetGroupViewModel}">
 
                     <!--  GROUP  -->
                     <StackPanel Background="Transparent"
@@ -348,7 +337,8 @@
 
                         <!--  GROUP CONTEXT MENU  -->
                         <StackPanel.ContextMenu>
-                            <ContextMenu FontSize="13" FontFamily="{StaticResource FontMedium}">
+                            <ContextMenu FontSize="13" 
+                                         FontFamily="{StaticResource FontMedium}">
 
                                 <!--  INFO ABOUT THE GROUP  -->
                                 <MenuItem Style="{StaticResource ContentMenuItem}">
@@ -371,7 +361,7 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Right">
                                                     <TextBlock Text="{Binding AssetCount}" Margin="30 0 4 0" />
-                                                    <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Assets}" />
+                                                    <TextBlock Text="{lex:Loc PSQuickAssets:Lang:GroupAssetCount}" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>
@@ -382,43 +372,42 @@
 
 
                                 <!--  SELECT AND ADD ASSETS  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddFiles}"
-                                          Command="{Binding Path=Data.AddAssetsCommand, Source={StaticResource AssetGroupBindingProxy}}"
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddFiles}"
+                                          Command="{Binding AddAssetsCommand}"
                                           wpf:OpenDialogBehavior.Dialog="SelectFiles">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource PlusIcon}"
                                                    FontSize="15"
                                                    FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                   Foreground="{StaticResource ForegroundMainBrush}" />
+                                                   Foreground="{DynamicResource Brushes.Foreground.1}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
 
                                 <Separator />
 
                                 <!--  COLLAPSE/EXPAND CONTENT  -->
-                                <MenuItem Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
-                                          CommandParameter="{Binding Path=PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                <MenuItem Command="{Binding ToggleExpandedCommand}"
                                           InputGestureText="Ctrl+M">
                                     <MenuItem.Style>
                                         <Style TargetType="MenuItem">
-                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Expand}" />
+                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
                                             <Setter Property="Icon">
                                                 <Setter.Value>
                                                     <TextBlock Text="{StaticResource ArrowDownIcon}"
                                                                FontSize="17"
                                                                FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                               Foreground="{StaticResource ForegroundMainBrush}" />
+                                                               Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Data.IsExpanded, Source={StaticResource AssetGroupBindingProxy}}" Value="True">
-                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Strings:Collapse}" />
+                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Collapse}" />
                                                     <Setter Property="Icon">
                                                         <Setter.Value>
                                                             <TextBlock Text="{StaticResource ArrowUpIcon}"
                                                                        FontSize="17"
                                                                        FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                                       Foreground="{StaticResource ForegroundMainBrush}" />
+                                                                       Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -428,7 +417,7 @@
                                 </MenuItem>
 
                                 <!--  RENAME  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Rename}"
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Rename}"
                                           Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           InputGestureText="F2">
                                     <MenuItem.Icon>
@@ -442,9 +431,9 @@
                                 <Separator />
 
                                 <!--  REMOVE  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:RemoveGroup}"
+                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:RemoveGroup}"
                                           Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
-                                          CommandParameter="{Binding Path=Data, Source={StaticResource AssetGroupBindingProxy}}">
+                                          CommandParameter="{Binding}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource TrashCanIcon}"
                                                    FontSize="17"
@@ -457,7 +446,11 @@
                         </StackPanel.ContextMenu>
 
                         <!--  HEADER  -->
-                        <Grid x:Name="GroupHeader" VerticalAlignment="Top">
+                        <Grid x:Name="GroupHeader" VerticalAlignment="Top" Background="Transparent">
+
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding ToggleExpandedCommand}"/>
+                            </Grid.InputBindings>
 
                             <StackPanel Orientation="Horizontal"
                                         VerticalAlignment="Stretch"
@@ -898,9 +891,8 @@
                                                 <Rectangle Height="1.5"
                                                            Margin="0,5,0,4"
                                                            Fill="{StaticResource BorderLighter}" />
-                                                <!--<TextBlock Text="{Binding Dimensions, Converter={x:Static converters:SizeToImageDimensionsConverter.Instance}}" />-->
-                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToImageDimentions}, IsAsync=True}" />
-                                                <TextBlock Text="{Binding FileSize, Converter={x:Static converters:BytesToSizeConverter.Instance}}" />
+                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToImageDimentions}, IsAsync=False}" />
+                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToFileSize}, IsAsync=False}" />
                                             </StackPanel>
                                         </assetcontrol:AssetControl.ToolTip>
 
