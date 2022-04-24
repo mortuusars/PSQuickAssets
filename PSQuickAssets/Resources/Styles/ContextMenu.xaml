@@ -4,7 +4,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Grid.IsSharedSizeScope" Value="true" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.2}" />
         <Setter Property="HasDropShadow" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -12,7 +12,7 @@
                     <Border
                         x:Name="Border"
                         Padding="6"
-                        Background="{StaticResource BackgroundCloserBrush}"
+                        Background="{DynamicResource Brushes.Background.1}"
                         BorderThickness="0"
                         CornerRadius="8">
                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
@@ -76,7 +76,7 @@
                     PopupAnimation="Fade">
                     <Border
                         Name="SubmenuBorder"
-                        Background="{StaticResource BackgroundCloserBrush}"
+                        Background="{DynamicResource Brushes.Background.2}"
                         BorderThickness="0"
                         SnapsToDevicePixels="True">
                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
@@ -97,7 +97,7 @@
                 <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,0,0,3" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -110,7 +110,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Separator">
-                    <Border Background="{StaticResource BackgroundNearBrush}" />
+                    <Border Background="{DynamicResource Brushes.Background.3}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -143,8 +143,8 @@
                     Margin="4,0,6,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{StaticResource BackgroundCloserBrush}"
-                    BorderBrush="{StaticResource ForegroundDisabledBrush}"
+                    Background="{DynamicResource Brushes.Background.1}"
+                    BorderBrush="{DynamicResource Brushes.Foreground.2}"
                     BorderThickness="2"
                     CornerRadius="2"
                     Visibility="Collapsed">
@@ -154,7 +154,7 @@
                         Height="12"
                         Data="M 0 5 L 5 10 M 4 10 L 11 0"
                         SnapsToDevicePixels="False"
-                        Stroke="{StaticResource ForegroundMainBrush}"
+                        Stroke="{DynamicResource Brushes.Foreground.1}"
                         StrokeThickness="3"
                         Visibility="Hidden" />
                 </Border>
@@ -171,7 +171,7 @@
                     Margin="14,5,5,5"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Right"
-                    Foreground="{StaticResource ForegroundDisabledBrush}"
+                    Foreground="{DynamicResource Brushes.Foreground.3}"
                     Text="{TemplateBinding InputGestureText}" />
             </Grid>
         </Border>
@@ -187,10 +187,10 @@
                 <Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
             </Trigger>
             <Trigger Property="IsHighlighted" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{StaticResource BackgroundCloserHighlightBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource Brushes.Background.4}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{StaticResource ForegroundDisabledBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.3}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -229,7 +229,7 @@
                     Margin="14,5,5,5"
                     VerticalAlignment="Center"
                     DockPanel.Dock="Right"
-                    Foreground="{StaticResource ForegroundDisabledBrush}"
+                    Foreground="{DynamicResource Brushes.Foreground.3}"
                     Text="{TemplateBinding InputGestureText}" />
                 <Path
                     Grid.Column="3"

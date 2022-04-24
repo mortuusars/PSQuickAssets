@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Assets_AddAsLayer" xml:space="preserve">
+    <value>Add as Layer</value>
+  </data>
   <data name="Assets_AddingToPhotoshopFailed" xml:space="preserve">
     <value>Cannot add asset to Photoshop</value>
   </data>
@@ -131,6 +134,21 @@
   </data>
   <data name="Assets_NothingAdded" xml:space="preserve">
     <value>No Assets</value>
+  </data>
+  <data name="Assets_OpenAsNewDoc" xml:space="preserve">
+    <value>Open as New Document</value>
+  </data>
+  <data name="Assets_OpenWithShell" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Assets_ShowInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+  <data name="Mouse_Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="Mouse_CtrlClick" xml:space="preserve">
+    <value>Ctrl+Click</value>
   </data>
   <data name="PSStatus_Busy" xml:space="preserve">
     <value>Photoshop is busy</value>

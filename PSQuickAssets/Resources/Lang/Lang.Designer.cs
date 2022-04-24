@@ -70,6 +70,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add as Layer.
+        /// </summary>
+        public static string Assets_AddAsLayer {
+            get {
+                return ResourceManager.GetString("Assets_AddAsLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add asset to Photoshop.
         /// </summary>
         public static string Assets_AddingToPhotoshopFailed {
@@ -102,6 +111,51 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Assets_NothingAdded {
             get {
                 return ResourceManager.GetString("Assets_NothingAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open as New Document.
+        /// </summary>
+        public static string Assets_OpenAsNewDoc {
+            get {
+                return ResourceManager.GetString("Assets_OpenAsNewDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Assets_OpenWithShell {
+            get {
+                return ResourceManager.GetString("Assets_OpenWithShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show in Explorer.
+        /// </summary>
+        public static string Assets_ShowInExplorer {
+            get {
+                return ResourceManager.GetString("Assets_ShowInExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click.
+        /// </summary>
+        public static string Mouse_Click {
+            get {
+                return ResourceManager.GetString("Mouse_Click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ctrl+Click.
+        /// </summary>
+        public static string Mouse_CtrlClick {
+            get {
+                return ResourceManager.GetString("Mouse_CtrlClick", resourceCulture);
             }
         }
         
