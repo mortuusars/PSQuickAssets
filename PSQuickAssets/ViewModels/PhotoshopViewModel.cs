@@ -2,7 +2,6 @@
 using PSQA.Core;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -38,7 +37,6 @@ internal class PhotoshopViewModel
 
         //TODO: Global actions and window for setting them up.
         AddGlobalAction(new PhotoshopAction("SelectRGBLayer", "Mask"));
-
     }
 
     private void AddGlobalAction(PhotoshopAction action)
@@ -66,7 +64,7 @@ internal class PhotoshopViewModel
 
         if (result.Success)
             return await ExecuteGlobalActions();
-         
+
         return false;
     }
 
@@ -84,7 +82,7 @@ internal class PhotoshopViewModel
             result = await _photoshop.AddImageToDocumentAsync(filePath);
 
         if (result.Failed)
-            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], 
+            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],
                 Localize[$"PSStatus_{result.Status}"], NotificationIcon.Error);
 
         return result;
@@ -99,12 +97,11 @@ internal class PhotoshopViewModel
         PSResult result = await _photoshop.OpenImageAsNewDocumentAsync(filePath);
 
         if (result.Failed)
-            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], 
+            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],
                 Localize[$"PSStatus_{result.Status}"], NotificationIcon.Error);
 
         return result;
     }
-
 
     private async Task<bool> ExecuteGlobalActions()
     {
@@ -123,7 +120,7 @@ internal class PhotoshopViewModel
         if (result.Failed)
         {
             _notificationService.Notify(
-                string.Format(Localize["Assets_CannotExecuteActionFromSet"], action.Action, action.Set) + $"\n{result.Message}", 
+                string.Format(Localize["Assets_CannotExecuteActionFromSet"], action.Action, action.Set) + $"\n{result.Message}",
                 NotificationIcon.Error);
         }
 

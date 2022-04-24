@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace PSQuickAssets.WPF.Converters;
@@ -15,19 +10,19 @@ internal class BitmapSourceFromPathConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string path)
-        {
-            try
-            {
-                return CreateThumbnail(path, 999, 300);
-            }
-            catch (Exception)
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/image_light.png"));
-            }
-        }
+        if (value is not string filePath)
+            throw new ArgumentException("value should be string filePath.");
 
-        return null!;
+        try
+        {
+            // This is bad. But CoverterParameter cannot be bound and MultiBinding doesn't support IsAsync.
+            int height = App.ServiceProvider.GetRequiredService<IConfig>().ThumbnailQuality.Value();
+            return CreateThumbnail(filePath, 5000, height);
+        }
+        catch (Exception)
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/image_light.png"));
+        }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

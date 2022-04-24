@@ -1,6 +1,7 @@
 ﻿using MGlobalHotkeys.WPF;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Services;
+using PSQuickAssets.WPF;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
@@ -17,6 +18,8 @@ internal class SettingsViewModel
         }
     }
 
+    public IEnumerable<ThumbnailQuality> ThumbnailQualityValues { get; set; }
+
     public IConfig Config { get; }
 
     public ICommand SaveCommand { get; }
@@ -27,6 +30,8 @@ internal class SettingsViewModel
     {
         Config = config;
         _globalHotkeys = globalHotkeys;
+
+        ThumbnailQualityValues = Enum.GetValues(typeof(ThumbnailQuality)).Cast<ThumbnailQuality>();
 
         SaveCommand = new RelayCommand(Config.Save);
     }

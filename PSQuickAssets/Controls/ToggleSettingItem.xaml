@@ -52,6 +52,13 @@
                               Width="45"
                               IsChecked="{Binding ElementName=root, Path=IsChecked}"/>
             </Grid>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+            
         </ControlTemplate>
     </UserControl.Template>
     

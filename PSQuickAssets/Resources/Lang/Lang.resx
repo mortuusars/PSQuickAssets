@@ -174,7 +174,19 @@
   <data name="SelectImages" xml:space="preserve">
     <value>Select Images</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="Settings_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Settings_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Settings_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Settings_ThumbnailQuality" xml:space="preserve">
+    <value>Thumbnail quiality</value>
+  </data>
+  <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
+    <value>Higher quality can consume more RAM</value>
   </data>
 </root>

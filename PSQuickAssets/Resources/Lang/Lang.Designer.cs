@@ -232,11 +232,47 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to High.
         /// </summary>
-        public static string String1 {
+        public static string Settings_High {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("Settings_High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low.
+        /// </summary>
+        public static string Settings_Low {
+            get {
+                return ResourceManager.GetString("Settings_Low", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        public static string Settings_Medium {
+            get {
+                return ResourceManager.GetString("Settings_Medium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail quiality.
+        /// </summary>
+        public static string Settings_ThumbnailQuality {
+            get {
+                return ResourceManager.GetString("Settings_ThumbnailQuality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Higher quality can consume more RAM.
+        /// </summary>
+        public static string Settings_ThumbnailQuality_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_ThumbnailQuality_Tooltip", resourceCulture);
             }
         }
     }

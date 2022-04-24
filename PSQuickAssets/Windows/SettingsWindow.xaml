@@ -28,7 +28,7 @@
                       UseLayoutRounding="True"
                       SnapsToDevicePixels="False"
                       Height="auto"
-                      Width="400"
+                      Width="460"
                       MaxHeight="1000"
                       ResizeMode="NoResize"
                       d:WindowStyle="None"
@@ -147,6 +147,37 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="ToggleButton" x:Key="RadioToggleButton">
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.2}"/>
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brushes.Foreground.3}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.0}"/>
+                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </mortuusui:WindowBase.Resources>
 
     <mortuusui:WindowBase.Style>
@@ -220,6 +251,30 @@
 
                     <Separator />
 
+                    <controls:SettingItem Header="{lex:Loc Settings_ThumbnailQuality}"
+                                          Description="{lex:Loc Settings_ThumbnailQuality_Tooltip}">
+                        <StackPanel Orientation="Horizontal">
+
+                            <ToggleButton Content="{lex:Loc Settings_Low}"
+                                          IsChecked="{Binding Config.ThumbnailQuality, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static ext:ThumbnailQuality.Low}}"
+                                          Style="{StaticResource RadioToggleButton}"
+                                          FontSize="13"/>
+
+                            <ToggleButton Content="{lex:Loc Settings_Medium}"
+                                          IsChecked="{Binding Config.ThumbnailQuality, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static ext:ThumbnailQuality.Medium}}"
+                                          Style="{StaticResource RadioToggleButton}"
+                                          FontSize="13"/>
+
+                            <ToggleButton Content="{lex:Loc Settings_High}"
+                                          IsChecked="{Binding Config.ThumbnailQuality, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static ext:ThumbnailQuality.High}}"
+                                          Style="{StaticResource RadioToggleButton}"
+                                          FontSize="13"/>
+
+                        </StackPanel>
+                    </controls:SettingItem>
+
+                    <Separator/>
+
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AlwaysOnTop}"
                                                 Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}"
                                                 IsChecked="{Binding Config.AlwaysOnTop}" />
@@ -236,11 +291,11 @@
                                                 Description="{lex:Loc Settings_HideWindowWhenAddingAsset_Tooltip}"
                                                 IsChecked="{Binding Config.HideWindowWhenAddingAsset}" />
 
-                    <Separator />
+                    <!--<Separator />
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_HideIfClickedOutside}"
                                                 Description="{lex:Loc Settings_HideIfClickedOutside_Tooltip}"
-                                                IsChecked="{Binding Config.HideWindowIfClickedOutside}" />
+                                                IsChecked="{Binding Config.HideWindowIfClickedOutside}" />-->
 
                     <Separator Margin="8 14" />
 
@@ -258,7 +313,22 @@
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskIfDocumentHasSelection}"
                                                 Description="{lex:Loc Settings_AddMaskIfDocumentHasSelection_Tooltip}"
-                                                IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
+                                                IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}"
+                                                x:Name="AddMaskSetting"/>
+
+                    <Separator/>
+
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_MaskMode}"
+                                                Description="{lex:Loc Settings_MaskMode_Tooltip}"
+                                                IsChecked="{Binding Config.UnlinkMask}" 
+                                                IsEnabled="{Binding IsChecked, ElementName=AddMaskSetting}"/>
+
+                    <Separator/>
+
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_UnlinkMask}"
+                                                Description="{lex:Loc Settings_UnlinkMask_Tooltip}"
+                                                IsChecked="{Binding Config.UnlinkMask}" 
+                                                IsEnabled="{Binding IsChecked, ElementName=AddMaskSetting}"/>
                 </StackPanel>
             </TabItem>
 

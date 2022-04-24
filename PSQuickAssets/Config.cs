@@ -3,6 +3,7 @@ using Mortuus.Config;
 using Mortuus.Config.Deserialization;
 using Mortuus.Config.Serialization;
 using PSQuickAssets.Services;
+using PSQuickAssets.WPF;
 using Serilog;
 using Serilog.Events;
 using System.ComponentModel;
@@ -18,6 +19,8 @@ internal interface IConfig : INotifyPropertyChanged
     bool MinimizeWindowInsteadOfHiding { get; set; }
     public bool HideWindowWhenAddingAsset { get; set; }
     double ThumbnailSize { get; set; }
+
+    ThumbnailQuality ThumbnailQuality { get; set; }
     bool AlwaysOnTop { get; set; }
     bool HideWindowIfClickedOutside { get; set; }
     bool CheckUpdates { get; set; }
@@ -47,6 +50,7 @@ internal class Config : ConfigBase, IConfig
 
     // Experimental settings:
     public bool DebugMode { get => _debugMode.Value; set => _debugMode.SetValue(value); }
+    public ThumbnailQuality ThumbnailQuality { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     private readonly ConfigProperty<string> _showHideWindowHotkey;
     private readonly ConfigProperty<bool> _minimizeWindowInsteadOfHiding;

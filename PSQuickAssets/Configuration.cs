@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices;
+using PSQuickAssets.WPF;
 using PureConfig;
 using Serilog;
 using System.IO;
@@ -13,6 +14,7 @@ internal class Configuration : ConfigBase, IConfig
     public bool MinimizeWindowInsteadOfHiding { get => GetValue(false); set => SetValue(value); }
     public bool HideWindowWhenAddingAsset { get => GetValue(true); set => SetValue(value); }
     public double ThumbnailSize { get => GetValue(60.0); set => SetValue(value); }
+    public ThumbnailQuality ThumbnailQuality { get => GetValue(ThumbnailQuality.Medium); set => SetValue(value); }
     public bool AlwaysOnTop { get => GetValue(true); set => SetValue(value); }
     public bool HideWindowIfClickedOutside { get => GetValue(true); set => SetValue(value); }
     public bool CheckUpdates { get => GetValue(true); set => SetValue(value); }
@@ -31,7 +33,6 @@ internal class Configuration : ConfigBase, IConfig
     {
         _logger = logger;
         this.PropertyChanged += (s, e) => Save();
-
         Load();
     }
 

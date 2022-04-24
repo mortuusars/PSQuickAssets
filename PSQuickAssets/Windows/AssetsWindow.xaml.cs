@@ -53,7 +53,6 @@ public partial class AssetsWindow : PureWindow
         base.Show();
         if (WindowState == WindowState.Minimized)
             WindowState = WindowState.Normal;
-        //WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
     }
 
     public void ToggleVisibility()

@@ -4,6 +4,7 @@
     xmlns:conv="clr-namespace:PSQuickAssets.WPF.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <conv:ComparisonConverter x:Key="ComparisonConverter"/>
     <conv:ShortenStringConverter x:Key="ShortenString" />
     <conv:PathToImageDimentionsStringConverter x:Key="PathToImageDimentions"/>
     <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
