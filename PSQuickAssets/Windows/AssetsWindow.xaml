@@ -71,22 +71,17 @@
         <pureUI:BindingProxy x:Key="AssetsViewModelProxy" Data="{Binding DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
 
         <!--  TITLE  -->
-        <Grid x:Key="TitleBarContent" Margin="0,0,0,1">
-            <StackPanel Margin="4,0,0,0" Orientation="Horizontal">
+        <Grid x:Key="TitleBarContent">
+            <StackPanel Orientation="Horizontal">
 
-                <Button Padding="4"
+                <Button Padding="7 4"
+                        Content="&#xE700;"
+                        FontFamily="{StaticResource SegoeMDL2Icons}"
+                        FontSize="17"
                         VerticalAlignment="Center"
                         ToolTip="{lex:Loc Menu}"
                         Style="{StaticResource OpacityButton}"
-                        FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                         pureUI:ContextMenuExtensions.OpenOnLeftClick="True">
-                    <Button.Content>
-                        <TextBlock Text="&#xE700;"
-                                   FontFamily="{StaticResource SegoeMDL2Icons}"
-                                   FontSize="18"
-                                   FontWeight="Bold" />
-                    </Button.Content>
-
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}" d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
