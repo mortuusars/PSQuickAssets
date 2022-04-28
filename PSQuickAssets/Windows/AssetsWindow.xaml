@@ -10,11 +10,9 @@
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-                   xmlns:converters="clr-namespace:PSQuickAssets.WPF.Converters"
                    xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
-                   xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
                    mc:Ignorable="d"
                    lex:LocalizeDictionary.DesignCulture="en"
                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
@@ -25,17 +23,10 @@
                    Height="250"
                    Topmost="{Binding Config.AlwaysOnTop}"
                    SaveData="True"
-                   Background="{DynamicResource Brushes.Background.0}"
-                   Foreground="{DynamicResource Brushes.Foreground.1}"
-                   TitleBackground="{DynamicResource Brushes.Border.0}"
-                   BorderBrush="{DynamicResource Brushes.Border.0}"
                    BorderThickness="1 0 1 1"
-                   GlowDepth="1"
-                   GlowColor="{StaticResource Colors.Border.0}"
-                   InactiveGlowColor="{StaticResource Colors.Border.1}"
-                   d:BorderThickness="0"
                    FontFamily="{StaticResource FontLight}"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
+                   d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
 
@@ -87,6 +78,7 @@
                         VerticalAlignment="Center"
                         ToolTip="{lex:Loc Menu}"
                         Style="{StaticResource OpacityButton}"
+                        FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                         pureUI:ContextMenuExtensions.OpenOnLeftClick="True">
                     <Button.Content>
                         <TextBlock Text="&#xE700;"
@@ -185,6 +177,7 @@
                     Padding="5,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
+                    FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                     Style="{StaticResource OpacityButton}">
                 <Button.Content>
                     <Path Margin="-1,-1,0,0"
@@ -248,7 +241,7 @@
     </pureUI:PureWindow.Resources>
 
     <pureUI:PureWindow.Style>
-        <Style TargetType="{x:Type windows:AssetsWindow}" BasedOn="{StaticResource PureWindow}">
+        <Style TargetType="{x:Type windows:AssetsWindow}" BasedOn="{StaticResource PSQAWindow}">
             <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
             <Setter Property="ShouldMinimizeInsteadOfHiding" Value="{Binding Config.MinimizeWindowInsteadOfHiding}" />
         </Style>
@@ -283,11 +276,12 @@
                  SelectionMode="Extended"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.CanContentScroll="False"
+                 KeyboardNavigation.TabNavigation="Cycle"
                  IsTabStop="False">
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Focusable" Value="False" />                    
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -465,7 +459,8 @@
                                           VerticalAlignment="Stretch"
                                           FontSize="16"
                                           Padding="2"
-                                          FocusVisualStyle="{StaticResource BracketsFocusVisual}">
+                                          FocusVisualStyle="{StaticResource BracketsFocusVisual}"
+                                          KeyboardNavigation.DirectionalNavigation="Continue">
                                     <CheckBox.InputBindings>
                                         <KeyBinding Gesture="Enter"
                                                     Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
@@ -629,6 +624,9 @@
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
                                                     <Setter Property="Opacity" Value="1" />
                                                 </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                                    <Setter Property="Opacity" Value="1" />
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </pureUIcontrols:ToggleTextBox.Style>
@@ -655,7 +653,6 @@
                         </Grid>
 
                         <ListBox ItemsSource="{Binding Assets}"
-                                 KeyboardNavigation.DirectionalNavigation="Cycle"
                                  Background="{x:Null}"
                                  BorderThickness="0"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
