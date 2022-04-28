@@ -8,4 +8,6 @@
     <FontFamily x:Key="FontExtraBold">/Resources/Fonts/#Lexend ExtraBold</FontFamily>
 
     <FontFamily x:Key="FontSans">/Resources/Fonts/#PT Sans Bold</FontFamily>
+
+    <FontFamily x:Key="MaterialIcons">/Resources/Fonts/#Material Icons Outlined</FontFamily>
 </ResourceDictionary>

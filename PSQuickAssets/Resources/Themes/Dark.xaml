@@ -18,6 +18,9 @@
     <Color x:Key="Colors.Foreground.2">#bbb</Color>
     <Color x:Key="Colors.Foreground.3">#999</Color>
 
+    <Color x:Key="Colors.Accent.Background.0">#72C0FF</Color>
+    
+    <Color x:Key="Colors.Accent.Foreground.0">#252525</Color>
 
     <!--BRUSHES-->
     <SolidColorBrush x:Key="Brushes.Background.0" Color="{StaticResource Colors.Background.0}"/>
@@ -34,5 +37,9 @@
     <SolidColorBrush x:Key="Brushes.Foreground.1" Color="{StaticResource Colors.Foreground.1}"/>
     <SolidColorBrush x:Key="Brushes.Foreground.2" Color="{StaticResource Colors.Foreground.2}"/>
     <SolidColorBrush x:Key="Brushes.Foreground.3" Color="{StaticResource Colors.Foreground.3}"/>
+
+    <SolidColorBrush x:Key="Brushes.Accent.Background.0" Color="{StaticResource Colors.Accent.Background.0}"/>
+
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
 
 </themes:ThemeResourceDictionary>

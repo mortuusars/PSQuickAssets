@@ -19,6 +19,8 @@
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Tooltip.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ContextMenu.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Windows.xaml" />
+                
                 
                 <ResourceDictionary Source="Resources/Templates.xaml" />
                 <ResourceDictionary Source="Resources/Converters.xaml" />

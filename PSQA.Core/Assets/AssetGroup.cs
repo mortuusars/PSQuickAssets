@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Text;
 
 namespace PSQA.Core;
 
@@ -8,48 +7,17 @@ public class AssetGroup
     /// <summary>
     /// Name of the group.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Collection of assets in the group.
     /// </summary>
-    public ObservableCollection<Asset> Assets { get; set; }
+    public ICollection<Asset> Assets { get; set; } = new List<Asset>();
 
     /// <summary>
     /// Indicates that group contents are visible.
     /// </summary>
-    public bool IsExpanded { get; set; }
-
-    /// <summary>
-    /// Initializes new instance of Asset Group.
-    /// </summary>
-    /// <param name="name">Name of the group.</param>
-    /// <param name="assets">Asset collection.</param>
-    /// <param name="isExpanded">Indicates whether the group contents is expanded.</param>
-    public AssetGroup(string name, ObservableCollection<Asset> assets, bool isExpanded)
-    {
-        Name = name;
-        Assets = assets;
-        IsExpanded = isExpanded;
-    }
-
-    /// <summary>
-    /// Initializes new instance of Asset Group.
-    /// </summary>
-    public AssetGroup()
-    {
-        Name = string.Empty;
-        Assets = new ObservableCollection<Asset>();
-        IsExpanded = true;
-    }
-
-    /// <summary>
-    /// Initializes new instance of Asset Group with a specified name.
-    /// </summary>
-    public AssetGroup(string name) : this()
-    {
-        Name = name;
-    }
+    public bool IsExpanded { get; set; } = true;
 
     /// <summary>
     /// Prints group name and all of group's assets.
@@ -58,7 +26,7 @@ public class AssetGroup
     {
         StringBuilder sb = new();
         foreach (Asset asset in Assets)
-            sb.Append('\n').Append('\t').Append(asset.FileName);
+            sb.Append('\n').Append('\t').Append(asset.Path);
 
         return $"Group: {{\"{Name}\"\nAssets: {{{sb}\n}}\n}}";
     }

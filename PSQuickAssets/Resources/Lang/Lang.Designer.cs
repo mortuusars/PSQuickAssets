@@ -383,5 +383,86 @@ namespace PSQuickAssets.Resources.Lang {
                 return ResourceManager.GetString("Settings_ThumbnailQuality_Tooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Version:.
+        /// </summary>
+        public static string Update_Current {
+            get {
+                return ResourceManager.GetString("Update_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download:.
+        /// </summary>
+        public static string Update_Download {
+            get {
+                return ResourceManager.GetString("Update_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        public static string Update_Later {
+            get {
+                return ResourceManager.GetString("Update_Later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version:.
+        /// </summary>
+        public static string Update_New {
+            get {
+                return ResourceManager.GetString("Update_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See Whats New.
+        /// </summary>
+        public static string Update_OpenChangelog {
+            get {
+                return ResourceManager.GetString("Update_OpenChangelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Download Page.
+        /// </summary>
+        public static string Update_OpenDownloadPage {
+            get {
+                return ResourceManager.GetString("Update_OpenDownloadPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version of PSQuickAssets is Available!.
+        /// </summary>
+        public static string Update_UpdateAvailable {
+            get {
+                return ResourceManager.GetString("Update_UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PSQuickAssets Update.
+        /// </summary>
+        public static string Update_WindowTitle {
+            get {
+                return ResourceManager.GetString("Update_WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Times Used: {0}.
+        /// </summary>
+        public static string Uses {
+            get {
+                return ResourceManager.GetString("Uses", resourceCulture);
+            }
+        }
     }
 }

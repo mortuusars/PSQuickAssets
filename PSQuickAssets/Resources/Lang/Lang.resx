@@ -225,4 +225,31 @@
   <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
     <value>Higher quality can consume more RAM</value>
   </data>
+  <data name="Update_Current" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Download:</value>
+  </data>
+  <data name="Update_Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Update_New" xml:space="preserve">
+    <value>New Version:</value>
+  </data>
+  <data name="Update_OpenChangelog" xml:space="preserve">
+    <value>See Whats New</value>
+  </data>
+  <data name="Update_OpenDownloadPage" xml:space="preserve">
+    <value>Open Download Page</value>
+  </data>
+  <data name="Update_UpdateAvailable" xml:space="preserve">
+    <value>New Version of PSQuickAssets is Available!</value>
+  </data>
+  <data name="Update_WindowTitle" xml:space="preserve">
+    <value>PSQuickAssets Update</value>
+  </data>
+  <data name="Uses" xml:space="preserve">
+    <value>Times Used: {0}</value>
+  </data>
 </root>

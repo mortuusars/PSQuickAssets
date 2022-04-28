@@ -31,6 +31,18 @@ public class AssetRepository
         return Result.Ok();
     }
 
+    public async void Save()
+    {
+        try
+        {
+            await SaveAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Repository saving in async void failed: {0}", ex.Message);
+        }
+    }
+
     public Task<Result> SaveAsync() => _repositoryHandler.SaveAsync(AssetGroups);
 
     public Asset CreateAsset(string filePath)

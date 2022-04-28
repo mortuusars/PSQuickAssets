@@ -22,6 +22,7 @@
 		<None Remove="Resources\Fonts\Lexend-Regular.ttf" />
 		<None Remove="Resources\Fonts\Lexend-SemiBold.ttf" />
 		<None Remove="Resources\Fonts\Lexend-Thin.ttf" />
+		<None Remove="Resources\Fonts\MaterialIcons-Outlined.otf" />
 		<None Remove="Resources\Fonts\PTSans-Bold.ttf" />
 		<None Remove="Resources\Fonts\PTSans-BoldItalic.ttf" />
 		<None Remove="Resources\Fonts\PTSans-Regular.ttf" />
@@ -45,20 +46,18 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="6.0.4" />
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
 		<PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
-		<PackageReference Include="MdXaml" Version="1.13.0" />
 		<PackageReference Include="MGlobalHotkeys.WPF" Version="1.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="Mortuus.Config" Version="1.0.1" />
 		<PackageReference Include="MTerminal.WPF" Version="0.1.3" />
 		<PackageReference Include="NetVips" Version="2.1.0" />
 		<PackageReference Include="NetVips.Native.win-x64" Version="8.12.2" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-		<PackageReference Include="PureUI" Version="1.0.4" />
+		<PackageReference Include="PureUI" Version="1.0.7" />
 		<PackageReference Include="PureUI.Themes" Version="1.0.0" />
 		<PackageReference Include="Serilog" Version="2.11.0-dev-01380" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
@@ -85,6 +84,7 @@
 		<Resource Include="Resources\Fonts\Lexend-Regular.ttf" />
 		<Resource Include="Resources\Fonts\Lexend-SemiBold.ttf" />
 		<Resource Include="Resources\Fonts\Lexend-Thin.ttf" />
+		<Resource Include="Resources\Fonts\MaterialIcons-Outlined.otf" />
 		<Resource Include="Resources\Fonts\PTSans-Bold.ttf" />
 		<Resource Include="Resources\Fonts\PTSans-BoldItalic.ttf" />
 		<Resource Include="Resources\Fonts\PTSans-Regular.ttf" />

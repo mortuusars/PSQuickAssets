@@ -2,8 +2,8 @@
 using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
-using System;
-using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
@@ -16,6 +16,9 @@ internal class WindowManager
     public WindowManager(IConfig config)
     {
         _config = config;
+        // Set default tooltip delay:
+        ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(350, FrameworkPropertyMetadataOptions.Inherits));
     }
 
     public void FocusPhotoshop()
@@ -116,14 +119,14 @@ internal class WindowManager
     /// <param name="currentVersion"></param>
     /// <param name="newVersion"></param>
     /// <param name="changelog"></param>
-    public void ShowUpdateWindow(Version currentVersion, Version newVersion, string changelog)
+    public void ShowUpdateWindow(Version currentVersion, Version newVersion)
     {
         UpdateWindow updateWindow = new();
+        updateWindow.Owner = _assetsWindow;
         updateWindow.DataContext = new UpdateViewModel
         {
             CurrentVersion = currentVersion,
             NewVersion = newVersion,
-            Changelog = changelog
         };
         updateWindow.Show();
     }

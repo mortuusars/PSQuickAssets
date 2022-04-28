@@ -10,8 +10,6 @@ namespace PSQuickAssets.ViewModels;
 [INotifyPropertyChanged]
 public partial class AssetGroupViewModel
 {
-    public event EventHandler? GroupChanged;
-
     /// <summary>
     /// Gets or sets name of the group.
     /// </summary>
@@ -24,15 +22,12 @@ public partial class AssetGroupViewModel
             {
                 Group.Name = value;
                 OnPropertyChanged(nameof(Name));
-                GroupChanged?.Invoke(this, EventArgs.Empty);
+                _assetRepository.Save();
             }
         }
     }
 
-    /// <summary>
-    /// Gets the <see cref="ICollectionView"/> of the assets in a group.
-    /// </summary>
-    public ICollectionView Assets { get => CollectionViewSource.GetDefaultView(Group.Assets); }
+    public ObservableCollection<AssetViewModel> Assets { get; } = new();
 
     /// <summary>
     /// Gets or sets the property that indicates that the group contents should be visible.
@@ -46,7 +41,7 @@ public partial class AssetGroupViewModel
             {
                 Group.IsExpanded = value;
                 OnPropertyChanged(nameof(IsExpanded));
-                GroupChanged?.Invoke(this, EventArgs.Empty);
+                _assetRepository.Save();
             }
         }
     }
@@ -57,7 +52,7 @@ public partial class AssetGroupViewModel
     public int AssetCount { get => Group.Assets.Count; }
 
     /// <summary>
-    /// Gets the group instance of this viewmodel.
+    /// Gets the underlying group instance of this viewmodel.
     /// </summary>
     public AssetGroup Group { get; }
 
@@ -66,14 +61,12 @@ public partial class AssetGroupViewModel
     internal AssetGroupViewModel(AssetGroup assetGroup, AssetRepository assetRepository)
     {
         Group = assetGroup;
-        Group.Assets.CollectionChanged += (s, e) =>
-        {
-            GroupChanged?.Invoke(this, EventArgs.Empty);
-            OnPropertyChanged(nameof(AssetCount));
-        };
         _assetRepository = assetRepository;
-    }
 
+        Group.Assets.ForEach(asset => Assets.Add(new AssetViewModel(asset, assetRepository)));
+        Assets.CollectionChanged += (s, e) => OnPropertyChanged(nameof(AssetCount));
+    }
+    
     [ICommand]
     private void ToggleExpanded()
     {
@@ -81,22 +74,11 @@ public partial class AssetGroupViewModel
     }
 
     [ICommand]
-    public void RemoveAsset(Asset asset) => Group.Assets.Remove(asset);
-
-    /// <summary>
-    /// Adds asset to the group.
-    /// </summary>
-    /// <param name="asset">Asset to add.</param>
-    /// <returns><see langword="true"/> if added successfully, otherwise <see langword="false"/>.</returns>
-    public bool AddAsset(Asset asset)
+    public void RemoveAsset(AssetViewModel asset)
     {
-        ArgumentNullException.ThrowIfNull(nameof(asset));
-
-        if (HasAsset(asset.Path))
-            return false;
-
-        Group.Assets.Add(asset);
-        return true;
+        Assets.Remove(asset);
+        Group.Assets.Remove(asset.Asset);
+        _assetRepository.Save();
     }
 
     [ICommand]
@@ -112,6 +94,17 @@ public partial class AssetGroupViewModel
         }
     }
 
+    private void AddAsset(Asset asset)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(asset));
+        if (!HasAsset(asset.Path))
+        {
+            Group.Assets.Add(asset);
+            Assets.Add(new AssetViewModel(asset, _assetRepository));
+            _assetRepository.Save();
+        }
+    }
+
     /// <summary>
     /// Checks if asset with the same FILEPATH is already in the group.
     /// </summary>
@@ -120,6 +113,6 @@ public partial class AssetGroupViewModel
     public bool HasAsset(string filePath)
     {
         ArgumentNullException.ThrowIfNull(nameof(filePath));
-        return Group.Assets.Any(a => a.Path == filePath);
+        return Assets.Any(a => a.FilePath == filePath);
     }
 }

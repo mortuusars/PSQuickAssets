@@ -6,8 +6,8 @@
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
     <conv:ComparisonConverter x:Key="ComparisonConverter"/>
     <conv:ShortenStringConverter x:Key="ShortenString" />
-    <conv:PathToFileSizeConverter x:Key="PathToFileSize"/>
-    <conv:PathToImageDimentionsStringConverter x:Key="PathToImageDimentions"/>
+    <conv:BytesToSizeConverter x:Key="BytesToReadableSize"/>
+    <conv:SizeToDimensionsStringConverter x:Key="SizeToString"/>
     <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
     <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter" />
 

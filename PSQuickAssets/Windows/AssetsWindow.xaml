@@ -37,8 +37,7 @@
                    FontFamily="{StaticResource FontLight}"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
-                   d:WindowStyle="None"
-                   ToolTipService.InitialShowDelay="350">
+                   d:WindowStyle="None">
 
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding Source={StaticResource WindowManagerCommands}, Path=ToggleMainWindowCommand}" />
@@ -306,14 +305,14 @@
             </ListBox.ItemsPanel>
 
             <!--  DESIGN-TIME DATA  -->
-            <d:ListBox.ItemsSource>
+            <!--<d:ListBox.ItemsSource>
                 <x:Array Type="{x:Type core:AssetGroup}">
-                    <core:AssetGroup Name="Group">
+                    <AssetGroupViewModel Name="Group">
                         <core:AssetGroup.Assets>
                             <core:Asset Path="../Resources/Images/test.jpg"/>
                             <core:Asset Path="../Resources/Images/test.jpg"/>
                         </core:AssetGroup.Assets>
-                    </core:AssetGroup>
+                    </AssetGroupViewModel>
 
                     <core:AssetGroup Name="Group 2">
                         <core:AssetGroup.Assets>
@@ -321,7 +320,7 @@
                         </core:AssetGroup.Assets>
                     </core:AssetGroup>
                 </x:Array>
-            </d:ListBox.ItemsSource>
+            </d:ListBox.ItemsSource>-->
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:AssetGroupViewModel}">
@@ -369,7 +368,6 @@
                                 </MenuItem>
 
                                 <Separator />
-
 
                                 <!--  SELECT AND ADD ASSETS  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddFiles}"
@@ -759,9 +757,9 @@
                                     </d:DataTemplate.Resources>
 
                                     <assetcontrol:AssetControl Title="{Binding Name}"
-                                                               Thumbnail="{Binding Path, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
+                                                               Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
                                                                ThumbnailSize="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                               Foreground="{StaticResource ForegroundMainBrush}"
+                                                               Foreground="{DynamicResource Brushes.Foreground.1}"
                                                                FontSize="13"
                                                                Cursor="Hand"
                                                                FontFamily="{StaticResource FontMedium}"
@@ -773,13 +771,13 @@
 
                                         <assetcontrol:AssetControl.Style>
                                             <Style TargetType="{x:Type assetcontrol:AssetControl}">
-                                                <Setter Property="Background" Value="{StaticResource BackgroundCloserBrush}" />
+                                                <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource BackgroundCloseBrush}" />
+                                                        <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
                                                     </Trigger>
                                                     <Trigger Property="IsKeyboardFocused" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource BackgroundCloserHighlightBrush}" />
+                                                        <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -788,17 +786,17 @@
                                         <assetcontrol:AssetControl.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
                                                           Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding Path}" />
+                                                          CommandParameter="{Binding}" />
                                             <MouseBinding Gesture="Ctrl+LeftClick"
                                                           Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding Path}" />
+                                                          CommandParameter="{Binding}" />
 
                                             <KeyBinding Gesture="Enter"
                                                         Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding Path}" />
+                                                        CommandParameter="{Binding}" />
                                             <KeyBinding Gesture="Ctrl+Enter"
                                                         Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding Path}" />
+                                                        CommandParameter="{Binding}" />
                                         </assetcontrol:AssetControl.InputBindings>
 
                                         <assetcontrol:AssetControl.ContextMenu>
@@ -807,7 +805,7 @@
 
                                                 <!--  Add as layer  -->
                                                 <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding Path}"
+                                                          CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
                                                           InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">
                                                     <MenuItem.Icon>
@@ -821,7 +819,7 @@
 
                                                 <!--  Open as new document  -->
                                                 <MenuItem Command="{Binding Path=PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding Path}"
+                                                          CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenAsNewDoc}"
                                                           InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_CtrlClick}">
                                                     <MenuItem.Icon>
@@ -890,9 +888,17 @@
                                                            TextWrapping="Wrap" />
                                                 <Rectangle Height="1.5"
                                                            Margin="0,5,0,4"
-                                                           Fill="{StaticResource BorderLighter}" />
-                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToImageDimentions}, IsAsync=False}" />
-                                                <TextBlock Text="{Binding Path, Converter={StaticResource PathToFileSize}, IsAsync=False}" />
+                                                           Fill="{DynamicResource Brushes.Foreground.3}" />
+                                                <TextBlock Visibility="{Binding Uses, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{lex:StringFormatConverter}">
+                                                            <lex:BLoc Key="Uses" />
+                                                            <Binding Path="Uses" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding Dimensions, Converter={StaticResource SizeToString}}" />
+                                                <TextBlock Text="{Binding FileSize, Converter={StaticResource BytesToReadableSize}}" />
                                             </StackPanel>
                                         </assetcontrol:AssetControl.ToolTip>
 
@@ -906,9 +912,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        
+        <!--NO ASSETS-->
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    d:Visibility="Visible">
+                    d:Visibility="Collapsed">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
                     <Setter Property="Visibility" Value="Collapsed" />

@@ -2,7 +2,6 @@
 using PSQA.Core;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
@@ -11,11 +10,11 @@ internal class PhotoshopViewModel
 {
     public ObservableCollection<PhotoshopAction> GlobalActions { get; } = new();
 
-    public IRelayCommand AddGlobalActionCommand { get; }
-    public IRelayCommand RemoveGlobalActionCommand { get; }
+    public IRelayCommand<PhotoshopAction> AddGlobalActionCommand { get; }
+    public IRelayCommand<PhotoshopAction> RemoveGlobalActionCommand { get; }
 
-    public IAsyncRelayCommand AddImageToPhotoshopAsyncCommand { get; }
-    public IAsyncRelayCommand OpenAsNewDocumentCommand { get; }
+    public IAsyncRelayCommand<AssetViewModel> AddImageToPhotoshopAsyncCommand { get; }
+    public IAsyncRelayCommand<AssetViewModel> OpenAsNewDocumentCommand { get; }
 
     private readonly IPhotoshopInterop _photoshop;
     private readonly WindowManager _windowManager;
@@ -32,8 +31,8 @@ internal class PhotoshopViewModel
         AddGlobalActionCommand = new RelayCommand<PhotoshopAction>(a => AddGlobalAction(a!));
         RemoveGlobalActionCommand = new RelayCommand<PhotoshopAction>(a => RemoveGlobalAction(a!));
 
-        AddImageToPhotoshopAsyncCommand = new AsyncRelayCommand<string>(path => AddImageToPhotoshopAsync(path!));
-        OpenAsNewDocumentCommand = new AsyncRelayCommand<string>(path => OpenAsNewDocumentAsync(path!));
+        AddImageToPhotoshopAsyncCommand = new AsyncRelayCommand<AssetViewModel>(asset => AddImageToPhotoshopAsync(asset!));
+        OpenAsNewDocumentCommand = new AsyncRelayCommand<AssetViewModel>(asset => OpenAsNewDocumentAsync(asset!));
 
         //TODO: Global actions and window for setting them up.
         AddGlobalAction(new PhotoshopAction("SelectRGBLayer", "Mask"));
@@ -55,31 +54,35 @@ internal class PhotoshopViewModel
         GlobalActions.Remove(action);
     }
 
-
-    private async Task<bool> AddImageToPhotoshopAsync(string filePath)
+    private async Task AddImageToPhotoshopAsync(AssetViewModel asset)
     {
         PSResult result = await _photoshop.HasOpenDocumentAsync() ?
-            await AddAsLayerAsync(filePath) :
-            await OpenAsNewDocumentAsync(filePath);
+            await AddAsLayerAsync(asset) :
+            await OpenAsNewDocumentAsync(asset);
 
         if (result.Success)
-            return await ExecuteGlobalActions();
-
-        return false;
+            await ExecuteGlobalActions();
     }
 
-    private async Task<PSResult> AddAsLayerAsync(string filePath)
+    private async Task<PSResult> AddAsLayerAsync(AssetViewModel asset)
     {
+        _windowManager.FocusPhotoshop();
+        if (_config.HideWindowWhenAddingAsset)
+            _windowManager.HideMainWindow();
+
         PSResult result;
 
         if (_config.AddMaskIfDocumentHasSelection && await _photoshop.HasSelectionAsync())
         {
             MaskMode maskMode = MaskMode.RevealSelection;
             bool unlinkMask = _config.UnlinkMask;
-            result = await _photoshop.AddAsLayerWithMaskAsync(filePath, maskMode, unlinkMask);
+            result = await _photoshop.AddAsLayerWithMaskAsync(asset.FilePath, maskMode, unlinkMask);
         }
         else
-            result = await _photoshop.AddImageToDocumentAsync(filePath);
+            result = await _photoshop.AddImageToDocumentAsync(asset.FilePath);
+
+        if (result.Success)
+            asset.Uses++;
 
         if (result.Failed)
             _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],
@@ -88,13 +91,16 @@ internal class PhotoshopViewModel
         return result;
     }
 
-    private async Task<PSResult> OpenAsNewDocumentAsync(string filePath)
+    private async Task<PSResult> OpenAsNewDocumentAsync(AssetViewModel asset)
     {
         _windowManager.FocusPhotoshop();
         if (_config.HideWindowWhenAddingAsset)
             _windowManager.HideMainWindow();
 
-        PSResult result = await _photoshop.OpenImageAsNewDocumentAsync(filePath);
+        PSResult result = await _photoshop.OpenImageAsNewDocumentAsync(asset.FilePath);
+
+        if (result.Success)
+            asset.Uses++;
 
         if (result.Failed)
             _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],

@@ -36,8 +36,11 @@ internal class UpdateChecker
         if (githubVersion > currentVersion)
         {
             _logger.Information("[{0}] New version is found: {1}. Current version: {2}", this.GetType().Name, githubVersion, currentVersion);
-            string changelog = await GetChangelogFromGithub();
-            _windowManager.ShowUpdateWindow(currentVersion, githubVersion, changelog);
+            
+            // Not used. Changelog web page is opened from ui.
+            //string changelog = await GetChangelogFromGithub();
+            
+            _windowManager.ShowUpdateWindow(currentVersion, githubVersion);
         }
     }
 

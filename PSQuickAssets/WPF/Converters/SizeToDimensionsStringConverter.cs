@@ -6,9 +6,6 @@ namespace PSQuickAssets.WPF.Converters;
 [ValueConversion(typeof(Size), typeof(string))]
 public class SizeToDimensionsStringConverter : IValueConverter
 {
-    public static SizeToDimensionsStringConverter Instance { get => _instance ??= new SizeToDimensionsStringConverter(); }
-    private static SizeToDimensionsStringConverter? _instance;
-
     public static string Convert(Size size)
     {
         return size.IsEmpty ? string.Empty : $"{size.Width}x{size.Height} px";

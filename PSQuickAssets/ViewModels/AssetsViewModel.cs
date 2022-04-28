@@ -99,7 +99,7 @@ internal partial class AssetsViewModel
         if (string.IsNullOrWhiteSpace(groupName))
             groupName = GenerateNewGroupName();
 
-        _assetRepository.AssetGroups.Add(new AssetGroup(groupName));
+        _assetRepository.AssetGroups.Add(new AssetGroup() { Name = groupName });
     }
 
     [ICommand]
@@ -190,14 +190,11 @@ internal partial class AssetsViewModel
     /// <returns>Created group viewmodel.</returns>
     private AssetGroupViewModel CreateGroupViewModel(AssetGroup assetGroup)
     {
-        string groupName = assetGroup.Name;
-        if (IsGroupExists(groupName))
-            assetGroup.Name = $"{groupName} {Localization.Instance["New"]}";
+        //string groupName = assetGroup.Name;
+        //if (IsGroupExists(groupName))
+        //    assetGroup.Name = $"{groupName} {Localization.Instance["New"]}";
 
-        var newViewModel = new AssetGroupViewModel(assetGroup, _assetRepository);
-        newViewModel.GroupChanged += (s, e) => _assetRepository.SaveAsync().SafeFireAndForget();
-
-        return newViewModel;
+        return new AssetGroupViewModel(assetGroup, _assetRepository);
     }
 
     /// <summary>
