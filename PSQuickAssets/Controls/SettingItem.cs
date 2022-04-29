@@ -3,8 +3,17 @@ using System.Windows.Controls;
 
 namespace PSQuickAssets.Controls;
 
-public partial class SettingItem : UserControl
+public class SettingItem : UserControl
 {
+    public object Icon
+    {
+        get { return (object)GetValue(IconProperty); }
+        set { SetValue(IconProperty, value); }
+    }
+
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register(nameof(Icon), typeof(object), typeof(SettingItem), new PropertyMetadata(null));
+
     public string Header
     {
         get { return (string)GetValue(HeaderProperty); }
@@ -22,9 +31,4 @@ public partial class SettingItem : UserControl
 
     public static readonly DependencyProperty DescriptionProperty =
         DependencyProperty.Register(nameof(Description), typeof(string), typeof(SettingItem), new PropertyMetadata(string.Empty));
-
-    public SettingItem()
-    {
-        InitializeComponent();
-    }
 }

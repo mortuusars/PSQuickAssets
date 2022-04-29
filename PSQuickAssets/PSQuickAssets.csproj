@@ -141,7 +141,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Views\" />
-	  <Folder Include="Windows\Old\" />
 	</ItemGroup>
 
 </Project>

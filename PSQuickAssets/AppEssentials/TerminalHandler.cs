@@ -18,8 +18,6 @@ internal class TerminalHandler
     internal void Setup()
     {
         Terminal.Commands.Add(new TerminalCommand("newwindow", "Test window", (_) => new AssetsWindow().Show()));
-        Terminal.Commands.Add(new TerminalCommand("dialog", "Dialog window", (_) => new MessageBoxWindow().Show()));
-        Terminal.Commands.Add(new TerminalCommand("errorDialog", "Test window", (_) => new ErrorDialog().Show()));
         Terminal.Commands.Add(new TerminalCommand("log", "Prints last log file contents", (_) => PrintLastLog()));
         Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
         Terminal.Commands.Add(new TerminalCommand("updatewindow", "Show update window", (_) => _windowManager.ShowUpdateWindow(App.Version, new Version("15.5.0"))));

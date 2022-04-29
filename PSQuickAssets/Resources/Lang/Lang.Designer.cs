@@ -340,11 +340,148 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always on Top.
+        /// </summary>
+        public static string Settings_AlwaysOnTop {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep window above all other windows.
+        /// </summary>
+        public static string Settings_AlwaysOnTop_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysOnTop_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string Settings_Appearance {
+            get {
+                return ResourceManager.GetString("Settings_Appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assets.
+        /// </summary>
+        public static string Settings_Assets {
+            get {
+                return ResourceManager.GetString("Settings_Assets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        public static string Settings_Category_Application {
+            get {
+                return ResourceManager.GetString("Settings_Category_Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window.
+        /// </summary>
+        public static string Settings_Category_Window {
+            get {
+                return ResourceManager.GetString("Settings_Category_Window", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string Settings_CheckUpdates {
+            get {
+                return ResourceManager.GetString("Settings_CheckUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug Mode.
+        /// </summary>
+        public static string Settings_DebugMode {
+            get {
+                return ResourceManager.GetString("Settings_DebugMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Settings_DebugMode_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_DebugMode_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string Settings_General {
+            get {
+                return ResourceManager.GetString("Settings_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide from Taskbar.
+        /// </summary>
+        public static string Settings_HideFromTaskbar {
+            get {
+                return ResourceManager.GetString("Settings_HideFromTaskbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon will not be shown on the taskbar when window is hidden.
+        /// </summary>
+        public static string Settings_HideFromTaskbar_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HideFromTaskbar_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide Window when Adding Asset.
+        /// </summary>
+        public static string Settings_HideWindowWhenAdding {
+            get {
+                return ResourceManager.GetString("Settings_HideWindowWhenAdding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window will hide after asset has been added to Photoshop.
+        /// </summary>
+        public static string Settings_HideWindowWhenAdding_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HideWindowWhenAdding_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to High.
         /// </summary>
         public static string Settings_High {
             get {
                 return ResourceManager.GetString("Settings_High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press a key combination to assign.
+        ///Delete or Backspace to clear.
+        ///Esc to cancel..
+        /// </summary>
+        public static string Settings_HotkeyPicker_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_HotkeyPicker_Tooltip", resourceCulture);
             }
         }
         
@@ -381,6 +518,24 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Settings_ThumbnailQuality_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_ThumbnailQuality_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window Show/Hide Hotkey.
+        /// </summary>
+        public static string Settings_WindowOpenHotkey {
+            get {
+                return ResourceManager.GetString("Settings_WindowOpenHotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings_WindowTitle {
+            get {
+                return ResourceManager.GetString("Settings_WindowTitle", resourceCulture);
             }
         }
         

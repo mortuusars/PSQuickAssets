@@ -1,8 +1,8 @@
-﻿using MortuusUI;
+﻿using PureUI;
 
 namespace PSQuickAssets.Windows;
 
-public partial class SettingsWindow : WindowBase
+public partial class SettingsWindow : PureWindow
 {
     public SettingsWindow()
     {

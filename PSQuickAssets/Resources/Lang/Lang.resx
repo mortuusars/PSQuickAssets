@@ -210,8 +210,55 @@
   <data name="SelectImages" xml:space="preserve">
     <value>Select Images</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="Settings_AlwaysOnTop_Tooltip" xml:space="preserve">
+    <value>Keep window above all other windows</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="Settings_Category_Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="Settings_Category_Window" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="Settings_CheckUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="Settings_DebugMode" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="Settings_DebugMode_Tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_HideFromTaskbar" xml:space="preserve">
+    <value>Hide from Taskbar</value>
+  </data>
+  <data name="Settings_HideFromTaskbar_Tooltip" xml:space="preserve">
+    <value>Icon will not be shown on the taskbar when window is hidden</value>
+  </data>
+  <data name="Settings_HideWindowWhenAdding" xml:space="preserve">
+    <value>Hide Window when Adding Asset</value>
+  </data>
+  <data name="Settings_HideWindowWhenAdding_Tooltip" xml:space="preserve">
+    <value>Window will hide after asset has been added to Photoshop</value>
+  </data>
   <data name="Settings_High" xml:space="preserve">
     <value>High</value>
+  </data>
+  <data name="Settings_HotkeyPicker_Tooltip" xml:space="preserve">
+    <value>Press a key combination to assign.
+Delete or Backspace to clear.
+Esc to cancel.</value>
   </data>
   <data name="Settings_Low" xml:space="preserve">
     <value>Low</value>
@@ -224,6 +271,12 @@
   </data>
   <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
     <value>Higher quality can consume more RAM</value>
+  </data>
+  <data name="Settings_WindowOpenHotkey" xml:space="preserve">
+    <value>Window Show/Hide Hotkey</value>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="Update_Current" xml:space="preserve">
     <value>Current Version:</value>
