@@ -15,7 +15,7 @@
                     Background="{TemplateBinding Background}"
                     CornerRadius="4">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="8" ShadowDepth="1" Direction="-90" Opacity="1"/>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="-90" Opacity="0.1"/>
                 </Border.Effect>
             </Border>
 

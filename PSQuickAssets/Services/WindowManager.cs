@@ -1,4 +1,5 @@
-﻿using MTerminal.WPF;
+﻿using CommunityToolkit.Mvvm.Input;
+using MTerminal.WPF;
 using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
@@ -8,7 +9,7 @@ using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
 
-internal class WindowManager
+internal partial class WindowManager
 {
     private AssetsWindow? _assetsWindow;
     private readonly IConfig _config;
@@ -16,6 +17,7 @@ internal class WindowManager
     public WindowManager(IConfig config)
     {
         _config = config;
+
         // Set default tooltip delay:
         ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(FrameworkElement),
             new FrameworkPropertyMetadata(350, FrameworkPropertyMetadataOptions.Inherits));
@@ -40,7 +42,8 @@ internal class WindowManager
     /// <summary>
     /// Toggles state of the main window. If window was hidden - shows it. And vise versa.
     /// </summary>
-    public void ToggleMainWindow()
+    [ICommand]
+    public void ShowHideMainWindow()
     {
         _assetsWindow?.ToggleVisibility();
     }
@@ -65,7 +68,8 @@ internal class WindowManager
     /// <summary>
     /// Creates and shows <see cref="SettingsWindow"/>. If window is already opened - it will be activated and brought to foreground.
     /// </summary>
-    internal void ShowSettingsWindow()
+    [ICommand]
+    internal void ShowSettings()
     {
         if (App.Current.Windows.OfType<SettingsWindow>().FirstOrDefault() is SettingsWindow settingsWindow)
         {
@@ -118,7 +122,6 @@ internal class WindowManager
     /// </summary>
     /// <param name="currentVersion"></param>
     /// <param name="newVersion"></param>
-    /// <param name="changelog"></param>
     public void ShowUpdateWindow(Version currentVersion, Version newVersion)
     {
         UpdateWindow updateWindow = new();

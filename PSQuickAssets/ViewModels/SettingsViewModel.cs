@@ -1,14 +1,19 @@
-﻿using MGlobalHotkeys.WPF;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MGlobalHotkeys.WPF;
 using Microsoft.Toolkit.Mvvm.Input;
 using PSQuickAssets.Services;
 using PSQuickAssets.WPF;
+using PureUI.Themes;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
 
-internal class SettingsViewModel
+[INotifyPropertyChanged]
+internal partial class SettingsViewModel
 {
-    public Hotkey ToggleMainWindowHotkey
+    public IConfig Config { get; }
+    public Hotkey ShowHideWindowHotkey
     {
         get => Hotkey.FromString(Config.ShowHideWindowHotkey);
         set
@@ -18,21 +23,34 @@ internal class SettingsViewModel
         }
     }
 
-    public IEnumerable<ThumbnailQuality> ThumbnailQualityValues { get; set; }
+    public ICollectionView Themes { get; }
+    public Theme CurrentTheme
+    {
+        get => _themeManager.CurrentTheme;
+        set
+        {
+            _themeManager.CurrentTheme = value;
+            Config.Theme = value.Name;
+        }
+    }
 
-    public IConfig Config { get; }
+    public IEnumerable<ThumbnailQuality> ThumbnailQualityValues { get; } = Enum.GetValues(typeof(ThumbnailQuality)).Cast<ThumbnailQuality>();
 
-    public ICommand SaveCommand { get; }
-
+    private readonly ThemeManager _themeManager;
     private readonly Services.GlobalHotkeys _globalHotkeys;
 
-    public SettingsViewModel(IConfig config, Services.GlobalHotkeys globalHotkeys)
+    public SettingsViewModel(IConfig config, ThemeManager themeManager, Services.GlobalHotkeys globalHotkeys)
     {
         Config = config;
+        _themeManager = themeManager;
         _globalHotkeys = globalHotkeys;
 
-        ThumbnailQualityValues = Enum.GetValues(typeof(ThumbnailQuality)).Cast<ThumbnailQuality>();
+        //_themeManager.PropertyChanged += ThemeManager_PropertyChanged;
+        Themes = CollectionViewSource.GetDefaultView(_themeManager.Themes);
+    }
 
-        SaveCommand = new RelayCommand(Config.Save);
+    private void ThemeManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(CurrentTheme));
     }
 }

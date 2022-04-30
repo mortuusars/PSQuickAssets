@@ -266,6 +266,9 @@ Esc to cancel.</value>
   <data name="Settings_Medium" xml:space="preserve">
     <value>Medium</value>
   </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
   <data name="Settings_ThumbnailQuality" xml:space="preserve">
     <value>Thumbnail quiality</value>
   </data>

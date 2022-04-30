@@ -4,6 +4,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
+                   xmlns:pureUIcommands="clr-namespace:PureUI.Commands;assembly=PureUI"
                    xmlns:local="clr-namespace:PSQuickAssets.Windows"
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -21,6 +22,7 @@
                    d:BorderThickness="0"
                    FontFamily="{StaticResource FontLight}"
                    Foreground="{DynamicResource Brushes.Foreground.1}"
+                   DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
                    d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
 
     <pureUI:PureWindow.Resources>
@@ -341,6 +343,16 @@
             <Setter Property="Margin" Value="0 0 0 4" />
         </Style>
 
+        <Style TargetType="{x:Type controls:ContentSettingItem}">
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}"/>
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
+        </Style>
+
+        <Style TargetType="{x:Type controls:ToggleSettingItem}">
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}"/>
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
+        </Style>
+
     </pureUI:PureWindow.Resources>
 
     <pureUI:PureWindow.Style>
@@ -349,6 +361,10 @@
         </Style>
     </pureUI:PureWindow.Style>
 
+    <pureUI:PureWindow.InputBindings>
+        <KeyBinding Key="Esc" Command="{x:Static pureUIcommands:WindowCommands.CloseWindow}"/>
+    </pureUI:PureWindow.InputBindings>
+    
     <Grid>
         <!--  TITLE PREVIEW  -->
         <d:Border Background="{StaticResource Brushes.Border.0}"
@@ -360,7 +376,7 @@
         <TabControl Background="Transparent"
                     BorderThickness="0"
                     TabStripPlacement="Left"
-                    Padding="30 0"
+                    Padding="30 5"
                     Margin="15 15 2 0"
                     Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}">
 
@@ -418,7 +434,7 @@
                                                       ClearFocusOnCancel="True"
                                                       ClearFocusOnClear="True"
                                                       CornerRadius="3"
-                                                      Background="{DynamicResource Brushes.Overlay.0}"
+                                                      Background="{DynamicResource Brushes.Background.3}"
                                                       Hotkey="{Binding ShowHideWindowHotkey, UpdateSourceTrigger=LostFocus}"
                                                       ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
                             </Grid>
@@ -459,8 +475,7 @@
                     <TextBlock Text="{lex:Loc Settings_Category_Application}" Style="{StaticResource CategoryHeader}" />
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}"
-                                                IsChecked="{Binding Config.CheckUpdates}"
-                                                Background="{DynamicResource Brushes.Overlay.0}">
+                                                IsChecked="{Binding Config.CheckUpdates}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xECC5;" Size="18" />
                         </controls:ToggleSettingItem.Icon>
@@ -468,8 +483,7 @@
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_DebugMode}"
                                                 Description="{lex:Loc Settings_DebugMode_Tooltip}"
-                                                IsChecked="{Binding Config.DebugMode}"
-                                                Background="{DynamicResource Brushes.Overlay.0}">
+                                                IsChecked="{Binding Config.DebugMode}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xE9F5;" Size="18" />
                         </controls:ToggleSettingItem.Icon>
@@ -479,7 +493,7 @@
             </TabItem>
 
             <!--  APPEARANCE  -->
-            <!--<TabItem HorizontalContentAlignment="Left">
+            <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <pureUIcontrols:FontIcon Icon="&#xE771;" Margin="0 0 8 0" />
@@ -491,12 +505,19 @@
                     <controls:ContentSettingItem.Icon>
                         <pureUIcontrols:FontIcon Icon="&#xE243;" Size="18" FontFamily="{StaticResource MaterialIcons}" />
                     </controls:ContentSettingItem.Icon>
-                    
-                    
-                    
+
+                    <ComboBox ItemsSource="{Binding Themes}"
+                              SelectedItem="{Binding CurrentTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
                 </controls:ContentSettingItem>
-                
-            </TabItem>-->
+            </TabItem>
 
             <!--  ASSETS  -->
             <!--<TabItem>

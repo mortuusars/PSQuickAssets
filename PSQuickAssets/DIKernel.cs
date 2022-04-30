@@ -3,6 +3,7 @@ using PSQA.Assets.Repository;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using PSQuickAssets.ViewModels;
+using PureUI.Themes;
 using Serilog;
 
 namespace PSQuickAssets;
@@ -38,6 +39,8 @@ internal static class DIKernel
 
         services.AddTransient<AssetsWindowViewModel>();
 
+        services.AddSingleton<ThemeManager>();
+        services.AddTransient<ThemeService>();
         services.AddTransient<SettingsViewModel>();
 
         services.AddTransient<UpdateChecker>();

@@ -23,15 +23,13 @@
                    Height="250"
                    Topmost="{Binding Config.AlwaysOnTop}"
                    SaveData="True"
-                   BorderThickness="1 0 1 1"
-                   FontFamily="{StaticResource FontLight}"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
                    d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
 
     <Window.InputBindings>
-        <KeyBinding Key="Esc" Command="{Binding Source={StaticResource WindowManagerCommands}, Path=ToggleMainWindowCommand}" />
+        <KeyBinding Key="Esc" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
         <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
         <KeyBinding Gesture="Ctrl+OemPlus"
@@ -41,6 +39,9 @@
                     Command="{Binding ChangeThumbnailSizeCommand}"
                     CommandParameter="{x:Static pureUI:MouseWheelDirection.Down}" />
 
+        <KeyBinding Gesture="Ctrl+P" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}" />
+        
+        <!--GROUP-->
         <pureUI:MouseOverKeyBinding Gesture="Ctrl+M"
                                     ElementName="GroupRoot"
                                     Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
@@ -51,6 +52,7 @@
                                     PassedParameter="Element"
                                     Command="{x:Static commands:AssetCommands.RenameGroup}" />
 
+        <!--ASSETS-->
         <pureUI:MouseOverKeyBinding Gesture="Ctrl+E"
                                     ElementType="{x:Type assetcontrol:AssetControl}"
                                     Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
@@ -140,7 +142,7 @@
                             <Separator />
 
                             <!--  SETTINGS  -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
                                 <MenuItem.Icon>
                                     <Path Height="16"
                                           Width="16"
@@ -211,8 +213,8 @@
 
                 </Button.ToolTip>
                 <Button.InputBindings>
-                    <MouseBinding Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}" Gesture="LeftClick" />
-                    <MouseBinding Command="{x:Static cmds:GeneralCommands.Shutdown}" Gesture="Ctrl+LeftClick" />
+                    <MouseBinding Gesture="LeftClick" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"  />
+                    <MouseBinding Gesture="Ctrl+LeftClick" Command="{x:Static cmds:GeneralCommands.Shutdown}"  />
                 </Button.InputBindings>
             </Button>
         </Grid>

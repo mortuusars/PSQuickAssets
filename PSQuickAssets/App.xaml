@@ -1,15 +1,17 @@
 ﻿<Application
     x:Class="PSQuickAssets.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:themes="clr-namespace:PureUI.Themes;assembly=PureUI.Themes"
     ShutdownMode="OnMainWindowClose">
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MortuusUI;component/Resources.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/PureUI;component/Resources.xaml" />
 
-                <ResourceDictionary Source="Resources/Themes/Dark.xaml"/>
+                <themes:ThemeResourceDictionary Source="Resources/Themes/Dark.xaml"/>
 
                 <ResourceDictionary Source="Resources/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Icons.xaml" />
@@ -29,6 +31,7 @@
                 <ResourceDictionary Source="Resources/Styles/TaskBarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!--Fixes context menu flickering when reopened-->
             <PopupAnimation x:Key="{x:Static SystemParameters.MenuPopupAnimationKey}">None</PopupAnimation>
             
             <DropShadowEffect

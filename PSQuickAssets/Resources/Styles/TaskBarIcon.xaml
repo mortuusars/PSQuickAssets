@@ -8,7 +8,7 @@
 
     <tb:TaskbarIcon x:Key="TaskBarIcon"
                     IconSource="../Images/psquickassets-size.ico"
-                    LeftClickCommand="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}"
+                    LeftClickCommand="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
                     lex:LocalizeDictionary.DesignCulture="en"
                     lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                     lex:ResxLocalizationProvider.DefaultDictionary="Strings">
@@ -24,7 +24,7 @@
 
                 <!-- SHOW/HIDE MAIN WINDOW  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_ShowMainWindow}"
-                          Command="{Binding ToggleMainWindowCommand, Source={StaticResource WindowManagerCommands}}"
+                          Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
                           InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="15"
@@ -48,7 +48,7 @@
 
                 <!-- SHOW/HIDE SETTINGS  -->
                 <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_Settings}" 
-                          Command="{Binding OpenOrCloseSettingsCommand, Source={StaticResource WindowManagerCommands}}">
+                          Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
                     <MenuItem.Icon>
                         <controls:PathIcon Width="15"
                                            Data="{StaticResource SettingsIconGeometry}"

@@ -14,17 +14,19 @@ internal interface IConfig : INotifyPropertyChanged
 {
     string ShowHideWindowHotkey { get; set; }
     bool AlwaysOnTop { get; set; }
-    bool MinimizeWindowInsteadOfHiding { get; set; }
-    bool HideWindowIfClickedOutside { get; set; }
+    bool HideIconFromTaskbar { get; set; }
     public bool HideWindowWhenAddingAsset { get; set; }
+    bool HideWindowIfClickedOutside { get; set; }
     double ThumbnailSize { get; set; }
     ThumbnailQuality ThumbnailQuality { get; set; }
     bool CheckUpdates { get; set; }
+    bool DebugMode { get; set; }
+
+    string Theme { get; set; }
 
     bool AddMaskIfDocumentHasSelection { get; set; }
     bool UnlinkMask { get; set; }
 
-    bool DebugMode { get; set; }
 
     void Save();
 }
@@ -34,20 +36,20 @@ internal class Config : ConfigBase, IConfig
     //General
     public string ShowHideWindowHotkey { get => GetValue("Ctrl + Alt + A"); set => SetValue(value); }
     public bool AlwaysOnTop { get => GetValue(true); set => SetValue(value); }
-    public bool MinimizeWindowInsteadOfHiding { get => GetValue(false); set => SetValue(value); }
+    public bool HideIconFromTaskbar { get => GetValue(false); set => SetValue(value); }
     public bool HideWindowWhenAddingAsset { get => GetValue(true); set => SetValue(value); }
     public bool HideWindowIfClickedOutside { get => GetValue(true); set => SetValue(value); }
     public double ThumbnailSize { get => GetValue(60.0); set => SetValue(value); }
     public ThumbnailQuality ThumbnailQuality { get => GetValue(ThumbnailQuality.Medium); set => SetValue(value); }
     public bool CheckUpdates { get => GetValue(true); set => SetValue(value); }
+    public bool DebugMode { get => GetValue(false); set => SetValue(value); }
+
+    public string Theme { get => GetValue(string.Empty); set => SetValue(value); }
 
     //Assets
     public bool AddMaskIfDocumentHasSelection { get => GetValue(true); set => SetValue(value); }
     //TODO: Mask mode.
     public bool UnlinkMask { get => GetValue(true); set => SetValue(value); }
-
-    //Experimental
-    public bool DebugMode { get => GetValue(false); set => SetValue(value); }
 
     private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");
     private readonly ILogger _logger;

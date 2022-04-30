@@ -14,8 +14,8 @@
 
     <UserControl.Style>
         <Style TargetType="UserControl">
-            <Setter Property="Template" Value="{StaticResource SettingItemTemplate}"/>
-            <Setter Property="Background" Value="{DynamicResource Brushes.Overlay.0}"/>
+            <Setter Property="Template" Value="{StaticResource SettingItemTemplate}"/>            
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}"/>
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
         </Style>
     </UserControl.Style>

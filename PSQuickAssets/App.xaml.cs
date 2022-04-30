@@ -27,6 +27,8 @@ public partial class App : Application
         
         ShutdownIfAnotherInstanceRunning();
 
+        ServiceProvider.GetRequiredService<ThemeService>().Initialize();
+
         //Initialize task bar icon:
         var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
@@ -45,7 +47,7 @@ public partial class App : Application
     {
         //TODO: Move to GlobalHotkeys.
         var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
-        globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ToggleMainWindow());
+        globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ShowHideMainWindow());
         globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
     }
 
