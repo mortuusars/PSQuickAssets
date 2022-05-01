@@ -33,7 +33,7 @@
                                 BorderThickness="2"
                                 CornerRadius="18">
                                 <Border.Background>
-                                    <SolidColorBrush Color="{DynamicResource BackgroundNearColor}" />
+                                    <SolidColorBrush Color="{DynamicResource Colors.Background.3}" />
                                 </Border.Background>
                                 <!--  TOGGLE ASSEMBLY  -->
                                 <Grid
@@ -55,7 +55,7 @@
                                             <ScaleTransform CenterX="0.5" CenterY="0.5" />
                                         </Border.RenderTransform>
                                         <Border.Background>
-                                            <SolidColorBrush Color="{DynamicResource BackgroundCloserColor}" />
+                                            <SolidColorBrush Color="{StaticResource Colors.Background.1}" />
                                         </Border.Background>
 
                                         <!--  SYMBOL  -->
@@ -68,7 +68,7 @@
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
                                                     Data="M 4,4 L 12,12 M 12,4 L 4,12"
-                                                    Stroke="{StaticResource ForegroundIntenseBrush}"
+                                                    Stroke="{StaticResource Brushes.Foreground.3}"
                                                     StrokeEndLineCap="Round"
                                                     StrokeStartLineCap="Round"
                                                     StrokeThickness="3" />
@@ -79,8 +79,8 @@
                                                     Height="16"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
-                                                    Data="M 3,9 L 7,13 M 7,13 L 13,4"
-                                                    Stroke="{StaticResource BackgroundNearBrush}"
+                                                    Data="M 2,8 L 7,13 M 7,13 L 13,4"
+                                                    Stroke="{StaticResource Brushes.Accent.Background.0}"
                                                     StrokeEndLineCap="Round"
                                                     StrokeStartLineCap="Round"
                                                     StrokeThickness="3" />
@@ -132,7 +132,7 @@
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="Opacity"
                                             To="0.5"
-                                            Duration="0:0:0.4" />
+                                            Duration="0:0:0.2" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -143,13 +143,13 @@
                                             EasingFunction="{StaticResource SwitchBasicEasing}"
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource ForegroundLighterColor}"
+                                            To="{StaticResource Colors.Accent.Background.0}"
                                             Duration="{StaticResource CheckShorterDuration}" />
                                         <ColorAnimation
                                             EasingFunction="{StaticResource SwitchBasicEasing}"
                                             Storyboard.TargetName="SwitchBorder"
                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                            To="{StaticResource ForegroundIntense}"
+                                            To="{StaticResource Colors.Accent.Foreground.0.Inverse}"
                                             Duration="{StaticResource CheckShorterDuration}" />
                                         <DoubleAnimation
                                             EasingFunction="{StaticResource SwitchBackEasing}"
@@ -175,13 +175,13 @@
                                             EasingFunction="{StaticResource SwitchBasicEasing}"
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource BackgroundNearColor}"
+                                            To="{StaticResource Colors.Background.0}"
                                             Duration="{StaticResource CheckShorterDuration}" />
                                         <ColorAnimation
                                             EasingFunction="{StaticResource SwitchBasicEasing}"
                                             Storyboard.TargetName="SwitchBorder"
                                             Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                            To="{StaticResource ForegroundLighterColor}"
+                                            To="{StaticResource Colors.Background.4}"
                                             Duration="{StaticResource CheckShorterDuration}" />
                                         <DoubleAnimation
                                             EasingFunction="{StaticResource SwitchBackEasing}"

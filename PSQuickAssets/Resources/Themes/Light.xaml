@@ -19,9 +19,10 @@
     <Color x:Key="Colors.Foreground.3">#555</Color>
     <Color x:Key="Colors.Foreground.4">#666</Color>
 
-    <Color x:Key="Colors.Accent.Background.0">#72C0FF</Color>
+    <Color x:Key="Colors.Accent.Background.0">#54A7E9</Color>
 
     <Color x:Key="Colors.Accent.Foreground.0">#222</Color>
+    <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fff</Color>
 
     <Color x:Key="Colors.Overlay.0">#20FFFFFF</Color>
 
@@ -45,6 +46,7 @@
     <SolidColorBrush x:Key="Brushes.Accent.Background.0" Color="{StaticResource Colors.Accent.Background.0}"/>
 
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
 
     <SolidColorBrush x:Key="Brushes.Overlay.0" Color="{StaticResource Colors.Overlay.0}"/>
 

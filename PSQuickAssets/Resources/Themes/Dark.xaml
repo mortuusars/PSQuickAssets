@@ -13,15 +13,16 @@
     <Color x:Key="Colors.Border.1">#1f1f1f</Color>
     <Color x:Key="Colors.Border.2">#232323</Color>
     
-    <Color x:Key="Colors.Foreground.0">#eee</Color>
-    <Color x:Key="Colors.Foreground.1">#ccc</Color>
-    <Color x:Key="Colors.Foreground.2">#bbb</Color>
-    <Color x:Key="Colors.Foreground.3">#999</Color>
-    <Color x:Key="Colors.Foreground.4">#777</Color>
+    <Color x:Key="Colors.Foreground.0">#fafafa</Color>
+    <Color x:Key="Colors.Foreground.1">#eee</Color>
+    <Color x:Key="Colors.Foreground.2">#ccc</Color>
+    <Color x:Key="Colors.Foreground.3">#aaa</Color>
+    <Color x:Key="Colors.Foreground.4">#888</Color>
 
-    <Color x:Key="Colors.Accent.Background.0">#72C0FF</Color>
-    
+    <Color x:Key="Colors.Accent.Background.0">#54A7E9</Color>
+
     <Color x:Key="Colors.Accent.Foreground.0">#252525</Color>
+    <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fff</Color>
 
     <Color x:Key="Colors.Overlay.0">#17EEEEEE</Color>
 
@@ -47,5 +48,8 @@
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
     
     <SolidColorBrush x:Key="Brushes.Overlay.0" Color="{StaticResource Colors.Overlay.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
+
+    
 
 </themes:ThemeResourceDictionary>

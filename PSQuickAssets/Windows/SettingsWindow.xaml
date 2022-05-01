@@ -434,6 +434,7 @@
                                                       ClearFocusOnCancel="True"
                                                       ClearFocusOnClear="True"
                                                       CornerRadius="3"
+                                                      IsTabStop="False"
                                                       Background="{DynamicResource Brushes.Background.3}"
                                                       Hotkey="{Binding ShowHideWindowHotkey, UpdateSourceTrigger=LostFocus}"
                                                       ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />

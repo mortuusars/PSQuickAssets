@@ -26,6 +26,16 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                
                 <!--  ICON  -->
                 <ContentPresenter Content="{Binding ElementName=root, Path=Icon}"
                                   VerticalAlignment="Center"
