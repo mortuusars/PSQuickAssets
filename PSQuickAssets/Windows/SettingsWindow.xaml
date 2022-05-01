@@ -16,14 +16,17 @@
                    lex:ResxLocalizationProvider.DefaultDictionary="Lang"
                    mc:Ignorable="d"
                    Title="{lex:Loc Settings_WindowTitle}"
-                   Width="750" MinWidth="480"
-                   Height="520" MinHeight="200"
+                   Width="750"
+                   MinWidth="480"
+                   Height="520"
+                   MinHeight="200"
                    d:WindowStyle="None"
                    d:BorderThickness="0"
                    FontFamily="{StaticResource FontLight}"
                    Foreground="{DynamicResource Brushes.Foreground.1}"
                    DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
-                   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
+                   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <pureUI:PureWindow.Resources>
 
@@ -344,13 +347,213 @@
         </Style>
 
         <Style TargetType="{x:Type controls:ContentSettingItem}">
-            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}"/>
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
         </Style>
 
         <Style TargetType="{x:Type controls:ToggleSettingItem}">
-            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}"/>
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
+        </Style>
+
+        <!--COMBOBOX ITEM STYLE-->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Border" SnapsToDevicePixels="True">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource Brushes.Accent.Background.0}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <ContentPresenter Margin="10 8" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).                     (SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Colors.Accent.Background.0}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).                     (SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Colors.Accent.Background.0}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--COMBOBOX STYLE-->
+        <Style x:Key="ProperComboBox" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Border x:Name="root" MinWidth="50">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="4" />
+                                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
+                                            <Setter Property="CornerRadius" Value="4 4 0 0" />
+                                        </DataTrigger>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  ARROW ICON  -->
+                                <Viewbox Grid.Column="1"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="7"
+                                         Margin="8"
+                                         RenderTransformOrigin="0.5, 0.5">
+                                    <Viewbox.RenderTransform>
+                                        <TransformGroup>
+                                            <TransformGroup.Children>
+                                                <ScaleTransform ScaleX="1" ScaleY="1" x:Name="scale" />
+                                                <RotateTransform Angle="0" x:Name="rotate" />
+                                            </TransformGroup.Children>
+                                        </TransformGroup>
+                                    </Viewbox.RenderTransform>
+                                    <Viewbox.Style>
+                                        <Style TargetType="Viewbox">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="0:0:0"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[0].ScaleX"
+                                                                                 To="1.2" />
+                                                                <DoubleAnimation Duration="0:0:0"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                                                                                 To="1.2" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="0:0:0.15"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[0].ScaleX"
+                                                                                 To="1" />
+                                                                <DoubleAnimation Duration="0:0:0.15"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                                                                                 To="1" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="0:0:0.15"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[1].Angle"
+                                                                                 To="180" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="0:0:0.15"
+                                                                                 Storyboard.TargetProperty="RenderTransform.Children[1].Angle"
+                                                                                 To="0" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Viewbox.Style>
+                                    <Path Data="M24 30.8 12 18.8 14.15 16.65 24 26.5 33.85 16.65 36 18.8Z"
+                                          Fill="{DynamicResource Brushes.Foreground.1}"
+                                          Stretch="Fill"
+                                          UseLayoutRounding="False" />
+                                </Viewbox>
+
+                                <!--  SELECTED ITEM  -->
+                                <ContentPresenter Content="{TemplateBinding SelectedItem}"
+                                                  ContentTemplate="{TemplateBinding ItemTemplate}"
+                                                  IsHitTestVisible="False"
+                                                  Margin="{TemplateBinding Padding}" />
+
+                                <ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Grid.ColumnSpan="2"
+                                              Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Grid Background="Transparent" />
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <Popup x:Name="PART_Popup"
+                                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       Focusable="False"
+                                       AllowsTransparency="True"
+                                       PopupAnimation="Slide"
+                                       Placement="Bottom">
+
+                                    <Grid x:Name="DropDown"
+                                          SnapsToDevicePixels="True"
+                                          MinWidth="{TemplateBinding ActualWidth}"
+                                          MaxHeight="{TemplateBinding MaxDropDownHeight}">
+
+                                        <Grid.OpacityMask>
+                                            <VisualBrush Visual="{Binding ElementName=DropDownBorder}" />
+                                        </Grid.OpacityMask>
+                                        <Border x:Name="DropDownBorder"
+                                                Background="{DynamicResource Brushes.Background.3}"
+                                                CornerRadius="0 0 4 4"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalAlignment="Stretch" />
+
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </pureUI:PureWindow.Resources>
@@ -362,9 +565,9 @@
     </pureUI:PureWindow.Style>
 
     <pureUI:PureWindow.InputBindings>
-        <KeyBinding Key="Esc" Command="{x:Static pureUIcommands:WindowCommands.CloseWindow}"/>
+        <KeyBinding Key="Esc" Command="{x:Static pureUIcommands:WindowCommands.CloseWindow}" />
     </pureUI:PureWindow.InputBindings>
-    
+
     <Grid>
         <!--  TITLE PREVIEW  -->
         <d:Border Background="{StaticResource Brushes.Border.0}"
@@ -442,7 +645,7 @@
                         </Border>
                     </controls:ContentSettingItem>
 
-                    <!--ALWAYS ON TOP-->
+                    <!--  ALWAYS ON TOP  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AlwaysOnTop}"
                                                 Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}"
                                                 IsChecked="{Binding Config.AlwaysOnTop}">
@@ -451,32 +654,30 @@
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
-                    <!--HIDE WINDOW WHEN ADDING-->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_HideWindowWhenAdding}"
-                                                IsChecked="{Binding Config.HideWindowWhenAddingAsset}">
+                    <!--  HIDE WINDOW WHEN ADDING  -->
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_HideWindowWhenAdding}" IsChecked="{Binding Config.HideWindowWhenAddingAsset}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xEBFC;" Size="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
-                    
-                    <!--HIDE FROM TASKBAR-->
+
+                    <!--  HIDE FROM TASKBAR  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_HideFromTaskbar}"
                                                 Description="{lex:Loc Settings_HideFromTaskbar_Tooltip}"
-                                                IsChecked="{Binding Config.HideFromTaskbar}">
+                                                IsChecked="{Binding Config.HideIconFromTaskbar}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xE8F9;" Size="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
-                    
-                    
+
+
                     <Separator Margin="10" Opacity="0" />
-                    
-                    
+
+
                     <!--  APPLICATION  -->
                     <TextBlock Text="{lex:Loc Settings_Category_Application}" Style="{StaticResource CategoryHeader}" />
 
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}"
-                                                IsChecked="{Binding Config.CheckUpdates}">
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}" IsChecked="{Binding Config.CheckUpdates}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xECC5;" Size="18" />
                         </controls:ToggleSettingItem.Icon>
@@ -502,21 +703,49 @@
                     </StackPanel>
                 </TabItem.Header>
 
+                <!--THEME-->
                 <controls:ContentSettingItem Header="{lex:Loc Settings_Theme}">
                     <controls:ContentSettingItem.Icon>
-                        <pureUIcontrols:FontIcon Icon="&#xE243;" Size="18" FontFamily="{StaticResource MaterialIcons}" />
+                        <pureUIcontrols:FontIcon Icon="&#xE243;"
+                                                 Size="18"
+                                                 FontFamily="{StaticResource MaterialIcons}" />
                     </controls:ContentSettingItem.Icon>
 
-                    <ComboBox ItemsSource="{Binding Themes}"
+                    <ComboBox Style="{StaticResource ProperComboBox}"
+                              Padding="12 6"
+                              Background="{DynamicResource Brushes.Background.3}"
+                              ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding CurrentTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedIndex="0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--  DARK LIGHT ICON  -->
+                                    <TextBlock FontFamily="{StaticResource MaterialIcons}"
+                                               Foreground="{DynamicResource Brushes.Foreground.1}"
+                                               Margin="0 1 8 0"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding Text.Length, RelativeSource={RelativeSource Self}, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Name}" Value="Dark">
+                                                        <Setter Property="Text" Value="&#xE3A7;" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Name}" Value="Light">
+                                                        <Setter Property="Text" Value="&#xE430;" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <!--  THEME NAME  -->
+                                    <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Brushes.Foreground.1}" />
+                                </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-
                 </controls:ContentSettingItem>
             </TabItem>
 

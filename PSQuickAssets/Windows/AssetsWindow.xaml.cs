@@ -6,14 +6,14 @@ namespace PSQuickAssets.Windows;
 
 public partial class AssetsWindow : PureWindow
 {
-    public bool ShouldMinimizeInsteadOfHiding
+    public bool HideIconFromTaskbarWhenHidden
     {
-        get { return (bool)GetValue(ShouldMinimizeInsteadOfHidingProperty); }
-        set { SetValue(ShouldMinimizeInsteadOfHidingProperty, value); }
+        get { return (bool)GetValue(HideIconFromTaskbarWhenHiddenProperty); }
+        set { SetValue(HideIconFromTaskbarWhenHiddenProperty, value); }
     }
 
-    public static readonly DependencyProperty ShouldMinimizeInsteadOfHidingProperty =
-        DependencyProperty.Register(nameof(ShouldMinimizeInsteadOfHiding), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
+    public static readonly DependencyProperty HideIconFromTaskbarWhenHiddenProperty =
+        DependencyProperty.Register(nameof(HideIconFromTaskbarWhenHidden), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
 
     public AssetsWindow()
     {
@@ -31,7 +31,7 @@ public partial class AssetsWindow : PureWindow
         _restoreWindowState = WindowState;
         WindowState = WindowState.Minimized;
 
-        if (!ShouldMinimizeInsteadOfHiding)
+        if (HideIconFromTaskbarWhenHidden)
         {
             // Hide window after a delay to allow minimizing animation to play.
             var hidingTimer = new DispatcherTimer();

@@ -240,7 +240,7 @@
     <pureUI:PureWindow.Style>
         <Style TargetType="{x:Type windows:AssetsWindow}" BasedOn="{StaticResource PSQAWindow}">
             <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
-            <Setter Property="ShouldMinimizeInsteadOfHiding" Value="{Binding Config.MinimizeWindowInsteadOfHiding}" />
+            <Setter Property="HideIconFromTaskbarWhenHidden" Value="{Binding Config.HideIconFromTaskbar}"/>
         </Style>
     </pureUI:PureWindow.Style>
 
