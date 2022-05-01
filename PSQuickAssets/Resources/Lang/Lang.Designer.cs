@@ -340,6 +340,24 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Mask to Layer.
+        /// </summary>
+        public static string Settings_AddMaskToLayer {
+            get {
+                return ResourceManager.GetString("Settings_AddMaskToLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If document has a selection - a mask will be created from it.
+        /// </summary>
+        public static string Settings_AddMaskToLayer_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_AddMaskToLayer_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Always on Top.
         /// </summary>
         public static string Settings_AlwaysOnTop {
@@ -527,6 +545,24 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Settings_ThumbnailQuality_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_ThumbnailQuality_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlink Mask.
+        /// </summary>
+        public static string Settings_UnlinkMask {
+            get {
+                return ResourceManager.GetString("Settings_UnlinkMask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created mask will be unlinked from the layer.
+        /// </summary>
+        public static string Settings_UnlinkMask_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_UnlinkMask_Tooltip", resourceCulture);
             }
         }
         

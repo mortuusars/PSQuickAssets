@@ -356,7 +356,7 @@
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
         </Style>
 
-        <!--COMBOBOX ITEM STYLE-->
+        <!--  COMBOBOX ITEM STYLE  -->
         <Style TargetType="ComboBoxItem">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -403,7 +403,7 @@
             </Setter>
         </Style>
 
-        <!--COMBOBOX STYLE-->
+        <!--  COMBOBOX STYLE  -->
         <Style x:Key="ProperComboBox" TargetType="ComboBox">
             <Setter Property="Template">
                 <Setter.Value>
@@ -703,7 +703,7 @@
                     </StackPanel>
                 </TabItem.Header>
 
-                <!--THEME-->
+                <!--  THEME  -->
                 <controls:ContentSettingItem Header="{lex:Loc Settings_Theme}">
                     <controls:ContentSettingItem.Icon>
                         <pureUIcontrols:FontIcon Icon="&#xE243;"
@@ -750,7 +750,7 @@
             </TabItem>
 
             <!--  ASSETS  -->
-            <!--<TabItem>
+            <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <pureUIcontrols:FontIcon Icon="&#xE3F4;"
@@ -759,7 +759,22 @@
                         <TextBlock Text="{lex:Loc Settings_Assets}" />
                     </StackPanel>
                 </TabItem.Header>
-            </TabItem>-->
+
+                <StackPanel>
+                    <!--  ADD MASK TO LAYER  -->
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}"
+                                                Description="{lex:Loc Settings_AddMaskToLayer_Tooltip}"
+                                                IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
+
+                    <!--  UNLINK MASK  -->
+                    <controls:ToggleSettingItem Header="{lex:Loc Settings_UnlinkMask}"
+                                                Description="{lex:Loc Settings_UnlinkMask_Tooltip}"
+                                                IsChecked="{Binding Config.UnlinkMask}"
+                                                Margin="10 0 0 0"
+                                                IsEnabled="{Binding Config.AddMaskIfDocumentHasSelection}"/>
+                </StackPanel>
+
+            </TabItem>
         </TabControl>
     </Grid>
 

@@ -210,6 +210,12 @@
   <data name="SelectImages" xml:space="preserve">
     <value>Select Images</value>
   </data>
+  <data name="Settings_AddMaskToLayer" xml:space="preserve">
+    <value>Add Mask to Layer</value>
+  </data>
+  <data name="Settings_AddMaskToLayer_Tooltip" xml:space="preserve">
+    <value>If document has a selection - a mask will be created from it</value>
+  </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>Always on Top</value>
   </data>
@@ -274,6 +280,12 @@ Esc to cancel.</value>
   </data>
   <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
     <value>Higher quality can consume more RAM</value>
+  </data>
+  <data name="Settings_UnlinkMask" xml:space="preserve">
+    <value>Unlink Mask</value>
+  </data>
+  <data name="Settings_UnlinkMask_Tooltip" xml:space="preserve">
+    <value>Created mask will be unlinked from the layer</value>
   </data>
   <data name="Settings_WindowOpenHotkey" xml:space="preserve">
     <value>Window Show/Hide Hotkey</value>
