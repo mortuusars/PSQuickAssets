@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSQA.Core;
+using System;
 
 namespace PSQuickAssets.PSInterop.Internal;
 
@@ -106,6 +107,32 @@ internal static class PsActions
         ps.ExecuteAction(idMk, desc2, PsDialogModes.psDisplayNoDialogs);
     }
 
+    internal static void AddMask(dynamic ps, MaskMode maskMode)
+    {
+        if (maskMode == MaskMode.RevealSelection && !HasSelection(ps))
+            maskMode = MaskMode.RevealAll;
+        else if (maskMode == MaskMode.HideSelection && !HasSelection(ps))
+            maskMode = MaskMode.HideAll;
+
+        string maskModeId = CharIDFromMaskMode(maskMode);
+
+        var idMk = ps.CharIDToTypeID("Mk  ");
+        dynamic desc2 = Activator.CreateInstance(_actionDescriptorType);
+        var idNw = ps.CharIDToTypeID("Nw  ");
+        var idChnl = ps.CharIDToTypeID("Chnl");
+        desc2.PutClass(idNw, idChnl);
+        var idAt = ps.CharIDToTypeID("At  ");
+        dynamic ref1 = Activator.CreateInstance(_actionReferenceType);
+        var idMsk = ps.CharIDToTypeID("Msk ");
+        ref1.PutEnumerated(idChnl, idChnl, idMsk);
+        desc2.PutReference(idAt, ref1);
+        var idUsng = ps.CharIDToTypeID("Usng");
+        var idUsrM = ps.CharIDToTypeID("UsrM");
+        desc2.PutEnumerated(idUsng, idUsrM, maskModeId);
+
+        ps.ExecuteAction(idMk, desc2, PsDialogModes.psDisplayNoDialogs);
+    }
+
     /// <summary>
     /// Deletes channel with specified name.
     /// </summary>
@@ -129,5 +156,30 @@ internal static class PsActions
         desc2.PutBoolean(ps.CharIDToTypeID("Usrs"), false);
         desc.PutObject(ps.CharIDToTypeID("T   "), ps.CharIDToTypeID("Lyr "), desc2);
         ps.ExecuteAction(ps.CharIDToTypeID("setd"), desc, PsDialogModes.psDisplayNoDialogs);
+    }
+
+    internal static bool HasSelection(dynamic ps)
+    {
+        try
+        {
+            var _ = ps.ActiveDocument.Selection.Bounds;
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    internal static string CharIDFromMaskMode(MaskMode maskMode)
+    {
+        return maskMode switch
+        {
+            MaskMode.RevealAll => "RvlA",
+            MaskMode.HideAll => "HdAl",
+            MaskMode.RevealSelection => "RvlS",
+            MaskMode.HideSelection => "HdSl",
+            _ => throw new ArgumentOutOfRangeException(nameof(maskMode), maskMode + " is not supported.")
+        };
     }
 }

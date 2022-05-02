@@ -10,5 +10,6 @@
     <conv:SizeToDimensionsStringConverter x:Key="SizeToString"/>
     <conv:BitmapSourceFromPathConverter x:Key="BitmapSourceFromPath"/>
     <conv:ThumbnailSizeToImageStretchConverter x:Key="ThumbnailSizeToImageStretchConverter" />
+    <conv:MaskModeToStringConverter x:Key="MaskModeToString"/>
 
 </ResourceDictionary>

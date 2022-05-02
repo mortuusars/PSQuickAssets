@@ -156,6 +156,18 @@
   <data name="GroupAssetCount" xml:space="preserve">
     <value>Asset(s)</value>
   </data>
+  <data name="MaskMode_HideAll" xml:space="preserve">
+    <value>Hide All</value>
+  </data>
+  <data name="MaskMode_HideSelection" xml:space="preserve">
+    <value>Hide Selection</value>
+  </data>
+  <data name="MaskMode_RevealAll" xml:space="preserve">
+    <value>Reveal All</value>
+  </data>
+  <data name="MaskMode_RevealSelection" xml:space="preserve">
+    <value>Reveal Selection</value>
+  </data>
   <data name="Mouse_Click" xml:space="preserve">
     <value>Click</value>
   </data>
@@ -268,6 +280,9 @@ Esc to cancel.</value>
   </data>
   <data name="Settings_Low" xml:space="preserve">
     <value>Low</value>
+  </data>
+  <data name="Settings_MaskMode" xml:space="preserve">
+    <value>Mask Mode</value>
   </data>
   <data name="Settings_Medium" xml:space="preserve">
     <value>Medium</value>

@@ -72,14 +72,18 @@ internal class PhotoshopViewModel
 
         PSResult result;
 
-        if (_config.AddMaskIfDocumentHasSelection && await _photoshop.HasSelectionAsync())
-        {
-            MaskMode maskMode = MaskMode.RevealSelection;
-            bool unlinkMask = _config.UnlinkMask;
-            result = await _photoshop.AddAsLayerWithMaskAsync(asset.FilePath, maskMode, unlinkMask);
-        }
-        else
-            result = await _photoshop.AddImageToDocumentAsync(asset.FilePath);
+        MaskMode? maskMode = _config.AddMaskToAddedLayer ? _config.MaskMode : null;
+
+        result = await _photoshop.AddAsLayerAsync(asset.FilePath, maskMode, _config.UnlinkMask);
+
+        //if (_config.AddMaskToAddedLayer && await _photoshop.HasSelectionAsync())
+        //{
+        //    MaskMode maskMode = MaskMode.RevealSelection;
+        //    bool unlinkMask = _config.UnlinkMask;
+        //    result = await _photoshop.AddAsLayerWithMaskAsync(asset.FilePath, maskMode, unlinkMask);
+        //}
+        //else
+        //    result = await _photoshop.AddImageToDocumentAsync(asset.FilePath);
 
         if (result.Success)
             asset.Uses++;

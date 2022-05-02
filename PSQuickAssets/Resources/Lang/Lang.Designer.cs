@@ -178,6 +178,42 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide All.
+        /// </summary>
+        public static string MaskMode_HideAll {
+            get {
+                return ResourceManager.GetString("MaskMode_HideAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide Selection.
+        /// </summary>
+        public static string MaskMode_HideSelection {
+            get {
+                return ResourceManager.GetString("MaskMode_HideSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reveal All.
+        /// </summary>
+        public static string MaskMode_RevealAll {
+            get {
+                return ResourceManager.GetString("MaskMode_RevealAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reveal Selection.
+        /// </summary>
+        public static string MaskMode_RevealSelection {
+            get {
+                return ResourceManager.GetString("MaskMode_RevealSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click.
         /// </summary>
         public static string Mouse_Click {
@@ -509,6 +545,15 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Settings_Low {
             get {
                 return ResourceManager.GetString("Settings_Low", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mask Mode.
+        /// </summary>
+        public static string Settings_MaskMode {
+            get {
+                return ResourceManager.GetString("Settings_MaskMode", resourceCulture);
             }
         }
         

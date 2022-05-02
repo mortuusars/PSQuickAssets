@@ -6,6 +6,8 @@
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:pureUIcommands="clr-namespace:PureUI.Commands;assembly=PureUI"
                    xmlns:local="clr-namespace:PSQuickAssets.Windows"
+                   xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
                    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
@@ -369,7 +371,7 @@
                                     <Setter Property="Background" Value="Transparent" />
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource Brushes.Accent.Background.0}" />
+                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -417,10 +419,9 @@
                                         <DataTrigger Binding="{Binding IsDropDownOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
                                             <Setter Property="CornerRadius" Value="4 4 0 0" />
                                         </DataTrigger>
-
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}" />
-                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=toggleButton}" Value="true">
+                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
@@ -512,6 +513,7 @@
                                                   Margin="{TemplateBinding Padding}" />
 
                                 <ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              x:Name="toggleButton"
                                               Grid.ColumnSpan="2"
                                               Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                               VerticalAlignment="Stretch"
@@ -554,14 +556,27 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
+
+        <!--  MASK MODE VALUES PROVIDER  -->
+        <ObjectDataProvider x:Key="MaskModeValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="core:MaskMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
 
     </pureUI:PureWindow.Resources>
 
     <pureUI:PureWindow.Style>
-        <Style TargetType="pureUI:PureWindow" BasedOn="{StaticResource PSQAWindow}">
-            <!--<Setter Property="TitleContent" Value="{StaticResource ToolTitleContent}" />-->
-        </Style>
+        <Style TargetType="pureUI:PureWindow" BasedOn="{StaticResource PSQAWindow}" />
     </pureUI:PureWindow.Style>
 
     <pureUI:PureWindow.InputBindings>
@@ -764,14 +779,117 @@
                     <!--  ADD MASK TO LAYER  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}"
                                                 Description="{lex:Loc Settings_AddMaskToLayer_Tooltip}"
-                                                IsChecked="{Binding Config.AddMaskIfDocumentHasSelection}" />
+                                                IsChecked="{Binding Config.AddMaskToAddedLayer}">
+                        <controls:ToggleSettingItem.Icon>
+                            <pureUIcontrols:FontIcon Icon="&#xE3DB;"
+                                                     FontFamily="{StaticResource MaterialIcons}"
+                                                     Size="26" />
+                        </controls:ToggleSettingItem.Icon>
+                    </controls:ToggleSettingItem>
+
+                    <!--  MASK MODE  -->
+                    <controls:ContentSettingItem Header="{lex:Loc Settings_MaskMode}"
+                                                 Margin="10 0 0 4"
+                                                 IsEnabled="{Binding Config.AddMaskToAddedLayer}">
+                        <controls:ContentSettingItem.Icon>
+                            <pureUIcontrols:FontIcon Icon="&#xE3F1;"
+                                                     Size="20"
+                                                     FontFamily="{StaticResource MaterialIcons}" />
+                        </controls:ContentSettingItem.Icon>
+                        <ComboBox Style="{StaticResource ProperComboBox}"
+                                  Background="{DynamicResource Brushes.Background.3}"
+                                  Foreground="{DynamicResource Brushes.Foreground.1}"
+                                  ItemsSource="{Binding Source={StaticResource MaskModeValues}}"
+                                  SelectedItem="{Binding Config.MaskMode}"
+                                  d:SelectedItem="{x:Static core:MaskMode.RevealSelection}"
+                                  Padding="8">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type core:MaskMode}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--  MASK ICON  -->
+                                        <Viewbox Height="20">
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <SolidColorBrush x:Key="RevealBrush" Color="#fafafa" />
+                                                    <SolidColorBrush x:Key="HideBrush" Color="#222" />
+                                                </Grid.Resources>
+                                                <Border CornerRadius="3"
+                                                        BorderThickness="2"
+                                                        BorderBrush="{DynamicResource Brushes.Foreground.2}"
+                                                        Width="40"
+                                                        Height="30">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="{StaticResource RevealBrush}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.RevealAll}">
+                                                                    <Setter Property="Background" Value="{StaticResource RevealBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.HideSelection}">
+                                                                    <Setter Property="Background" Value="{StaticResource RevealBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.HideAll}">
+                                                                    <Setter Property="Background" Value="{StaticResource HideBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.RevealSelection}">
+                                                                    <Setter Property="Background" Value="{StaticResource HideBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+
+                                                <Ellipse Width="18" Height="18">
+                                                    <Ellipse.Style>
+                                                        <Style TargetType="Ellipse">
+                                                            <Setter Property="Fill" Value="{StaticResource HideBrush}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.RevealAll}">
+                                                                    <Setter Property="Fill" Value="{StaticResource RevealBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.HideSelection}">
+                                                                    <Setter Property="Fill" Value="{StaticResource HideBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.HideAll}">
+                                                                    <Setter Property="Fill" Value="{StaticResource HideBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding}" Value="{x:Static core:MaskMode.RevealSelection}">
+                                                                    <Setter Property="Fill" Value="{StaticResource RevealBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Ellipse.Style>
+                                                </Ellipse>
+                                            </Grid>
+                                        </Viewbox>
+                                        <TextBlock Text="{Binding Converter={StaticResource MaskModeToString}}"
+                                                   Foreground="{DynamicResource Brushes.Foreground.1}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="8 0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </controls:ContentSettingItem>
+
+
 
                     <!--  UNLINK MASK  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_UnlinkMask}"
                                                 Description="{lex:Loc Settings_UnlinkMask_Tooltip}"
                                                 IsChecked="{Binding Config.UnlinkMask}"
-                                                Margin="10 0 0 0"
-                                                IsEnabled="{Binding Config.AddMaskIfDocumentHasSelection}"/>
+                                                Margin="10 0 0 4"
+                                                IsEnabled="{Binding Config.AddMaskToAddedLayer}">
+                        <controls:ToggleSettingItem.Icon>
+                            <pureUIcontrols:FontIcon Icon="&#xE71B;"
+                                                     Size="18"
+                                                     RenderTransformOrigin="0.5,0.5">
+                                <pureUIcontrols:FontIcon.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </pureUIcontrols:FontIcon.RenderTransform>
+                            </pureUIcontrols:FontIcon>
+                        </controls:ToggleSettingItem.Icon>
+                    </controls:ToggleSettingItem>
                 </StackPanel>
 
             </TabItem>

@@ -1,4 +1,5 @@
-﻿using PSQuickAssets.PSInterop.Internal;
+﻿using PSQA.Core;
+using PSQuickAssets.PSInterop.Internal;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -18,13 +19,50 @@ namespace PSQuickAssets.PSInterop
         /// </summary>
         /// <param name="actionName">Name of the action.</param>
         /// <param name="set">Set containing that action.</param>
-        public async Task<PSResult> ExecuteActionAsync(string actionName, string set)
+        public Task<PSResult> ExecuteActionAsync(string actionName, string set)
         {
-            return await Task.Run(() => ExecuteAction(() =>
+            return Task.Run(() => ExecuteAction(() =>
             {
                 dynamic ps = CreatePSInstance();
                 ps.DoAction(actionName, set);
             }));
+        }
+
+        public async Task<PSResult> AddAsLayerAsync(string filePath, MaskMode? maskMode, bool unlinkMask)
+        {
+            return await Task.Run(() => ExecuteAction(() =>
+            {
+                dynamic ps = CreatePSInstance();
+
+                if (maskMode is null)
+                {
+                    ps.Open(filePath);
+                    return;
+                }
+
+                if (PsActions.HasSelection(ps))
+                {
+                    AddAsLayerWithMask(ps, filePath, (MaskMode)maskMode, unlinkMask);
+                    return;
+                }
+
+                ps.Open(filePath);
+                PsActions.ApplyMaskFromSelection(ps, (MaskMode)maskMode);
+                //PsActions.AddMask(ps, (MaskMode)maskMode);
+            }, filePath));
+        }
+
+        private void AddAsLayerWithMask(dynamic ps, string filePath, MaskMode maskMode, bool unlinkMask)
+        {
+            PsActions.SaveSelectionAsChannel(ps, _selectionChannelName);
+            PsActions.AddFilePathAsLayer(ps, filePath);
+            PsActions.LoadSelectionFromChannel(ps, _selectionChannelName);
+            PsActions.ApplyMaskFromSelection(ps, maskMode);
+
+            PsActions.DeleteChannel(ps, _selectionChannelName);
+
+            if (unlinkMask)
+                PsActions.UnlinkMask(ps);
         }
 
         /// <summary>

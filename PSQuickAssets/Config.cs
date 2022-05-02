@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices;
+using PSQA.Core;
 using PSQuickAssets.Services;
 using PSQuickAssets.WPF;
 using PureConfig;
@@ -24,7 +25,8 @@ internal interface IConfig : INotifyPropertyChanged
 
     string Theme { get; set; }
 
-    bool AddMaskIfDocumentHasSelection { get; set; }
+    bool AddMaskToAddedLayer { get; set; }
+    MaskMode MaskMode { get; set; }
     bool UnlinkMask { get; set; }
 
 
@@ -44,11 +46,12 @@ internal class Config : ConfigBase, IConfig
     public bool CheckUpdates { get => GetValue(true); set => SetValue(value); }
     public bool DebugMode { get => GetValue(false); set => SetValue(value); }
 
+    //Appearance
     public string Theme { get => GetValue(string.Empty); set => SetValue(value); }
 
     //Assets
-    public bool AddMaskIfDocumentHasSelection { get => GetValue(true); set => SetValue(value); }
-    //TODO: Mask mode.
+    public bool AddMaskToAddedLayer { get => GetValue(true); set => SetValue(value); }
+    public MaskMode MaskMode { get => GetValue(MaskMode.RevealSelection); set => SetValue(value); }
     public bool UnlinkMask { get => GetValue(true); set => SetValue(value); }
 
     private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");

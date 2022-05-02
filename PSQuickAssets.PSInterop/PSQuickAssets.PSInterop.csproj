@@ -5,4 +5,8 @@
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
+  </ItemGroup>
+
 </Project>

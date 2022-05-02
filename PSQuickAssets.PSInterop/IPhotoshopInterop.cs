@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using PSQA.Core;
+using System.Threading.Tasks;
 
 namespace PSQuickAssets.PSInterop
 {
@@ -13,6 +14,9 @@ namespace PSQuickAssets.PSInterop
         /// <param name="actionName">Name of the action.</param>
         /// <param name="set">Set containing that action.</param>
         Task<PSResult> ExecuteActionAsync(string actionName, string set);
+
+        Task<PSResult> AddAsLayerAsync(string filePath, MaskMode? maskMode, bool unlinkMask);
+
         /// <summary>
         /// Attempts to add given image (filepath) as layer to open document in PS and applies a mask to it if selection was present.
         /// </summary>
