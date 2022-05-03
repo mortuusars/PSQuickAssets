@@ -349,15 +349,6 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Settings_DebugMode_Tooltip {
-            get {
-                return ResourceManager.GetString("Settings_DebugMode_Tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string Settings_General {

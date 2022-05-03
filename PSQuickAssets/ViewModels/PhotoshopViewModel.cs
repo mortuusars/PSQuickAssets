@@ -17,16 +17,14 @@ internal class PhotoshopViewModel
     public IAsyncRelayCommand<AssetViewModel> AddImageToPhotoshopAsyncCommand { get; }
     public IAsyncRelayCommand<AssetViewModel> OpenAsNewDocumentCommand { get; }
 
-    private readonly Photoshop _photoshop1;
-    private readonly IPhotoshopInterop _photoshop;
+    private readonly Photoshop _photoshop;
     private readonly WindowManager _windowManager;
     private readonly INotificationService _notificationService;
     private readonly IConfig _config;
 
-    public PhotoshopViewModel(Photoshop photoshop, IPhotoshopInterop photoshopInterop, WindowManager windowManager, INotificationService notificationService, IConfig config)
+    public PhotoshopViewModel(Photoshop photoshop, WindowManager windowManager, INotificationService notificationService, IConfig config)
     {
-        _photoshop1 = photoshop;
-        _photoshop = photoshopInterop;
+        _photoshop = photoshop;
         _windowManager = windowManager;
         _notificationService = notificationService;
         _config = config;
@@ -59,7 +57,7 @@ internal class PhotoshopViewModel
 
     private async Task AddImageToPhotoshopAsync(AssetViewModel asset)
     {
-        PhotoshopResponse response = await _photoshop1.HasOpenDocumentAsync() ?
+        PhotoshopResponse response = await _photoshop.HasOpenDocumentAsync() ?
             await AddAsLayerAsync(asset) :
             await OpenAsNewDocumentAsync(asset);
 
@@ -73,7 +71,7 @@ internal class PhotoshopViewModel
         if (_config.HideWindowWhenAddingAsset)
             _windowManager.HideMainWindow();
 
-        PhotoshopResponse response = await _photoshop1.AddAsLayerAsync(asset.FilePath);
+        PhotoshopResponse response = await _photoshop.AddAsLayerAsync(asset.FilePath);
 
         if (response.Status == Status.Success)
             asset.Uses++;
@@ -92,7 +90,7 @@ internal class PhotoshopViewModel
         if (_config.HideWindowWhenAddingAsset)
             _windowManager.HideMainWindow();
 
-        PhotoshopResponse response = await _photoshop1.AddAsDocumentAsync(asset.FilePath);
+        PhotoshopResponse response = await _photoshop.AddAsDocumentAsync(asset.FilePath);
 
         if (response.Status == Status.Success)
             asset.Uses++;
@@ -117,7 +115,7 @@ internal class PhotoshopViewModel
 
     private async Task<bool> ExecuteActionAsync(PhotoshopAction action)
     {
-        PhotoshopResponse response = await _photoshop1.ExecuteActionAsync(action.Action, action.Set);
+        PhotoshopResponse response = await _photoshop.ExecuteActionAsync(action.Action, action.Set);
 
         if (response.Status != Status.Success)
         {

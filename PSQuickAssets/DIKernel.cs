@@ -30,9 +30,8 @@ internal static class DIKernel
                     provider.GetRequiredService<ILogger>()));
 
 
-        services.AddSingleton<IAnotherPhotoshopInterop, AnotherPhotoshopInterop>();
-        services.AddSingleton<Photoshop>();
         services.AddSingleton<IPhotoshopInterop, PhotoshopInterop>();
+        services.AddSingleton<Photoshop>();
         services.AddSingleton<PhotoshopViewModel>();
 
         services.AddSingleton<IAssetRepositoryHandler>(p =>

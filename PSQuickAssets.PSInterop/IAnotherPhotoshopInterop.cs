@@ -3,7 +3,7 @@ using PureLib;
 
 namespace PSQuickAssets.PSInterop;
 
-public interface IAnotherPhotoshopInterop
+public interface IPhotoshopInterop
 {
     PhotoshopResponse AddAsLayer(string filePath, MaskMode? maskMode, bool unlinkMask);
     PhotoshopResponse ExecuteAction(string actionName, string set);

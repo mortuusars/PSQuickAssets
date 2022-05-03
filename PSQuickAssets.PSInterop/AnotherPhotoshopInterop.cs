@@ -4,65 +4,16 @@ using PureLib;
 using Serilog;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace PSQuickAssets.PSInterop;
 
-public enum PSErrorCode
-{
-    ERR_RETRY_LATER = -2147417846,
-    ERR_NO_SUCH_ELEMENT = -2147352565,
-    ERR_INVALID_PATH = -2147220271,
-    ERR_ILLEGAL_ARGUMENT = -2147220262,
-    ERR_INVALID_FILE_FORMAT = -2147213504,
-    ERR_USER_CANCELLED = -2147213497,
-    ERR_GENERAL_PS_ERROR = -2147212704
-}
-
-public record PhotoshopResponse(Status Status, string Message)
-{
-    public static PhotoshopResponse Success { get => new PhotoshopResponse(Status.Success, string.Empty); }
-
-    public static PhotoshopResponse FromException(Exception ex)
-    {
-        if (ex is PhotoshopException psEx)
-            return new PhotoshopResponse(psEx.Status, psEx.Message);
-
-        Status status = ex is COMException comEx ? StatusFromComErrorCode(comEx.ErrorCode) : Status.UnknownException;
-        return new PhotoshopResponse(status, ex.Message);
-    }
-
-    private static Status StatusFromComErrorCode(int errorCode)
-    {
-        try
-        {
-            PSErrorCode psErrorCode = (PSErrorCode)errorCode;
-            return psErrorCode switch
-            {
-                PSErrorCode.ERR_GENERAL_PS_ERROR => Status.Failed,
-                PSErrorCode.ERR_RETRY_LATER => Status.Busy,
-                PSErrorCode.ERR_INVALID_FILE_FORMAT => Status.InvalidFileFormat,
-                PSErrorCode.ERR_ILLEGAL_ARGUMENT => Status.InvalidFileFormat,
-                PSErrorCode.ERR_INVALID_PATH => Status.InvalidFilePath,
-                PSErrorCode.ERR_USER_CANCELLED => Status.Cancelled,
-                PSErrorCode.ERR_NO_SUCH_ELEMENT => Status.NoSelection,
-                _ => Status.UnknownException,
-            };
-        }
-        catch (Exception)
-        {
-            return Status.UnknownException;
-        }
-    }
-}
-
-public class AnotherPhotoshopInterop : IAnotherPhotoshopInterop
+public class PhotoshopInterop : IPhotoshopInterop
 {
     private const string _selectionChannelName = "QuickAssetsMask";
     private readonly Type _photoshopApplicationType;
     private readonly ILogger _logger;
 
-    public AnotherPhotoshopInterop(ILogger logger)
+    public PhotoshopInterop(ILogger logger)
     {
         _photoshopApplicationType = Type.GetTypeFromProgID("Photoshop.Application")
             ?? throw new PhotoshopException(Status.ProgIDFailed, "Failed to retrieve Photoshop Type from ProgID");

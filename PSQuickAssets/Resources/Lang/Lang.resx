@@ -213,9 +213,6 @@
   <data name="Settings_DebugMode" xml:space="preserve">
     <value>Debug Mode</value>
   </data>
-  <data name="Settings_DebugMode_Tooltip" xml:space="preserve">
-    <value />
-  </data>
   <data name="Settings_General" xml:space="preserve">
     <value>General</value>
   </data>

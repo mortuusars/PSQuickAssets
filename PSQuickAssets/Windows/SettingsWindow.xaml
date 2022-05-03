@@ -27,8 +27,7 @@
                    FontFamily="{StaticResource FontLight}"
                    Foreground="{DynamicResource Brushes.Foreground.1}"
                    DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
-                   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
-                   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+                   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
 
     <pureUI:PureWindow.Resources>
 

@@ -7,10 +7,10 @@ namespace PSQuickAssets.Models;
 
 internal class Photoshop
 {
-    private readonly IAnotherPhotoshopInterop _photoshopInterop;
+    private readonly IPhotoshopInterop _photoshopInterop;
     private readonly IConfig _config;
 
-    public Photoshop(IAnotherPhotoshopInterop photoshopInterop, IConfig config)
+    public Photoshop(IPhotoshopInterop photoshopInterop, IConfig config)
     {
         _photoshopInterop = photoshopInterop;
         _config = config;
