@@ -170,10 +170,6 @@ namespace PSQuickAssets.PSInterop
                 action();
                 return new PSResult(Status.Success, filePath);
             }
-            catch (COMException comException)
-            {
-                return PSResult.FromException(comException, filePath);
-            }
             catch (Exception exception)
             {
                 return PSResult.FromException(exception, filePath);

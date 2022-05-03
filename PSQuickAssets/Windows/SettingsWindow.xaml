@@ -778,7 +778,6 @@
                 <StackPanel>
                     <!--  ADD MASK TO LAYER  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}"
-                                                Description="{lex:Loc Settings_AddMaskToLayer_Tooltip}"
                                                 IsChecked="{Binding Config.AddMaskToAddedLayer}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xE3DB;"

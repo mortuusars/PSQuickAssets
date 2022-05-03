@@ -13,6 +13,8 @@ public class PhotoshopInteropException : Exception
     public PhotoshopInteropException(string? message, Exception? innerException) : base(message, innerException) { }
 }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 internal static class PsActions
 {
     private static readonly Type _actionDescriptorType = Type.GetTypeFromProgID("Photoshop.ActionDescriptor")
@@ -79,14 +81,7 @@ internal static class PsActions
     /// <exception cref="Exception"></exception>
     internal static void ApplyMaskFromSelection(dynamic ps, MaskMode maskMode)
     {
-        string selectionMode = maskMode switch
-        {
-            MaskMode.RevealAll => "RvlA",
-            MaskMode.HideAll => "HdAl",
-            MaskMode.RevealSelection => "RvlS",
-            MaskMode.HideSelection => "HdSl",
-            _ => throw new ArgumentOutOfRangeException(nameof(maskMode), maskMode + " is not supported.")
-        };
+        string selectionMode = CharIDFromMaskMode(maskMode);
 
         var idMk = ps.CharIDToTypeID("Mk  ");
         dynamic desc2 = Activator.CreateInstance(_actionDescriptorType);
@@ -109,10 +104,10 @@ internal static class PsActions
 
     internal static void AddMask(dynamic ps, MaskMode maskMode)
     {
-        if (maskMode == MaskMode.RevealSelection && !HasSelection(ps))
-            maskMode = MaskMode.RevealAll;
-        else if (maskMode == MaskMode.HideSelection && !HasSelection(ps))
-            maskMode = MaskMode.HideAll;
+        //if (maskMode == MaskMode.RevealSelection && !HasSelection(ps))
+        //    maskMode = MaskMode.RevealAll;
+        //else if (maskMode == MaskMode.HideSelection && !HasSelection(ps))
+        //    maskMode = MaskMode.HideAll;
 
         string maskModeId = CharIDFromMaskMode(maskMode);
 
@@ -123,12 +118,15 @@ internal static class PsActions
         desc2.PutClass(idNw, idChnl);
         var idAt = ps.CharIDToTypeID("At  ");
         dynamic ref1 = Activator.CreateInstance(_actionReferenceType);
+        var idChnl1 = ps.CharIDToTypeID("Chnl");
+        var idChnl2 = ps.CharIDToTypeID("Chnl");
         var idMsk = ps.CharIDToTypeID("Msk ");
-        ref1.PutEnumerated(idChnl, idChnl, idMsk);
+        ref1.PutEnumerated(idChnl1, idChnl2, idMsk);
         desc2.PutReference(idAt, ref1);
         var idUsng = ps.CharIDToTypeID("Usng");
         var idUsrM = ps.CharIDToTypeID("UsrM");
-        desc2.PutEnumerated(idUsng, idUsrM, maskModeId);
+        var idMaskMode = ps.CharIDToTypeID(maskModeId);
+        desc2.PutEnumerated(idUsng, idUsrM, idMaskMode);
 
         ps.ExecuteAction(idMk, desc2, PsDialogModes.psDisplayNoDialogs);
     }
@@ -183,3 +181,5 @@ internal static class PsActions
         };
     }
 }
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.

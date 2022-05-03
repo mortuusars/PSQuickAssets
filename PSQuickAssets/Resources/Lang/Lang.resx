@@ -174,42 +174,6 @@
   <data name="Mouse_CtrlClick" xml:space="preserve">
     <value>Ctrl+Click</value>
   </data>
-  <data name="PSStatus_Busy" xml:space="preserve">
-    <value>Photoshop is busy</value>
-  </data>
-  <data name="PSStatus_Cancelled" xml:space="preserve">
-    <value>Operation was cancelled</value>
-  </data>
-  <data name="PSStatus_COMError" xml:space="preserve">
-    <value>Unexpected error occured</value>
-  </data>
-  <data name="PSStatus_Failed" xml:space="preserve">
-    <value>Failed to communicate with Photoshop</value>
-  </data>
-  <data name="PSStatus_FileNotFound" xml:space="preserve">
-    <value>File not found</value>
-  </data>
-  <data name="PSStatus_IllegalArgument" xml:space="preserve">
-    <value>Invalid path</value>
-  </data>
-  <data name="PSStatus_InvalidFileFormat" xml:space="preserve">
-    <value>Invalid file format</value>
-  </data>
-  <data name="PSStatus_InvalidFilePath" xml:space="preserve">
-    <value>Invalid file path</value>
-  </data>
-  <data name="PSStatus_NoDocumentsOpen" xml:space="preserve">
-    <value>No documents open</value>
-  </data>
-  <data name="PSStatus_NoSelection" xml:space="preserve">
-    <value>Document has no selection</value>
-  </data>
-  <data name="PSStatus_NotRunning" xml:space="preserve">
-    <value>Photoshop is not running</value>
-  </data>
-  <data name="PSStatus_Success" xml:space="preserve">
-    <value>Success</value>
-  </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
@@ -223,10 +187,7 @@
     <value>Select Images</value>
   </data>
   <data name="Settings_AddMaskToLayer" xml:space="preserve">
-    <value>Add Mask to Layer</value>
-  </data>
-  <data name="Settings_AddMaskToLayer_Tooltip" xml:space="preserve">
-    <value>If document has a selection - a mask will be created from it</value>
+    <value>Add Mask to Added Layer</value>
   </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>Always on Top</value>
@@ -307,6 +268,42 @@ Esc to cancel.</value>
   </data>
   <data name="Settings_WindowTitle" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Status_Busy" xml:space="preserve">
+    <value>Photoshop is busy</value>
+  </data>
+  <data name="Status_Cancelled" xml:space="preserve">
+    <value>Operation was cancelled</value>
+  </data>
+  <data name="Status_COMError" xml:space="preserve">
+    <value>Unexpected error occured</value>
+  </data>
+  <data name="Status_Failed" xml:space="preserve">
+    <value>Failed to communicate with Photoshop</value>
+  </data>
+  <data name="Status_FileNotFound" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="Status_IllegalArgument" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="Status_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
+  <data name="Status_InvalidFilePath" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
+  <data name="Status_NoDocumentsOpen" xml:space="preserve">
+    <value>No documents open</value>
+  </data>
+  <data name="Status_NoSelection" xml:space="preserve">
+    <value>Document has no selection</value>
+  </data>
+  <data name="Status_NotRunning" xml:space="preserve">
+    <value>Photoshop is not running</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>Success</value>
   </data>
   <data name="Update_Current" xml:space="preserve">
     <value>Current Version:</value>

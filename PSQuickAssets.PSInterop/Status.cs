@@ -13,6 +13,8 @@
         InvalidFilePath,
         NoSelection,
         Cancelled,
+        ProgIDFailed,
+        ComCreationFailed,
         UnknownComException,
         UnknownException
     }

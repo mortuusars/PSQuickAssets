@@ -47,18 +47,13 @@ public record PSResult
     public PSResult(Status status) : this(status, string.Empty, string.Empty) { }
 
     /// <summary>
-    /// Generates PSResult from COM Exception.
-    /// </summary>
-    internal static PSResult FromException(COMException exception, string filePath = "", string message = "")
-    {
-        return ResultCreator.FromCOMException(exception, filePath, message);
-    }
-
-    /// <summary>
-    /// Generates PSResult from regular Exception.
+    /// Generates PSResult from regular Exception. If exception is COMException - additional info will be added.
     /// </summary>
     internal static PSResult FromException(Exception exception, string filePath = "", string message = "")
     {
+        if (exception is COMException comException)
+            return ResultCreator.FromCOMException(comException, filePath, message);
+
         return ResultCreator.FromException(exception, filePath, message);
     }
 }

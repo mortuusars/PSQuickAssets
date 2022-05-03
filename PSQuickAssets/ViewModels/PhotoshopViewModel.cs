@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using PSQA.Core;
+using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using System.Threading.Tasks;
@@ -16,13 +17,15 @@ internal class PhotoshopViewModel
     public IAsyncRelayCommand<AssetViewModel> AddImageToPhotoshopAsyncCommand { get; }
     public IAsyncRelayCommand<AssetViewModel> OpenAsNewDocumentCommand { get; }
 
+    private readonly Photoshop _photoshop1;
     private readonly IPhotoshopInterop _photoshop;
     private readonly WindowManager _windowManager;
     private readonly INotificationService _notificationService;
     private readonly IConfig _config;
 
-    public PhotoshopViewModel(IPhotoshopInterop photoshopInterop, WindowManager windowManager, INotificationService notificationService, IConfig config)
+    public PhotoshopViewModel(Photoshop photoshop, IPhotoshopInterop photoshopInterop, WindowManager windowManager, INotificationService notificationService, IConfig config)
     {
+        _photoshop1 = photoshop;
         _photoshop = photoshopInterop;
         _windowManager = windowManager;
         _notificationService = notificationService;
@@ -35,7 +38,7 @@ internal class PhotoshopViewModel
         OpenAsNewDocumentCommand = new AsyncRelayCommand<AssetViewModel>(asset => OpenAsNewDocumentAsync(asset!));
 
         //TODO: Global actions and window for setting them up.
-        AddGlobalAction(new PhotoshopAction("SelectRGBLayer", "Mask"));
+        //AddGlobalAction(new PhotoshopAction("SelectRGBLayer", "Mask"));
     }
 
     private void AddGlobalAction(PhotoshopAction action)
@@ -56,61 +59,50 @@ internal class PhotoshopViewModel
 
     private async Task AddImageToPhotoshopAsync(AssetViewModel asset)
     {
-        PSResult result = await _photoshop.HasOpenDocumentAsync() ?
+        PhotoshopResponse response = await _photoshop1.HasOpenDocumentAsync() ?
             await AddAsLayerAsync(asset) :
             await OpenAsNewDocumentAsync(asset);
 
-        if (result.Success)
+        if (response.Status == Status.Success)
             await ExecuteGlobalActions();
     }
 
-    private async Task<PSResult> AddAsLayerAsync(AssetViewModel asset)
+    private async Task<PhotoshopResponse> AddAsLayerAsync(AssetViewModel asset)
     {
         _windowManager.FocusPhotoshop();
         if (_config.HideWindowWhenAddingAsset)
             _windowManager.HideMainWindow();
 
-        PSResult result;
+        PhotoshopResponse response = await _photoshop1.AddAsLayerAsync(asset.FilePath);
 
-        MaskMode? maskMode = _config.AddMaskToAddedLayer ? _config.MaskMode : null;
-
-        result = await _photoshop.AddAsLayerAsync(asset.FilePath, maskMode, _config.UnlinkMask);
-
-        //if (_config.AddMaskToAddedLayer && await _photoshop.HasSelectionAsync())
-        //{
-        //    MaskMode maskMode = MaskMode.RevealSelection;
-        //    bool unlinkMask = _config.UnlinkMask;
-        //    result = await _photoshop.AddAsLayerWithMaskAsync(asset.FilePath, maskMode, unlinkMask);
-        //}
-        //else
-        //    result = await _photoshop.AddImageToDocumentAsync(asset.FilePath);
-
-        if (result.Success)
+        if (response.Status == Status.Success)
             asset.Uses++;
+        else
+        {
+            string errorMessage = ComposeAndLocalizeErrorMessage(response);
+            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], errorMessage, NotificationIcon.Error);
+        }
 
-        if (result.Failed)
-            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],
-                Localize[$"PSStatus_{result.Status}"], NotificationIcon.Error);
-
-        return result;
+        return response;
     }
 
-    private async Task<PSResult> OpenAsNewDocumentAsync(AssetViewModel asset)
+    private async Task<PhotoshopResponse> OpenAsNewDocumentAsync(AssetViewModel asset)
     {
         _windowManager.FocusPhotoshop();
         if (_config.HideWindowWhenAddingAsset)
             _windowManager.HideMainWindow();
 
-        PSResult result = await _photoshop.OpenImageAsNewDocumentAsync(asset.FilePath);
+        PhotoshopResponse response = await _photoshop1.AddAsDocumentAsync(asset.FilePath);
 
-        if (result.Success)
+        if (response.Status == Status.Success)
             asset.Uses++;
+        else
+        {
+            string errorMessage = ComposeAndLocalizeErrorMessage(response);
+            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], errorMessage, NotificationIcon.Error);
+        }
 
-        if (result.Failed)
-            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)],
-                Localize[$"PSStatus_{result.Status}"], NotificationIcon.Error);
-
-        return result;
+        return response;
     }
 
     private async Task<bool> ExecuteGlobalActions()
@@ -125,15 +117,27 @@ internal class PhotoshopViewModel
 
     private async Task<bool> ExecuteActionAsync(PhotoshopAction action)
     {
-        PSResult result = await _photoshop.ExecuteActionAsync(action.Action, action.Set);
+        PhotoshopResponse response = await _photoshop1.ExecuteActionAsync(action.Action, action.Set);
 
-        if (result.Failed)
+        if (response.Status != Status.Success)
         {
-            _notificationService.Notify(
-                string.Format(Localize["Assets_CannotExecuteActionFromSet"], action.Action, action.Set) + $"\n{result.Message}",
-                NotificationIcon.Error);
+            string errorTitle = string.Format(Localize[nameof(Lang.Assets_CannotExecuteActionFromSet)], action.Action, action.Set);
+            string errorMessage = ComposeAndLocalizeErrorMessage(response);
+            _notificationService.Notify(errorTitle, errorMessage, NotificationIcon.Error);
         }
 
         return true;
+    }
+
+    private string ComposeAndLocalizeErrorMessage(PhotoshopResponse response)
+    {
+        if (response.Status == Status.Success)
+            throw new InvalidOperationException("Cannot create error message from successful response.");
+
+        string status = Localize[$"{nameof(Status)}_{response.Status}"];
+
+        return response.Status == Status.UnknownException || response.Status == Status.UnknownComException || response.Status == Status.Failed ?
+            $"{status}\n{response.Message}" :
+            status;
     }
 }

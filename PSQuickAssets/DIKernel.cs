@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PSQA.Assets.Repository;
+using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using PSQuickAssets.ViewModels;
@@ -28,6 +29,9 @@ internal static class DIKernel
                     provider.GetRequiredService<INotificationService>(),
                     provider.GetRequiredService<ILogger>()));
 
+
+        services.AddSingleton<IAnotherPhotoshopInterop, AnotherPhotoshopInterop>();
+        services.AddSingleton<Photoshop>();
         services.AddSingleton<IPhotoshopInterop, PhotoshopInterop>();
         services.AddSingleton<PhotoshopViewModel>();
 
