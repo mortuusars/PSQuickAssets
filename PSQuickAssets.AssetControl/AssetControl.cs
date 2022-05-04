@@ -23,7 +23,6 @@ public class AssetControl : Control
     public static readonly DependencyProperty ThumbnailProperty =
         DependencyProperty.Register(nameof(Thumbnail), typeof(BitmapSource), typeof(AssetControl), new PropertyMetadata(null, RecalculateThumbnailWidth));
 
-
     public double ThumbnailSize
     {
         get { return (double)GetValue(ThumbnailSizeProperty); }
@@ -41,7 +40,6 @@ public class AssetControl : Control
 
     public static readonly DependencyProperty MaximumWidthToHeightRatioProperty =
         DependencyProperty.Register(nameof(MaximumWidthToHeightRatio), typeof(double), typeof(AssetControl), new PropertyMetadata(2.5, RecalculateThumbnailWidth));
-
 
     public string Title
     {

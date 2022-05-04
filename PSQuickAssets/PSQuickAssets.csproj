@@ -71,7 +71,6 @@
 		<ProjectReference Include="..\PSQA.Assets\PSQA.Assets.csproj" />
 		<ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.AssetControl\PSQuickAssets.AssetControl.csproj" />
-		<ProjectReference Include="..\PSQuickAssets.Core\PSQuickAssets.Core.csproj" />
 		<ProjectReference Include="..\PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj" />
 	</ItemGroup>
 
