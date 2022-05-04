@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using MortuusUI.Controls;
-using MortuusUI.Extensions;
 using PSQA.Core;
 using PSQuickAssets.ViewModels;
 using System.Media;
+using PureUI;
 using System.Windows;
 using System.Windows.Input;
+using PureUI.Controls;
 
 namespace PSQuickAssets.Commands;
 
@@ -13,16 +13,16 @@ internal static class AssetCommands
 {
     public static ICommand ShowAssetInExplorer { get; } = new RelayCommand<object>((obj) =>
     {
-        if (obj is Asset asset)
-            GeneralCommands.ShowInExplorer.Execute(asset.Path);
+        if (obj is AssetViewModel asset)
+            GeneralCommands.ShowInExplorer.Execute(asset.FilePath);
         else
             SystemSounds.Exclamation.Play();
     });
 
     public static ICommand OpenAssetInShell { get; } = new RelayCommand<object>((obj) =>
     {
-        if (obj is Asset asset)
-            GeneralCommands.OpenInShell.Execute(asset.Path);
+        if (obj is AssetViewModel asset)
+            GeneralCommands.OpenInShell.Execute(asset.FilePath);
         else
             SystemSounds.Exclamation.Play();
     });
@@ -37,12 +37,9 @@ internal static class AssetCommands
 
     public static ICommand RenameGroup { get; } = new RelayCommand<FrameworkElement>((element) =>
     {
-        if (element is null || element.GetDescendantByName<FrameworkElement>("GroupName") is not ToggleTextBox renameControl)
-        {
+        if (element?.FindChildByName("GroupName") is ToggleTextBox renameControl)
+            renameControl.EditMode = true;
+        else
             SystemSounds.Exclamation.Play();
-            return;
-        }
-
-        renameControl.EditMode = true;
     });
 }

@@ -10,6 +10,7 @@
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
+                   xmlns:res="clr-namespace:PSQuickAssets.Resources"
                    xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
@@ -29,8 +30,8 @@
                    d:WindowStyle="None">
 
     <Window.InputBindings>
-        <KeyBinding Key="Esc" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
-        <KeyBinding Gesture="Shift+Esc" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
+        <KeyBinding Gesture="{x:Static res:Shortcuts.HideMainWindow}" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
+        <KeyBinding Gesture="{x:Static res:Shortcuts.Exit}" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
 
         <KeyBinding Gesture="Ctrl+OemPlus"
                     Command="{Binding ChangeThumbnailSizeCommand}"
@@ -39,28 +40,28 @@
                     Command="{Binding ChangeThumbnailSizeCommand}"
                     CommandParameter="{x:Static pureUI:MouseWheelDirection.Down}" />
 
-        <KeyBinding Gesture="Ctrl+P" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}" />
-        
-        <!--GROUP-->
-        <pureUI:MouseOverKeyBinding Gesture="Ctrl+M"
+        <KeyBinding Gesture="{x:Static res:Shortcuts.Settings}" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}" />
+
+        <!--  GROUP  -->
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.CollapseAssetGroup}"
                                     ElementName="GroupRoot"
                                     Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
                                     PassedParameter="DataContext" />
 
-        <pureUI:MouseOverKeyBinding Key="F2"
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.RenameAssetGroup}"
                                     ElementName="GroupRoot"
                                     PassedParameter="Element"
                                     Command="{x:Static commands:AssetCommands.RenameGroup}" />
 
-        <!--ASSETS-->
-        <pureUI:MouseOverKeyBinding Gesture="Ctrl+E"
-                                    ElementType="{x:Type assetcontrol:AssetControl}"
-                                    Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                    PassedParameter="DataContext" />
-
-        <pureUI:MouseOverKeyBinding Gesture="Ctrl+O"
+        <!--  ASSETS  -->
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetOpenInShell}"
                                     ElementType="{x:Type assetcontrol:AssetControl}"
                                     Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                                    PassedParameter="DataContext" />
+
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetShowInExplorer}"
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
                                     PassedParameter="DataContext" />
     </Window.InputBindings>
 
@@ -142,7 +143,9 @@
                             <Separator />
 
                             <!--  SETTINGS  -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Settings}"
+                                      Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}"
+                                      InputGestureText="{Binding Source={x:Static res:Shortcuts.Settings}, Converter={StaticResource KeyGestureToString}}">
                                 <MenuItem.Icon>
                                     <Path Height="16"
                                           Width="16"
@@ -196,7 +199,7 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Text="{lex:Loc PSQuickAssets:Strings:Hide}" Grid.Row="0" />
-                        <TextBlock Text="Esc"
+                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.HideMainWindow}, Converter={StaticResource KeyGestureToString}}"
                                    Grid.Column="1"
                                    Grid.Row="0"
                                    Margin="24 0 0 0"
@@ -204,7 +207,7 @@
 
                         <TextBlock Grid.Row="1" Text="{lex:Loc PSQuickAssets:Strings:Close}" />
 
-                        <TextBlock Text="Shift+Esc"
+                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.Exit}, Converter={StaticResource KeyGestureToString}}"
                                    Grid.Column="1"
                                    Grid.Row="1"
                                    Margin="24 0 0 0"
@@ -213,8 +216,8 @@
 
                 </Button.ToolTip>
                 <Button.InputBindings>
-                    <MouseBinding Gesture="LeftClick" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"  />
-                    <MouseBinding Gesture="Ctrl+LeftClick" Command="{x:Static cmds:GeneralCommands.Shutdown}"  />
+                    <MouseBinding Gesture="LeftClick" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
+                    <MouseBinding Gesture="Ctrl+LeftClick" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
                 </Button.InputBindings>
             </Button>
         </Grid>
@@ -235,12 +238,27 @@
             </Setter>
         </Style>
 
+
+        <!--  STORYBOARDS  -->
+
+        <!--  OPACITY  -->
+        <Storyboard x:Key="MouseOverOpacityHighlight">
+            <DoubleAnimation Duration="0:0:0"
+                             To="1"
+                             Storyboard.TargetProperty="Opacity" />
+        </Storyboard>
+        <Storyboard x:Key="MouseLeaveOpacityHighlight">
+            <DoubleAnimation Duration="0:0:0.2"
+                             To="0.6"
+                             Storyboard.TargetProperty="Opacity" />
+        </Storyboard>
+
     </pureUI:PureWindow.Resources>
 
     <pureUI:PureWindow.Style>
         <Style TargetType="{x:Type windows:AssetsWindow}" BasedOn="{StaticResource PSQAWindow}">
             <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
-            <Setter Property="HideIconFromTaskbarWhenHidden" Value="{Binding Config.HideIconFromTaskbar}"/>
+            <Setter Property="HideIconFromTaskbarWhenHidden" Value="{Binding Config.HideIconFromTaskbar}" />
         </Style>
     </pureUI:PureWindow.Style>
 
@@ -278,7 +296,7 @@
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Focusable" Value="False" />                    
+                    <Setter Property="Focusable" Value="False" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -327,8 +345,7 @@
 
                         <!--  GROUP CONTEXT MENU  -->
                         <StackPanel.ContextMenu>
-                            <ContextMenu FontSize="13" 
-                                         FontFamily="{StaticResource FontMedium}">
+                            <ContextMenu FontSize="13" FontFamily="{StaticResource FontMedium}">
 
                                 <!--  INFO ABOUT THE GROUP  -->
                                 <MenuItem Style="{StaticResource ContentMenuItem}">
@@ -375,8 +392,7 @@
                                 <Separator />
 
                                 <!--  COLLAPSE/EXPAND CONTENT  -->
-                                <MenuItem Command="{Binding ToggleExpandedCommand}"
-                                          InputGestureText="Ctrl+M">
+                                <MenuItem Command="{Binding ToggleExpandedCommand}" InputGestureText="{Binding Source={x:Static res:Shortcuts.CollapseAssetGroup}, Converter={StaticResource KeyGestureToString}}">
                                     <MenuItem.Style>
                                         <Style TargetType="MenuItem">
                                             <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
@@ -408,7 +424,7 @@
                                 <!--  RENAME  -->
                                 <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Rename}"
                                           Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                          InputGestureText="F2">
+                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.RenameAssetGroup}, Converter={StaticResource KeyGestureToString}}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="{StaticResource RenameIcon}"
                                                    FontSize="17"
@@ -435,10 +451,12 @@
                         </StackPanel.ContextMenu>
 
                         <!--  HEADER  -->
-                        <Grid x:Name="GroupHeader" VerticalAlignment="Top" Background="Transparent">
+                        <Grid x:Name="GroupHeader"
+                              VerticalAlignment="Top"
+                              Background="Transparent">
 
                             <Grid.InputBindings>
-                                <MouseBinding Gesture="LeftClick" Command="{Binding ToggleExpandedCommand}"/>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding ToggleExpandedCommand}" />
                             </Grid.InputBindings>
 
                             <StackPanel Orientation="Horizontal"
@@ -525,24 +543,20 @@
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Duration="0:0:0.1"
-                                                                                 To="1"
-                                                                                 Storyboard.TargetProperty="Opacity" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
                                                     </Trigger.EnterActions>
                                                     <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Duration="0:0:0.1"
-                                                                                 To="0.6"
-                                                                                 Storyboard.TargetProperty="Opacity" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
                                                     </Trigger.ExitActions>
                                                 </Trigger>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupHeader}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </CheckBox.Style>
@@ -617,9 +631,15 @@
                                                     </ControlTemplate>
                                                 </Setter.Value>
                                             </Setter>
+
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
-                                                    <Setter Property="Opacity" Value="1" />
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
+                                                    </DataTrigger.ExitActions>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
                                                     <Setter Property="Opacity" Value="1" />
@@ -794,8 +814,7 @@
                                         </assetcontrol:AssetControl.InputBindings>
 
                                         <assetcontrol:AssetControl.ContextMenu>
-                                            <ContextMenu FontFamily="{StaticResource FontMedium}"
-                                                         FontSize="13">
+                                            <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
 
                                                 <!--  Add as layer  -->
                                                 <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
@@ -832,7 +851,7 @@
                                                           Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenWithShell}"
-                                                          InputGestureText="Ctrl+O">
+                                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetOpenInShell}, Converter={StaticResource KeyGestureToString}}">
                                                     <MenuItem.Icon>
                                                         <Viewbox Width="16" Margin="0 0 -2 0">
                                                             <Path Data="{StaticResource ViewIconGeometry}"
@@ -847,7 +866,7 @@
                                                           Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
                                                           CommandParameter="{Binding}"
                                                           Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
-                                                          InputGestureText="Ctrl+E">
+                                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
                                                     <MenuItem.Icon>
                                                         <Viewbox Width="17">
                                                             <Path Data="{StaticResource FolderIcon}"
@@ -906,8 +925,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        
-        <!--NO ASSETS-->
+
+        <!--  NO ASSETS  -->
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     d:Visibility="Collapsed">
