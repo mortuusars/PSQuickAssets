@@ -20,8 +20,8 @@
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Content">
                 <Setter.Value>
-                    <ToggleButton Height="28"
-                                  Width="45"
+                    <ToggleButton Height="25"
+                                  HorizontalAlignment="Right"
                                   IsChecked="{Binding IsChecked, ElementName=root}" />
                 </Setter.Value>
             </Setter>

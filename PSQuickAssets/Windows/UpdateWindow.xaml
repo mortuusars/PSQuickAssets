@@ -27,6 +27,9 @@
                    Topmost="True"
                    WindowStartupLocation="CenterOwner"
                    FontFamily="{StaticResource FontLight}"
+                   Background="{DynamicResource Brushes.Background.1}"
+                   TitleBackground="{DynamicResource Brushes.Background.1}"
+                   BorderBrush="{DynamicResource Brushes.Background.1}"
                    d:DataContext="{d:DesignInstance vm:UpdateViewModel}">
 
     <pureui:PureWindow.Resources>
@@ -63,7 +66,7 @@
 
     <StackPanel>
         <!--  TITLE PREVIEW  -->
-        <d:Border Background="{StaticResource Brushes.Background.0}"
+        <d:Border Background="{StaticResource Brushes.Background.1}"
                   VerticalAlignment="Top"
                   Margin="0 0 0 0">
             <d:ContentPresenter Content="{StaticResource TitleContent}" />

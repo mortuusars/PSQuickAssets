@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Assets", "PSQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Core", "PSQuickAssets.Core\PSQuickAssets.Core.csproj", "{D878F399-2696-48C0-B8C6-374B6099671B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortuusUI", "..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj", "{16055389-476F-4ABC-9D08-CB3D1D7442A6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.AssetControl", "PSQuickAssets.AssetControl\PSQuickAssets.AssetControl.csproj", "{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQA.Core", "PSQA.Core\PSQA.Core.csproj", "{A05BC38C-8C37-4388-85C3-EBDD149A299D}"
@@ -55,10 +53,6 @@ Global
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D878F399-2696-48C0-B8C6-374B6099671B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16055389-476F-4ABC-9D08-CB3D1D7442A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU

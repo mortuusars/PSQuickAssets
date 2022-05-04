@@ -67,7 +67,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Libraries\MortuusUI\MortuusUI\MortuusUI.csproj" />
 		<ProjectReference Include="..\..\..\Libraries\PureConfig\PureConfig\PureConfig.csproj" />
 		<ProjectReference Include="..\PSQA.Assets\PSQA.Assets.csproj" />
 		<ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
@@ -141,6 +140,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Views\" />
+	  <Folder Include="Windows\Old\" />
 	</ItemGroup>
 
 </Project>

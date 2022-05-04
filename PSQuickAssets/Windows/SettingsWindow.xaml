@@ -587,7 +587,7 @@
         <d:Border Background="{StaticResource Brushes.Border.0}"
                   VerticalAlignment="Top"
                   Margin="0 -32 0 0">
-            <ContentPresenter Content="{StaticResource ToolTitleContent}" />
+            <ContentPresenter Content="{StaticResource DefaultTitleBar}" />
         </d:Border>
 
         <TabControl Background="Transparent"
@@ -698,7 +698,6 @@
                     </controls:ToggleSettingItem>
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_DebugMode}"
-                                                Description="{lex:Loc Settings_DebugMode_Tooltip}"
                                                 IsChecked="{Binding Config.DebugMode}">
                         <controls:ToggleSettingItem.Icon>
                             <pureUIcontrols:FontIcon Icon="&#xE9F5;" Size="18" />

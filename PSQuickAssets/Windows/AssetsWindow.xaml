@@ -177,7 +177,6 @@
                     Padding="5,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                     Style="{StaticResource OpacityButton}">
                 <Button.Content>
                     <Path Margin="-1,-1,0,0"
@@ -474,7 +473,6 @@
                                           VerticalAlignment="Stretch"
                                           FontSize="16"
                                           Padding="2"
-                                          FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                                           KeyboardNavigation.DirectionalNavigation="Continue">
                                     <CheckBox.InputBindings>
                                         <KeyBinding Gesture="Enter"
@@ -572,7 +570,6 @@
                                                               BorderThickness="0"
                                                               Background="Transparent"
                                                               Foreground="{StaticResource ForegroundMainBrush}"
-                                                              FocusVisualStyle="{StaticResource BracketsFocusVisual}"
                                                               SelectionBrush="{StaticResource ForegroundIntenseBrush}">
                                     <pureUIcontrols:ToggleTextBox.Style>
                                         <Style TargetType="{x:Type pureUIcontrols:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
