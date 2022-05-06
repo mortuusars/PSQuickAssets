@@ -1,74 +1,62 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                     xmlns:tb="http://www.hardcodet.net/taskbar"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
-                    xmlns:local="clr-namespace:PSQuickAssets">
+                    xmlns:local="clr-namespace:PSQuickAssets" 
+                    xmlns:controls="clr-namespace:PureUI.Controls;assembly=PureUI" xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
 
-    <tb:TaskbarIcon x:Key="TaskBarIcon"
-                    IconSource="../Images/psquickassets-size.ico"
-                    LeftClickCommand="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
-                    lex:LocalizeDictionary.DesignCulture="en"
-                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
-                    lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+    <Style x:Key="TaskBarIconStyle" TargetType="{x:Type tb:TaskbarIcon}">        
+        <Setter Property="IconSource" Value="../Images/psquickassets-size.ico" />
+        <Setter Property="LeftClickCommand" Value="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
+        <Setter Property="ToolTipText" Value="{x:Static local:App.AppName}"/>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu FontFamily="{StaticResource FontMedium}">
+                    
+                    <!--  SHOW/HIDE MAIN WINDOW  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowMainWindow}"
+                              Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
+                              InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
+                        <MenuItem.Icon>
+                            <controls:FontIcon Icon="&#xE89E;" FontFamily="{StaticResource MaterialIcons}" Size="19"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
-        <!--  Using default-styled tooltip in taskbar to blend in with other tray apps  -->
-        <tb:TaskbarIcon.TrayToolTip>
-            <ToolTip Content="{x:Static local:App.AppName}" Style="{StaticResource DefaultToolTip}" />
-        </tb:TaskbarIcon.TrayToolTip>
-
-        <tb:TaskbarIcon.ContextMenu>
-            <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
-
-
-                <!-- SHOW/HIDE MAIN WINDOW  -->
-                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_ShowMainWindow}"
-                          Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
-                          InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
-                    <MenuItem.Icon>
-                        <controls:PathIcon Width="15"
-                                           Data="{StaticResource OpenIconGeometry}"
-                                           Fill="{StaticResource ForegroundMainBrush}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <!-- SHOW/HIDE TERMINAL  -->
-                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_ShowTerminal}" 
-                          Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
-                          Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}">
-                    <MenuItem.Icon>
-                        <controls:PathIcon Width="15"
+                    <!--  SHOW/HIDE TERMINAL  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowTerminal}"
+                              Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
+                              Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}">
+                        <MenuItem.Icon>
+                            <controls1:PathIcon Width="17"
                                            Data="{StaticResource TerminalIconGeomerty}"
-                                           Fill="{StaticResource ForegroundMainBrush}" />
-                    </MenuItem.Icon>
-                </MenuItem>
+                                           Fill="{DynamicResource Brushes.Foreground.1}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
 
-                <Separator />
+                    <Separator />
 
-                <!-- SHOW/HIDE SETTINGS  -->
-                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_Settings}" 
-                          Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
-                    <MenuItem.Icon>
-                        <controls:PathIcon Width="15"
-                                           Data="{StaticResource SettingsIconGeometry}"
-                                           Fill="{StaticResource ForegroundMainBrush}" />
-                    </MenuItem.Icon>
-                </MenuItem>
+                    <!--  SHOW/HIDE SETTINGS  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_Settings}" 
+                              Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
+                        <MenuItem.Icon>
+                            <controls:FontIcon Icon="&#xE713;" Size="17"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
-                <Separator />
+                    <Separator />
 
-                <!--  EXIT  -->
-                <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Taskbar_Exit}" 
-                          Command="{x:Static cmds:GeneralCommands.Shutdown}">
-                    <MenuItem.Icon>
-                        <controls:PathIcon Width="12"
-                                           Data="{StaticResource CloseIconGeometry}"
-                                           Fill="{StaticResource ForegroundMainBrush}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </ContextMenu>
-        </tb:TaskbarIcon.ContextMenu>
-    </tb:TaskbarIcon>
+                    <!--  EXIT  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Exit}" 
+                              Command="{x:Static cmds:GeneralCommands.Shutdown}">
+                        <MenuItem.Icon>
+                            <controls:FontIcon Icon="&#xE879;" FontFamily="{StaticResource MaterialIcons}" Size="19"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

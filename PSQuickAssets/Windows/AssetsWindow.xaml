@@ -10,6 +10,7 @@
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    xmlns:windows="clr-namespace:PSQuickAssets.Windows"
                    xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
+                   xmlns:root="clr-namespace:PSQuickAssets"
                    xmlns:res="clr-namespace:PSQuickAssets.Resources"
                    xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
@@ -25,6 +26,7 @@
                    Topmost="{Binding Config.AlwaysOnTop}"
                    SaveData="True"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
+                   xmlns:tb="http://www.hardcodet.net/taskbar"
                    d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
@@ -262,6 +264,10 @@
     </pureUI:PureWindow.Style>
 
     <Grid x:Name="ContentRoot" Background="Transparent">
+
+        <!--TASKBAR ICON-->
+        <tb:TaskbarIcon Style="{StaticResource TaskBarIconStyle}"/>
+
         <!--  Background must be set to "Transparent" for InputBindings to work on whole area.  -->
         <!--<Grid.InputBindings>
         -->

@@ -150,6 +150,9 @@
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
   </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="Expand" xml:space="preserve">
     <value>Expand</value>
   </data>
@@ -301,6 +304,15 @@ Esc to cancel.</value>
   </data>
   <data name="Status_Success" xml:space="preserve">
     <value>Success</value>
+  </data>
+  <data name="Taskbar_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Taskbar_ShowMainWindow" xml:space="preserve">
+    <value>Show/Hide Window</value>
+  </data>
+  <data name="Taskbar_ShowTerminal" xml:space="preserve">
+    <value>Show Terminal</value>
   </data>
   <data name="Update_Current" xml:space="preserve">
     <value>Current Version:</value>

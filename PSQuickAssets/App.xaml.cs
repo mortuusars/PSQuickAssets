@@ -30,7 +30,7 @@ public partial class App : Application
         ServiceProvider.GetRequiredService<ThemeService>().Initialize();
 
         //Initialize task bar icon:
-        var _ = (TaskbarIcon)FindResource("TaskBarIcon");
+        //var _ = (TaskbarIcon)FindResource("TaskBarIcon");
 
         var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
         windowManager.ShowMainWindow();

@@ -160,6 +160,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expand.
         /// </summary>
         public static string Expand {
@@ -608,6 +617,33 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Status_Success {
             get {
                 return ResourceManager.GetString("Status_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Taskbar_Settings {
+            get {
+                return ResourceManager.GetString("Taskbar_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/Hide Window.
+        /// </summary>
+        public static string Taskbar_ShowMainWindow {
+            get {
+                return ResourceManager.GetString("Taskbar_ShowMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Terminal.
+        /// </summary>
+        public static string Taskbar_ShowTerminal {
+            get {
+                return ResourceManager.GetString("Taskbar_ShowTerminal", resourceCulture);
             }
         }
         
