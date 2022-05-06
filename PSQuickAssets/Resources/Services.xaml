@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:services="clr-namespace:PSQuickAssets.Services" xmlns:resources="clr-namespace:PSQuickAssets.Resources">
+    xmlns:services="clr-namespace:PSQuickAssets.Services" 
+    xmlns:resources="clr-namespace:PSQuickAssets.Resources">
 
     <services:ServiceLocator x:Key="ServiceLocator"/>
     <services:ViewModelLocator x:Key="ViewModelLocator" />

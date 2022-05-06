@@ -1,5 +1,4 @@
 ﻿using MTerminal.WPF;
-using PSQuickAssets.Windows;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -15,29 +14,31 @@ internal class TerminalHandler
         _windowManager = windowManager;
     }
 
-    internal void Setup()
+    internal void Initialize()
     {
-        Terminal.Commands.Add(new TerminalCommand("newwindow", "Test window", (_) => new AssetsWindow().Show()));
+#if DEBUG
+        Terminal.Commands.Add(new TerminalCommand("updatewindow", "Shows test update window", (_) => _windowManager.ShowUpdateWindow(App.Version, new Version("15.5.0"))));
+#endif
+
         Terminal.Commands.Add(new TerminalCommand("log", "Prints last log file contents", (_) => PrintLastLog()));
         Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
-        Terminal.Commands.Add(new TerminalCommand("updatewindow", "Show update window", (_) => _windowManager.ShowUpdateWindow(App.Version, new Version("15.5.0"))));
         Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
     }
 
     private void PrintLastLog()
     {
-        string? lastLogFilePath = Directory.GetFiles(Folders.Logs)
+        FileInfo? lastLogFile = Directory.GetFiles(Folders.Logs)
             .Select(f => new FileInfo(f))
             .OrderByDescending(f => f.LastWriteTime)
-            .Select(f => f.FullName)
             .FirstOrDefault();
 
-        if (string.IsNullOrWhiteSpace(lastLogFilePath))
+        if (string.IsNullOrWhiteSpace(lastLogFile?.FullName))
             Terminal.WriteLine("No logs found.");
         else
         {
             string logContent = string.Empty;
-            using (var stream = File.Open(lastLogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            
+            using (var stream = lastLogFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 byte[] bytes = new byte[stream.Length];
                 stream.Read(bytes, 0, bytes.Length);

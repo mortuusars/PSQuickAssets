@@ -43,6 +43,8 @@ namespace PSQuickAssets.Services
 
         private TaskbarIcon? TryGetTaskbarIcon()
         {
+            //TODO: Move this to proper notification service.
+            return null;
             try
             {
                 var taskbarIcon = (TaskbarIcon)App.Current.FindResource("TaskBarIcon");

@@ -13,7 +13,7 @@ internal class ThemeService
         _config = config;
     }
 
-    public void Initialize()
+    public void SetupThemes()
     {
         _themeManager.AddCompiledTheme("Dark", "../Resources/Themes/Dark.xaml");
         _themeManager.AddCompiledTheme("Light", "../Resources/Themes/Light.xaml");

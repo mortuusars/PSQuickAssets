@@ -1,6 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using Hardcodet.Wpf.TaskbarNotification;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
 using System.Diagnostics;
@@ -27,28 +25,8 @@ public partial class App : Application
         
         ShutdownIfAnotherInstanceRunning();
 
-        ServiceProvider.GetRequiredService<ThemeService>().Initialize();
-
-        //Initialize task bar icon:
-        //var _ = (TaskbarIcon)FindResource("TaskBarIcon");
-
-        var windowManager = ServiceProvider.GetRequiredService<WindowManager>();
-        windowManager.ShowMainWindow();
-
-        ServiceProvider.GetRequiredService<TerminalHandler>().Setup();
-
-        var config = ServiceProvider.GetRequiredService<IConfig>();
-        SetupGlobalHotkeys(windowManager, config);
-        if (config.CheckUpdates)
-            ServiceProvider.GetRequiredService<UpdateChecker>().CheckUpdatesAsync(Version).SafeFireAndForget();
-    }
-
-    private void SetupGlobalHotkeys(WindowManager windowManager, IConfig config)
-    {
-        //TODO: Move to GlobalHotkeys.
-        var globalHotkeys = ServiceProvider.GetRequiredService<GlobalHotkeys>();
-        globalHotkeys.HotkeyActions.Add(HotkeyUse.ToggleMainWindow, () => windowManager.ShowHideMainWindow());
-        globalHotkeys.Register(MGlobalHotkeys.WPF.Hotkey.FromString(config.ShowHideWindowHotkey), HotkeyUse.ToggleMainWindow);
+        ServiceProvider.GetRequiredService<Startup>()
+            .Start();
     }
 
     private void ShutdownIfAnotherInstanceRunning()

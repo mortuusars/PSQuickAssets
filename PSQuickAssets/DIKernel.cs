@@ -17,18 +17,21 @@ internal static class DIKernel
     {
         IServiceCollection services = new ServiceCollection();
 
-        services.AddSingleton<IStatusService, StatusService>();
         services.AddSingleton<INotificationService, TaskbarNotificationService>();
         services.AddSingleton<ILogger>(Logging.CreateLogger());
         services.AddSingleton<IConfig, Config>();
 
+        services.AddSingleton<ThemeManager>();
+        services.AddTransient<ThemeService>();
+
         services.AddSingleton<WindowManager>();
         services.AddSingleton<TerminalHandler>();
-        services.AddSingleton<GlobalHotkeys>((provider) =>
-                new GlobalHotkeys(provider.GetRequiredService<WindowManager>().GetMainWindowHandle(),
-                    provider.GetRequiredService<INotificationService>(),
-                    provider.GetRequiredService<ILogger>()));
+        services.AddSingleton<GlobalHotkeys>();
+        services.AddTransient<UpdateChecker>();
 
+        services.AddTransient<Startup>();
+
+        services.AddSingleton<IStatusService, StatusService>();
 
         services.AddSingleton<IPhotoshopInterop, PhotoshopInterop>();
         services.AddSingleton<Photoshop>();
@@ -42,11 +45,8 @@ internal static class DIKernel
 
         services.AddTransient<AssetsWindowViewModel>();
 
-        services.AddSingleton<ThemeManager>();
-        services.AddTransient<ThemeService>();
         services.AddTransient<SettingsViewModel>();
 
-        services.AddTransient<UpdateChecker>();
 
         return services.BuildServiceProvider();
     }

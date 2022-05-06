@@ -1,6 +1,7 @@
 ﻿using MGlobalHotkeys.WPF;
 using Serilog;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace PSQuickAssets.Services;
 
@@ -15,26 +16,27 @@ internal enum HotkeyUse
 internal class GlobalHotkeys : IDisposable
 {
     /// <summary>
-    /// Specifies what action to use when registering a hotkey;
+    /// Specifies what action corresponds to HotkeyUse.
     /// </summary>
-    public Dictionary<HotkeyUse, Action> HotkeyActions { get; }
+    public Dictionary<HotkeyUse, Action> HotkeyActions { get; } = new();
 
-    private readonly Dictionary<HotkeyUse, Hotkey> _registeredHotkeys;
+    private readonly Dictionary<HotkeyUse, Hotkey> _registeredHotkeys = new();
+    private IntPtr? _windowHandle;
 
     private readonly MGlobalHotkeys.WPF.GlobalHotkeys _globalHotkeysHandler;
-    private readonly IntPtr _windowHandle;
     private readonly INotificationService _notificationService;
     private readonly ILogger _logger;
 
-    internal GlobalHotkeys(IntPtr windowHandle, INotificationService notificationService, ILogger logger)
+    public GlobalHotkeys(INotificationService notificationService, ILogger logger)
     {
-        HotkeyActions = new Dictionary<HotkeyUse, Action>();
-        _registeredHotkeys = new Dictionary<HotkeyUse, Hotkey>();
-
         _globalHotkeysHandler = new MGlobalHotkeys.WPF.GlobalHotkeys();
-        _windowHandle = windowHandle;
         _notificationService = notificationService;
         _logger = logger;
+    }
+
+    internal void InitializeHandle(IntPtr windowHandle)
+    {
+        _windowHandle = windowHandle;
     }
     
     /// <summary>
@@ -42,6 +44,9 @@ internal class GlobalHotkeys : IDisposable
     /// </summary>
     internal void Register(Hotkey hotkey, HotkeyUse use)
     {
+        if (_windowHandle is null)
+            throw new InvalidOperationException("Cannot register global hotkey: window handle is not set. Call 'InitializeHandle' method to set window handle.");
+
         if (!HotkeyActions.ContainsKey(use))
         {
             _logger.Error($"Cannot register hotkey for <{use}>. No action was registered for this use.");
@@ -67,7 +72,7 @@ internal class GlobalHotkeys : IDisposable
             return;
         }
 
-        if (_globalHotkeysHandler.TryRegister(hotkey, _windowHandle, HotkeyActions[use], out string regErrorMessage))
+        if (_globalHotkeysHandler.TryRegister(hotkey, (IntPtr)_windowHandle, HotkeyActions[use], out string regErrorMessage))
         {
             _registeredHotkeys.Add(use, hotkey);
             _logger.Debug($"Registered <{hotkey}> for <{use}>.");
