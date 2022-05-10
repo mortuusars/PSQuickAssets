@@ -62,7 +62,14 @@ internal static class GeneralCommands
             return;
         }
 
-        ProcessStartInfo info = new(path) { UseShellExecute = true };
-        Process.Start(info);
+        try
+        {
+            ProcessStartInfo info = new(path) { UseShellExecute = true };
+            Process.Start(info);
+        }
+        catch (Exception)
+        {
+            SystemSounds.Exclamation.Play();
+        }
     });
 }

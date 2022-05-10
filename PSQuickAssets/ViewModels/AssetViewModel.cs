@@ -11,10 +11,11 @@ namespace PSQuickAssets.ViewModels;
 public partial class AssetViewModel
 {
     public string FilePath { get => Asset.Path; }
+    public long FileSize { get; }
+    public bool Exists { get; }
     public string Name { get => Path.GetFileNameWithoutExtension(FilePath); }
     public string FileName { get => Path.GetFileName(FilePath); }
     public string Extension { get => Path.GetExtension(FilePath); }
-    public long FileSize { get; }
     public Size Dimensions { get => AssetHelper.GetImageDimensions(FilePath); }
 
     public int Uses
@@ -37,6 +38,8 @@ public partial class AssetViewModel
         Asset = asset;
         _assetRepository = assetRepository;
 
-        FileSize = new FileInfo(FilePath).Length;
+        FileInfo file = new(FilePath);
+        Exists = file.Exists;
+        FileSize = Exists ? file.Length : 0;
     }
 }

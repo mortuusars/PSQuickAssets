@@ -18,6 +18,8 @@
 
                 <ResourceDictionary Source="Resources/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Icons.xaml" />
+                <ResourceDictionary Source="Resources/Styles/SegoeSymbols.xaml" />
+                
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Texts.xaml"/>

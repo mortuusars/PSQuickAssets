@@ -1,13 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="PlusIcon">&#xF8AA;</system:String>
-    <system:String x:Key="RenameIcon">&#xE8AC;</system:String>
-    <system:String x:Key="TrashCanIcon">&#xE74D;</system:String>
-    <system:String x:Key="ArrowUpIcon">&#xE971;</system:String>
-    <system:String x:Key="ArrowDownIcon">&#xE972;</system:String>
-    <system:String x:Key="ArrowLeftIcon">&#xE973;</system:String>
-    <system:String x:Key="ArrowRightIcon">&#xE974;</system:String>
     
     <!--  Folder  -->
     <PathGeometry x:Key="FolderIcon"
@@ -88,4 +81,11 @@
         <PathGeometry Figures="M42.442 19.371c-1.623 0-2.947 1.315-2.947 2.938v16.392c0 0.678-0.522 1.217-1.203 1.217H7.47    c-0.68 0-1.239-0.539-1.239-1.217V22.308c0-1.622-1.282-2.938-2.905-2.938c-1.622 0-2.905 1.315-2.905 2.938V38.7    c0 3.918 3.131 7.11 7.05 7.11h30.821c3.92 0 7.098-3.192 7.098-7.11V22.308C45.389 20.686 44.063 19.371 42.442 19.371z" FillRule="NonZero" />
     </GeometryGroup>
 
+
+
+    
+    
+    
+    
+    
 </ResourceDictionary>

@@ -10,8 +10,8 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontFamily" Value="{StaticResource FontLight}"/>
         <Setter Property="GlowDepth" Value="1"/>
-        <Setter Property="GlowColor" Value="#222"/>
-        <Setter Property="InactiveGlowColor" Value="#222"/>
+        <Setter Property="GlowColor" Value="#050505"/>
+        <Setter Property="InactiveGlowColor" Value="#050505"/>
     </Style>
     
 </ResourceDictionary>

@@ -97,11 +97,30 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Not Found.
+        ///Click to remove asset..
+        /// </summary>
+        public static string Assets_AssetNotFound_Tooltip {
+            get {
+                return ResourceManager.GetString("Assets_AssetNotFound_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot execute action &apos;{0}&apos; from set &apos;{1}&apos;.
         /// </summary>
         public static string Assets_CannotExecuteActionFromSet {
             get {
                 return ResourceManager.GetString("Assets_CannotExecuteActionFromSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Filepath.
+        /// </summary>
+        public static string Assets_CopyPath {
+            get {
+                return ResourceManager.GetString("Assets_CopyPath", resourceCulture);
             }
         }
         
@@ -156,6 +175,15 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Collapse {
             get {
                 return ResourceManager.GetString("Collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
             }
         }
         

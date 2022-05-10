@@ -24,6 +24,7 @@
                    Width="400 "
                    Height="250"
                    Topmost="{Binding Config.AlwaysOnTop}"
+                   BorderBrush="#111"
                    SaveData="True"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
                    xmlns:tb="http://www.hardcodet.net/taskbar"
@@ -56,6 +57,10 @@
                                     Command="{x:Static commands:AssetCommands.RenameGroup}" />
 
         <!--  ASSETS  -->
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetCopyFilePath}"
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
+                                    PassedParameter="DataContext" />
         <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetOpenInShell}"
                                     ElementType="{x:Type assetcontrol:AssetControl}"
                                     Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
@@ -265,8 +270,8 @@
 
     <Grid x:Name="ContentRoot" Background="Transparent">
 
-        <!--TASKBAR ICON-->
-        <tb:TaskbarIcon Style="{StaticResource TaskBarIconStyle}"/>
+        <!--  TASKBAR ICON  -->
+        <tb:TaskbarIcon Style="{StaticResource TaskBarIconStyle}" />
 
         <!--  Background must be set to "Transparent" for InputBindings to work on whole area.  -->
         <!--<Grid.InputBindings>
@@ -292,7 +297,7 @@
         <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
                  Background="{x:Null}"
                  BorderThickness="0"
-                 Foreground="{StaticResource ForegroundMainBrush}"
+                 Foreground="{DynamicResource Brushes.Foreground.1}"
                  SelectionMode="Extended"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.CanContentScroll="False"
@@ -387,10 +392,9 @@
                                           Command="{Binding AddAssetsCommand}"
                                           wpf:OpenDialogBehavior.Dialog="SelectFiles">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="{StaticResource PlusIcon}"
-                                                   FontSize="15"
-                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                   Foreground="{DynamicResource Brushes.Foreground.1}" />
+                                        <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}"
+                                                                 Size="15"
+                                                                 Foreground="{DynamicResource Brushes.Foreground.1}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
 
@@ -403,10 +407,9 @@
                                             <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
                                             <Setter Property="Icon">
                                                 <Setter.Value>
-                                                    <TextBlock Text="{StaticResource ArrowDownIcon}"
-                                                               FontSize="17"
-                                                               FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                               Foreground="{DynamicResource Brushes.Foreground.1}" />
+                                                    <pureUIcontrols:FontIcon Icon="{StaticResource ChevronDownMed}"
+                                                                             Size="17"
+                                                                             Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Style.Triggers>
@@ -414,10 +417,9 @@
                                                     <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Collapse}" />
                                                     <Setter Property="Icon">
                                                         <Setter.Value>
-                                                            <TextBlock Text="{StaticResource ArrowUpIcon}"
-                                                                       FontSize="17"
-                                                                       FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                                       Foreground="{DynamicResource Brushes.Foreground.1}" />
+                                                            <pureUIcontrols:FontIcon Icon="{StaticResource ChevronUpMed}"
+                                                                                     Size="17"
+                                                                                     Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -431,10 +433,9 @@
                                           Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           InputGestureText="{Binding Source={x:Static res:Shortcuts.RenameAssetGroup}, Converter={StaticResource KeyGestureToString}}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="{StaticResource RenameIcon}"
-                                                   FontSize="17"
-                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                   Foreground="#99A8D6" />
+                                        <pureUIcontrols:FontIcon Icon="{StaticResource Rename}"
+                                                                 Size="17"
+                                                                 Foreground="{DynamicResource Brushes.Utility.Accent.1}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
 
@@ -445,10 +446,10 @@
                                           Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
                                           CommandParameter="{Binding}">
                                     <MenuItem.Icon>
-                                        <TextBlock Text="{StaticResource TrashCanIcon}"
-                                                   FontSize="17"
-                                                   FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                   Foreground="#DC6767" />
+
+                                        <pureUIcontrols:FontIcon Icon="{StaticResource Delete}"
+                                                                 Size="17"
+                                                                 Foreground="{DynamicResource Brushes.Utility.Error}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
 
@@ -472,9 +473,9 @@
                                 <!--  EXPAND/COLLAPSE ASSETS  -->
                                 <CheckBox x:Name="AssetsCollapser"
                                           IsChecked="{Binding IsExpanded}"
-                                          Content="{StaticResource ArrowDownIcon}"
-                                          Foreground="{StaticResource ForegroundMainBrush}"
+                                          Content="{StaticResource ChevronDownMed}"
                                           FontFamily="{StaticResource SegoeMDL2Icons}"
+                                          Foreground="{DynamicResource Brushes.Foreground.1}"
                                           FontWeight="Bold"
                                           VerticalAlignment="Stretch"
                                           FontSize="16"
@@ -575,8 +576,8 @@
                                                               FontSize="14"
                                                               BorderThickness="0"
                                                               Background="Transparent"
-                                                              Foreground="{StaticResource ForegroundMainBrush}"
-                                                              SelectionBrush="{StaticResource ForegroundIntenseBrush}">
+                                                              Foreground="{DynamicResource Brushes.Foreground.1}"
+                                                              SelectionBrush="{DynamicResource Brushes.Foreground.0}">
                                     <pureUIcontrols:ToggleTextBox.Style>
                                         <Style TargetType="{x:Type pureUIcontrols:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                             <Setter Property="Opacity" Value="0.6" />
@@ -606,7 +607,7 @@
                                                             <Rectangle Grid.Row="0"
                                                                        Grid.Column="0"
                                                                        Height="2"
-                                                                       Fill="IndianRed"
+                                                                       Fill="{DynamicResource Brushes.Utility.Error}"
                                                                        RadiusX="1.5"
                                                                        RadiusY="1.5"
                                                                        Margin="2 4 2 0"
@@ -623,7 +624,7 @@
                                                                         <DataTemplate>
                                                                             <TextBlock Text="{Binding ErrorContent}"
                                                                                        Margin="10 7"
-                                                                                       Foreground="IndianRed"
+                                                                                       Foreground="{DynamicResource Brushes.Utility.Error}"
                                                                                        FontSize="14"
                                                                                        FontFamily="{StaticResource FontMedium}" />
                                                                         </DataTemplate>
@@ -655,15 +656,17 @@
                                     </pureUIcontrols:ToggleTextBox.EditModeActivationGesture>
                                     <pureUIcontrols:ToggleTextBox.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Copy}"
+                                            <!--Default textbox context menu has problems when styling it,
+                                            and this command allows copying name without selecting it first.
+                                            Just by clicking on textbox.-->
+                                            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Copy}"
                                                       InputGestureText="Ctrl+C"
                                                       Command="{x:Static cmds:GeneralCommands.TextBoxCopy}"
                                                       CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                                 <MenuItem.Icon>
-                                                    <TextBlock Text="&#xE8C8;"
-                                                               FontSize="17"
-                                                               FontFamily="{StaticResource SegoeMDL2Icons}"
-                                                               Foreground="#78B4D9" />
+                                                    <pureUIcontrols:FontIcon Icon="{StaticResource Copy}"
+                                                                             FontSize="17"
+                                                                             Foreground="{DynamicResource Brushes.Utility.Accent.0}" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                         </ContextMenu>
@@ -773,155 +776,191 @@
                                         <d:BitmapImage x:Key="DesignImage" UriSource="../Resources/Images/test.jpg" />
                                     </d:DataTemplate.Resources>
 
-                                    <assetcontrol:AssetControl Title="{Binding Name}"
-                                                               Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
-                                                               ThumbnailSize="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                               Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                               FontSize="13"
-                                                               Cursor="Hand"
-                                                               FontFamily="{StaticResource FontMedium}"
-                                                               AssetEffect="{StaticResource AssetShadow}"
-                                                               MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                               MaximumWidthToHeightRatio="2.5"
-                                                               FocusVisualStyle="{StaticResource AssetFocusVisual}"
-                                                               Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
+                                    <Grid>
 
-                                        <assetcontrol:AssetControl.Style>
-                                            <Style TargetType="{x:Type assetcontrol:AssetControl}">
-                                                <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsKeyboardFocused" Value="True">
-                                                        <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </assetcontrol:AssetControl.Style>
+                                        <assetcontrol:AssetControl Title="{Binding Name}"
+                                                                   Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
+                                                                   ThumbnailSize="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                                   Foreground="{DynamicResource Brushes.Foreground.1}"
+                                                                   FontSize="13"
+                                                                   Cursor="Hand"
+                                                                   FontFamily="{StaticResource FontMedium}"
+                                                                   AssetEffect="{StaticResource AssetShadow}"
+                                                                   MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                                   MaximumWidthToHeightRatio="2.5"
+                                                                   FocusVisualStyle="{StaticResource AssetFocusVisual}"
+                                                                   Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
 
-                                        <assetcontrol:AssetControl.InputBindings>
-                                            <MouseBinding Gesture="LeftClick"
-                                                          Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}" />
-                                            <MouseBinding Gesture="Ctrl+LeftClick"
-                                                          Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}" />
+                                            <assetcontrol:AssetControl.Style>
+                                                <Style TargetType="{x:Type assetcontrol:AssetControl}">
+                                                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </assetcontrol:AssetControl.Style>
 
-                                            <KeyBinding Gesture="Enter"
-                                                        Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding}" />
-                                            <KeyBinding Gesture="Ctrl+Enter"
-                                                        Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                        CommandParameter="{Binding}" />
-                                        </assetcontrol:AssetControl.InputBindings>
+                                            <assetcontrol:AssetControl.InputBindings>
+                                                <MouseBinding Gesture="LeftClick"
+                                                              Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                              CommandParameter="{Binding}" />
+                                                <MouseBinding Gesture="Ctrl+LeftClick"
+                                                              Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                                              CommandParameter="{Binding}" />
 
-                                        <assetcontrol:AssetControl.ContextMenu>
-                                            <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
+                                                <KeyBinding Gesture="Enter"
+                                                            Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                            CommandParameter="{Binding}" />
+                                                <KeyBinding Gesture="Ctrl+Enter"
+                                                            Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                                            CommandParameter="{Binding}" />
+                                            </assetcontrol:AssetControl.InputBindings>
 
-                                                <!--  Add as layer  -->
-                                                <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}"
-                                                          Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
-                                                          InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">
-                                                    <MenuItem.Icon>
-                                                        <Viewbox Width="17">
-                                                            <Path Data="{StaticResource AddAsLayerIconGeometry}"
-                                                                  Fill="#39a3d4"
-                                                                  Stretch="Uniform" />
-                                                        </Viewbox>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                            <assetcontrol:AssetControl.ContextMenu>
+                                                <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
 
-                                                <!--  Open as new document  -->
-                                                <MenuItem Command="{Binding Path=PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                          CommandParameter="{Binding}"
-                                                          Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenAsNewDoc}"
-                                                          InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_CtrlClick}">
-                                                    <MenuItem.Icon>
-                                                        <Viewbox Width="17">
-                                                            <Path Data="{StaticResource OpenIconGeometry}"
-                                                                  Fill="#39a3d4"
-                                                                  Stretch="Uniform" />
-                                                        </Viewbox>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                                    <!--  Add as layer  -->
+                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                              CommandParameter="{Binding}"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
+                                                              InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">
+                                                        <MenuItem.Icon>
+                                                            <Viewbox Width="17">
+                                                                <Path Data="{StaticResource AddAsLayerIconGeometry}"
+                                                                      Fill="{DynamicResource Brushes.Utility.Accent.0}"
+                                                                      Stretch="Uniform" />
+                                                            </Viewbox>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
 
-                                                <Separator />
+                                                    <!--  Open as new document  -->
+                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                                              CommandParameter="{Binding}"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenAsNewDoc}"
+                                                              InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_CtrlClick}">
+                                                        <MenuItem.Icon>
+                                                            <Viewbox Width="17">
+                                                                <Path Data="{StaticResource OpenIconGeometry}"
+                                                                      Fill="{DynamicResource Brushes.Utility.Accent.0}"
+                                                                      Stretch="Uniform" />
+                                                            </Viewbox>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
 
-                                                <!--  Open with shell  -->
-                                                <MenuItem x:Name="OpenWithShellMenuItem"
-                                                          Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                                          CommandParameter="{Binding}"
-                                                          Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenWithShell}"
-                                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetOpenInShell}, Converter={StaticResource KeyGestureToString}}">
-                                                    <MenuItem.Icon>
-                                                        <Viewbox Width="16" Margin="0 0 -2 0">
-                                                            <Path Data="{StaticResource ViewIconGeometry}"
-                                                                  Fill="{DynamicResource Brushes.Foreground.1}"
-                                                                  Stretch="Uniform" />
-                                                        </Viewbox>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                                    <Separator />
 
-                                                <!--  Show in explorer  -->
-                                                <MenuItem x:Name="OpenInExplorerMenuItem"
-                                                          Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                                          CommandParameter="{Binding}"
-                                                          Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
-                                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
-                                                    <MenuItem.Icon>
-                                                        <Viewbox Width="17">
-                                                            <Path Data="{StaticResource FolderIcon}"
-                                                                  Fill="{DynamicResource Brushes.Foreground.1}"
-                                                                  Stretch="Uniform" />
-                                                        </Viewbox>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                                    <!--Copy Filepath-->
+                                                    <MenuItem x:Name="CopyFilePathMenuItem"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_CopyPath}"
+                                                              Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
+                                                              CommandParameter="{Binding}"
+                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetCopyFilePath}, Converter={StaticResource KeyGestureToString}}">
+                                                        <MenuItem.Icon>
+                                                            <pureUIcontrols:FontIcon Icon="{StaticResource Copy}"
+                                                                                     Foreground="{DynamicResource Brushes.Foreground.1}"
+                                                                                     Size="17"/>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    
+                                                    <!--  Open with shell  -->
+                                                    <MenuItem x:Name="OpenWithShellMenuItem"
+                                                              Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                                                              CommandParameter="{Binding}"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenWithShell}"
+                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetOpenInShell}, Converter={StaticResource KeyGestureToString}}">
+                                                        <MenuItem.Icon>
+                                                            <Viewbox Width="16" Margin="0 0 -2 0">
+                                                                <Path Data="{StaticResource ViewIconGeometry}"
+                                                                      Fill="{DynamicResource Brushes.Foreground.1}"
+                                                                      Stretch="Uniform" />
+                                                            </Viewbox>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
 
-                                                <Separator />
+                                                    <!--  Show in explorer  -->
+                                                    <MenuItem x:Name="OpenInExplorerMenuItem"
+                                                              Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
+                                                              CommandParameter="{Binding}"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
+                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
+                                                        <MenuItem.Icon>
+                                                            <pureUIcontrols:FontIcon Icon="{StaticResource FolderHorizontal}"
+                                                                                     Foreground="{DynamicResource Brushes.Foreground.1}"
+                                                                                     Size="17" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    
+                                                    <Separator />
 
-                                                <!--  Remove  -->
-                                                <MenuItem x:Name="RemoveAssetMenuItem"
-                                                          Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
-                                                          CommandParameter="{Binding}"
-                                                          Header="{lex:Loc PSQuickAssets:Lang:Remove}">
-                                                    <MenuItem.Icon>
-                                                        <Viewbox Width="14">
-                                                            <Path Data="{StaticResource RecycleBinIconGeometry}"
-                                                                  Fill="#c56060"
-                                                                  Stretch="Uniform" />
-                                                        </Viewbox>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </assetcontrol:AssetControl.ContextMenu>
+                                                    <!--  Remove  -->
+                                                    <MenuItem x:Name="RemoveAssetMenuItem"
+                                                              Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
+                                                              CommandParameter="{Binding}"
+                                                              Header="{lex:Loc PSQuickAssets:Lang:Remove}">
+                                                        <MenuItem.Icon>
+                                                            <pureUIcontrols:FontIcon Icon="{StaticResource Delete}"
+                                                                                     Foreground="{DynamicResource Brushes.Utility.Error}"
+                                                                                     Size="15" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </assetcontrol:AssetControl.ContextMenu>
 
-                                        <assetcontrol:AssetControl.ToolTip>
-                                            <StackPanel MaxWidth="400">
-                                                <TextBlock FontSize="16"
-                                                           Text="{Binding FileName}"
-                                                           TextWrapping="Wrap" />
-                                                <Rectangle Height="1.5"
-                                                           Margin="0,5,0,4"
-                                                           Fill="{DynamicResource Brushes.Foreground.3}" />
-                                                <TextBlock Visibility="{Binding Uses, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
-                                                    <TextBlock.Text>
-                                                        <MultiBinding Converter="{lex:StringFormatConverter}">
-                                                            <lex:BLoc Key="Uses" />
-                                                            <Binding Path="Uses" />
-                                                        </MultiBinding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-                                                <TextBlock Text="{Binding Dimensions, Converter={StaticResource SizeToString}}" />
-                                                <TextBlock Text="{Binding FileSize, Converter={StaticResource BytesToReadableSize}}" />
-                                            </StackPanel>
-                                        </assetcontrol:AssetControl.ToolTip>
+                                            <assetcontrol:AssetControl.ToolTip>
+                                                <StackPanel MaxWidth="400">
+                                                    <TextBlock FontSize="16"
+                                                               Text="{Binding FileName}"
+                                                               TextWrapping="Wrap" />
+                                                    <Rectangle Height="1.5"
+                                                               Margin="0,5,0,4"
+                                                               Fill="{DynamicResource Brushes.Foreground.3}" />
+                                                    <TextBlock Visibility="{Binding Uses, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{lex:StringFormatConverter}">
+                                                                <lex:BLoc Key="Uses" />
+                                                                <Binding Path="Uses" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Dimensions, Converter={StaticResource SizeToString}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
+                                                    <TextBlock Text="{Binding FileSize, Converter={StaticResource BytesToReadableSize}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
+                                                </StackPanel>
+                                            </assetcontrol:AssetControl.ToolTip>
 
-                                    </assetcontrol:AssetControl>
+                                        </assetcontrol:AssetControl>
+
+                                        <!--  ASSET NOT FOUND  -->
+                                        <Button Style="{StaticResource SpringButton}"
+                                                Background="Transparent"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Right"
+                                                Margin="0 -8 -8 0"
+                                                Cursor="Hand"
+                                                ToolTip="{lex:Loc Assets_AssetNotFound_Tooltip}"
+                                                Visibility="{Binding Exists, Converter={pureUI:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}"
+                                                Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
+                                                CommandParameter="{Binding}">
+                                            <Button.Content>
+                                                <Grid>
+                                                    <!--  Symbol Background  -->
+                                                    <Ellipse Width="20"
+                                                             Height="20"
+                                                             Fill="{DynamicResource Brushes.Background.1}" />
+
+                                                    <pureUIcontrols:FontIcon Icon="{StaticResource StatusErrorFull}"
+                                                                             Size="22"
+                                                                             Foreground="{DynamicResource Brushes.Utility.Error}" />
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-
                         </ListBox>
                     </StackPanel>
                 </DataTemplate>

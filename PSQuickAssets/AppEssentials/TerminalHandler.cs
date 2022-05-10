@@ -44,7 +44,7 @@ internal class TerminalHandler
                 stream.Read(bytes, 0, bytes.Length);
                 logContent = Encoding.UTF8.GetString(bytes);
             }
-            Terminal.WriteLine(logContent.Substring(0, 12000));
+            Terminal.WriteLine(logContent.Substring(0, Math.Min(logContent.Length, 12000)));
         }
     }
 

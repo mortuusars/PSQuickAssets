@@ -76,6 +76,8 @@ public partial class AssetGroupViewModel
     [ICommand]
     public void RemoveAsset(AssetViewModel asset)
     {
+        ArgumentNullException.ThrowIfNull(asset);
+
         Assets.Remove(asset);
         Group.Assets.Remove(asset.Asset);
         _assetRepository.Save();

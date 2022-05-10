@@ -26,6 +26,11 @@
 
     <Color x:Key="Colors.Overlay.0">#17EEEEEE</Color>
 
+    <Color x:Key="Colors.Utility.Error">#E95959</Color>
+    <Color x:Key="Colors.Utility.Accent.0">#74B2F1</Color>
+    <Color x:Key="Colors.Utility.Accent.1">#AAA1DC</Color>
+    
+
     <!--BRUSHES-->
     <SolidColorBrush x:Key="Brushes.Background.0" Color="{StaticResource Colors.Background.0}"/>
     <SolidColorBrush x:Key="Brushes.Background.1" Color="{StaticResource Colors.Background.1}"/>
@@ -46,10 +51,12 @@
     <SolidColorBrush x:Key="Brushes.Accent.Background.0" Color="{StaticResource Colors.Accent.Background.0}"/>
 
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
     
     <SolidColorBrush x:Key="Brushes.Overlay.0" Color="{StaticResource Colors.Overlay.0}"/>
-    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
 
-    
+    <SolidColorBrush x:Key="Brushes.Utility.Error" Color="{StaticResource Colors.Utility.Error}"/>
+    <SolidColorBrush x:Key="Brushes.Utility.Accent.0" Color="{StaticResource Colors.Utility.Accent.0}"/>
+    <SolidColorBrush x:Key="Brushes.Utility.Accent.1" Color="{StaticResource Colors.Utility.Accent.1}"/>
 
 </themes:ThemeResourceDictionary>

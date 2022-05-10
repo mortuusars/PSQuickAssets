@@ -1,17 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using PSQA.Core;
 using PSQuickAssets.ViewModels;
-using System.Media;
 using PureUI;
+using PureUI.Controls;
+using System.Media;
 using System.Windows;
 using System.Windows.Input;
-using PureUI.Controls;
 
 namespace PSQuickAssets.Commands;
 
 internal static class AssetCommands
 {
-    public static ICommand ShowAssetInExplorer { get; } = new RelayCommand<object>((obj) =>
+    public static ICommand CopyAssetFilePath { get; } = new RelayCommand<object>(obj =>
+    {
+        if (obj is AssetViewModel asset)
+            Clipboard.SetText(asset.FilePath);
+        else
+            SystemSounds.Exclamation.Play();
+    });
+
+    public static ICommand ShowAssetInExplorer { get; } = new RelayCommand<object>(obj =>
     {
         if (obj is AssetViewModel asset)
             GeneralCommands.ShowInExplorer.Execute(asset.FilePath);
@@ -19,7 +26,7 @@ internal static class AssetCommands
             SystemSounds.Exclamation.Play();
     });
 
-    public static ICommand OpenAssetInShell { get; } = new RelayCommand<object>((obj) =>
+    public static ICommand OpenAssetInShell { get; } = new RelayCommand<object>(obj =>
     {
         if (obj is AssetViewModel asset)
             GeneralCommands.OpenInShell.Execute(asset.FilePath);
@@ -27,7 +34,7 @@ internal static class AssetCommands
             SystemSounds.Exclamation.Play();
     });
 
-    public static ICommand CollapseExpandGroup { get; } = new RelayCommand<object>((groupViewModel) =>
+    public static ICommand CollapseExpandGroup { get; } = new RelayCommand<object>(groupViewModel =>
     {
         if (groupViewModel is AssetGroupViewModel groupVM)
             groupVM.IsExpanded = !groupVM.IsExpanded;
@@ -35,7 +42,7 @@ internal static class AssetCommands
             SystemSounds.Asterisk.Play();
     });
 
-    public static ICommand RenameGroup { get; } = new RelayCommand<FrameworkElement>((element) =>
+    public static ICommand RenameGroup { get; } = new RelayCommand<FrameworkElement>(element =>
     {
         if (element?.FindChildByName("GroupName") is ToggleTextBox renameControl)
             renameControl.EditMode = true;

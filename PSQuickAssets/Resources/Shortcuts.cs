@@ -14,6 +14,7 @@ internal static class Shortcuts
 
     public static MouseGesture AssetAdd { get; } = new MouseGesture(MouseAction.LeftClick);
     public static MouseGesture AssetAddAsNewDocument { get; } = new MouseGesture(MouseAction.LeftClick, ModifierKeys.Control);
+    public static KeyGesture AssetCopyFilePath { get; } = new KeyGesture(Key.C, ModifierKeys.Control, "Ctrl+C");
     public static KeyGesture AssetOpenInShell { get; } = new KeyGesture(Key.O, ModifierKeys.Control, "Ctrl+O");
     public static KeyGesture AssetShowInExplorer { get; } = new KeyGesture(Key.E, ModifierKeys.Control, "Ctrl+E");
 

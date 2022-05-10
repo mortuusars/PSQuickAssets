@@ -129,8 +129,15 @@
   <data name="Assets_AddingToPhotoshopFailed" xml:space="preserve">
     <value>Cannot add asset to Photoshop</value>
   </data>
+  <data name="Assets_AssetNotFound_Tooltip" xml:space="preserve">
+    <value>File Not Found.
+Click to remove asset.</value>
+  </data>
   <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
     <value>Cannot execute action '{0}' from set '{1}'</value>
+  </data>
+  <data name="Assets_CopyPath" xml:space="preserve">
+    <value>Copy Filepath</value>
   </data>
   <data name="Assets_CreateEmptyGroup" xml:space="preserve">
     <value>Create Empty Group</value>
@@ -149,6 +156,9 @@
   </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
