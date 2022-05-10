@@ -12,7 +12,7 @@ public partial class App : Application
     public static Version Version { get => AppVersion.AssemblyVersion; }
     public static DateTime Build { get => AppVersion.BuildTime; }
 
-    public static IServiceProvider ServiceProvider { get; private set; } = DIKernel.ServiceProvider;
+    public static IServiceProvider ServiceProvider { get; private set; } = DIServiceProviderCreator.CreateServiceProvider();
 
     public App()
     {

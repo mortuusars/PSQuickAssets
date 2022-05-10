@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace PSQuickAssets.Services;
 
 internal class ServiceLocator
 {
-    public IConfig Config { get => DIKernel.ServiceProvider.GetRequiredService<IConfig>(); }
-    public WindowManager WindowHandler { get => DIKernel.ServiceProvider.GetRequiredService<WindowManager>(); }
+    public IConfig Config { get => App.ServiceProvider.GetRequiredService<IConfig>(); }
+    public WindowManager WindowHandler { get => App.ServiceProvider.GetRequiredService<WindowManager>(); }
 }

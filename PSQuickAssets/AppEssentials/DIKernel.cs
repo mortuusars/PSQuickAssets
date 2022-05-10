@@ -9,11 +9,9 @@ using Serilog;
 
 namespace PSQuickAssets;
 
-internal static class DIKernel
+internal static class DIServiceProviderCreator
 {
-    public static IServiceProvider ServiceProvider { get; } = CreateServiceProvider();
-
-    private static IServiceProvider CreateServiceProvider()
+    public static IServiceProvider CreateServiceProvider()
     {
         IServiceCollection services = new ServiceCollection();
 
@@ -46,7 +44,6 @@ internal static class DIKernel
         services.AddTransient<AssetsWindowViewModel>();
 
         services.AddTransient<SettingsViewModel>();
-
 
         return services.BuildServiceProvider();
     }
