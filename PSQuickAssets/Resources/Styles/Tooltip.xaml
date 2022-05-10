@@ -17,7 +17,7 @@
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
                         Margin="10"
-                        Background="{DynamicResource Brushes.Background.2}"
+                        Background="{DynamicResource Brushes.Background.3}"
                         BorderBrush="{x:Null}"
                         BorderThickness="0"
                         CornerRadius="4">

@@ -27,7 +27,7 @@
                    BorderBrush="#111"
                    SaveData="True"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
-                   xmlns:tb="http://www.hardcodet.net/taskbar"
+                   xmlns:tb="http://www.hardcodet.net/taskbar" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                    d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
@@ -85,7 +85,7 @@
             <StackPanel Orientation="Horizontal">
 
                 <Button Padding="7 4"
-                        Content="&#xE700;"
+                        Content="{StaticResource GlobalNavigationButton}"
                         FontFamily="{StaticResource SegoeMDL2Icons}"
                         FontSize="17"
                         VerticalAlignment="Center"
@@ -93,7 +93,8 @@
                         Style="{StaticResource OpacityButton}"
                         pureUI:ContextMenuExtensions.OpenOnLeftClick="True">
                     <Button.ContextMenu>
-                        <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}" d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
+                        <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}" 
+                                     d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
                             <!--  ADD ASSETS  -->
                             <!--<MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddAssets}">
@@ -141,9 +142,8 @@
                             <!--  ADD EMPTY GROUP  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Strings:Assets_AddGroup}" Command="{Binding CreateEmptyGroupCommand}">
                                 <MenuItem.Icon>
-                                    <TextBlock Text="&#xECC8;"
-                                               FontFamily="{StaticResource SegoeMDL2Icons}"
-                                               FontSize="19" />
+                                    <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}"
+                                                             Size="16"/>
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -154,11 +154,8 @@
                                       Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.Settings}, Converter={StaticResource KeyGestureToString}}">
                                 <MenuItem.Icon>
-                                    <Path Height="16"
-                                          Width="16"
-                                          Data="{StaticResource SettingsIconGeometry}"
-                                          Fill="{StaticResource ForegroundMainBrush}"
-                                          Stretch="Uniform" />
+                                    <pureUIcontrols:FontIcon Icon="{StaticResource Setting}"
+                                                             Size="16"/>
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -167,11 +164,9 @@
                                       Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
                                       Visibility="{Binding Data.Config.DebugMode, Source={StaticResource WindowViewModelProxy}, Converter={StaticResource BoolToVisibility}}">
                                 <MenuItem.Icon>
-                                    <Path Height="16"
-                                          Width="16"
-                                          Data="{StaticResource TerminalIconGeomerty}"
-                                          Fill="{StaticResource ForegroundMainBrush}"
-                                          Stretch="Uniform" />
+                                    <controls:PathIcon Data="{StaticResource TerminalIconGeomerty}"
+                                                       Height="15"
+                                                       Fill="{DynamicResource Brushes.Foreground.1}"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>
