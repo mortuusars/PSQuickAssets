@@ -181,6 +181,9 @@ Click to remove asset.</value>
   <data name="MaskMode_RevealSelection" xml:space="preserve">
     <value>Reveal Selection</value>
   </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
   <data name="Mouse_Click" xml:space="preserve">
     <value>Click</value>
   </data>

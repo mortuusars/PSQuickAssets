@@ -137,8 +137,4 @@
 	  </Page>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Windows\Old\" />
-	</ItemGroup>
-
 </Project>

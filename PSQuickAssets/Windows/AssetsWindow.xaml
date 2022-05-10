@@ -15,19 +15,21 @@
                    xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   xmlns:tb="http://www.hardcodet.net/taskbar" 
+                   xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                    mc:Ignorable="d"
                    lex:LocalizeDictionary.DesignCulture="en"
                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                    lex:ResxLocalizationProvider.DefaultDictionary="Lang"
                    x:Name="MainWindow"
                    Title="PSQuickAssets"
-                   Width="400 "
-                   Height="250"
+                   Width="700"
+                   Height="300"
+                   d:Width="300"
+                   d:Height="200"
                    Topmost="{Binding Config.AlwaysOnTop}"
-                   BorderBrush="#111"
                    SaveData="True"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
-                   xmlns:tb="http://www.hardcodet.net/taskbar" xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                    d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
@@ -182,7 +184,7 @@
                     Style="{StaticResource OpacityButton}">
                 <Button.Content>
                     <Path Margin="-1,-1,0,0"
-                          Fill="{StaticResource ForegroundMainBrush}"
+                          Fill="{DynamicResource Brushes.Foreground.1}"
                           Stretch="Uniform"
                           Width="16"
                           Height="16"
@@ -227,7 +229,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <pureUIcontrols:DashBorder Stroke="{StaticResource ForegroundMainBrush}"
+                        <pureUIcontrols:DashBorder Stroke="{DynamicResource Brushes.Foreground.1}"
                                                    Margin="-2"
                                                    StrokeDashLine="20"
                                                    StrokeOnlyCorners="True"
@@ -284,7 +286,7 @@
 
         <!--  TITLE PREVIEW  -->
         <d:Border Margin="0,-27,0,0"
-                  Background="{StaticResource BorderMainBrush}"
+                  Background="{StaticResource Brushes.Border.0}"
                   VerticalAlignment="Top">
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
