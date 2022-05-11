@@ -3,12 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PSQA.Assets.Repository;
 using PSQA.Core;
-using PSQuickAssets.Resources;
 using PSQuickAssets.Services;
-using PSQuickAssets.Utils.SystemDialogs;
-using System.Collections.ObjectModel;
+using PSQuickAssets.Utils;
 using System.Collections.Specialized;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
@@ -94,9 +92,9 @@ internal partial class AssetsViewModel
     }
 
     [ICommand]
-    private void CreateEmptyGroup(string? groupName)
+    private void AddEmptyGroup(string? groupName)
     {
-        if (string.IsNullOrWhiteSpace(groupName))
+        if (string.IsNullOrWhiteSpace(groupName) || IsGroupNameValid(groupName).Count > 0)
             groupName = GenerateNewGroupName();
 
         _assetRepository.AssetGroups.Add(new AssetGroup() { Name = groupName });
@@ -108,6 +106,63 @@ internal partial class AssetsViewModel
         if (assetGroupViewModel is not null)
             _assetRepository.AssetGroups.Remove(assetGroupViewModel.Group);
     }
+
+    [ICommand]
+    private void NewGroup(Func<IEnumerable<NewGroupData>> newGroupsProvider)
+    {
+        foreach (NewGroupData data in newGroupsProvider())
+        {
+            CreateGroup(data);
+        }
+    }
+
+    private void CreateGroup(NewGroupData newGroupData)
+    {
+        string name = string.IsNullOrWhiteSpace(newGroupData.Name) ? GenerateNewGroupName() : newGroupData.Name;
+        if (IsGroupExists(name))
+            name = GenerateNewGroupName();
+
+        List<Asset> assets = new();
+        foreach (string path in newGroupData.FilePaths)
+        {
+            Asset asset = _assetRepository.CreateAsset(path);
+            if (asset.Path != string.Empty)
+                assets.Add(asset);
+        }
+
+        _assetRepository.AddGroup(name, assets);
+    }
+
+    [ICommand]
+    private void GroupFromFiles(Func<IEnumerable<string>> filePathsProvider)
+    {
+        var files = filePathsProvider();
+        if (!files.Any())
+            return;
+
+        List<Asset> assets = new();
+
+        foreach (string path in files)
+        {
+            Asset asset = _assetRepository.CreateAsset(path);
+            if (asset.Path != string.Empty)
+                assets.Add(asset);
+        }
+
+        if (assets.Count > 0)
+        {
+            _assetRepository.AddGroup(GenerateNewGroupName(), assets);
+        }
+    }
+
+    //private void GroupFromFolder(Func<IEnumerable<string>> folderPathProvider)
+    //{
+    //    string folderPath = folderPathProvider();
+    //    if (string.IsNullOrWhiteSpace(folderPath))
+    //        return;
+
+    //    DirectoryInfo.
+    //}
 
     //[ICommand]
     //private async Task AddFilesToGroup(AssetGroupViewModel? group)
@@ -158,6 +213,7 @@ internal partial class AssetsViewModel
     //    }
     //}
 
+
     /// <summary>
     /// Checks if a group with specified name exists in <see cref="AssetGroups"/>.
     /// </summary>
@@ -166,6 +222,7 @@ internal partial class AssetsViewModel
     {
         return AssetGroups.Any(group => group.Name.Equals(groupName));
     }
+
 
     /// <summary>
     /// Validates new name for a group.

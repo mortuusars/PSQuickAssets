@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using MTerminal.WPF;
 using System.Diagnostics;
 using System.Media;
@@ -19,7 +20,7 @@ internal static class GeneralCommands
             Terminal.Show();
         else
             Terminal.Close();
-    });
+    }, () => App.ServiceProvider.GetRequiredService<IConfig>().DebugMode); //TODO: MenuItem not working.
 
     /// <summary>
     /// Exits the app.

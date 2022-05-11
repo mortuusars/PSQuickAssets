@@ -56,4 +56,21 @@ public class AssetRepository
             return new Asset();
         }
     }
+
+    public AssetGroup AddGroup(string groupName, List<Asset> assets)
+    {
+        if (string.IsNullOrWhiteSpace(groupName)) throw new ArgumentNullException("groupName", "Name cannot be null or empty.");
+        ArgumentNullException.ThrowIfNull(assets);
+
+        AssetGroup group = new()
+        {
+            Name = groupName,
+            Assets = assets
+        };
+
+        AssetGroups.Add(group);
+
+        return group;
+    }
+
 }

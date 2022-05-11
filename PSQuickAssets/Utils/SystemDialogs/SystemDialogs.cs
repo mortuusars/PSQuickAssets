@@ -1,7 +1,7 @@
 ﻿using Ookii.Dialogs.Wpf;
 using System;
 
-namespace PSQuickAssets.Utils.SystemDialogs;
+namespace PSQuickAssets.Utils;
 
 public enum SelectionMode
 {

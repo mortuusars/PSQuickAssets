@@ -79,6 +79,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Group.
+        /// </summary>
+        public static string Assets_AddEmptyGroup {
+            get {
+                return ResourceManager.GetString("Assets_AddEmptyGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_AddFiles {
@@ -134,6 +143,33 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Files.
+        /// </summary>
+        public static string Assets_GroupFromFiles {
+            get {
+                return ResourceManager.GetString("Assets_GroupFromFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Folders.
+        /// </summary>
+        public static string Assets_GroupFromFolders {
+            get {
+                return ResourceManager.GetString("Assets_GroupFromFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Folders (include subfolders).
+        /// </summary>
+        public static string Assets_GroupFromFoldersWithSubfolders {
+            get {
+                return ResourceManager.GetString("Assets_GroupFromFoldersWithSubfolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Assets.
         /// </summary>
         public static string Assets_NothingAdded {
@@ -166,6 +202,16 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Assets_ShowInExplorer {
             get {
                 return ResourceManager.GetString("Assets_ShowInExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large amount of assets will be added ({0}). 
+        ///Continue?.
+        /// </summary>
+        public static string Assets_Warning_LargeAmountOfAssets {
+            get {
+                return ResourceManager.GetString("Assets_Warning_LargeAmountOfAssets", resourceCulture);
             }
         }
         
@@ -305,11 +351,29 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Folders.
+        /// </summary>
+        public static string SelectFolders {
+            get {
+                return ResourceManager.GetString("SelectFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Images.
         /// </summary>
         public static string SelectImages {
             get {
                 return ResourceManager.GetString("SelectImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
@@ -681,6 +745,15 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Taskbar_ShowTerminal {
             get {
                 return ResourceManager.GetString("Taskbar_ShowTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal.
+        /// </summary>
+        public static string Terminal {
+            get {
+                return ResourceManager.GetString("Terminal", resourceCulture);
             }
         }
         

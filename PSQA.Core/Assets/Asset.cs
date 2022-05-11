@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PSQA.Core;
+﻿namespace PSQA.Core;
 
 public class Asset
 {

@@ -123,6 +123,9 @@
   <data name="Assets_AddAsLayer" xml:space="preserve">
     <value>Add as Layer</value>
   </data>
+  <data name="Assets_AddEmptyGroup" xml:space="preserve">
+    <value>New Group</value>
+  </data>
   <data name="Assets_AddFiles" xml:space="preserve">
     <value>Add Files</value>
   </data>
@@ -142,6 +145,15 @@ Click to remove asset.</value>
   <data name="Assets_CreateEmptyGroup" xml:space="preserve">
     <value>Create Empty Group</value>
   </data>
+  <data name="Assets_GroupFromFiles" xml:space="preserve">
+    <value>Add Files</value>
+  </data>
+  <data name="Assets_GroupFromFolders" xml:space="preserve">
+    <value>Add Folders</value>
+  </data>
+  <data name="Assets_GroupFromFoldersWithSubfolders" xml:space="preserve">
+    <value>Add Folders (include subfolders)</value>
+  </data>
   <data name="Assets_NothingAdded" xml:space="preserve">
     <value>No Assets</value>
   </data>
@@ -153,6 +165,10 @@ Click to remove asset.</value>
   </data>
   <data name="Assets_ShowInExplorer" xml:space="preserve">
     <value>Show in Explorer</value>
+  </data>
+  <data name="Assets_Warning_LargeAmountOfAssets" xml:space="preserve">
+    <value>Large amount of assets will be added ({0}). 
+Continue?</value>
   </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
@@ -199,8 +215,14 @@ Click to remove asset.</value>
   <data name="Rename" xml:space="preserve">
     <value>Rename</value>
   </data>
+  <data name="SelectFolders" xml:space="preserve">
+    <value>Select Folders</value>
+  </data>
   <data name="SelectImages" xml:space="preserve">
     <value>Select Images</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="Settings_AddMaskToLayer" xml:space="preserve">
     <value>Add Mask to Added Layer</value>
@@ -326,6 +348,9 @@ Esc to cancel.</value>
   </data>
   <data name="Taskbar_ShowTerminal" xml:space="preserve">
     <value>Show Terminal</value>
+  </data>
+  <data name="Terminal" xml:space="preserve">
+    <value>Terminal</value>
   </data>
   <data name="Update_Current" xml:space="preserve">
     <value>Current Version:</value>
