@@ -14,6 +14,7 @@ public enum DialogType
     SelectFolders
 }
 
+//TODO: Change to Func<dialogresult>
 public class OpenDialogBehavior : DependencyObject
 {
     public static readonly DependencyProperty DialogProperty =
@@ -71,13 +72,13 @@ public class OpenDialogBehavior : DependencyObject
         {
             DialogType.None => Array.Empty<string>(),
             DialogType.SelectFile => SystemDialogs.SelectFiles(
-                Resources.Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Single),
+                Localize["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Single),
             DialogType.SelectFiles => SystemDialogs.SelectFiles(
-                Resources.Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple),
+                Localize["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple),
             DialogType.SelectFolder => SystemDialogs.SelectFolder(
-                Resources.Localization.Instance["SelectFolder"], SelectionMode.Single),
+                Localize["SelectFolder"], SelectionMode.Single),
             DialogType.SelectFolders => SystemDialogs.SelectFolder(
-                Resources.Localization.Instance["SelectFolder"], SelectionMode.Multiple),
+                Localize["SelectFolder"], SelectionMode.Multiple),
             _ => throw new NotSupportedException()
         };
     }

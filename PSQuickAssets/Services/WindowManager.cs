@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Hardcodet.Wpf.TaskbarNotification;
 using MTerminal.WPF;
 using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
@@ -13,6 +14,8 @@ internal partial class WindowManager
 {
     private AssetsWindow? _assetsWindow;
     private readonly IConfig _config;
+
+    public TaskbarIcon? TaskbarIcon { get => _assetsWindow?.TaskbarIcon; }
 
     public WindowManager(IConfig config)
     {

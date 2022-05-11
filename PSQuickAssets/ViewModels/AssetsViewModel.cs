@@ -176,10 +176,10 @@ internal partial class AssetsViewModel
         List<string> errors = new();
 
         if (string.IsNullOrWhiteSpace(name))
-            errors.Add(Localization.Instance["Group_NameCannotBeEmpty"]);
+            errors.Add(Localize["Group_NameCannotBeEmpty"]);
 
         if (IsGroupExists(name))
-            errors.Add(Localization.Instance["Group_NameAlreadyExists"]);
+            errors.Add(Localize["Group_NameAlreadyExists"]);
 
         return errors;
     }
@@ -190,10 +190,6 @@ internal partial class AssetsViewModel
     /// <returns>Created group viewmodel.</returns>
     private AssetGroupViewModel CreateGroupViewModel(AssetGroup assetGroup)
     {
-        //string groupName = assetGroup.Name;
-        //if (IsGroupExists(groupName))
-        //    assetGroup.Name = $"{groupName} {Localization.Instance["New"]}";
-
         return new AssetGroupViewModel(assetGroup, _assetRepository);
     }
 
@@ -203,7 +199,7 @@ internal partial class AssetsViewModel
     /// <returns>Generated name.</returns>
     private string GenerateNewGroupName()
     {
-        string group = Localization.Instance["Group"];
+        string group = Localize["Group"];
         int genericGroupCount = AssetGroups.Select(g => g.Name.Contains(group, StringComparison.OrdinalIgnoreCase)).Count();
         return genericGroupCount == 0 ? group : group + " " + (genericGroupCount + 1);
     }

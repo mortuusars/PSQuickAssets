@@ -1,5 +1,4 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
-using System;
 
 namespace PSQuickAssets.Services
 {
@@ -10,13 +9,17 @@ namespace PSQuickAssets.Services
     {
         private Action? _onNotificationClickedAction = () => { };
 
+        private TaskbarIcon? TaskbarIcon { get => _taskbarIcon ??= TryGetTaskbarIcon(); }
         private TaskbarIcon? _taskbarIcon;
+        private readonly WindowManager _windowManager;
+
+        public TaskbarNotificationService(WindowManager windowManager)
+        {
+            _windowManager = windowManager;
+        }
 
         public void Notify(string title, string message, NotificationIcon icon, Action? onNotificationClicked = null)
         {
-            if (_taskbarIcon is null)
-                TryGetTaskbarIcon();
-
             var balloonIcon = icon switch
             {
                 NotificationIcon.None => BalloonIcon.None,
@@ -27,7 +30,7 @@ namespace PSQuickAssets.Services
             };
 
             _onNotificationClickedAction = onNotificationClicked;
-            _taskbarIcon?.ShowBalloonTip(title, message, balloonIcon);
+            TaskbarIcon?.ShowBalloonTip(title, message, balloonIcon);
         }
 
         public void Notify(string message, NotificationIcon icon, Action? onNotificationClicked = null)
@@ -43,19 +46,10 @@ namespace PSQuickAssets.Services
 
         private TaskbarIcon? TryGetTaskbarIcon()
         {
-            //TODO: Move this to proper notification service.
-            return null;
-            try
-            {
-                var taskbarIcon = (TaskbarIcon)App.Current.FindResource("TaskBarIcon");
+            TaskbarIcon? taskbarIcon = _windowManager.TaskbarIcon;
+            if (taskbarIcon is not null)
                 taskbarIcon.TrayBalloonTipClicked += NotificationClicked;
-                _taskbarIcon = taskbarIcon;
-                return taskbarIcon;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return taskbarIcon;
         }
     }
 }

@@ -268,7 +268,7 @@
     <Grid x:Name="ContentRoot" Background="Transparent">
 
         <!--  TASKBAR ICON  -->
-        <tb:TaskbarIcon Style="{StaticResource TaskBarIconStyle}" />
+        <tb:TaskbarIcon x:Name="TaskbarIcon" Style="{StaticResource TaskBarIconStyle}" />
 
         <!--  Background must be set to "Transparent" for InputBindings to work on whole area.  -->
         <!--<Grid.InputBindings>

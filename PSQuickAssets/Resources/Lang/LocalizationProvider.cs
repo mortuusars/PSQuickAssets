@@ -44,6 +44,6 @@ internal class LocalizationProvider
     private static string GetLocalizedString(string key, string dictionary, CultureInfo culture)
     {
         return LocalizeDictionary.Instance.GetLocalizedObject(App.AppName, dictionary, key, culture)
-            as string ?? "localized_key_not_found";
+            as string ?? key;
     }
 }
