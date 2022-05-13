@@ -10,25 +10,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/PureUI;component/Resources.xaml" />
 
+                <!--Default Theme-->
                 <themes:ThemeResourceDictionary Source="Resources/Themes/Dark.xaml"/>
                 
                 <ResourceDictionary Source="Resources/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Services.xaml" />
-
-                <ResourceDictionary Source="Resources/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Icons.xaml" />
-                <ResourceDictionary Source="Resources/Styles/SegoeSymbols.xaml" />
-                
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/Tooltip.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/ContextMenu.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Windows.xaml" />
-                
-                
+                <ResourceDictionary Source="Resources/Fonts/Fonts.xaml" />
+                <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Templates.xaml" />
-
-                <ResourceDictionary Source="Resources/Styles/TaskBarIcon.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
 
             <!--Fixes context menu flickering when reopened by removing animation >_<-->

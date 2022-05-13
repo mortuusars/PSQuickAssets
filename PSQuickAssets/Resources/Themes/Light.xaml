@@ -20,6 +20,7 @@
     <Color x:Key="Colors.Foreground.4">#666</Color>
 
     <Color x:Key="Colors.Accent.Background.0">#54A7E9</Color>
+    <Color x:Key="Colors.Accent.Background.0.Highlight">#6FBFFF</Color>
 
     <Color x:Key="Colors.Accent.Foreground.0">#222</Color>
     <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fff</Color>
@@ -48,6 +49,7 @@
     <SolidColorBrush x:Key="Brushes.Foreground.4" Color="{StaticResource Colors.Foreground.4}"/>
 
     <SolidColorBrush x:Key="Brushes.Accent.Background.0" Color="{StaticResource Colors.Accent.Background.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Background.0.Highlight" Color="{StaticResource Colors.Accent.Background.0.Highlight}"/>
 
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>

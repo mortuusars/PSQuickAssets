@@ -26,8 +26,8 @@
                    Title="PSQuickAssets"
                    Width="700"
                    Height="300"
-                   d:Width="300"
-                   d:Height="200"
+                   d:Width="450"
+                   d:Height="240"
                    Topmost="{Binding Config.AlwaysOnTop}"
                    SaveData="True"
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
@@ -35,62 +35,7 @@
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
 
-    <Window.InputBindings>
-        <KeyBinding Gesture="{x:Static res:Shortcuts.HideMainWindow}" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
-        <KeyBinding Gesture="{x:Static res:Shortcuts.Settings}" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}" />
-        <KeyBinding Gesture="{x:Static res:Shortcuts.Terminal}" Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}" />
-        <KeyBinding Gesture="{x:Static res:Shortcuts.Exit}" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
-
-        <!--THUMBNAIL SIZE-->
-        <KeyBinding Gesture="Ctrl+OemPlus"
-                    Command="{Binding ChangeThumbnailSizeCommand}"
-                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Up}" />
-        <KeyBinding Gesture="Ctrl+OemMinus"
-                    Command="{Binding ChangeThumbnailSizeCommand}"
-                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Down}" />
-
-        <!--ADD ASSETS-->
-        <KeyBinding Gesture="{x:Static res:Shortcuts.AddEmptyGroup}"
-                    Command="{Binding AssetsViewModel.AddEmptyGroupCommand}"/>
-
-        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFiles}"
-                    Command="{Binding AssetsViewModel.NewGroupCommand}"
-                    CommandParameter="{x:Static utils:SelectImageFIles.SelectImages}"/>
-
-        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFolders}"
-                    Command="{Binding AssetsViewModel.NewGroupCommand}"
-                    CommandParameter="{x:Static utils:SelectImageFIles.SelectFolders}"/>
-
-        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFoldersWithSubfolders}"
-                    Command="{Binding AssetsViewModel.NewGroupCommand}"
-                    CommandParameter="{x:Static utils:SelectImageFIles.SelectFoldersWithSubfolders}"/>
-
-        <!--  GROUP  -->
-        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.CollapseAssetGroup}"
-                                    ElementName="GroupRoot"
-                                    Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
-                                    PassedParameter="DataContext" />
-
-        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.RenameAssetGroup}"
-                                    ElementName="GroupRoot"
-                                    PassedParameter="Element"
-                                    Command="{x:Static commands:AssetCommands.RenameGroup}" />
-
-        <!--  ASSETS  -->
-        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetCopyFilePath}"
-                                    ElementType="{x:Type assetcontrol:AssetControl}"
-                                    Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
-                                    PassedParameter="DataContext" />
-        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetOpenInShell}"
-                                    ElementType="{x:Type assetcontrol:AssetControl}"
-                                    Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                    PassedParameter="DataContext" />
-
-        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetShowInExplorer}"
-                                    ElementType="{x:Type assetcontrol:AssetControl}"
-                                    Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                    PassedParameter="DataContext" />
-    </Window.InputBindings>
+    
 
     <pureUI:PureWindow.Resources>
 
@@ -100,36 +45,42 @@
         <pureUI:BindingProxy x:Key="WindowViewModelProxy" Data="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
         <pureUI:BindingProxy x:Key="AssetsViewModelProxy" Data="{Binding DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
 
+        <utils:DialogAssetDataProvider x:Key="DialogAssetDataProvider" />
+
         <!--  TITLE  -->
         <Grid x:Key="TitleBarContent">
             <StackPanel Orientation="Horizontal">
 
                 <Button Padding="7 4"
-                        Content="{StaticResource GlobalNavigationButton}"
-                        FontFamily="{StaticResource SegoeMDL2Icons}"
                         FontSize="17"
                         VerticalAlignment="Center"
                         ToolTip="{lex:Loc Menu}"
                         Style="{StaticResource OpacityButton}"
                         pureUI:ContextMenuExtensions.OpenOnLeftClick="True">
+                    <Button.Content>
+                        <pureUIcontrols:FontIcon Icon="{StaticResource GlobalNavigationButton}" Size="17" />
+                    </Button.Content>
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}" d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
                             <!--  ADD EMPTY GROUP  -->
-                            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddEmptyGroup}" Command="{Binding AddEmptyGroupCommand}"
+                            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddEmptyGroup}"
+                                      Command="{Binding AddEmptyGroupCommand}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.AddEmptyGroup}, Converter={StaticResource KeyGestureToString}}">
                                 <MenuItem.Icon>
                                     <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}" Size="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            
+
                             <!--  FILES  -->
                             <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_GroupFromFiles}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.AddGroupFromFiles}, Converter={StaticResource KeyGestureToString}}"
                                       Command="{Binding NewGroupCommand}"
-                                      CommandParameter="{x:Static utils:SelectImageFIles.SelectImages}">
+                                      CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=ImagesDialogDataProvider}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource DictionaryAdd}" Size="17" Margin="0 0 -3 0" />
+                                    <pureUIcontrols:FontIcon Icon="{StaticResource DictionaryAdd}"
+                                                             Size="17"
+                                                             Margin="0 0 -3 0" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -137,7 +88,7 @@
                             <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_GroupFromFolders}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.AddGroupFromFolders}, Converter={StaticResource KeyGestureToString}}"
                                       Command="{Binding NewGroupCommand}"
-                                      CommandParameter="{x:Static utils:SelectImageFIles.SelectFolders}">
+                                      CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}">
                                 <MenuItem.Icon>
                                     <pureUIcontrols:FontIcon Icon="{StaticResource NewFolder}" Size="17" />
                                 </MenuItem.Icon>
@@ -147,7 +98,7 @@
                             <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_GroupFromFoldersWithSubfolders}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.AddGroupFromFoldersWithSubfolders}, Converter={StaticResource KeyGestureToString}}"
                                       Command="{Binding NewGroupCommand}"
-                                      CommandParameter="{x:Static utils:SelectImageFIles.SelectFoldersWithSubfolders}">
+                                      CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}">
                                 <MenuItem.Icon>
                                     <pureUIcontrols:FontIcon Icon="{StaticResource TreeFolderFolderOpen}" Size="17" />
                                 </MenuItem.Icon>
@@ -262,6 +213,62 @@
 
     </pureUI:PureWindow.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Gesture="{x:Static res:Shortcuts.HideMainWindow}" Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
+        <KeyBinding Gesture="{x:Static res:Shortcuts.Settings}" Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}" />
+        <KeyBinding Gesture="{x:Static res:Shortcuts.Terminal}" Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}" />
+        <KeyBinding Gesture="{x:Static res:Shortcuts.Exit}" Command="{x:Static cmds:GeneralCommands.Shutdown}" />
+
+        <!--  THUMBNAIL SIZE  -->
+        <KeyBinding Gesture="Ctrl+OemPlus"
+                    Command="{Binding ChangeThumbnailSizeCommand}"
+                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Up}" />
+        <KeyBinding Gesture="Ctrl+OemMinus"
+                    Command="{Binding ChangeThumbnailSizeCommand}"
+                    CommandParameter="{x:Static pureUI:MouseWheelDirection.Down}" />
+
+        <!--  ADD ASSETS  -->
+        <KeyBinding Gesture="{x:Static res:Shortcuts.AddEmptyGroup}" Command="{Binding AssetsViewModel.AddEmptyGroupCommand}" />
+
+        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFiles}"
+                    Command="{Binding AssetsViewModel.NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=ImagesDialogDataProvider}" />
+
+        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFolders}"
+                    Command="{Binding AssetsViewModel.NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}" />
+
+        <KeyBinding Gesture="{x:Static res:Shortcuts.AddGroupFromFoldersWithSubfolders}"
+                    Command="{Binding AssetsViewModel.NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}" />
+
+        <!--  GROUP  -->
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.CollapseAssetGroup}"
+                                    ElementName="GroupRoot"
+                                    Command="{x:Static commands:AssetCommands.CollapseExpandGroup}"
+                                    PassedParameter="DataContext" />
+
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.RenameAssetGroup}"
+                                    ElementName="GroupRoot"
+                                    PassedParameter="Element"
+                                    Command="{x:Static commands:AssetCommands.RenameGroup}" />
+
+        <!--  ASSETS  -->
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetCopyFilePath}"
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
+                                    PassedParameter="DataContext" />
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetOpenInShell}"
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                                    PassedParameter="DataContext" />
+
+        <pureUI:MouseOverKeyBinding Gesture="{x:Static res:Shortcuts.AssetShowInExplorer}"
+                                    ElementType="{x:Type assetcontrol:AssetControl}"
+                                    Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
+                                    PassedParameter="DataContext" />
+    </Window.InputBindings>
+
     <pureUI:PureWindow.Style>
         <Style TargetType="{x:Type windows:AssetsWindow}" BasedOn="{StaticResource PSQAWindow}">
             <Setter Property="TitleContent" Value="{StaticResource TitleBarContent}" />
@@ -323,25 +330,7 @@
                     <StackPanel Margin="5" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-
-            <!--  DESIGN-TIME DATA  -->
-            <!--<d:ListBox.ItemsSource>
-                <x:Array Type="{x:Type core:AssetGroup}">
-                    <AssetGroupViewModel Name="Group">
-                        <core:AssetGroup.Assets>
-                            <core:Asset Path="../Resources/Images/test.jpg"/>
-                            <core:Asset Path="../Resources/Images/test.jpg"/>
-                        </core:AssetGroup.Assets>
-                    </AssetGroupViewModel>
-
-                    <core:AssetGroup Name="Group 2">
-                        <core:AssetGroup.Assets>
-                            <core:Asset Path="../Resources/Images/test.jpg"/>
-                        </core:AssetGroup.Assets>
-                    </core:AssetGroup>
-                </x:Array>
-            </d:ListBox.ItemsSource>-->
-
+           
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:AssetGroupViewModel}">
 
@@ -474,74 +463,31 @@
                                         Margin="4 0 4 4">
 
                                 <!--  EXPAND/COLLAPSE ASSETS  -->
-                                <CheckBox x:Name="AssetsCollapser"
-                                          IsChecked="{Binding IsExpanded}"
-                                          Content="{StaticResource ChevronDownMed}"
-                                          FontFamily="{StaticResource SegoeMDL2Icons}"
-                                          Foreground="{DynamicResource Brushes.Foreground.1}"
-                                          FontWeight="Bold"
-                                          VerticalAlignment="Stretch"
-                                          FontSize="16"
-                                          Padding="2"
-                                          KeyboardNavigation.DirectionalNavigation="Continue">
-                                    <CheckBox.InputBindings>
-                                        <KeyBinding Gesture="Enter"
-                                                    Command="{x:Static cmds:AssetCommands.CollapseExpandGroup}"
-                                                    CommandParameter="{Binding}" />
-                                    </CheckBox.InputBindings>
-                                    <CheckBox.Style>
-                                        <Style TargetType="CheckBox">
-                                            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
-                                            <Setter Property="Opacity" Value="0.6" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="CheckBox">
-                                                        <Grid>
-                                                            <Viewbox Margin="{TemplateBinding Padding}"
-                                                                     x:Name="viewbox"
-                                                                     RenderTransformOrigin="0.5,0.5">
-                                                                <Viewbox.RenderTransform>
-                                                                    <RotateTransform Angle="0" />
-                                                                </Viewbox.RenderTransform>
-                                                                <ContentPresenter Content="{TemplateBinding Content}"
-                                                                                  VerticalAlignment="Center"
-                                                                                  HorizontalAlignment="Center" />
-                                                            </Viewbox>
-                                                        </Grid>
-                                                        <ControlTemplate.Resources>
-                                                            <BackEase x:Key="BackEasing"
-                                                                      Amplitude="0.25"
+                                <ToggleButton x:Name="AssetsCollapser"
+                                              IsChecked="{Binding IsExpanded}"
+                                              Foreground="{DynamicResource Brushes.Foreground.1}"
+                                              VerticalAlignment="Stretch"
+                                              KeyboardNavigation.DirectionalNavigation="Continue"
+                                              RenderTransformOrigin="0.5,0.5">
+                                    <ToggleButton.RenderTransform>
+                                        <RotateTransform Angle="-90"/>
+                                    </ToggleButton.RenderTransform>
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border Background="Transparent">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                    <ToggleButton.Style>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Style.Resources>
+                                                <BackEase x:Key="BackEasing"
+                                                                      Amplitude="0.5"
                                                                       EasingMode="EaseOut" />
-                                                        </ControlTemplate.Resources>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsChecked" Value="True">
-                                                                <Trigger.EnterActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                             Storyboard.TargetName="viewbox"
-                                                                                             By="180"
-                                                                                             Duration="0:0:0.45"
-                                                                                             EasingFunction="{StaticResource BackEasing}" />
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </Trigger.EnterActions>
-                                                                <Trigger.ExitActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                             Storyboard.TargetName="viewbox"
-                                                                                             To="0"
-                                                                                             Duration="0:0:0.45"
-                                                                                             EasingFunction="{StaticResource BackEasing}" />
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </Trigger.ExitActions>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
+                                            </Style.Resources>
+                                            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
+                                            <Setter Property="Opacity" Value="0.6"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsChecked" Value="True">
                                                     <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
@@ -565,16 +511,47 @@
                                                         <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
                                                     </DataTrigger.ExitActions>
                                                 </DataTrigger>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                             
+                                                                                             To="0"
+                                                                                             Duration="0:0:0.3"
+                                                                                             EasingFunction="{StaticResource BackEasing}" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                             To="-90"
+                                                                                             Duration="0:0:0.3"
+                                                                                             EasingFunction="{StaticResource BackEasing}" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </CheckBox.Style>
-                                </CheckBox>
+                                    </ToggleButton.Style>
+                                    <ToggleButton.Content>
+                                        <pureUIcontrols:FontIcon Icon="{StaticResource ChevronDownMed}"
+                                                                 Size="13"
+                                                                 FontWeight="Bold" />
+                                    </ToggleButton.Content>
+                                    <ToggleButton.InputBindings>
+                                        <KeyBinding Gesture="Enter" Command="{Binding ToggleExpandedCommand}" />
+                                    </ToggleButton.InputBindings>
+                                </ToggleButton>
 
                                 <!--  GROUP NAME  -->
                                 <pureUIcontrols:ToggleTextBox x:Name="GroupName"
                                                               Text="{Binding Name}"
                                                               wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
-                                                              Margin="5 0 0 0"
+                                                              Margin="7 0 0 0"
                                                               FontFamily="{StaticResource FontMedium}"
                                                               FontSize="14"
                                                               BorderThickness="0"
@@ -785,7 +762,7 @@
 
                                         <assetcontrol:AssetControl Title="{Binding Name}"
                                                                    Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
-                                                                   ThumbnailSize="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                                   ThumbnailSize="{Binding Path=Config.ThumbnailSize, Source={StaticResource ServiceLocator}}"
                                                                    Foreground="{DynamicResource Brushes.Foreground.1}"
                                                                    FontSize="13"
                                                                    Cursor="Hand"
@@ -974,103 +951,92 @@
 
 
         <!--  NO ASSETS  -->
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Visibility="{Binding AssetsViewModel.AssetGroups.Count, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Visible, VisibilityNotEqual=Collapsed}}"
-                    d:Visibility="Visible">
-            <TextBlock Text="{lex:Loc Assets_NothingAdded}"
-                       FontSize="18"
-                       HorizontalAlignment="Center"
-                       Margin="6 6 6 0" />
-            <Separator Margin="20 10" Opacity="0.3" />
-            <Button Padding="10 6"
-                    FontSize="14"
-                    Background="{DynamicResource Brushes.Background.2}"
-                    Style="{StaticResource OpacityButton}"
-                    Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <pureUIcontrols:FontIcon Icon="{StaticResource AddTo}"
-                                                 Margin="-1 0 8 0"
-                                                 Size="18" />
-                        <TextBlock Text="{lex:Loc Assets_CreateEmptyGroup}"
-                                   VerticalAlignment="Center"
-                                   FontSize="16" />
-                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.AddEmptyGroup}, Converter={StaticResource KeyGestureToString}}"
-                                   FontSize="14"
-                                   Margin="16 2 0 0"
-                                   VerticalAlignment="Center"
-                                   Opacity="0.6"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
+        <Grid VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Grid.IsSharedSizeScope="True"
+              DataContext="{Binding AssetsViewModel}"
+              Visibility="{Binding AssetGroups.Count, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Visible, VisibilityNotEqual=Collapsed}}"
+              d:Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+            </Grid.ColumnDefinitions>
 
-            <Button Padding="10 6"
-                    FontSize="14"
-                    Background="{DynamicResource Brushes.Background.2}"
-                    Style="{StaticResource OpacityButton}"
-                    Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
+            <!--  FILES  -->
+            <Button Grid.Column="0"
+                    Padding="10"
+                    MaxWidth="150"
+                    ToolTip="{lex:Loc Assets_GroupFromFiles_Tooltip}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=ImagesDialogDataProvider}">
                 <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <pureUIcontrols:FontIcon Icon="{StaticResource NewFolder}"
-                                                 Margin="-1 0 8 0"
-                                                 Size="18" />
+                    <StackPanel>
+                        <Grid>
+                            <pureUIcontrols:FontIcon Icon="&#xE3E0;"
+                                                     Margin="6"
+                                                     FontFamily="{StaticResource MaterialIcons}"
+                                                     FontWeight="Thin"
+                                                     Size="30" />
+                            <pureUIcontrols:FontIcon Icon="&#xE145;"
+                                                     FontFamily="{StaticResource MaterialIcons}"
+                                                     Size="20"
+                                                     Margin="5 -5 0 0" />
+                        </Grid>
                         <TextBlock Text="{lex:Loc Assets_GroupFromFiles}"
-                                   VerticalAlignment="Center"
-                                   FontSize="16" />
-                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.AddGroupFromFiles}, Converter={StaticResource KeyGestureToString}}"
-                                   FontSize="14"
-                                   Margin="16 2 0 0"
-                                   VerticalAlignment="Center"
-                                   Opacity="0.6"/>
+                                   Margin="0 10 0 0"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   FontSize="14" />
                     </StackPanel>
                 </Button.Content>
             </Button>
 
-            <Button Padding="10 6"
-                    FontSize="14"
-                    Background="{DynamicResource Brushes.Background.2}"
-                    Style="{StaticResource OpacityButton}"
-                    Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
+            <!--  FOLDERS  -->
+            <Button Grid.Column="1"
+                    Padding="10"
+                    MaxWidth="150"
+                    ToolTip="{lex:Loc Assets_GroupFromFolders_Tooltip}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}">
                 <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <pureUIcontrols:FontIcon Icon="{StaticResource FolderOpen}"
-                                                 Margin="-1 0 8 0"
-                                                 Size="18" />
+                    <StackPanel>
+                        <pureUIcontrols:FontIcon Icon="&#xE2C7;"
+                                                 Margin="4"
+                                                 FontFamily="{StaticResource MaterialIcons}"
+                                                 Size="34" />
                         <TextBlock Text="{lex:Loc Assets_GroupFromFolders}"
-                                   VerticalAlignment="Center"
-                                   FontSize="16" />
-                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.AddGroupFromFolders}, Converter={StaticResource KeyGestureToString}}"
-                                   FontSize="14"
-                                   Margin="16 2 0 0"
-                                   VerticalAlignment="Center"
-                                   Opacity="0.6"/>
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0 10 0 0"
+                                   FontSize="14" />
                     </StackPanel>
                 </Button.Content>
             </Button>
 
-            <Button Padding="10 6"
-                    FontSize="14"
-                    Background="{DynamicResource Brushes.Background.2}"
-                    Style="{StaticResource OpacityButton}"
-                    Command="{Binding AssetsViewModel.AddEmptyGroupCommand}">
+            <!--  FOLDER TREE  -->
+            <Button Grid.Column="2"
+                    Padding="10"
+                    MaxWidth="150"
+                    ToolTip="{lex:Loc Assets_GroupFromFoldersWithSubfolders_Tooltip}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}">
                 <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <pureUIcontrols:FontIcon Icon="{StaticResource FolderOpen}"
-                                                 Margin="-1 0 8 0"
-                                                 Size="18" />
+                    <StackPanel>
+                        <pureUIcontrols:FontIcon Icon="&#xE8A7;"
+                                                 Margin="4"
+                                                 FontFamily="{StaticResource MaterialIcons}"
+                                                 Size="34" />
                         <TextBlock Text="{lex:Loc Assets_GroupFromFoldersWithSubfolders}"
-                                   VerticalAlignment="Center"
-                                   FontSize="16" />
-                        <TextBlock Text="{Binding Source={x:Static res:Shortcuts.AddGroupFromFoldersWithSubfolders}, Converter={StaticResource KeyGestureToString}}"
-                                   FontSize="14"
-                                   Margin="16 2 0 0"
-                                   VerticalAlignment="Center"
-                                   Opacity="0.6"/>
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0 10 0 0"
+                                   FontSize="14" />
                     </StackPanel>
                 </Button.Content>
             </Button>
-        </StackPanel>
+        </Grid>
+        
 
         <!--  LOADING  -->
         <Grid VerticalAlignment="Bottom"

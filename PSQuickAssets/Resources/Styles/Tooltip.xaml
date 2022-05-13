@@ -38,7 +38,5 @@
         </Setter>
     </Style>
     
-    <Style x:Key="DefaultToolTip" TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}"/>
-    <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DarkToolTip}"/>
-    
+    <Style x:Key="DefaultToolTip" TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}"/> 
 </ResourceDictionary>

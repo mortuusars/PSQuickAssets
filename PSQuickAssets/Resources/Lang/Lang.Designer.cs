@@ -161,7 +161,7 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Folders (include subfolders).
+        ///   Looks up a localized string similar to Add Folder Tree.
         /// </summary>
         public static string Assets_GroupFromFoldersWithSubfolders {
             get {

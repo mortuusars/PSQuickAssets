@@ -152,7 +152,7 @@ Click to remove asset.</value>
     <value>Add Folders</value>
   </data>
   <data name="Assets_GroupFromFoldersWithSubfolders" xml:space="preserve">
-    <value>Add Folders (include subfolders)</value>
+    <value>Add Folder Tree</value>
   </data>
   <data name="Assets_NothingAdded" xml:space="preserve">
     <value>No Assets</value>

@@ -3,10 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PSQA.Assets.Repository;
 using PSQA.Core;
+using PSQuickAssets.Models;
 using PSQuickAssets.Services;
-using PSQuickAssets.Utils;
 using System.Collections.Specialized;
-using System.IO;
 using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
@@ -14,8 +13,8 @@ namespace PSQuickAssets.ViewModels;
 [INotifyPropertyChanged]
 internal partial class AssetsViewModel
 {
-    // This collection is managed by handling AssetRepository changes.
-    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new();
+    
+    public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new(); // Collection is managed by handling AssetRepository changes.
 
     public Func<string, List<string>> IsGroupNameValid { get; }
 
@@ -95,7 +94,7 @@ internal partial class AssetsViewModel
     private void AddEmptyGroup(string? groupName)
     {
         if (string.IsNullOrWhiteSpace(groupName) || IsGroupNameValid(groupName).Count > 0)
-            groupName = GenerateNewGroupName();
+            groupName = GenerateGenericGroupName();
 
         _assetRepository.AssetGroups.Add(new AssetGroup() { Name = groupName });
     }
@@ -118,9 +117,9 @@ internal partial class AssetsViewModel
 
     private void CreateGroup(NewGroupData newGroupData)
     {
-        string name = string.IsNullOrWhiteSpace(newGroupData.Name) ? GenerateNewGroupName() : newGroupData.Name;
+        string name = string.IsNullOrWhiteSpace(newGroupData.Name) ? GenerateGenericGroupName() : newGroupData.Name;
         if (IsGroupExists(name))
-            name = GenerateNewGroupName();
+            name = GenerateGenericGroupName();
 
         List<Asset> assets = new();
         foreach (string path in newGroupData.FilePaths)
@@ -151,68 +150,9 @@ internal partial class AssetsViewModel
 
         if (assets.Count > 0)
         {
-            _assetRepository.AddGroup(GenerateNewGroupName(), assets);
+            _assetRepository.AddGroup(GenerateGenericGroupName(), assets);
         }
     }
-
-    //private void GroupFromFolder(Func<IEnumerable<string>> folderPathProvider)
-    //{
-    //    string folderPath = folderPathProvider();
-    //    if (string.IsNullOrWhiteSpace(folderPath))
-    //        return;
-
-    //    DirectoryInfo.
-    //}
-
-    //[ICommand]
-    //private async Task AddFilesToGroup(AssetGroupViewModel? group)
-    //{
-    //    if (group is null)
-    //        throw new ArgumentNullException(nameof(group));
-
-    //    string[] files = SystemDialogs.SelectFiles(Localization.Instance["SelectAssets"], FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
-
-    //    if (files.Length == 0)
-    //        return;
-
-    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-    //    {
-    //        //await _assetGroupHandler.AddAssetsToGroupAsync(group, files);
-    //    }
-    //}
-
-    //[ICommand]
-    //private async Task NewGroupFromFiles()
-    //{
-    //    string[] filePaths = SystemDialogs.SelectFiles(Localize[nameof(Lang.SelectImages)],
-    //        FileFilters.Images + "|" + FileFilters.AllFiles, SelectionMode.Multiple);
-
-    //    if (filePaths.Length == 0)
-    //        return;
-
-    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-    //    {
-    //        //await _assetGroupHandler.AddGroupFromFilesAsync(filePaths);
-    //    }
-    //}
-
-    //[ICommand]
-    //private async void NewGroupFromFolder(bool includeSubfolders = false)
-    //{
-    //    string[] folderPaths = SystemDialogs.SelectFolder(Localization.Instance["SelectFolder"], SelectionMode.Multiple);
-
-    //    if (folderPaths.Length == 0)
-    //        return;
-
-    //    using (_statusService.Loading(Localization.Instance["Assets_AddingAssets"]))
-    //    {
-    //        foreach (var path in folderPaths)
-    //        {
-    //            //await _assetGroupHandler.AddGroupFromFolderAsync(path, includeSubfolders);
-    //        }
-    //    }
-    //}
-
 
     /// <summary>
     /// Checks if a group with specified name exists in <see cref="AssetGroups"/>.
@@ -241,20 +181,12 @@ internal partial class AssetsViewModel
         return errors;
     }
 
-    /// <summary>
-    /// Creates a group view model from existing <see cref="AssetGroup"/>.
-    /// </summary>
-    /// <returns>Created group viewmodel.</returns>
     private AssetGroupViewModel CreateGroupViewModel(AssetGroup assetGroup)
     {
         return new AssetGroupViewModel(assetGroup, _assetRepository);
     }
 
-    /// <summary>
-    /// Generates generic name for a new group.
-    /// </summary>
-    /// <returns>Generated name.</returns>
-    private string GenerateNewGroupName()
+    private string GenerateGenericGroupName()
     {
         string group = Localize["Group"];
         int genericGroupCount = AssetGroups.Select(g => g.Name.Contains(group, StringComparison.OrdinalIgnoreCase)).Count();

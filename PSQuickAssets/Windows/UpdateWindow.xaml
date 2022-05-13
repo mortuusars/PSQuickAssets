@@ -129,8 +129,6 @@
             <Button Grid.Column="0"
                     Content="{lex:Loc Update_Later}"
                     FontFamily="{StaticResource FontMedium}"
-                    Style="{StaticResource OpacityButton}"
-                    Background="{DynamicResource Brushes.Background.3}"
                     FontSize="13"
                     Padding="16 10"
                     Height="35"
@@ -139,9 +137,7 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
 
-                <Button Style="{StaticResource OpacityButton}"
-                        Background="{DynamicResource Brushes.Background.3}"
-                        FontFamily="{StaticResource FontMedium}"
+                <Button FontFamily="{StaticResource FontMedium}"
                         IsDefault="True"
                         Height="35"
                         Margin="32 0 16 0"
@@ -159,14 +155,13 @@
                                                Foreground="{DynamicResource Brushes.Foreground.1}"
                                                Margin="10 0 -4 0"
                                                VerticalAlignment="Center"
-                                               Size="24" />
+                                               Size="20" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
 
                 <Button x:Name="OpenDownloadPageButton"
-                        Style="{StaticResource OpacityButton}"
-                        Background="{DynamicResource Brushes.Accent.Background.0}"
+                        Style="{StaticResource AccentButton}"
                         FontFamily="{StaticResource FontMedium}"
                         IsDefault="True"
                         Height="35"
@@ -185,7 +180,7 @@
                                                Foreground="{DynamicResource Brushes.Accent.Foreground.0}"
                                                Margin="10 0 -4 0"
                                                VerticalAlignment="Center"
-                                               Size="22" />
+                                               Size="20" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
