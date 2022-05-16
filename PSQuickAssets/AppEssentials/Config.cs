@@ -28,7 +28,8 @@ internal interface IConfig : INotifyPropertyChanged
     bool AddMaskToAddedLayer { get; set; }
     MaskMode MaskMode { get; set; }
     bool UnlinkMask { get; set; }
-
+    bool ExecuteActionsAfterAdding { get; set; }
+    PhotoshopAction[] ActionsAfterAdding { get; set; }
 
     void Save();
 }
@@ -53,8 +54,10 @@ internal class Config : ConfigBase, IConfig
     public bool AddMaskToAddedLayer { get => GetValue(true); set => SetValue(value); }
     public MaskMode MaskMode { get => GetValue(MaskMode.RevealSelection); set => SetValue(value); }
     public bool UnlinkMask { get => GetValue(true); set => SetValue(value); }
+    public bool ExecuteActionsAfterAdding { get => GetValue(false); set => SetValue(value); }
+    public PhotoshopAction[] ActionsAfterAdding { get => GetValue(Array.Empty<PhotoshopAction>()); set => SetValue(value); }
 
-    private static readonly string _configFilePath = Path.Combine(Folders.AppData, "config.json");
+    public static string FilePath { get; } = Path.Combine(Folders.AppData, "config.json");
     private readonly ILogger _logger;
 
     public Config(ILogger logger)
@@ -78,7 +81,7 @@ internal class Config : ConfigBase, IConfig
     {
         try
         {
-            string json = File.ReadAllText(_configFilePath);
+            string json = File.ReadAllText(FilePath);
             Dictionary<string, object?> properties = new JsonConfigDeserializer().Deserialize<Config>(json);
             SetProperties(properties);
         }
@@ -94,6 +97,6 @@ internal class Config : ConfigBase, IConfig
     public void Save()
     {
         this.Serialize(new JsonConfigSerializer(new JsonSerializerOptions() { WriteIndented = true }))?
-            .WriteToFileAsync(_configFilePath).SafeFireAndForget((ex) => _logger.Error("Config was not saved: {0}", ex.Message));
+            .WriteToFileAsync(FilePath).SafeFireAndForget((ex) => _logger.Error("Config was not saved: {0}", ex.Message));
     }
 }

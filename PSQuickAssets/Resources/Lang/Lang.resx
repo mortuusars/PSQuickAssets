@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions_AddAction" xml:space="preserve">
+    <value>Add Action</value>
+  </data>
+  <data name="Actions_Name" xml:space="preserve">
+    <value>Action:</value>
+  </data>
+  <data name="Actions_Set" xml:space="preserve">
+    <value>Set:</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -169,6 +178,9 @@ Click to remove asset.</value>
   <data name="Assets_Warning_LargeAmountOfAssets" xml:space="preserve">
     <value>Large amount of assets will be added ({0}). 
 Continue?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
@@ -239,8 +251,14 @@ Continue?</value>
   <data name="Settings_Assets" xml:space="preserve">
     <value>Assets</value>
   </data>
+  <data name="Settings_Category_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="Settings_Category_Application" xml:space="preserve">
     <value>Application</value>
+  </data>
+  <data name="Settings_Category_Mask" xml:space="preserve">
+    <value>Mask</value>
   </data>
   <data name="Settings_Category_Window" xml:space="preserve">
     <value>Window</value>
@@ -283,11 +301,14 @@ Esc to cancel.</value>
   <data name="Settings_Medium" xml:space="preserve">
     <value>Medium</value>
   </data>
+  <data name="Settings_PostPlaceActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="Settings_Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
   <data name="Settings_ThumbnailQuality" xml:space="preserve">
-    <value>Thumbnail quiality</value>
+    <value>Thumbnail Quiality</value>
   </data>
   <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
     <value>Higher quality can consume more RAM</value>
@@ -303,6 +324,9 @@ Esc to cancel.</value>
   </data>
   <data name="Settings_WindowTitle" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Setting_ExecuteActionsPostPlace" xml:space="preserve">
+    <value>Run Actions after adding Asset</value>
   </data>
   <data name="Status_Busy" xml:space="preserve">
     <value>Photoshop is busy</value>

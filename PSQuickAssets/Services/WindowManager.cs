@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using MTerminal.WPF;
-using PSQuickAssets.Utils;
 using PSQuickAssets.ViewModels;
 using PSQuickAssets.Windows;
 using System.Windows;
@@ -28,7 +27,7 @@ internal partial class WindowManager
 
     public void FocusPhotoshop()
     {
-        WindowUtils.FocusWindow("photoshop");
+        Utils.WindowUtils.FocusWindow("photoshop");
     }
 
     /// <summary>

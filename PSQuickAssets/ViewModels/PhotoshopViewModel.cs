@@ -7,15 +7,10 @@ using System.Threading.Tasks;
 
 namespace PSQuickAssets.ViewModels;
 
-internal class PhotoshopViewModel
+internal partial class PhotoshopViewModel
 {
-    public ObservableCollection<PhotoshopAction> GlobalActions { get; } = new();
-
-    public IRelayCommand<PhotoshopAction> AddGlobalActionCommand { get; }
-    public IRelayCommand<PhotoshopAction> RemoveGlobalActionCommand { get; }
-
-    public IAsyncRelayCommand<AssetViewModel> AddImageToPhotoshopAsyncCommand { get; }
-    public IAsyncRelayCommand<AssetViewModel> OpenAsNewDocumentCommand { get; }
+    public ObservableCollection<PhotoshopAction> PostActions { get => PostActionsViewModel.Actions; }
+    public PostActionsViewModel PostActionsViewModel { get; }
 
     private readonly Photoshop _photoshop;
     private readonly WindowManager _windowManager;
@@ -29,40 +24,38 @@ internal class PhotoshopViewModel
         _notificationService = notificationService;
         _config = config;
 
-        AddGlobalActionCommand = new RelayCommand<PhotoshopAction>(a => AddGlobalAction(a!));
-        RemoveGlobalActionCommand = new RelayCommand<PhotoshopAction>(a => RemoveGlobalAction(a!));
-
-        AddImageToPhotoshopAsyncCommand = new AsyncRelayCommand<AssetViewModel>(asset => AddImageToPhotoshopAsync(asset!));
-        OpenAsNewDocumentCommand = new AsyncRelayCommand<AssetViewModel>(asset => OpenAsNewDocumentAsync(asset!));
-
-        //TODO: Global actions and window for setting them up.
-        //AddGlobalAction(new PhotoshopAction("SelectRGBLayer", "Mask"));
+        PostActionsViewModel = new PostActionsViewModel(_config);
     }
 
-    private void AddGlobalAction(PhotoshopAction action)
-    {
-        ArgumentNullException.ThrowIfNull(action);
-
-        // Duplicates can be added because action may be used multiple times and in different order.
-
-        if (action != PhotoshopAction.Empty)
-            GlobalActions.Add(action);
-    }
-
-    private void RemoveGlobalAction(PhotoshopAction action)
-    {
-        ArgumentNullException.ThrowIfNull(action);
-        GlobalActions.Remove(action);
-    }
-
+    [ICommand]
     private async Task AddImageToPhotoshopAsync(AssetViewModel asset)
     {
         PhotoshopResponse response = await _photoshop.HasOpenDocumentAsync() ?
             await AddAsLayerAsync(asset) :
             await OpenAsNewDocumentAsync(asset);
 
+        if (response.Status == Status.Success && _config.ExecuteActionsAfterAdding)
+            await ExecutePostActions();
+    }
+
+    [ICommand]
+    private async Task<PhotoshopResponse> OpenAsNewDocumentAsync(AssetViewModel asset)
+    {
+        _windowManager.FocusPhotoshop();
+        if (_config.HideWindowWhenAddingAsset)
+            _windowManager.HideMainWindow();
+
+        PhotoshopResponse response = await _photoshop.AddAsDocumentAsync(asset.FilePath);
+
         if (response.Status == Status.Success)
-            await ExecuteGlobalActions();
+            asset.Uses++;
+        else
+        {
+            string errorMessage = ComposeAndLocalizeErrorMessage(response);
+            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], errorMessage, NotificationIcon.Error);
+        }
+
+        return response;
     }
 
     private async Task<PhotoshopResponse> AddAsLayerAsync(AssetViewModel asset)
@@ -84,28 +77,9 @@ internal class PhotoshopViewModel
         return response;
     }
 
-    private async Task<PhotoshopResponse> OpenAsNewDocumentAsync(AssetViewModel asset)
+    private async Task<bool> ExecutePostActions()
     {
-        _windowManager.FocusPhotoshop();
-        if (_config.HideWindowWhenAddingAsset)
-            _windowManager.HideMainWindow();
-
-        PhotoshopResponse response = await _photoshop.AddAsDocumentAsync(asset.FilePath);
-
-        if (response.Status == Status.Success)
-            asset.Uses++;
-        else
-        {
-            string errorMessage = ComposeAndLocalizeErrorMessage(response);
-            _notificationService.Notify(Localize[nameof(Lang.Assets_AddingToPhotoshopFailed)], errorMessage, NotificationIcon.Error);
-        }
-
-        return response;
-    }
-
-    private async Task<bool> ExecuteGlobalActions()
-    {
-        foreach (var action in GlobalActions)
+        foreach (var action in PostActions)
         {
             if (!await ExecuteActionAsync(action))
                 return false; // Do not execute further. 

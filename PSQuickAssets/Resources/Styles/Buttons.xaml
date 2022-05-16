@@ -63,7 +63,9 @@
     </Style>
 
     <Style x:Key="AccentButton" TargetType="{x:Type Button}">
-        <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0.Inverse}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="10 6"/>
         <Setter Property="Margin" Value="2"/>
@@ -81,8 +83,8 @@
                         </Border.Background>
 
                         <ContentPresenter x:Name="ContentPresenter"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="True" />
 
                         <VisualStateManager.VisualStateGroups>

@@ -61,6 +61,33 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Action.
+        /// </summary>
+        public static string Actions_AddAction {
+            get {
+                return ResourceManager.GetString("Actions_AddAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action:.
+        /// </summary>
+        public static string Actions_Name {
+            get {
+                return ResourceManager.GetString("Actions_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set:.
+        /// </summary>
+        public static string Actions_Set {
+            get {
+                return ResourceManager.GetString("Actions_Set", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -212,6 +239,15 @@ namespace PSQuickAssets.Resources.Lang {
         public static string Assets_Warning_LargeAmountOfAssets {
             get {
                 return ResourceManager.GetString("Assets_Warning_LargeAmountOfAssets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
@@ -369,6 +405,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run Actions after adding Asset.
+        /// </summary>
+        public static string Setting_ExecuteActionsPostPlace {
+            get {
+                return ResourceManager.GetString("Setting_ExecuteActionsPostPlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -423,11 +468,29 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Settings_Category_Actions {
+            get {
+                return ResourceManager.GetString("Settings_Category_Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string Settings_Category_Application {
             get {
                 return ResourceManager.GetString("Settings_Category_Application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mask.
+        /// </summary>
+        public static string Settings_Category_Mask {
+            get {
+                return ResourceManager.GetString("Settings_Category_Mask", resourceCulture);
             }
         }
         
@@ -551,6 +614,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Settings_PostPlaceActions {
+            get {
+                return ResourceManager.GetString("Settings_PostPlaceActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
         public static string Settings_Theme {
@@ -560,7 +632,7 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thumbnail quiality.
+        ///   Looks up a localized string similar to Thumbnail Quiality.
         /// </summary>
         public static string Settings_ThumbnailQuality {
             get {

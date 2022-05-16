@@ -35,8 +35,6 @@
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
                    d:WindowStyle="None">
 
-    
-
     <pureUI:PureWindow.Resources>
 
         <system:Boolean x:Key="IncludeSubfolders">True</system:Boolean>
@@ -789,14 +787,14 @@
 
                                             <assetcontrol:AssetControl.InputBindings>
                                                 <MouseBinding Gesture="LeftClick"
-                                                              Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                              Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
                                                               CommandParameter="{Binding}" />
                                                 <MouseBinding Gesture="Ctrl+LeftClick"
                                                               Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
                                                               CommandParameter="{Binding}" />
 
                                                 <KeyBinding Gesture="Enter"
-                                                            Command="{Binding PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                            Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
                                                             CommandParameter="{Binding}" />
                                                 <KeyBinding Gesture="Ctrl+Enter"
                                                             Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
@@ -807,7 +805,7 @@
                                                 <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
 
                                                     <!--  Add as layer  -->
-                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopAsyncCommand, Source={StaticResource ViewModelLocator}}"
+                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
                                                               CommandParameter="{Binding}"
                                                               Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
                                                               InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">

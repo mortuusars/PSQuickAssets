@@ -19,11 +19,11 @@
     <Color x:Key="Colors.Foreground.3">#aaa</Color>
     <Color x:Key="Colors.Foreground.4">#888</Color>
 
-    <Color x:Key="Colors.Accent.Background.0">#54A7E9</Color>
-    <Color x:Key="Colors.Accent.Background.0.Highlight">#6FBFFF</Color>
+    <Color x:Key="Colors.Accent.Background.0">#53A8EC</Color>
+    <Color x:Key="Colors.Accent.Background.0.Highlight">#7DC2FA</Color>
 
-    <Color x:Key="Colors.Accent.Foreground.0">#222</Color>
-    <Color x:Key="Colors.Accent.Foreground.0.Inverse">#eee</Color>
+    <Color x:Key="Colors.Accent.Foreground.0">#111</Color>
+    <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fafafa</Color>
 
     <Color x:Key="Colors.Overlay.0">#17EEEEEE</Color>
 

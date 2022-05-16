@@ -3,6 +3,7 @@ using PSQuickAssets.Services;
 using PSQuickAssets.Utils;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 
 namespace PSQuickAssets;
 
@@ -22,7 +23,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        
+
         ShutdownIfAnotherInstanceRunning();
 
         ServiceProvider.GetRequiredService<Startup>()

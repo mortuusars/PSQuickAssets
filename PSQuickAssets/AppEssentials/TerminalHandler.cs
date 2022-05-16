@@ -20,9 +20,16 @@ internal class TerminalHandler
         Terminal.Commands.Add(new TerminalCommand("updatewindow", "Shows test update window", (_) => _windowManager.ShowUpdateWindow(App.Version, new Version("15.5.0"))));
 #endif
 
+        Terminal.Commands.Add(new TerminalCommand("config", "Opens config file", (_) => OpenConfigFile()));
         Terminal.Commands.Add(new TerminalCommand("log", "Prints last log file contents", (_) => PrintLastLog()));
         Terminal.Commands.Add(new TerminalCommand("appdatafolder", "Opens PSQuickAssets data folder in explorer", (_) => OpenAppdataFolder()));
         Terminal.Commands.Add(new TerminalCommand("exit", "Exits the app", (_) => App.Current.Shutdown()));
+    }
+
+    private void OpenConfigFile()
+    {
+        ProcessStartInfo info = new(Config.FilePath) { UseShellExecute = true };
+        Process.Start(info);
     }
 
     private void PrintLastLog()
@@ -37,7 +44,7 @@ internal class TerminalHandler
         else
         {
             string logContent = string.Empty;
-            
+
             using (var stream = lastLogFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 byte[] bytes = new byte[stream.Length];
