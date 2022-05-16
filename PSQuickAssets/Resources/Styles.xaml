@@ -17,7 +17,7 @@
         <Setter Property="Opacity" Value="0.5" />
     </Style>
 
-    <Style TargetType="{x:Type TextBox}">
+    <Style x:Key="SimpleTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.0}" />
         <Setter Property="CaretBrush" Value="{DynamicResource Brushes.Foreground.2}" />
         <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}" />

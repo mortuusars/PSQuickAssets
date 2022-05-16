@@ -651,6 +651,8 @@
             </Setter>
         </Style>
 
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SimpleTextBox}"/>
+
     </pureUI:PureWindow.Resources>
 
     <pureUI:PureWindow.Style>
@@ -974,8 +976,10 @@
                     <!--  ACTIONS  -->
                     <TextBlock Text="{lex:Loc Settings_Category_Actions}" Style="{StaticResource CategoryHeader}" />
 
+                    <!--EXECUTE ON PLACE-->
                     <controls:ToggleSettingItem Header="{lex:Loc Setting_ExecuteActionsPostPlace}" IsChecked="{Binding Config.ExecuteActionsAfterAdding}" />
 
+                    <!--ACTIONS LIST-->
                     <controls:ContentSettingItem x:Name="PostActionsSetting"
                                                  Header="{lex:Loc Settings_PostPlaceActions}"
                                                  Margin="10 0 0 4"
@@ -1106,6 +1110,7 @@
                         </Grid>
                     </controls:ContentSettingItem>
 
+                    <!--ADD ACTION POPUP-->
                     <Popup x:Name="AddingActionPopup"
                            DataContext="{Binding PhotoshopViewModel, Source={StaticResource ViewModelLocator}}"
                            IsOpen="{Binding PostActionsViewModel.AddingMode}"
@@ -1114,10 +1119,14 @@
                            Focusable="True"
                            Placement="MousePoint"
                            PopupAnimation="Fade"
-                           VerticalOffset="-40"
-                           HorizontalOffset="-200"
+                           VerticalOffset="-50"
+                           HorizontalOffset="-205"
                            Opened="AddingActionPopup_Opened">
 
+                        <Popup.InputBindings>
+                            <KeyBinding Key="Esc" Command="{Binding PostActionsViewModel.ExitAddingModeCommand}"/>
+                        </Popup.InputBindings>
+                        
                         <Grid Margin="30">
 
                             <!--  BACKGROUND  -->
@@ -1172,8 +1181,6 @@
                                     </Button.Content>
                                 </Button>
                             </StackPanel>
-
-
                         </Grid>
                     </Popup>
 

@@ -4,6 +4,7 @@ using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
 using PSQuickAssets.Services;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
 
