@@ -7,7 +7,7 @@ internal static class Shortcuts
     public static KeyGesture Settings { get; } = new KeyGesture(Key.P, ModifierKeys.Control, "Ctrl+P");
     public static KeyGesture Terminal { get; } = new KeyGesture(Key.T, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+T");
     public static KeyGesture HideMainWindow { get; } = new KeyGesture(Key.Escape, ModifierKeys.None, "Esc");
-    public static KeyGesture Exit { get; } = new KeyGesture(Key.Escape, ModifierKeys.Shift, "Shift+Esc");
+    public static KeyGesture Exit { get; } = new KeyGesture(Key.Q, ModifierKeys.Control, "Ctrl+Q");
 
     public static KeyGesture AddEmptyGroup { get; } = new KeyGesture(Key.N, ModifierKeys.Control, "Ctrl+N");
     public static KeyGesture AddGroupFromFiles { get; } = new KeyGesture(Key.A, ModifierKeys.Control, "Ctrl+A");
