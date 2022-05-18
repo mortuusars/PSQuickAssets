@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQA.Core", "PSQA.Core\PSQA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQA.Assets", "PSQA.Assets\PSQA.Assets.csproj", "{CC4D67CB-616D-4982-AB86-C5D674E05209}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PureConfig", "..\..\Libraries\PureConfig\PureConfig\PureConfig.csproj", "{3904591E-FC1D-46A3-A1FB-02D1783A3F3B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3904591E-FC1D-46A3-A1FB-02D1783A3F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3904591E-FC1D-46A3-A1FB-02D1783A3F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3904591E-FC1D-46A3-A1FB-02D1783A3F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3904591E-FC1D-46A3-A1FB-02D1783A3F3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
