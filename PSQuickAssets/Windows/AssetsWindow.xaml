@@ -298,8 +298,6 @@
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
 
-        <!--<pureUIcontrols:FontIcon Icon="{x:Static x:SegoeSymbols.GlobalNavigationButton}"/>-->
-
         <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
                  Background="{x:Null}"
                  BorderThickness="0"

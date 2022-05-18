@@ -1,4 +1,5 @@
 ﻿using PureUI;
+using PureUI.Resources;
 using System.Windows;
 using System.Windows.Threading;
 
