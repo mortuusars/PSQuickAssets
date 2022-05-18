@@ -13,8 +13,7 @@
                    xmlns:root="clr-namespace:PSQuickAssets"
                    xmlns:utils="clr-namespace:PSQuickAssets.Utils"
                    xmlns:res="clr-namespace:PSQuickAssets.Resources"
-                   xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
-                   xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
+                   xmlns:pureUI="http://mortuusars.github.io/pureui"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    xmlns:tb="http://www.hardcodet.net/taskbar"
                    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
@@ -50,13 +49,12 @@
             <StackPanel Orientation="Horizontal">
 
                 <Button Padding="7 4"
-                        FontSize="17"
                         VerticalAlignment="Center"
                         ToolTip="{lex:Loc Menu}"
                         Style="{StaticResource OpacityButton}"
                         pureUI:ContextMenuExtensions.OpenOnLeftClick="True">
                     <Button.Content>
-                        <pureUIcontrols:FontIcon Icon="{StaticResource GlobalNavigationButton}" Size="17" />
+                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.GlobalNavigationButton}" FontSize="17" />
                     </Button.Content>
                     <Button.ContextMenu>
                         <ContextMenu DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}" d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
@@ -66,7 +64,7 @@
                                       Command="{Binding AddEmptyGroupCommand}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.AddEmptyGroup}, Converter={StaticResource KeyGestureToString}}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}" Size="16" />
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}" FontSize="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -76,8 +74,8 @@
                                       Command="{Binding NewGroupCommand}"
                                       CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=ImagesDialogDataProvider}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource DictionaryAdd}"
-                                                             Size="17"
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.DictionaryAdd}"
+                                                             FontSize="17"
                                                              Margin="0 0 -3 0" />
                                 </MenuItem.Icon>
                             </MenuItem>
@@ -88,7 +86,7 @@
                                       Command="{Binding NewGroupCommand}"
                                       CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource NewFolder}" Size="17" />
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.NewFolder}" FontSize="17" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -98,7 +96,7 @@
                                       Command="{Binding NewGroupCommand}"
                                       CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource TreeFolderFolderOpen}" Size="17" />
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.TreeFolderFolderOpen}" FontSize="17" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -109,7 +107,7 @@
                                       Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}"
                                       InputGestureText="{Binding Source={x:Static res:Shortcuts.Settings}, Converter={StaticResource KeyGestureToString}}">
                                 <MenuItem.Icon>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource Setting}" Size="16" />
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Setting}" FontSize="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -182,7 +180,7 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <pureUIcontrols:DashBorder Stroke="{DynamicResource Brushes.Foreground.1}"
+                        <pureUI:DashBorder Stroke="{DynamicResource Brushes.Foreground.1}"
                                                    Margin="-2"
                                                    StrokeDashLine="20"
                                                    StrokeOnlyCorners="True"
@@ -300,6 +298,8 @@
             <d:ContentPresenter VerticalAlignment="Top" Content="{StaticResource TitleBarContent}" />
         </d:Border>
 
+        <!--<pureUIcontrols:FontIcon Icon="{x:Static x:SegoeSymbols.GlobalNavigationButton}"/>-->
+
         <ListBox ItemsSource="{Binding AssetsViewModel.AssetGroups}"
                  Background="{x:Null}"
                  BorderThickness="0"
@@ -382,8 +382,8 @@
                                           Command="{Binding AddAssetsCommand}"
                                           wpf:OpenDialogBehavior.Dialog="SelectFiles">
                                     <MenuItem.Icon>
-                                        <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}"
-                                                                 Size="15"
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}"
+                                                                 FontSize="15"
                                                                  Foreground="{DynamicResource Brushes.Foreground.1}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
@@ -397,8 +397,8 @@
                                             <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
                                             <Setter Property="Icon">
                                                 <Setter.Value>
-                                                    <pureUIcontrols:FontIcon Icon="{StaticResource ChevronDownMed}"
-                                                                             Size="17"
+                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronDownMed}"
+                                                                             FontSize="17"
                                                                              Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                 </Setter.Value>
                                             </Setter>
@@ -407,8 +407,8 @@
                                                     <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Collapse}" />
                                                     <Setter Property="Icon">
                                                         <Setter.Value>
-                                                            <pureUIcontrols:FontIcon Icon="{StaticResource ChevronUpMed}"
-                                                                                     Size="17"
+                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronUpMed}"
+                                                                                     FontSize="17"
                                                                                      Foreground="{DynamicResource Brushes.Foreground.1}" />
                                                         </Setter.Value>
                                                     </Setter>
@@ -423,8 +423,8 @@
                                           Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                           InputGestureText="{Binding Source={x:Static res:Shortcuts.RenameAssetGroup}, Converter={StaticResource KeyGestureToString}}">
                                     <MenuItem.Icon>
-                                        <pureUIcontrols:FontIcon Icon="{StaticResource Rename}"
-                                                                 Size="17"
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Rename}"
+                                                                 FontSize="17"
                                                                  Foreground="{DynamicResource Brushes.Utility.Accent.1}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
@@ -437,8 +437,8 @@
                                           CommandParameter="{Binding}">
                                     <MenuItem.Icon>
 
-                                        <pureUIcontrols:FontIcon Icon="{StaticResource Delete}"
-                                                                 Size="17"
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
+                                                                 FontSize="17"
                                                                  Foreground="{DynamicResource Brushes.Utility.Error}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
@@ -536,8 +536,8 @@
                                         </Style>
                                     </ToggleButton.Style>
                                     <ToggleButton.Content>
-                                        <pureUIcontrols:FontIcon Icon="{StaticResource ChevronDownMed}"
-                                                                 Size="13"
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronDownMed}"
+                                                                 FontSize="13"
                                                                  FontWeight="Bold" />
                                     </ToggleButton.Content>
                                     <ToggleButton.InputBindings>
@@ -546,7 +546,7 @@
                                 </ToggleButton>
 
                                 <!--  GROUP NAME  -->
-                                <pureUIcontrols:ToggleTextBox x:Name="GroupName"
+                                <pureUI:ToggleTextBox x:Name="GroupName"
                                                               Text="{Binding Name}"
                                                               wpf:TextBoxPreValidation.ValidationDelegate="{Binding AssetsViewModel.IsGroupNameValid, Source={StaticResource ViewModelLocator}}"
                                                               Margin="7 0 0 0"
@@ -556,8 +556,8 @@
                                                               Background="Transparent"
                                                               Foreground="{DynamicResource Brushes.Foreground.1}"
                                                               SelectionBrush="{DynamicResource Brushes.Foreground.0}">
-                                    <pureUIcontrols:ToggleTextBox.Style>
-                                        <Style TargetType="{x:Type pureUIcontrols:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <pureUI:ToggleTextBox.Style>
+                                        <Style TargetType="{x:Type pureUI:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                                             <Setter Property="Opacity" Value="0.6" />
                                             <Setter Property="VerticalAlignment" Value="Stretch" />
                                             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -628,11 +628,11 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </pureUIcontrols:ToggleTextBox.Style>
-                                    <pureUIcontrols:ToggleTextBox.EditModeActivationGesture>
+                                    </pureUI:ToggleTextBox.Style>
+                                    <pureUI:ToggleTextBox.EditModeActivationGesture>
                                         <MouseGesture MouseAction="LeftDoubleClick" />
-                                    </pureUIcontrols:ToggleTextBox.EditModeActivationGesture>
-                                    <pureUIcontrols:ToggleTextBox.ContextMenu>
+                                    </pureUI:ToggleTextBox.EditModeActivationGesture>
+                                    <pureUI:ToggleTextBox.ContextMenu>
                                         <ContextMenu>
                                             <!--
                                                 Default textbox context menu has problems when styling it,
@@ -644,14 +644,14 @@
                                                       Command="{x:Static cmds:GeneralCommands.TextBoxCopy}"
                                                       CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                                 <MenuItem.Icon>
-                                                    <pureUIcontrols:FontIcon Icon="{StaticResource Copy}"
+                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
                                                                              FontSize="17"
                                                                              Foreground="{DynamicResource Brushes.Utility.Accent.0}" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                         </ContextMenu>
-                                    </pureUIcontrols:ToggleTextBox.ContextMenu>
-                                </pureUIcontrols:ToggleTextBox>
+                                    </pureUI:ToggleTextBox.ContextMenu>
+                                </pureUI:ToggleTextBox>
                             </StackPanel>
                         </Grid>
 
@@ -841,9 +841,9 @@
                                                               CommandParameter="{Binding}"
                                                               InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetCopyFilePath}, Converter={StaticResource KeyGestureToString}}">
                                                         <MenuItem.Icon>
-                                                            <pureUIcontrols:FontIcon Icon="{StaticResource Copy}"
+                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
                                                                                      Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                                                     Size="17" />
+                                                                                     FontSize="17" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
 
@@ -869,9 +869,9 @@
                                                               Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
                                                               InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
                                                         <MenuItem.Icon>
-                                                            <pureUIcontrols:FontIcon Icon="{StaticResource FolderHorizontal}"
+                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.FolderHorizontal}"
                                                                                      Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                                                     Size="17" />
+                                                                                     FontSize="17" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
 
@@ -883,9 +883,9 @@
                                                               CommandParameter="{Binding}"
                                                               Header="{lex:Loc PSQuickAssets:Lang:Remove}">
                                                         <MenuItem.Icon>
-                                                            <pureUIcontrols:FontIcon Icon="{StaticResource Delete}"
+                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
                                                                                      Foreground="{DynamicResource Brushes.Utility.Error}"
-                                                                                     Size="15" />
+                                                                                     FontSize="15" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                 </ContextMenu>
@@ -932,8 +932,8 @@
                                                              Height="20"
                                                              Fill="{DynamicResource Brushes.Background.1}" />
 
-                                                    <pureUIcontrols:FontIcon Icon="{StaticResource StatusErrorFull}"
-                                                                             Size="22"
+                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.StatusErrorFull}"
+                                                                             FontSize="22"
                                                                              Foreground="{DynamicResource Brushes.Utility.Error}" />
                                                 </Grid>
                                             </Button.Content>
@@ -971,14 +971,14 @@
                 <Button.Content>
                     <StackPanel>
                         <Grid>
-                            <pureUIcontrols:FontIcon Icon="&#xE3E0;"
+                            <pureUI:FontIcon Glyph="&#xE3E0;"
                                                      Margin="6"
                                                      FontFamily="{StaticResource MaterialIcons}"
                                                      FontWeight="Thin"
-                                                     Size="30" />
-                            <pureUIcontrols:FontIcon Icon="&#xE145;"
+                                                     FontSize="30" />
+                            <pureUI:FontIcon Glyph="&#xE145;"
                                                      FontFamily="{StaticResource MaterialIcons}"
-                                                     Size="20"
+                                                     FontSize="20"
                                                      Margin="5 -5 0 0" />
                         </Grid>
                         <TextBlock Text="{lex:Loc Assets_GroupFromFiles}"
@@ -999,10 +999,10 @@
                     CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}">
                 <Button.Content>
                     <StackPanel>
-                        <pureUIcontrols:FontIcon Icon="&#xE2C7;"
+                        <pureUI:FontIcon Glyph="&#xE2C7;"
                                                  Margin="4"
                                                  FontFamily="{StaticResource MaterialIcons}"
-                                                 Size="34" />
+                                                 FontSize="34" />
                         <TextBlock Text="{lex:Loc Assets_GroupFromFolders}"
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
@@ -1021,10 +1021,10 @@
                     CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}">
                 <Button.Content>
                     <StackPanel>
-                        <pureUIcontrols:FontIcon Icon="&#xE8A7;"
+                        <pureUI:FontIcon Glyph="&#xE8A7;"
                                                  Margin="4"
                                                  FontFamily="{StaticResource MaterialIcons}"
-                                                 Size="34" />
+                                                 FontSize="34" />
                         <TextBlock Text="{lex:Loc Assets_GroupFromFoldersWithSubfolders}"
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
@@ -1046,16 +1046,16 @@
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch" />
 
-            <pureUIcontrols:Spinner IsSpinning="{Binding StatusService.IsLoading}" Visibility="{Binding StatusService.IsLoading, Converter={StaticResource BoolToVisibility}}">
-                <pureUIcontrols:Spinner.Content>
+            <pureUI:Spinner IsSpinning="{Binding StatusService.IsLoading}" Visibility="{Binding StatusService.IsLoading, Converter={StaticResource BoolToVisibility}}">
+                <pureUI:Spinner.Content>
                     <Ellipse Width="22"
                              Height="22"
                              Margin="5"
                              StrokeThickness="2.4"
                              StrokeDashArray="16 8"
                              Stroke="{DynamicResource Brushes.Foreground.1}" />
-                </pureUIcontrols:Spinner.Content>
-            </pureUIcontrols:Spinner>
+                </pureUI:Spinner.Content>
+            </pureUI:Spinner>
         </Grid>
     </Grid>
 </pureUI:PureWindow>

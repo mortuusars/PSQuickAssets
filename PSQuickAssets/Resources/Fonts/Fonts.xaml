@@ -13,9 +13,4 @@
 
     <FontFamily x:Key="SegoeMDL2Icons">/Resources/Fonts/#Segoe MDL2 Assets</FontFamily>
     <FontFamily x:Key="MaterialIcons">/Resources/Fonts/#Material Icons Outlined</FontFamily>
-
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="SegoeSymbols.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
-    
 </ResourceDictionary>

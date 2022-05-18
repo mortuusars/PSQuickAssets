@@ -8,9 +8,7 @@
                    xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
                    xmlns:controls="clr-namespace:PSQuickAssets.Controls"
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
-                   xmlns:pureUIcommands="clr-namespace:PureUI.Commands;assembly=PureUI"
-                   xmlns:pureUIcontrols="clr-namespace:PureUI.Controls;assembly=PureUI"
-                   xmlns:pureUI="clr-namespace:PureUI;assembly=PureUI"
+                   xmlns:pureUI="http://mortuusars.github.io/pureui"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    xmlns:dd="urn:gong-wpf-dragdrop"
                    lex:LocalizeDictionary.DesignCulture="en"
@@ -660,7 +658,7 @@
     </pureUI:PureWindow.Style>
 
     <pureUI:PureWindow.InputBindings>
-        <KeyBinding Key="Esc" Command="{x:Static pureUIcommands:WindowCommands.CloseWindow}" />
+        <KeyBinding Key="Esc" Command="{x:Static pureUI:WindowCommands.CloseWindow}" />
     </pureUI:PureWindow.InputBindings>
 
     <Grid>
@@ -682,7 +680,7 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUIcontrols:FontIcon Icon="&#xE713;" Margin="0 0 8 0" />
+                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Setting}" Margin="0 0 8 0" />
                         <TextBlock Text="{lex:Loc Settings_General}" />
                     </StackPanel>
                 </TabItem.Header>
@@ -695,7 +693,7 @@
                     <!--  WINDOW HOTKEY  -->
                     <controls:ContentSettingItem Header="{lex:Loc Settings_WindowOpenHotkey}">
                         <controls:ContentSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xEDA7;" Size="20" />
+                            <pureUI:FontIcon Glyph="&#xEDA7;" FontSize="20" />
                         </controls:ContentSettingItem.Icon>
 
                         <Border BorderThickness="1"
@@ -745,14 +743,14 @@
                                                 Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}"
                                                 IsChecked="{Binding Config.AlwaysOnTop}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xEE3F;" Size="18" />
+                            <pureUI:FontIcon Glyph="&#xEE3F;" FontSize="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
                     <!--  HIDE WINDOW WHEN ADDING  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_HideWindowWhenAdding}" IsChecked="{Binding Config.HideWindowWhenAddingAsset}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xEBFC;" Size="18" />
+                            <pureUI:FontIcon Glyph="&#xEBFC;" FontSize="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
@@ -761,7 +759,7 @@
                                                 Description="{lex:Loc Settings_HideFromTaskbar_Tooltip}"
                                                 IsChecked="{Binding Config.HideIconFromTaskbar}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xE8F9;" Size="18" />
+                            <pureUI:FontIcon Glyph="&#xE8F9;" FontSize="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
@@ -774,13 +772,13 @@
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}" IsChecked="{Binding Config.CheckUpdates}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xECC5;" Size="18" />
+                            <pureUI:FontIcon Glyph="&#xECC5;" FontSize="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_DebugMode}" IsChecked="{Binding Config.DebugMode}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xE9F5;" Size="18" />
+                            <pureUI:FontIcon Glyph="&#xE9F5;" FontSize="18" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
                 </StackPanel>
@@ -791,7 +789,7 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUIcontrols:FontIcon Icon="&#xE771;" Margin="0 0 8 0" />
+                        <pureUI:FontIcon Glyph="&#xE771;" Margin="0 0 8 0" />
                         <TextBlock Text="{lex:Loc Settings_Appearance}" />
                     </StackPanel>
                 </TabItem.Header>
@@ -799,8 +797,8 @@
                 <!--  THEME  -->
                 <controls:ContentSettingItem Header="{lex:Loc Settings_Theme}">
                     <controls:ContentSettingItem.Icon>
-                        <pureUIcontrols:FontIcon Icon="&#xE243;"
-                                                 Size="18"
+                        <pureUI:FontIcon Glyph="&#xE243;"
+                                                 FontSize="18"
                                                  FontFamily="{StaticResource MaterialIcons}" />
                     </controls:ContentSettingItem.Icon>
 
@@ -846,7 +844,7 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUIcontrols:FontIcon Icon="&#xE3F4;"
+                        <pureUI:FontIcon Glyph="&#xE3F4;"
                                                  Margin="0 0 8 0"
                                                  FontFamily="{StaticResource MaterialIcons}" />
                         <TextBlock Text="{lex:Loc Settings_Assets}" />
@@ -861,9 +859,9 @@
                     <!--  ADD MASK TO LAYER  -->
                     <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}" IsChecked="{Binding Config.AddMaskToAddedLayer}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xE3DB;"
+                            <pureUI:FontIcon Glyph="&#xE3DB;"
                                                      FontFamily="{StaticResource MaterialIcons}"
-                                                     Size="26" />
+                                                     FontSize="26" />
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
@@ -872,8 +870,8 @@
                                                  Margin="10 0 0 4"
                                                  IsEnabled="{Binding Config.AddMaskToAddedLayer}">
                         <controls:ContentSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xE3F1;"
-                                                     Size="20"
+                            <pureUI:FontIcon Glyph="&#xE3F1;"
+                                                     FontSize="20"
                                                      FontFamily="{StaticResource MaterialIcons}" />
                         </controls:ContentSettingItem.Icon>
                         <ComboBox Style="{StaticResource ProperComboBox}"
@@ -961,13 +959,13 @@
                                                 Margin="10 0 0 4"
                                                 IsEnabled="{Binding Config.AddMaskToAddedLayer}">
                         <controls:ToggleSettingItem.Icon>
-                            <pureUIcontrols:FontIcon Icon="&#xE71B;"
-                                                     Size="18"
+                            <pureUI:FontIcon Glyph="&#xE71B;"
+                                                     FontSize="18"
                                                      RenderTransformOrigin="0.5,0.5">
-                                <pureUIcontrols:FontIcon.RenderTransform>
+                                <pureUI:FontIcon.RenderTransform>
                                     <RotateTransform Angle="90" />
-                                </pureUIcontrols:FontIcon.RenderTransform>
-                            </pureUIcontrols:FontIcon>
+                                </pureUI:FontIcon.RenderTransform>
+                            </pureUI:FontIcon>
                         </controls:ToggleSettingItem.Icon>
                     </controls:ToggleSettingItem>
 
@@ -977,7 +975,11 @@
                     <TextBlock Text="{lex:Loc Settings_Category_Actions}" Style="{StaticResource CategoryHeader}" />
 
                     <!--EXECUTE ON PLACE-->
-                    <controls:ToggleSettingItem Header="{lex:Loc Setting_ExecuteActionsPostPlace}" IsChecked="{Binding Config.ExecuteActionsAfterAdding}" />
+                    <controls:ToggleSettingItem Header="{lex:Loc Setting_ExecuteActionsPostPlace}" IsChecked="{Binding Config.ExecuteActionsAfterAdding}" >
+                        <controls:ToggleSettingItem.Icon>
+                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.PlaySolid}"/>
+                        </controls:ToggleSettingItem.Icon>
+                    </controls:ToggleSettingItem>
 
                     <!--ACTIONS LIST-->
                     <controls:ContentSettingItem x:Name="PostActionsSetting"
@@ -1073,17 +1075,17 @@
                                                               Command="{Binding PhotoshopViewModel.PostActionsViewModel.RemoveActionCommand, Source={StaticResource ViewModelLocator}}"
                                                               CommandParameter="{Binding}">
                                                         <MenuItem.Icon>
-                                                            <pureUIcontrols:FontIcon Icon="{StaticResource Delete}"
+                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
                                                                                      Foreground="{DynamicResource Brushes.Utility.Error}"
-                                                                                     Size="18" />
+                                                                                     FontSize="18" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                 </ContextMenu>
                                             </Grid.ContextMenu>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <TextBlock Text="{Binding Action}" Foreground="{DynamicResource Brushes.Accent.Background.0.Highlight}" />
-                                                <pureUIcontrols:FontIcon Icon="{StaticResource PaginationDotSolid10}"
-                                                                         Size="5"
+                                                <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.PaginationDotSolid10}"
+                                                                         FontSize="5"
                                                                          Margin="6 0 6 -2" />
                                                 <TextBlock Text="{Binding Set}" />
                                             </StackPanel>
@@ -1101,8 +1103,8 @@
                                     Command="{Binding PostActionsViewModel.EnterAddingModeCommand}"
                                     ToolTip="{lex:Loc Actions_AddAction}">
                                 <Button.Content>
-                                    <pureUIcontrols:FontIcon Icon="{StaticResource AddBold}"
-                                                             Size="12"
+                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}"
+                                                             FontSize="12"
                                                              Focusable="False" />
                                 </Button.Content>
                             </Button>
@@ -1177,7 +1179,7 @@
                                         Style="{StaticResource AccentButton}"
                                         Command="{Binding PostActionsViewModel.AddActionCommand}">
                                     <Button.Content>
-                                        <pureUIcontrols:FontIcon Icon="{StaticResource CheckMark}" Size="15" />
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.CheckMark}" FontSize="15" />
                                     </Button.Content>
                                 </Button>
                             </StackPanel>

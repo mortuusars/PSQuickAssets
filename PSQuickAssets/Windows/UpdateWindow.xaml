@@ -1,13 +1,11 @@
-﻿<pureui:PureWindow x:Class="PSQuickAssets.Windows.UpdateWindow"
-                   xmlns:pureui="clr-namespace:PureUI;assembly=PureUI"
-                   xmlns:pureuicommands="clr-namespace:PureUI.Commands;assembly=PureUI"
+﻿<pureUI:PureWindow x:Class="PSQuickAssets.Windows.UpdateWindow"
+                   xmlns:pureUI="http://mortuusars.github.io/pureui"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
                    xmlns:local="clr-namespace:PSQuickAssets.Windows"
-                   xmlns:controls="clr-namespace:PureUI.Controls;assembly=PureUI"
                    xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
                    mc:Ignorable="d"
                    lex:LocalizeDictionary.DesignCulture="en"
@@ -32,19 +30,19 @@
                    BorderBrush="{DynamicResource Brushes.Background.1}"
                    d:DataContext="{d:DesignInstance vm:UpdateViewModel}">
 
-    <pureui:PureWindow.Resources>
+    <pureUI:PureWindow.Resources>
         <Grid x:Key="TitleContent">
             <!--  UPDATE ICON  -->
             <Grid Margin="30 30 30 24">
-                <controls:FontIcon Icon="&#xE7B8;" Size="44" />
+                <pureUI:FontIcon Glyph="&#xE7B8;" FontSize="44" />
                 <Grid Margin="0 0 -40 26">
                     <Ellipse Fill="{DynamicResource Brushes.Background.0}"
                              Width="32"
                              Height="32"
                              Stroke="{DynamicResource Brushes.Accent.Background.0}"
                              StrokeThickness="3" />
-                    <controls:FontIcon Icon="&#xF0AD;"
-                                       Size="18"
+                    <pureUI:FontIcon Glyph="&#xF0AD;"
+                                       FontSize="18"
                                        Foreground="{DynamicResource Brushes.Accent.Background.0}" />
                 </Grid>
             </Grid>
@@ -55,14 +53,14 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right" />
         </Grid>
-    </pureui:PureWindow.Resources>
+    </pureUI:PureWindow.Resources>
 
-    <pureui:PureWindow.Style>
-        <Style TargetType="{x:Type pureui:PureWindow}" BasedOn="{StaticResource PSQAWindow}">
+    <pureUI:PureWindow.Style>
+        <Style TargetType="{x:Type pureUI:PureWindow}" BasedOn="{StaticResource PSQAWindow}">
             <Setter Property="TitleBackground" Value="{DynamicResource Brushes.Background.0}" />
             <Setter Property="TitleContent" Value="{StaticResource TitleContent}" />
         </Style>
-    </pureui:PureWindow.Style>
+    </pureUI:PureWindow.Style>
 
     <StackPanel>
         <!--  TITLE PREVIEW  -->
@@ -100,9 +98,9 @@
                            d:Text="1.2.1" />
             </StackPanel>
 
-            <controls:FontIcon Grid.Column="1"
-                               Icon="&#xF0AF;"
-                               Size="20"
+            <pureUI:FontIcon Grid.Column="1"
+                               Glyph="&#xF0AF;"
+                               FontSize="20"
                                Margin="20 20 20 13"
                                VerticalAlignment="Bottom" />
 
@@ -133,7 +131,7 @@
                     Padding="16 10"
                     Height="35"
                     IsCancel="True"
-                    Command="{x:Static pureuicommands:WindowCommands.CloseWindow}" />
+                    Command="{x:Static pureUI:WindowCommands.CloseWindow}" />
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
 
@@ -150,12 +148,12 @@
                                        Foreground="{DynamicResource Brushes.Foreground.1}"
                                        FontSize="13"
                                        VerticalAlignment="Center" />
-                            <controls:FontIcon Icon="&#xE89E;"
+                            <pureUI:FontIcon Glyph="&#xE89E;"
                                                FontFamily="{StaticResource MaterialIcons}"
                                                Foreground="{DynamicResource Brushes.Foreground.1}"
                                                Margin="10 0 -4 0"
                                                VerticalAlignment="Center"
-                                               Size="20" />
+                                               FontSize="20" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
@@ -175,16 +173,16 @@
                                        Foreground="{DynamicResource Brushes.Accent.Foreground.0}"
                                        FontSize="13"
                                        VerticalAlignment="Center" />
-                            <controls:FontIcon Icon="&#xE89E;"
+                            <pureUI:FontIcon Glyph="&#xE89E;"
                                                FontFamily="{StaticResource MaterialIcons}"
                                                Foreground="{DynamicResource Brushes.Accent.Foreground.0}"
                                                Margin="10 0 -4 0"
                                                VerticalAlignment="Center"
-                                               Size="20" />
+                                               FontSize="20" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </StackPanel>
         </Grid>
     </StackPanel>
-</pureui:PureWindow>
+</pureUI:PureWindow>

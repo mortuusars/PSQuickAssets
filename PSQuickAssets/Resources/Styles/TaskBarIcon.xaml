@@ -4,7 +4,8 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
                     xmlns:local="clr-namespace:PSQuickAssets" 
-                    xmlns:controls="clr-namespace:PureUI.Controls;assembly=PureUI" xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
+                    xmlns:pureUI="http://mortuusars.github.io/pureui"
+                    xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
 
     
     
@@ -28,7 +29,7 @@
                               Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
                               InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
-                            <controls:FontIcon Icon="&#xE89E;" FontFamily="{StaticResource MaterialIcons}" Size="19"/>
+                            <pureUI:FontIcon Glyph="&#xE89E;" FontFamily="{StaticResource MaterialIcons}" FontSize="19"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
@@ -49,7 +50,7 @@
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_Settings}" 
                               Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
                         <MenuItem.Icon>
-                            <controls:FontIcon Icon="{StaticResource Setting}" Size="17"/>
+                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Setting}" FontSize="17"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
@@ -59,7 +60,7 @@
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Exit}" 
                               Command="{x:Static cmds:GeneralCommands.Shutdown}">
                         <MenuItem.Icon>
-                            <controls:FontIcon Icon="&#xE879;" FontFamily="{StaticResource MaterialIcons}" Size="19"/>
+                            <pureUI:FontIcon Glyph="&#xE879;" FontFamily="{StaticResource MaterialIcons}" FontSize="19"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     
