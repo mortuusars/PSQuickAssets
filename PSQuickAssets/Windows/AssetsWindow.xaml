@@ -940,7 +940,7 @@
         </ListBox>
 
 
-        <!--  NO ASSETS  -->
+        <!--  NO ASSETS  --><!--
         <Grid VerticalAlignment="Center"
               HorizontalAlignment="Center"
               Grid.IsSharedSizeScope="True"
@@ -953,7 +953,7 @@
                 <ColumnDefinition Width="*" SharedSizeGroup="A" />
             </Grid.ColumnDefinitions>
 
-            <!--  FILES  -->
+            --><!--  FILES  --><!--
             <Button Grid.Column="0"
                     Padding="10"
                     MaxWidth="150"
@@ -982,7 +982,7 @@
                 </Button.Content>
             </Button>
 
-            <!--  FOLDERS  -->
+            --><!--  FOLDERS  --><!--
             <Button Grid.Column="1"
                     Padding="10"
                     MaxWidth="150"
@@ -1004,7 +1004,7 @@
                 </Button.Content>
             </Button>
 
-            <!--  FOLDER TREE  -->
+            --><!--  FOLDER TREE  --><!--
             <Button Grid.Column="2"
                     Padding="10"
                     MaxWidth="150"
@@ -1025,8 +1025,94 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-        </Grid>
+        </Grid>-->
 
+        <!--  NO ASSETS  -->
+        <Grid VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Grid.IsSharedSizeScope="True"
+              DataContext="{Binding AssetsViewModel}"
+              Visibility="{Binding AssetGroups.Count, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Visible, VisibilityNotEqual=Collapsed}}"
+              d:Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                <ColumnDefinition Width="*" SharedSizeGroup="A" />
+            </Grid.ColumnDefinitions>
+
+            <!--  FILES  -->
+            <Button Grid.Column="0"
+                    Padding="10"
+                    MaxWidth="150"
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=ImagesDialogDataProvider}">
+                <Button.Content>
+                    <StackPanel>
+                        <Grid>
+                            <pureUI:FontIcon Glyph="&#xE3E0;"
+                                             Margin="6"
+                                             FontFamily="{StaticResource MaterialIcons}"
+                                             FontWeight="Thin"
+                                             FontSize="30" />
+                            <pureUI:FontIcon Glyph="&#xE145;"
+                                             FontFamily="{StaticResource MaterialIcons}"
+                                             FontSize="20"
+                                             Margin="5 -5 0 0" />
+                        </Grid>
+                        <TextBlock Text="{lex:Loc Assets_GroupFromFiles}"
+                                   Margin="0 10 0 0"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   FontSize="14" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
+            <!--  FOLDERS  -->
+            <Button Grid.Column="1"
+                    Padding="10"
+                    MaxWidth="150"
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersDialogDataProvider}">
+                <Button.Content>
+                    <StackPanel>
+                        <pureUI:FontIcon Glyph="&#xE2C7;"
+                                         Margin="4"
+                                         FontFamily="{StaticResource MaterialIcons}"
+                                         FontSize="34" />
+                        <TextBlock Text="{lex:Loc Assets_GroupFromFolders}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0 10 0 0"
+                                   FontSize="14" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
+            <!--  FOLDER TREE  -->
+            <Button Grid.Column="2"
+                    Padding="10"
+                    MaxWidth="150"
+                    Style="{StaticResource AccentButton}"
+                    Command="{Binding NewGroupCommand}"
+                    CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}">
+                <Button.Content>
+                    <StackPanel>
+                        <pureUI:FontIcon Glyph="&#xE8A7;"
+                                         Margin="4"
+                                         FontFamily="{StaticResource MaterialIcons}"
+                                         FontSize="34" />
+                        <TextBlock Text="{lex:Loc Assets_GroupFromFoldersWithSubfolders}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0 10 0 0"
+                                   FontSize="14" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
 
         <!--  LOADING  -->
         <Grid VerticalAlignment="Bottom"
