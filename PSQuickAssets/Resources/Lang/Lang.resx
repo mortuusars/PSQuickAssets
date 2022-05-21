@@ -188,6 +188,15 @@ Continue?</value>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="DragDrop_DropAll" xml:space="preserve">
+    <value>Add Assets</value>
+  </data>
+  <data name="DragDrop_DropAllWithSubfolders" xml:space="preserve">
+    <value>Add Assets (including subfolders)</value>
+  </data>
+  <data name="DragDrop_DropFiles" xml:space="preserve">
+    <value>Add Assets</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>

@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="PSQuickAssets.Controls.DragDropOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PSQuickAssets.Controls"
+             xmlns:pureui="http://mortuusars.github.io/pureui"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             lex:LocalizeDictionary.DesignCulture="en"
+             lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+             lex:ResxLocalizationProvider.DefaultDictionary="Lang"
+             mc:Ignorable="d"
+             d:DesignWidth="400"
+             d:DesignHeight="250"
+             x:Name="Root"
+             Foreground="{DynamicResource Brushes.Foreground.1}"
+             Background="Transparent"
+             FontFamily="{StaticResource FontRegular}"
+             FontSize="14"
+             AllowDrop="True"
+             PreviewDragEnter="Root_PreviewDragEnter">
+
+    <UserControl.Resources>
+
+        <system:Double x:Key="DropAreaRestOpacity">0.8</system:Double>
+        <system:Double x:Key="DropAreaMouseOverOpacity">1</system:Double>
+
+        <Storyboard x:Key="OpacityEnter">
+            <DoubleAnimation Duration="0:0:0.05"
+                             To="{StaticResource DropAreaMouseOverOpacity}"
+                             Storyboard.TargetProperty="Opacity" />
+        </Storyboard>
+
+        <Storyboard x:Key="OpacityLeave">
+            <DoubleAnimation Duration="0:0:0.3"
+                             To="{StaticResource DropAreaRestOpacity}"
+                             Storyboard.TargetProperty="Opacity" />
+        </Storyboard>
+
+        <Style TargetType="{x:Type pureui:DashBorder}">
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="Background" Value="{DynamicResource Brushes.Overlay.Background.Heavy}" />
+            <Setter Property="Stroke" Value="{DynamicResource Brushes.Utility.Accent.0}" />
+            <Setter Property="StrokeDashLine" Value="8" />
+            <Setter Property="StrokeDashSpace" Value="8" />
+            <Setter Property="AllowDrop" Value="True" />
+            <Setter Property="Opacity" Value="{StaticResource DropAreaRestOpacity}" />
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="DragEnter">
+                    <BeginStoryboard Storyboard="{StaticResource OpacityEnter}" />
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="DragLeave">
+                    <BeginStoryboard Storyboard="{StaticResource OpacityLeave}" />
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <UniformGrid Rows="1"
+                 Background="Transparent"
+                 Visibility="{Binding ElementName=Root, Path=DropDataInfo, Converter={pureui:ValueToVisibilityConverter Value={x:Static local:DropDataInfo.None}, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}">
+
+        <!--This area is visible if only files (not folders) is being added-->
+        <pureui:DashBorder Drop="DropArea_Drop"
+                           Tag="{x:Static local:DropAction.Files}"
+                           Visibility="{Binding ElementName=Root, Path=DropDataInfo, Converter={pureui:ValueToVisibilityConverter Value={x:Static local:DropDataInfo.Files}, VisibilityEqual=Visible, VisibilityNotEqual=Collapsed}}">
+            <TextBlock Text="{lex:Loc DragDrop_DropFiles}" />
+        </pureui:DashBorder>
+
+        <pureui:DashBorder Margin="-1 0 0 0"
+                           Tag="{x:Static local:DropAction.Folders}"
+                           Drop="DropArea_Drop"
+                           Visibility="{Binding ElementName=Root, Path=DropDataInfo, Converter={pureui:ValueToVisibilityConverter Value={x:Static local:DropDataInfo.Files}, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}">
+            <TextBlock Text="{lex:Loc DragDrop_DropAll}" />
+        </pureui:DashBorder>
+
+        <pureui:DashBorder Margin="-1 0 0 0"
+                           Tag="{x:Static local:DropAction.FoldersAndSubfolders}"
+                           Drop="DropArea_Drop"
+                           Visibility="{Binding ElementName=Root, Path=DropDataInfo, Converter={pureui:ValueToVisibilityConverter Value={x:Static local:DropDataInfo.Files}, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}">
+            <TextBlock Text="{lex:Loc DragDrop_DropAllWithSubfolders}" />
+        </pureui:DashBorder>
+
+    </UniformGrid>
+</UserControl>

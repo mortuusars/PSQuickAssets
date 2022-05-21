@@ -1,5 +1,6 @@
 ﻿using PureUI;
 using PureUI.Resources;
+using System.Media;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -64,6 +65,30 @@ public partial class AssetsWindow : PureWindow
             WindowState = _restoreWindowState == WindowState.Minimized ? WindowState.Normal : _restoreWindowState;
         else
             Hide();
+    }
+
+    #endregion
+
+    #region Drag&Drop
+
+    public bool IsDragOver
+    {
+        get { return (bool)GetValue(IsDragOverProperty); }
+        set { SetValue(IsDragOverProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsDragOverProperty =
+        DependencyProperty.Register(nameof(IsDragOver), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
+
+    private void AssetsWin_PreviewDragEnter(object sender, DragEventArgs e) => IsDragOver = true;
+    private void AssetsWin_PreviewDragLeave(object sender, DragEventArgs e) => IsDragOver = false;
+    private void AssetsWin_PreviewDrop(object sender, DragEventArgs e) => IsDragOver = false;
+
+    private void AssetsWin_PreviewDragOver(object sender, DragEventArgs e)
+    {
+        // Allow only file drop:
+        if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            e.Effects = DragDropEffects.None;
     }
 
     #endregion

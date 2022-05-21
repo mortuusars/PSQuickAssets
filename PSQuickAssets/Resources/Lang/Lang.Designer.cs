@@ -270,6 +270,33 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Assets.
+        /// </summary>
+        public static string DragDrop_DropAll {
+            get {
+                return ResourceManager.GetString("DragDrop_DropAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Assets (including subfolders).
+        /// </summary>
+        public static string DragDrop_DropAllWithSubfolders {
+            get {
+                return ResourceManager.GetString("DragDrop_DropAllWithSubfolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Assets.
+        /// </summary>
+        public static string DragDrop_DropFiles {
+            get {
+                return ResourceManager.GetString("DragDrop_DropFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string Exit {

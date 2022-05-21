@@ -26,6 +26,7 @@
     <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fff</Color>
 
     <Color x:Key="Colors.Overlay.0">#20FFFFFF</Color>
+    <Color x:Key="Colors.Overlay.Background.Heavy">#fafafafa</Color>
 
     <Color x:Key="Colors.Utility.Error">#E95757</Color>
     <Color x:Key="Colors.Utility.Accent.0">#74B2F1</Color>
@@ -55,6 +56,7 @@
     <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
 
     <SolidColorBrush x:Key="Brushes.Overlay.0" Color="{StaticResource Colors.Overlay.0}"/>
+    <SolidColorBrush x:Key="Brushes.Overlay.Background.Heavy" Color="{StaticResource Colors.Overlay.Background.Heavy}"/>
 
     <SolidColorBrush x:Key="Brushes.Utility.Error" Color="{StaticResource Colors.Utility.Error}"/>
     <SolidColorBrush x:Key="Brushes.Utility.Accent.0" Color="{StaticResource Colors.Utility.Accent.0}"/>

@@ -21,7 +21,7 @@
                    lex:LocalizeDictionary.DesignCulture="en"
                    lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
                    lex:ResxLocalizationProvider.DefaultDictionary="Lang"
-                   x:Name="MainWindow"
+                   x:Name="AssetsWin"
                    Title="PSQuickAssets"
                    Width="700"
                    Height="300"
@@ -32,7 +32,13 @@
                    DataContext="{Binding AssetsWindowViewModel, Source={StaticResource ViewModelLocator}}"
                    d:BorderThickness="0"
                    d:DataContext="{d:DesignInstance Type=vm:AssetsWindowViewModel}"
-                   d:WindowStyle="None">
+                   d:WindowStyle="None"
+                   AllowDrop="True"
+                   PreviewDragEnter="AssetsWin_PreviewDragEnter"
+                   PreviewDragLeave="AssetsWin_PreviewDragLeave"
+                   PreviewDragOver="AssetsWin_PreviewDragOver"
+                   PreviewDrop="AssetsWin_PreviewDrop"
+                   >
 
     <pureUI:PureWindow.Resources>
 
@@ -1055,5 +1061,9 @@
                 </pureUI:Spinner.Content>
             </pureUI:Spinner>
         </Grid>
+
+        <controls:DragDropOverlay Visibility="{Binding ElementName=AssetsWin, Path=IsDragOver, Converter={StaticResource BoolToVisibility}}"
+                                  AddAssetsCommand="{Binding AssetsViewModel.NewGroupCommand}"/>
+
     </Grid>
 </pureUI:PureWindow>
