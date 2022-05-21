@@ -1,10 +1,5 @@
 ﻿using PSQuickAssets.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSQuickAssets.Services;
 
@@ -12,17 +7,16 @@ internal class NewGroupDataCreator
 {
     public Func<int, bool> ThresholdValidation { get; set; } = (_) => true;
 
-    //public IEnumerable<NewGroupData> FromFiles(IEnumerable<FileInfo> paths)
-    //{
-    //    ArgumentNullException.ThrowIfNull(paths);
-
-    //    string? groupName = paths.First().Directory?.Name;
-    //    IEnumerable<NewGroupData> result = new[] { new NewGroupData(groupName, paths.Select(p => p.FullName)) };
-    //    return CheckAndConfirmCount(result) ? result : Enumerable.Empty<NewGroupData>();
-    //}
-
+    /// <summary>
+    /// Creates collection of <see cref="NewGroupData"/> from list of paths.<br></br>
+    /// Files will be added first, then folders.
+    /// </summary>
+    /// <param name="paths">List of file/folder paths.</param>
+    /// <param name="includeSubfolders">If set to <see langword="true"/> - subfolders of top-level folders will be added aswell.</param>
     public IEnumerable<NewGroupData> Create(IEnumerable<string> paths, bool includeSubfolders = false)
     {
+        ArgumentNullException.ThrowIfNull(paths);
+
         var (folders, files) = GetFoldersAndFilesFromPaths(paths);
 
         List<NewGroupData> result = new();
