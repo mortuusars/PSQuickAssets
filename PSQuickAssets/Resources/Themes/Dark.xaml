@@ -19,8 +19,8 @@
     <Color x:Key="Colors.Foreground.3">#aaa</Color>
     <Color x:Key="Colors.Foreground.4">#888</Color>
 
-    <Color x:Key="Colors.Accent.Background.0">#53A8EC</Color>
-    <Color x:Key="Colors.Accent.Background.0.Highlight">#7DC2FA</Color>
+    <Color x:Key="Colors.Accent.Background.0">#4C9CD9</Color>
+    <Color x:Key="Colors.Accent.Background.0.Highlight">#72C0FF</Color>
 
     <Color x:Key="Colors.Accent.Foreground.0">#111</Color>
     <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fafafa</Color>

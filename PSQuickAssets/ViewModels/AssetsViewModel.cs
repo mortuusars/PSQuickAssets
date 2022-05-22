@@ -13,8 +13,10 @@ namespace PSQuickAssets.ViewModels;
 [INotifyPropertyChanged]
 internal partial class AssetsViewModel
 {
-    
     public ObservableCollection<AssetGroupViewModel> AssetGroups { get; } = new(); // Collection is managed by handling AssetRepository changes.
+
+    [ObservableProperty]
+    private bool _editMode;
 
     public Func<string, List<string>> IsGroupNameValid { get; }
 
@@ -89,6 +91,12 @@ internal partial class AssetsViewModel
         foreach (AssetGroup group in _assetRepository.AssetGroups)
             AssetGroups.Add(CreateGroupViewModel(group));
     }
+
+    [ICommand]
+    private void ToggleEditMode() => EditMode = !EditMode;
+
+    [ICommand]
+    private void ExitEditMode() => EditMode = false;
 
     [ICommand]
     private void AddEmptyGroup(string? groupName)

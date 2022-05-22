@@ -4,6 +4,7 @@
     xmlns:conv="clr-namespace:PSQuickAssets.WPF.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <conv:BoolInverter x:Key="BoolInverter"/>
 
     <conv:MouseGestureToStringConverter x:Key="MouseGestureToString"/>
     <conv:KeyGestureToStringConverter x:Key="KeyGestureToString"/>

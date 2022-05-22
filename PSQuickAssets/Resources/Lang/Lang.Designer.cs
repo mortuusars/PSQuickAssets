@@ -170,6 +170,33 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finish Editing.
+        /// </summary>
+        public static string Assets_DisableEditMode {
+            get {
+                return ResourceManager.GetString("Assets_DisableEditMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Mode.
+        /// </summary>
+        public static string Assets_EditMode {
+            get {
+                return ResourceManager.GetString("Assets_EditMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows rearranging Assets and Groups.
+        /// </summary>
+        public static string Assets_EditMode_Tooltip {
+            get {
+                return ResourceManager.GetString("Assets_EditMode_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Files.
         /// </summary>
         public static string Assets_GroupFromFiles {
@@ -252,6 +279,15 @@ namespace PSQuickAssets.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collapse.
         /// </summary>
         public static string Collapse {
@@ -320,6 +356,15 @@ namespace PSQuickAssets.Resources.Lang {
         public static string GroupAssetCount {
             get {
                 return ResourceManager.GetString("GroupAssetCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        public static string Hide {
+            get {
+                return ResourceManager.GetString("Hide", resourceCulture);
             }
         }
         

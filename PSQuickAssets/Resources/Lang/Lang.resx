@@ -154,6 +154,15 @@ Click to remove asset.</value>
   <data name="Assets_CreateEmptyGroup" xml:space="preserve">
     <value>Create Empty Group</value>
   </data>
+  <data name="Assets_DisableEditMode" xml:space="preserve">
+    <value>Finish Editing</value>
+  </data>
+  <data name="Assets_EditMode" xml:space="preserve">
+    <value>Edit Mode</value>
+  </data>
+  <data name="Assets_EditMode_Tooltip" xml:space="preserve">
+    <value>Allows rearranging Assets and Groups</value>
+  </data>
   <data name="Assets_GroupFromFiles" xml:space="preserve">
     <value>Add Files</value>
   </data>
@@ -182,6 +191,9 @@ Continue?</value>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
   </data>
@@ -205,6 +217,9 @@ Continue?</value>
   </data>
   <data name="GroupAssetCount" xml:space="preserve">
     <value>Asset(s)</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Hide</value>
   </data>
   <data name="MaskMode_HideAll" xml:space="preserve">
     <value>Hide All</value>

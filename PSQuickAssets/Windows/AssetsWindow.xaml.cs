@@ -80,7 +80,11 @@ public partial class AssetsWindow : PureWindow
     public static readonly DependencyProperty IsDragOverProperty =
         DependencyProperty.Register(nameof(IsDragOver), typeof(bool), typeof(AssetsWindow), new PropertyMetadata(false));
 
-    private void AssetsWin_PreviewDragEnter(object sender, DragEventArgs e) => IsDragOver = true;
+    private void AssetsWin_PreviewDragEnter(object sender, DragEventArgs e)
+    {
+        IsDragOver = true;
+    }
+
     private void AssetsWin_PreviewDragLeave(object sender, DragEventArgs e) => IsDragOver = false;
     private void AssetsWin_PreviewDrop(object sender, DragEventArgs e) => IsDragOver = false;
 

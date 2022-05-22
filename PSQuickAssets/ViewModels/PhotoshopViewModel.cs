@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using PSQA.Core;
 using PSQuickAssets.Models;
 using PSQuickAssets.PSInterop;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 
 namespace PSQuickAssets.ViewModels;
 
+[INotifyPropertyChanged]
 internal partial class PhotoshopViewModel
 {
     public ObservableCollection<PhotoshopAction> PostActions { get => PostActionsViewModel.Actions; }
@@ -78,6 +80,7 @@ internal partial class PhotoshopViewModel
         return response;
     }
 
+    [ICommand]
     private async Task<bool> ExecutePostActions()
     {
         foreach (var action in PostActions)
@@ -88,6 +91,7 @@ internal partial class PhotoshopViewModel
         return true;
     }
 
+    [ICommand]
     private async Task<bool> ExecuteActionAsync(PhotoshopAction action)
     {
         PhotoshopResponse response = await _photoshop.ExecuteActionAsync(action.Action, action.Set);
