@@ -40,7 +40,8 @@
                                        Margin="7 5"
                                        Foreground="{TemplateBinding Foreground}"
                                        TextAlignment="Justify"
-                                       TextWrapping="NoWrap" />
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
 
                     </Grid>
