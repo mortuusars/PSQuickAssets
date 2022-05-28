@@ -45,10 +45,15 @@
 
         <utils:DialogAssetDataProvider x:Key="DialogAssetDataProvider" />
 
+        <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontFamily" Value="{StaticResource FontMedium}" />
+        </Style>
+
+        <!--  MAIN MENU  -->
         <ContextMenu x:Key="MainMenu"
                      DataContext="{Binding Data, Source={StaticResource AssetsViewModelProxy}}"
-                     d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}"
-                     FontFamily="{StaticResource FontRegular}">
+                     d:DataContext="{d:DesignInstance Type=vm:AssetsViewModel}">
 
             <!--  ADD EMPTY GROUP  -->
             <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddEmptyGroup}"
@@ -85,14 +90,15 @@
                       CommandParameter="{Binding Source={StaticResource DialogAssetDataProvider}, Path=FoldersWithSubfoldersDialogDataProvider}"
                       Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.TreeFolderFolder},
                                                    FontSize=17}" />
- 
+
             <Separator />
 
             <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_EditMode}"
-                      Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.Edit}, FontSize=17}"
+                      Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.Edit},
+                                                   FontSize=17}"
                       ToolTip="{lex:Loc PSQuickAssets:Lang:Assets_EditMode_Tooltip}"
                       IsCheckable="True"
-                      IsChecked="{Binding EditMode}"/>
+                      IsChecked="{Binding EditMode}" />
 
             <Separator />
 
@@ -116,7 +122,7 @@
             </MenuItem>
         </ContextMenu>
 
-        <!--  TITLE  -->
+        <!--  TITLEBAR  -->
         <Grid x:Key="TitleBarContent">
             <!--  MENU  -->
             <Button Padding="6 5"
@@ -128,8 +134,8 @@
                                                     FontSize=17}"
                     Style="{StaticResource OpacityButton}"
                     ContextMenu="{StaticResource MainMenu}"
-                    pureUI:ContextMenuExtensions.OpenOnLeftClick="True" 
-                    IsTabStop="False"/>
+                    pureUI:ContextMenuExtensions.OpenOnLeftClick="True"
+                    IsTabStop="False" />
 
             <!--  CLOSE/HIDE  -->
             <Button Padding="6 5"
@@ -189,7 +195,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <!--  STORYBOARDS  -->
 
         <!--  OPACITY  -->
@@ -203,6 +209,559 @@
                              To="0.6"
                              Storyboard.TargetProperty="Opacity" />
         </Storyboard>
+
+        <BackEase x:Key="BackEasing"
+                  Amplitude="0.5"
+                  EasingMode="EaseInOut" />
+        <Storyboard x:Key="CollapseGroupStoryboard">
+            <DoubleAnimation Duration="0:0:0.2"
+                             To="0"
+                             Storyboard.TargetProperty="Opacity" />
+            <DoubleAnimation Duration="0:0:0.3"
+                             To="0.6"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                             EasingFunction="{StaticResource BackEasing}" />
+            <ObjectAnimationUsingKeyFrames Duration="0:0:0"
+                                           BeginTime="0:0:0.35"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ExpandGroupStoryboard">
+            <ObjectAnimationUsingKeyFrames Duration="0:0:0"
+                                           BeginTime="0:0:0"
+                                           Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Duration="0:0:0.15"
+                             To="1"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                             EasingFunction="{StaticResource BackEasing}" />
+            <DoubleAnimation Duration="0:0:0.15"
+                             To="1"
+                             Storyboard.TargetProperty="Opacity" />
+        </Storyboard>
+
+        <Style x:Key="GroupCollapserStyle" TargetType="{x:Type ToggleButton}">
+            <Style.Resources>
+                <BackEase x:Key="BackEasing"
+                          Amplitude="0.5"
+                          EasingMode="EaseOut" />
+            </Style.Resources>
+            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
+            <Setter Property="Opacity" Value="0.6" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="Transparent">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
+                    </Trigger.ExitActions>
+                </Trigger>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                 To="0"
+                                                 Duration="0:0:0.3"
+                                                 EasingFunction="{StaticResource BackEasing}" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                 To="-90"
+                                                 Duration="0:0:0.3"
+                                                 EasingFunction="{StaticResource BackEasing}" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="GroupRenameStyle"
+               TargetType="{x:Type pureUI:ToggleTextBox}"
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Opacity" Value="0.6" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="MinHeight" Value="18" />
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <!--
+                            Default textbox context menu has problems when styling it,
+                            and this command allows copying name without selecting it first.
+                            Just by clicking on textbox.
+                        -->
+                        <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Copy}"
+                                  InputGestureText="Ctrl+C"
+                                  Command="{x:Static cmds:GeneralCommands.TextBoxCopy}"
+                                  CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                            <MenuItem.Icon>
+                                <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
+                                                 FontSize="17"
+                                                 Foreground="{DynamicResource Brushes.Utility.Accent.0}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <AdornedElementPlaceholder x:Name="adorner"
+                                                       Grid.Row="0"
+                                                       Grid.Column="0"
+                                                       Margin="0 0 0 4" />
+                            <Rectangle Grid.Row="0"
+                                       Grid.Column="0"
+                                       Height="2"
+                                       Fill="{DynamicResource Brushes.Utility.Error}"
+                                       RadiusX="1.5"
+                                       RadiusY="1.5"
+                                       Margin="2 4 2 0"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Bottom" />
+                            <Border CornerRadius="5"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="1"
+                                    Margin="0 2 0 0"
+                                    Background="{DynamicResource Brushes.Background.3}"
+                                    Effect="{StaticResource WindowDropShadow}">
+                                <ItemsControl ItemsSource="{Binding Path=AdornedElement.(Validation.Errors), ElementName=adorner}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ErrorContent}"
+                                                       Margin="10 7"
+                                                       Foreground="{DynamicResource Brushes.Utility.Error}"
+                                                       FontSize="14"
+                                                       FontFamily="{StaticResource FontMedium}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                    <Setter Property="Opacity" Value="1" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  GROUP  -->
+        <Style x:Key="GroupContainerStyle" TargetType="ListBoxItem">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AssetsListBoxStyle" TargetType="ListBox">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CacheMode">
+                <Setter.Value>
+                    <BitmapCache />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <ItemsPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Background="{x:Null}"
+                                   IsItemsHost="True"
+                                   Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <!--  Collapse/Expand group animations  -->
+                <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource CollapseGroupStoryboard}" />
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource ExpandGroupStoryboard}" />
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="AssetsItemContainerStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Grid Background="Transparent">
+                            <ContentPresenter />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ContextMenu x:Key="GroupContextMenu">
+            <!--  INFO ABOUT THE GROUP  -->
+            <MenuItem Style="{StaticResource ContentMenuItem}">
+                <MenuItem.Header>
+                    <StackPanel Margin="8"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}"
+                                       FontSize="16"
+                                       MaxWidth="260"
+                                       TextWrapping="Wrap"
+                                       Grid.Column="0"
+                                       VerticalAlignment="Top"
+                                       HorizontalAlignment="Left" />
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding AssetCount}" Margin="30 0 4 0" />
+                                <TextBlock Text="{lex:Loc PSQuickAssets:Lang:GroupAssetCount}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <Separator />
+
+            <!--  SELECT AND ADD ASSETS  -->
+            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddFiles}"
+                      Command="{Binding AddAssetsCommand}"
+                      wpf:OpenDialogBehavior.Dialog="SelectFiles">
+                <MenuItem.Icon>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}"
+                                     FontSize="15"
+                                     Foreground="{DynamicResource Brushes.Foreground.1}" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <!--  COLLAPSE/EXPAND CONTENT  -->
+            <MenuItem Command="{Binding ToggleExpandedCommand}" InputGestureText="{Binding Source={x:Static res:Shortcuts.CollapseAssetGroup}, Converter={StaticResource KeyGestureToString}}">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronDownMed}"
+                                                 FontSize="17"
+                                                 Foreground="{DynamicResource Brushes.Foreground.1}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Collapse}" />
+                                <Setter Property="Icon">
+                                    <Setter.Value>
+                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronUpMed}"
+                                                         FontSize="17"
+                                                         Foreground="{DynamicResource Brushes.Foreground.1}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+
+            <!--  RENAME  -->
+            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Rename}"
+                      Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                      InputGestureText="{Binding Source={x:Static res:Shortcuts.RenameAssetGroup}, Converter={StaticResource KeyGestureToString}}">
+                <MenuItem.Icon>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Rename}"
+                                     FontSize="17"
+                                     Foreground="{DynamicResource Brushes.Utility.Accent.1}" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <!--  REMOVE  -->
+            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:RemoveGroup}"
+                      Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
+                      CommandParameter="{Binding}">
+                <MenuItem.Icon>
+
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
+                                     FontSize="17"
+                                     Foreground="{DynamicResource Brushes.Utility.Error}" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <!--  ASSET  -->
+        <ContextMenu x:Key="AssetContextMenu">
+
+            <!--  Add as layer  -->
+            <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
+                      CommandParameter="{Binding}"
+                      Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
+                      InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">
+                <MenuItem.Icon>
+                    <Viewbox Width="17">
+                        <Path Data="{StaticResource AddAsLayerIconGeometry}"
+                              Fill="{DynamicResource Brushes.Utility.Accent.0}"
+                              Stretch="Uniform" />
+                    </Viewbox>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <!--  Open as new document  -->
+            <MenuItem Command="{Binding Path=PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                      CommandParameter="{Binding}"
+                      Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenAsNewDoc}"
+                      InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_CtrlClick}">
+                <MenuItem.Icon>
+                    <Viewbox Width="17">
+                        <Path Data="{StaticResource OpenIconGeometry}"
+                              Fill="{DynamicResource Brushes.Utility.Accent.0}"
+                              Stretch="Uniform" />
+                    </Viewbox>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <!--  Copy Filepath  -->
+            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_CopyPath}"
+                      Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
+                      CommandParameter="{Binding}"
+                      InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetCopyFilePath}, Converter={StaticResource KeyGestureToString}}">
+                <MenuItem.Icon>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
+                                     Foreground="{DynamicResource Brushes.Foreground.1}"
+                                     FontSize="17" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <!--  Open with shell  -->
+            <MenuItem Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
+                      CommandParameter="{Binding}"
+                      Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenWithShell}"
+                      InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetOpenInShell}, Converter={StaticResource KeyGestureToString}}">
+                <MenuItem.Icon>
+                    <Viewbox Width="16" Margin="0 0 -2 0">
+                        <Path Data="{StaticResource ViewIconGeometry}"
+                              Fill="{DynamicResource Brushes.Foreground.1}"
+                              Stretch="Uniform" />
+                    </Viewbox>
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <!--  Show in explorer  -->
+            <MenuItem Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
+                      CommandParameter="{Binding}"
+                      Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
+                      InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
+                <MenuItem.Icon>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.FolderHorizontal}"
+                                     Foreground="{DynamicResource Brushes.Foreground.1}"
+                                     FontSize="17" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <!--  Remove  -->
+            <MenuItem Command="{Binding Path=PlacementTarget.Tag.RemoveAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                      CommandParameter="{Binding}"
+                      Header="{lex:Loc PSQuickAssets:Lang:Remove}">
+                <MenuItem.Icon>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
+                                     Foreground="{DynamicResource Brushes.Utility.Error}"
+                                     FontSize="15" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+        <DataTemplate x:Key="AssetTemplate">
+
+            <d:DataTemplate.Resources>
+                <d:BitmapImage x:Key="DesignImage" UriSource="../Resources/Images/test.jpg" />
+            </d:DataTemplate.Resources>
+
+            <Grid Margin="4">
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}" Value="True">
+                                <Setter Property="Cursor" Value="SizeAll" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <assetcontrol:AssetControl Title="{Binding Name}"
+                                           Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
+                                           ThumbnailSize="{Binding Path=Config.ThumbnailSize, Source={StaticResource ServiceLocator}}"
+                                           Foreground="{DynamicResource Brushes.Foreground.1}"
+                                           FontSize="13"
+                                           Cursor="Hand"
+                                           FontFamily="{StaticResource FontMedium}"
+                                           AssetEffect="{StaticResource AssetShadow}"
+                                           MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                           MaximumWidthToHeightRatio="2.5"
+                                           FocusVisualStyle="{StaticResource AssetFocusVisual}"
+                                           Tag="{Binding Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                           IsEnabled="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode, Converter={StaticResource BoolInverter}}"
+                                           ContextMenu="{StaticResource AssetContextMenu}">
+
+                    <assetcontrol:AssetControl.Style>
+                        <Style TargetType="{x:Type assetcontrol:AssetControl}">
+                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </assetcontrol:AssetControl.Style>
+
+                    <assetcontrol:AssetControl.InputBindings>
+                        <MouseBinding Gesture="LeftClick"
+                                      Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
+                                      CommandParameter="{Binding}" />
+                        <MouseBinding Gesture="Ctrl+LeftClick"
+                                      Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                      CommandParameter="{Binding}" />
+
+                        <KeyBinding Gesture="Enter"
+                                    Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
+                                    CommandParameter="{Binding}" />
+                        <KeyBinding Gesture="Ctrl+Enter"
+                                    Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
+                                    CommandParameter="{Binding}" />
+                    </assetcontrol:AssetControl.InputBindings>
+
+                    <assetcontrol:AssetControl.ToolTip>
+                        <StackPanel MaxWidth="400">
+                            <TextBlock FontSize="16"
+                                       Text="{Binding FileName}"
+                                       TextWrapping="Wrap" />
+                            <Rectangle Height="1.5"
+                                       Margin="0,5,0,4"
+                                       Fill="{DynamicResource Brushes.Foreground.3}" />
+                            <TextBlock Visibility="{Binding Uses, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{lex:StringFormatConverter}">
+                                        <lex:BLoc Key="Uses" />
+                                        <Binding Path="Uses" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Dimensions, Converter={StaticResource SizeToString}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
+                            <TextBlock Text="{Binding FileSize, Converter={StaticResource BytesToReadableSize}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
+                        </StackPanel>
+                    </assetcontrol:AssetControl.ToolTip>
+
+                </assetcontrol:AssetControl>
+
+                <!--  ASSET NOT FOUND  -->
+                <Button Style="{StaticResource SpringButton}"
+                        Background="Transparent"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Margin="0 -8 -8 0"
+                        Cursor="Hand"
+                        ToolTip="{lex:Loc Assets_AssetNotFound_Tooltip}"
+                        Visibility="{Binding Exists, Converter={pureUI:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}"
+                        Command="{Binding Path=Tag.RemoveAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"
+                        CommandParameter="{Binding}">
+                    <Button.Content>
+                        <Grid>
+                            <!--  Symbol Background  -->
+                            <Ellipse Width="20"
+                                     Height="20"
+                                     Fill="{DynamicResource Brushes.Background.1}" />
+
+                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.StatusErrorFull}"
+                                             FontSize="22"
+                                             Foreground="{DynamicResource Brushes.Utility.Error}" />
+                        </Grid>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </DataTemplate>
+
 
     </pureUI:PureWindow.Resources>
 
@@ -313,25 +872,13 @@
                  KeyboardNavigation.TabNavigation="Cycle"
                  VerticalAlignment="Stretch"
                  IsTabStop="False"
+                 ItemContainerStyle="{StaticResource GroupContainerStyle}"
                  dd:DragDrop.IsDragSource="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}"
                  dd:DragDrop.IsDropTarget="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}">
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Focusable" Value="False" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <ContentPresenter />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel/>
+                    <StackPanel IsItemsHost="True" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
@@ -342,130 +889,22 @@
                     <StackPanel x:Name="GroupRoot"
                                 Background="Transparent"
                                 Margin="2"
-                                Tag="{Binding ElementName=GroupName}">
+                                Tag="{Binding ElementName=GroupName}"
+                                ContextMenu="{StaticResource GroupContextMenu}">
 
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}" Value="True">
-                                        <Setter Property="Cursor" Value="SizeNS"/>
+                                        <Setter Property="Cursor" Value="SizeNS" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
-                        
-                        <StackPanel.Resources>
-                            <pureUI:BindingProxy x:Key="AssetGroupBindingProxy" Data="{Binding}" />
-                        </StackPanel.Resources>
 
                         <StackPanel.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ToggleExpandedCommand}" />
                         </StackPanel.InputBindings>
-
-                        <!--  GROUP CONTEXT MENU  -->
-                        <StackPanel.ContextMenu>
-                            <ContextMenu FontSize="13" FontFamily="{StaticResource FontMedium}">
-
-                                <!--  INFO ABOUT THE GROUP  -->
-                                <MenuItem Style="{StaticResource ContentMenuItem}">
-                                    <MenuItem.Header>
-                                        <StackPanel Margin="8"
-                                                    VerticalAlignment="Top"
-                                                    HorizontalAlignment="Stretch">
-                                            <Grid HorizontalAlignment="Stretch">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Name}"
-                                                           FontSize="16"
-                                                           MaxWidth="260"
-                                                           TextWrapping="Wrap"
-                                                           Grid.Column="0"
-                                                           VerticalAlignment="Top"
-                                                           HorizontalAlignment="Left" />
-                                                <StackPanel Orientation="Horizontal"
-                                                            Grid.Column="1"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Right">
-                                                    <TextBlock Text="{Binding AssetCount}" Margin="30 0 4 0" />
-                                                    <TextBlock Text="{lex:Loc PSQuickAssets:Lang:GroupAssetCount}" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-                                    </MenuItem.Header>
-                                </MenuItem>
-
-                                <Separator />
-
-                                <!--  SELECT AND ADD ASSETS  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Assets_AddFiles}"
-                                          Command="{Binding AddAssetsCommand}"
-                                          wpf:OpenDialogBehavior.Dialog="SelectFiles">
-                                    <MenuItem.Icon>
-                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}"
-                                                         FontSize="15"
-                                                         Foreground="{DynamicResource Brushes.Foreground.1}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
-                                <Separator />
-
-                                <!--  COLLAPSE/EXPAND CONTENT  -->
-                                <MenuItem Command="{Binding ToggleExpandedCommand}" InputGestureText="{Binding Source={x:Static res:Shortcuts.CollapseAssetGroup}, Converter={StaticResource KeyGestureToString}}">
-                                    <MenuItem.Style>
-                                        <Style TargetType="MenuItem">
-                                            <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Expand}" />
-                                            <Setter Property="Icon">
-                                                <Setter.Value>
-                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronDownMed}"
-                                                                     FontSize="17"
-                                                                     Foreground="{DynamicResource Brushes.Foreground.1}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
-                                                    <Setter Property="Header" Value="{lex:Loc PSQuickAssets:Lang:Collapse}" />
-                                                    <Setter Property="Icon">
-                                                        <Setter.Value>
-                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronUpMed}"
-                                                                             FontSize="17"
-                                                                             Foreground="{DynamicResource Brushes.Foreground.1}" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </MenuItem.Style>
-                                </MenuItem>
-
-                                <!--  RENAME  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Rename}"
-                                          Command="{Binding Path=PlacementTarget.Tag.EnterEditModeCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                          InputGestureText="{Binding Source={x:Static res:Shortcuts.RenameAssetGroup}, Converter={StaticResource KeyGestureToString}}">
-                                    <MenuItem.Icon>
-                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Rename}"
-                                                         FontSize="17"
-                                                         Foreground="{DynamicResource Brushes.Utility.Accent.1}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
-                                <Separator />
-
-                                <!--  REMOVE  -->
-                                <MenuItem Header="{lex:Loc PSQuickAssets:Lang:RemoveGroup}"
-                                          Command="{Binding AssetsViewModel.RemoveGroupCommand, Source={StaticResource ViewModelLocator}}"
-                                          CommandParameter="{Binding}">
-                                    <MenuItem.Icon>
-
-                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
-                                                         FontSize="17"
-                                                         Foreground="{DynamicResource Brushes.Utility.Error}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
-                            </ContextMenu>
-                        </StackPanel.ContextMenu>
 
                         <!--  HEADER  -->
                         <Grid x:Name="GroupHeader"
@@ -484,74 +923,11 @@
                                               VerticalAlignment="Stretch"
                                               KeyboardNavigation.DirectionalNavigation="Continue"
                                               RenderTransformOrigin="0.5,0.5"
+                                              Style="{StaticResource GroupCollapserStyle}"
                                               FocusVisualStyle="{StaticResource ControlFocusVisual}">
                                     <ToggleButton.RenderTransform>
                                         <RotateTransform Angle="-90" />
                                     </ToggleButton.RenderTransform>
-                                    <ToggleButton.Template>
-                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                            <Border Background="Transparent">
-                                                <ContentPresenter />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </ToggleButton.Template>
-                                    <ToggleButton.Style>
-                                        <Style TargetType="{x:Type ToggleButton}">
-                                            <Style.Resources>
-                                                <BackEase x:Key="BackEasing"
-                                                          Amplitude="0.5"
-                                                          EasingMode="EaseOut" />
-                                            </Style.Resources>
-                                            <Setter Property="ToolTip" Value="{lex:Loc ExpandCollapse}" />
-                                            <Setter Property="Opacity" Value="0.6" />
-                                            <Style.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="ToolTip" Value="{lex:Loc Collapse}" />
-                                                </Trigger>
-                                                <Trigger Property="IsChecked" Value="False">
-                                                    <Setter Property="ToolTip" Value="{lex:Loc Expand}" />
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
-                                                    </Trigger.ExitActions>
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
-                                                    <DataTrigger.EnterActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
-                                                    </DataTrigger.EnterActions>
-                                                    <DataTrigger.ExitActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
-                                                    </DataTrigger.ExitActions>
-                                                </DataTrigger>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                 To="0"
-                                                                                 Duration="0:0:0.3"
-                                                                                 EasingFunction="{StaticResource BackEasing}" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                 To="-90"
-                                                                                 Duration="0:0:0.3"
-                                                                                 EasingFunction="{StaticResource BackEasing}" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ToggleButton.Style>
                                     <ToggleButton.Content>
                                         <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.ChevronDownMed}"
                                                          FontSize="13"
@@ -572,410 +948,28 @@
                                                       BorderThickness="0"
                                                       Background="Transparent"
                                                       Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                      SelectionBrush="{DynamicResource Brushes.Foreground.0}">
-                                    <pureUI:ToggleTextBox.Style>
-                                        <Style TargetType="{x:Type pureUI:ToggleTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                                            <Setter Property="Opacity" Value="0.6" />
-                                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                                            <Setter Property="MinHeight" Value="18" />
-                                            <Setter Property="MinWidth" Value="30" />
-                                            <Setter Property="IsReadOnly" Value="True" />
-                                            <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
-                                            <Setter Property="Validation.ErrorTemplate">
-                                                <Setter.Value>
-                                                    <ControlTemplate>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto" />
-                                                                <ColumnDefinition Width="*" />
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="auto" />
-                                                                <RowDefinition Height="*" />
-                                                            </Grid.RowDefinitions>
-                                                            <AdornedElementPlaceholder x:Name="adorner"
-                                                                                       Grid.Row="0"
-                                                                                       Grid.Column="0"
-                                                                                       Margin="0 0 0 4" />
-                                                            <Rectangle Grid.Row="0"
-                                                                       Grid.Column="0"
-                                                                       Height="2"
-                                                                       Fill="{DynamicResource Brushes.Utility.Error}"
-                                                                       RadiusX="1.5"
-                                                                       RadiusY="1.5"
-                                                                       Margin="2 4 2 0"
-                                                                       HorizontalAlignment="Stretch"
-                                                                       VerticalAlignment="Bottom" />
-                                                            <Border CornerRadius="5"
-                                                                    Grid.ColumnSpan="2"
-                                                                    Grid.Row="1"
-                                                                    Margin="0 2 0 0"
-                                                                    Background="{DynamicResource Brushes.Background.3}"
-                                                                    Effect="{StaticResource WindowDropShadow}">
-                                                                <ItemsControl ItemsSource="{Binding Path=AdornedElement.(Validation.Errors), ElementName=adorner}">
-                                                                    <ItemsControl.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <TextBlock Text="{Binding ErrorContent}"
-                                                                                       Margin="10 7"
-                                                                                       Foreground="{DynamicResource Brushes.Utility.Error}"
-                                                                                       FontSize="14"
-                                                                                       FontFamily="{StaticResource FontMedium}" />
-                                                                        </DataTemplate>
-                                                                    </ItemsControl.ItemTemplate>
-                                                                </ItemsControl>
-                                                            </Border>
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=GroupRoot}" Value="True">
-                                                    <DataTrigger.EnterActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseOverOpacityHighlight}" />
-                                                    </DataTrigger.EnterActions>
-                                                    <DataTrigger.ExitActions>
-                                                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveOpacityHighlight}" />
-                                                    </DataTrigger.ExitActions>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
-                                                    <Setter Property="Opacity" Value="1" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </pureUI:ToggleTextBox.Style>
+                                                      SelectionBrush="{DynamicResource Brushes.Foreground.0}"
+                                                      Style="{StaticResource GroupRenameStyle}">
                                     <pureUI:ToggleTextBox.EditModeActivationGesture>
                                         <MouseGesture MouseAction="LeftDoubleClick" />
                                     </pureUI:ToggleTextBox.EditModeActivationGesture>
-                                    <pureUI:ToggleTextBox.ContextMenu>
-                                        <ContextMenu>
-                                            <!--
-                                                Default textbox context menu has problems when styling it,
-                                                and this command allows copying name without selecting it first.
-                                                Just by clicking on textbox.
-                                            -->
-                                            <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Copy}"
-                                                      InputGestureText="Ctrl+C"
-                                                      Command="{x:Static cmds:GeneralCommands.TextBoxCopy}"
-                                                      CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                                <MenuItem.Icon>
-                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
-                                                                     FontSize="17"
-                                                                     Foreground="{DynamicResource Brushes.Utility.Accent.0}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                        </ContextMenu>
-                                    </pureUI:ToggleTextBox.ContextMenu>
                                 </pureUI:ToggleTextBox>
                             </StackPanel>
                         </Grid>
 
+                        <!--  ASSETS  -->
                         <ListBox ItemsSource="{Binding Assets}"
+                                 Tag="{Binding}"
                                  BorderThickness="0"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  Margin="2"
                                  IsTabStop="False"
                                  HorizontalAlignment="Stretch"
+                                 ItemTemplate="{StaticResource AssetTemplate}"
+                                 ItemContainerStyle="{StaticResource AssetsItemContainerStyle}"
+                                 Style="{StaticResource AssetsListBoxStyle}"
                                  dd:DragDrop.IsDragSource="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}"
-                                 dd:DragDrop.IsDropTarget="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}">
-                            
-                            <ListBox.Style>
-                                <Style TargetType="ListBox">
-                                    <Style.Resources>
-                                        <BackEase x:Key="BackEasing"
-                                                  Amplitude="0.5"
-                                                  EasingMode="EaseInOut" />
-                                    </Style.Resources>
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <!--Collapse/Expand group animations-->
-                                        <DataTrigger Binding="{Binding IsExpanded}" Value="False">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.2"
-                                                                         To="0"
-                                                                         Storyboard.TargetProperty="Opacity" />
-                                                        <DoubleAnimation Duration="0:0:0.3"
-                                                                         To="0.6"
-                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                         EasingFunction="{StaticResource BackEasing}" />
-                                                        <ObjectAnimationUsingKeyFrames Duration="0:0:0"
-                                                                                       BeginTime="0:0:0.35"
-                                                                                       Storyboard.TargetProperty="Visibility">
-                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}" />
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0:0:0"
-                                                                                       BeginTime="0:0:0"
-                                                                                       Storyboard.TargetProperty="Visibility">
-                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <DoubleAnimation Duration="0:0:0.15"
-                                                                         To="1"
-                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                         EasingFunction="{StaticResource BackEasing}" />
-                                                        <DoubleAnimation Duration="0:0:0.15"
-                                                                         To="1"
-                                                                         Storyboard.TargetProperty="Opacity" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ListBox.Style>
-
-                            <ListBox.CacheMode>
-                                <BitmapCache />
-                            </ListBox.CacheMode>
-
-                            <ListBox.Template>
-                                <ControlTemplate>
-                                    <ItemsPresenter />
-                                </ControlTemplate>
-                            </ListBox.Template>
-
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Background="{x:Null}"
-                                               IsItemsHost="True"
-                                               Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Focusable" Value="False" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <Grid Background="Transparent">
-                                                    <ContentPresenter />
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-
-                            <!--  ASSET  -->
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-
-                                    <d:DataTemplate.Resources>
-                                        <d:BitmapImage x:Key="DesignImage" UriSource="../Resources/Images/test.jpg" />
-                                    </d:DataTemplate.Resources>
-
-                                    <Grid Margin="4">
-
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}" Value="True">
-                                                        <Setter Property="Cursor" Value="SizeAll"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-                                        
-                                        <assetcontrol:AssetControl Title="{Binding Name}"
-                                                                   Thumbnail="{Binding FilePath, Converter={StaticResource BitmapSourceFromPath}, IsAsync=True}"
-                                                                   ThumbnailSize="{Binding Path=Config.ThumbnailSize, Source={StaticResource ServiceLocator}}"
-                                                                   Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                                   FontSize="13"
-                                                                   Cursor="Hand"
-                                                                   FontFamily="{StaticResource FontMedium}"
-                                                                   AssetEffect="{StaticResource AssetShadow}"
-                                                                   MinWidth="{Binding Path=DataContext.Config.ThumbnailSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                                                   MaximumWidthToHeightRatio="2.5"
-                                                                   FocusVisualStyle="{StaticResource AssetFocusVisual}"
-                                                                   Tag="{Binding Path=DataContext.AssetsViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                                                                   IsEnabled="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode, Converter={StaticResource BoolInverter}}">
-
-                                            <assetcontrol:AssetControl.Style>
-                                                <Style TargetType="{x:Type assetcontrol:AssetControl}">
-                                                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
-                                                        </Trigger>
-                                                        <Trigger Property="IsKeyboardFocused" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </assetcontrol:AssetControl.Style>
-
-                                            <assetcontrol:AssetControl.InputBindings>
-                                                <MouseBinding Gesture="LeftClick"
-                                                              Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
-                                                              CommandParameter="{Binding}" />
-                                                <MouseBinding Gesture="Ctrl+LeftClick"
-                                                              Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                              CommandParameter="{Binding}" />
-
-                                                <KeyBinding Gesture="Enter"
-                                                            Command="{Binding PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
-                                                            CommandParameter="{Binding}" />
-                                                <KeyBinding Gesture="Ctrl+Enter"
-                                                            Command="{Binding PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                            CommandParameter="{Binding}" />
-                                            </assetcontrol:AssetControl.InputBindings>
-
-                                            <assetcontrol:AssetControl.ContextMenu>
-                                                <ContextMenu FontFamily="{StaticResource FontMedium}" FontSize="13">
-
-                                                    <!--  Add as layer  -->
-                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.AddImageToPhotoshopCommand, Source={StaticResource ViewModelLocator}}"
-                                                              CommandParameter="{Binding}"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_AddAsLayer}"
-                                                              InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_Click}">
-                                                        <MenuItem.Icon>
-                                                            <Viewbox Width="17">
-                                                                <Path Data="{StaticResource AddAsLayerIconGeometry}"
-                                                                      Fill="{DynamicResource Brushes.Utility.Accent.0}"
-                                                                      Stretch="Uniform" />
-                                                            </Viewbox>
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-
-                                                    <!--  Open as new document  -->
-                                                    <MenuItem Command="{Binding Path=PhotoshopViewModel.OpenAsNewDocumentCommand, Source={StaticResource ViewModelLocator}}"
-                                                              CommandParameter="{Binding}"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenAsNewDoc}"
-                                                              InputGestureText="{lex:Loc PSQuickAssets:Lang:Mouse_CtrlClick}">
-                                                        <MenuItem.Icon>
-                                                            <Viewbox Width="17">
-                                                                <Path Data="{StaticResource OpenIconGeometry}"
-                                                                      Fill="{DynamicResource Brushes.Utility.Accent.0}"
-                                                                      Stretch="Uniform" />
-                                                            </Viewbox>
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-
-                                                    <Separator />
-
-                                                    <!--  Copy Filepath  -->
-                                                    <MenuItem x:Name="CopyFilePathMenuItem"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_CopyPath}"
-                                                              Command="{x:Static commands:AssetCommands.CopyAssetFilePath}"
-                                                              CommandParameter="{Binding}"
-                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetCopyFilePath}, Converter={StaticResource KeyGestureToString}}">
-                                                        <MenuItem.Icon>
-                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Copy}"
-                                                                             Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                                             FontSize="17" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-
-                                                    <!--  Open with shell  -->
-                                                    <MenuItem x:Name="OpenWithShellMenuItem"
-                                                              Command="{x:Static commands:AssetCommands.OpenAssetInShell}"
-                                                              CommandParameter="{Binding}"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_OpenWithShell}"
-                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetOpenInShell}, Converter={StaticResource KeyGestureToString}}">
-                                                        <MenuItem.Icon>
-                                                            <Viewbox Width="16" Margin="0 0 -2 0">
-                                                                <Path Data="{StaticResource ViewIconGeometry}"
-                                                                      Fill="{DynamicResource Brushes.Foreground.1}"
-                                                                      Stretch="Uniform" />
-                                                            </Viewbox>
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-
-                                                    <!--  Show in explorer  -->
-                                                    <MenuItem x:Name="OpenInExplorerMenuItem"
-                                                              Command="{x:Static commands:AssetCommands.ShowAssetInExplorer}"
-                                                              CommandParameter="{Binding}"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Assets_ShowInExplorer}"
-                                                              InputGestureText="{Binding Source={x:Static res:Shortcuts.AssetShowInExplorer}, Converter={StaticResource KeyGestureToString}}">
-                                                        <MenuItem.Icon>
-                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.FolderHorizontal}"
-                                                                             Foreground="{DynamicResource Brushes.Foreground.1}"
-                                                                             FontSize="17" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-
-                                                    <Separator />
-
-                                                    <!--  Remove  -->
-                                                    <MenuItem x:Name="RemoveAssetMenuItem"
-                                                              Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
-                                                              CommandParameter="{Binding}"
-                                                              Header="{lex:Loc PSQuickAssets:Lang:Remove}">
-                                                        <MenuItem.Icon>
-                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
-                                                                             Foreground="{DynamicResource Brushes.Utility.Error}"
-                                                                             FontSize="15" />
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                </ContextMenu>
-                                            </assetcontrol:AssetControl.ContextMenu>
-
-                                            <assetcontrol:AssetControl.ToolTip>
-                                                <StackPanel MaxWidth="400">
-                                                    <TextBlock FontSize="16"
-                                                               Text="{Binding FileName}"
-                                                               TextWrapping="Wrap" />
-                                                    <Rectangle Height="1.5"
-                                                               Margin="0,5,0,4"
-                                                               Fill="{DynamicResource Brushes.Foreground.3}" />
-                                                    <TextBlock Visibility="{Binding Uses, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
-                                                        <TextBlock.Text>
-                                                            <MultiBinding Converter="{lex:StringFormatConverter}">
-                                                                <lex:BLoc Key="Uses" />
-                                                                <Binding Path="Uses" />
-                                                            </MultiBinding>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                    <TextBlock Text="{Binding Dimensions, Converter={StaticResource SizeToString}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
-                                                    <TextBlock Text="{Binding FileSize, Converter={StaticResource BytesToReadableSize}}" Visibility="{Binding FileSize, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}" />
-                                                </StackPanel>
-                                            </assetcontrol:AssetControl.ToolTip>
-
-                                        </assetcontrol:AssetControl>
-
-                                        <!--  ASSET NOT FOUND  -->
-                                        <Button Style="{StaticResource SpringButton}"
-                                                Background="Transparent"
-                                                VerticalAlignment="Top"
-                                                HorizontalAlignment="Right"
-                                                Margin="0 -8 -8 0"
-                                                Cursor="Hand"
-                                                ToolTip="{lex:Loc Assets_AssetNotFound_Tooltip}"
-                                                Visibility="{Binding Exists, Converter={pureUI:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}"
-                                                Command="{Binding Path=Data.RemoveAssetCommand, Source={StaticResource AssetGroupBindingProxy}}"
-                                                CommandParameter="{Binding}">
-                                            <Button.Content>
-                                                <Grid>
-                                                    <!--  Symbol Background  -->
-                                                    <Ellipse Width="20"
-                                                             Height="20"
-                                                             Fill="{DynamicResource Brushes.Background.1}" />
-
-                                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.StatusErrorFull}"
-                                                                     FontSize="22"
-                                                                     Foreground="{DynamicResource Brushes.Utility.Error}" />
-                                                </Grid>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                 dd:DragDrop.IsDropTarget="{Binding Source={StaticResource AssetsViewModelProxy}, Path=Data.EditMode}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -1091,18 +1085,18 @@
             </pureUI:Spinner>
         </Grid>
 
-        <controls:DragDropOverlay AddAssetsCommand="{Binding AssetsViewModel.NewGroupCommand}" >
+        <controls:DragDropOverlay AddAssetsCommand="{Binding AssetsViewModel.NewGroupCommand}">
             <controls:DragDropOverlay.Style>
                 <Style TargetType="{x:Type controls:DragDropOverlay}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Visibility" Value="Collapsed" />
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ElementName=AssetsWin, Path=IsDragOver}" Value="true"/>
-                                <Condition Binding="{Binding AssetsViewModel.EditMode}" Value="false"/>
+                                <Condition Binding="{Binding ElementName=AssetsWin, Path=IsDragOver}" Value="true" />
+                                <Condition Binding="{Binding AssetsViewModel.EditMode}" Value="false" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
-                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Visibility" Value="Visible" />
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
                     </Style.Triggers>
@@ -1110,7 +1104,7 @@
             </controls:DragDropOverlay.Style>
         </controls:DragDropOverlay>
 
-        <!--FINISH EDITING-->
+        <!--  FINISH EDITING  -->
         <Button Style="{StaticResource AccentButton}"
                 Margin="10"
                 FontSize="15"
@@ -1121,10 +1115,8 @@
                 Visibility="{Binding AssetsViewModel.EditMode, Converter={StaticResource BoolToVisibility}}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Edit}"
-                                     FontSize="15"/>
-                    <TextBlock Text="{lex:Loc Assets_DisableEditMode}"
-                               Margin="8 0 0 0"/>
+                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Edit}" FontSize="15" />
+                    <TextBlock Text="{lex:Loc Assets_DisableEditMode}" Margin="8 0 0 0" />
                 </StackPanel>
             </Button.Content>
         </Button>
