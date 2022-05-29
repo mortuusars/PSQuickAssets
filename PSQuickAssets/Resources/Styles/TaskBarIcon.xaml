@@ -4,19 +4,12 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
                     xmlns:local="clr-namespace:PSQuickAssets" 
-                    xmlns:pureUI="http://mortuusars.github.io/pureui"
+                    xmlns:pure="http://mortuusars.github.io/pureui"
                     xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
 
     
     
     <Style x:Key="TaskBarIconStyle" TargetType="{x:Type tb:TaskbarIcon}">
-        <Style.Resources>
-            <GeometryGroup x:Key="TerminalIconGeomerty">
-                <PathGeometry Figures="M5.0333 14.8284L6.44751 16.2426L10.6902 12L6.44751 7.75733L5.0333 9.17155L7.86172 12L5.0333 14.8284Z" FillRule="NonZero" />
-                <PathGeometry Figures="M15 14H11V16H15V14Z" FillRule="NonZero" />
-                <PathGeometry Figures="M2 2C0.895431 2 0 2.89543 0 4V20C0 21.1046 0.89543 22 2 22H22C23.1046 22 24 21.1046 24 20V4C24 2.89543 23.1046 2 22 2H2ZM22 4H2L2 20H22V4Z" FillRule="EvenOdd" />
-            </GeometryGroup>
-        </Style.Resources>
         <Setter Property="IconSource" Value="../Images/psquickassets-size.ico" />
         <Setter Property="LeftClickCommand" Value="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
         <Setter Property="ToolTipText" Value="{x:Static local:App.AppName}"/>
@@ -26,44 +19,30 @@
                     
                     <!--  SHOW/HIDE MAIN WINDOW  -->
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowMainWindow}"
+                              Icon="{pure:MaterialIconMarkup Glyph=Open_in_new, Size=19}"
                               Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
-                              InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}">
-                        <MenuItem.Icon>
-                            <pureUI:FontIcon Glyph="&#xE89E;" FontFamily="{StaticResource MaterialIcons}" FontSize="19"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                              InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}"/>
 
                     <!--  SHOW/HIDE TERMINAL  -->
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowTerminal}"
+                              Icon="{pure:MaterialIconMarkup Glyph=Terminal,Size=17}"
                               Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
-                              Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}">
-                        <MenuItem.Icon>
-                            <controls1:PathIcon Width="17"
-                                           Data="{StaticResource TerminalIconGeomerty}"
-                                           Fill="{DynamicResource Brushes.Foreground.1}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
+                              Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}"/>
 
                     <Separator />
 
                     <!--  SHOW/HIDE SETTINGS  -->
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_Settings}" 
-                              Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}">
-                        <MenuItem.Icon>
-                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Setting}" FontSize="17"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                              Icon="{pure:SegoeIconMarkup Glyph=Setting,Size=17}"
+                              Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}"/>
 
                     <Separator />
 
                     <!--  EXIT  -->
                     <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Exit}" 
-                              Command="{x:Static cmds:GeneralCommands.Shutdown}">
-                        <MenuItem.Icon>
-                            <pureUI:FontIcon Glyph="&#xE879;" FontFamily="{StaticResource MaterialIcons}" FontSize="19"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    
+                              Icon="{pure:MaterialIconMarkup Glyph=Exit_to_app,Size=19}"
+                              Command="{x:Static cmds:GeneralCommands.Shutdown}"/>
+
                 </ContextMenu>
             </Setter.Value>
         </Setter>

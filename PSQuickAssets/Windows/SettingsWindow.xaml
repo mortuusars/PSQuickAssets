@@ -1,39 +1,43 @@
-﻿<pureUI:PureWindow x:Class="PSQuickAssets.Windows.SettingsWindow"
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                   xmlns:hotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
-                   xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
-                   xmlns:controls="clr-namespace:PSQuickAssets.Controls"
-                   xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
-                   xmlns:pureUI="http://mortuusars.github.io/pureui"
-                   xmlns:system="clr-namespace:System;assembly=mscorlib"
-                   xmlns:dd="urn:gong-wpf-dragdrop"
-                   xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
-                   lex:LocalizeDictionary.DesignCulture="en"
-                   lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
-                   lex:ResxLocalizationProvider.DefaultDictionary="Lang"
-                   mc:Ignorable="d"
-                   Title="{lex:Loc Settings_WindowTitle}"
-                   Width="750"
-                   MinWidth="480"
-                   Height="520"
-                   MinHeight="200"
-                   d:Height="700"
-                   d:WindowStyle="None"
-                   d:BorderThickness="0"
-                   FontFamily="{StaticResource FontLight}"
-                   Foreground="{DynamicResource Brushes.Foreground.1}"
-                   DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
-                   d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
+﻿<pure:PureWindow x:Class="PSQuickAssets.Windows.SettingsWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                 xmlns:hotkeys="clr-namespace:MGlobalHotkeys.WPF;assembly=MGlobalHotkeys.WPF"
+                 xmlns:core="clr-namespace:PSQA.Core;assembly=PSQA.Core"
+                 xmlns:controls="clr-namespace:PSQuickAssets.Controls"
+                 xmlns:vm="clr-namespace:PSQuickAssets.ViewModels"
+                 xmlns:pure="http://mortuusars.github.io/pureui"
+                 xmlns:system="clr-namespace:System;assembly=mscorlib"
+                 xmlns:dd="urn:gong-wpf-dragdrop"
+                 xmlns:wpf="clr-namespace:PSQuickAssets.WPF"
+                 lex:LocalizeDictionary.DesignCulture="en"
+                 lex:ResxLocalizationProvider.DefaultAssembly="PSQuickAssets"
+                 lex:ResxLocalizationProvider.DefaultDictionary="Lang"
+                 mc:Ignorable="d"
+                 Title="{lex:Loc Settings_WindowTitle}"
+                 Width="750"
+                 MinWidth="480"
+                 Height="520"
+                 MinHeight="200"
+                 d:Height="700"
+                 d:WindowStyle="None"
+                 d:BorderThickness="0"
+                 FontFamily="{StaticResource FontLight}"
+                 Foreground="{DynamicResource Brushes.Foreground.1}"
+                 DataContext="{Binding SettingsViewModel, Source={StaticResource ViewModelLocator}}"
+                 d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+                 FocusManager.FocusedElement="{Binding ElementName=GeneralTab}">
 
-    <pureUI:PureWindow.CommandBindings>
+    <pure:PureWindow.CommandBindings>
         <CommandBinding Command="ComponentCommands.MoveFocusDown" Executed="MoveFocusDown_Executed" />
-    </pureUI:PureWindow.CommandBindings>
+    </pure:PureWindow.CommandBindings>
 
-    <pureUI:PureWindow.Resources>
+    <pure:PureWindow.Resources>
+
+        <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DarkToolTip}" />
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SimpleTextBox}" />
 
         <Style TargetType="{x:Type TabControl}">
             <Setter Property="Template">
@@ -66,16 +70,13 @@
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Grid.Column="0"
-                                    KeyboardNavigation.DirectionalNavigation="Contained"
-                                    Grid.Row="1"
-                                    KeyboardNavigation.TabIndex="2"
-                                    KeyboardNavigation.TabNavigation="Local">
+                                    Grid.Row="1">
 
                                 <ScrollViewer>
                                     <ContentPresenter x:Name="PART_SelectedContentHost"
                                                       ContentSource="SelectedContent"
                                                       Margin="{TemplateBinding Padding}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                 </ScrollViewer>
                             </Border>
                         </Grid>
@@ -119,22 +120,8 @@
             </Setter>
         </Style>
 
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2"
-                                   StrokeDashArray="1 2"
-                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                   SnapsToDevicePixels="true"
-                                   StrokeThickness="1" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style TargetType="{x:Type TabItem}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontFamily" Value="{StaticResource FontRegular}" />
             <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
@@ -173,9 +160,19 @@
                             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="true">
                                 <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}" />
                                 <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.0}" />
-                                <!--<Setter Property="Background" Value="{DynamicResource Brushes.Accent.Background.0}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0}"/>-->
                             </DataTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource Brushes.Accent.Background.0}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0.Inverse}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource Brushes.Accent.Background.0.Highlight}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0.Inverse}" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
 
                         <!--<ControlTemplate.Triggers>
@@ -345,26 +342,73 @@
             </Setter>
         </Style>
 
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource ToggleSwitch}">
+            <Setter Property="UseLayoutRounding" Value="False" />
+            <Setter Property="SnapsToDevicePixels" Value="False" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+
         <Style x:Key="CategoryHeader" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0 0 0 4" />
         </Style>
 
-        <Style TargetType="{x:Type controls:ContentSettingItem}">
-            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
-            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
+        <DropShadowEffect x:Key="SettingItemShadow"
+                          BlurRadius="8"
+                          Direction="-90"
+                          ShadowDepth="2"
+                          Opacity="0.15" />
+
+        <Style TargetType="{x:Type pure:SettingItem}" BasedOn="{StaticResource {x:Type pure:SettingItem}}">
+            <Setter Property="UseLayoutRounding" Value="True" />
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
+            <Setter Property="Effect" Value="{StaticResource SettingItemShadow}" />
+            <Setter Property="Focusable" Value="False" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.4}" />
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}" />
+            </Style.Resources>
         </Style>
 
-        <Style TargetType="{x:Type controls:ToggleSettingItem}">
-            <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
-            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" />
+        <Style TargetType="{x:Type pure:ToggleSettingItem}" BasedOn="{StaticResource {x:Type pure:ToggleSettingItem}}">
+            <Setter Property="UseLayoutRounding" Value="True" />
+            <Setter Property="Background" Value="{DynamicResource Brushes.Background.1}" />
+            <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}" />
+            <Setter Property="Padding" Value="14 12" />
+            <Setter Property="Effect" Value="{StaticResource SettingItemShadow}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Description.Length}" Value="0">
+                    <Setter Property="Padding" Value="14 18" />
+                </DataTrigger>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource Brushes.Background.2}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.4}" />
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="ToolTip" BasedOn="{StaticResource DarkToolTip}" />
+            </Style.Resources>
         </Style>
 
         <!--  COMBOBOX ITEM STYLE  -->
         <Style TargetType="ComboBoxItem">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Padding" Value="10 8" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBoxItem">
@@ -379,30 +423,19 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <ContentPresenter Margin="10 8" />
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="SelectionStates">
-                                    <VisualState x:Name="Unselected" />
-                                    <VisualState x:Name="Selected">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Visibility">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).                     (SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Colors.Accent.Background.0}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="SelectedUnfocused">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).                     (SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Colors.Accent.Background.0}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter Margin="{TemplateBinding Padding}" />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Setter Property="IsTabStop" Value="False" />
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" TargetName="Border" Value="{DynamicResource Brushes.Background.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -410,6 +443,7 @@
 
         <!--  COMBOBOX STYLE  -->
         <Style x:Key="ProperComboBox" TargetType="ComboBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -556,22 +590,26 @@
                                 </Popup>
                             </Grid>
                         </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" TargetName="root" Value="{DynamicResource Brushes.Background.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5" />
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
-
         <!--  LISTBOX ITEM STYLE  -->
-        <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
+        <!--<Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
             <Setter Property="Margin" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -622,10 +660,16 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                         </Border>
+                        --><!--<ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Brushes.Accent.Background.0}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>--><!--
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
 
         <!--  MASK MODE VALUES PROVIDER  -->
         <ObjectDataProvider x:Key="MaskModeValues"
@@ -636,31 +680,16 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <Style x:Key="FocusVisual1">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2"
-                                   StrokeDashArray="1 2"
-                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                   SnapsToDevicePixels="true"
-                                   StrokeThickness="1" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SimpleTextBox}" />
+    </pure:PureWindow.Resources>
 
-    </pureUI:PureWindow.Resources>
+    <pure:PureWindow.Style>
+        <Style TargetType="pure:PureWindow" BasedOn="{StaticResource PSQAWindow}" />
+    </pure:PureWindow.Style>
 
-    <pureUI:PureWindow.Style>
-        <Style TargetType="pureUI:PureWindow" BasedOn="{StaticResource PSQAWindow}" />
-    </pureUI:PureWindow.Style>
-
-    <pureUI:PureWindow.InputBindings>
-        <KeyBinding Key="Esc" Command="{x:Static pureUI:WindowCommands.CloseWindow}" />
-    </pureUI:PureWindow.InputBindings>
+    <pure:PureWindow.InputBindings>
+        <KeyBinding Key="Esc" Command="{x:Static pure:WindowCommands.CloseWindow}" />
+    </pure:PureWindow.InputBindings>
 
     <Grid>
         <!--  TITLE PREVIEW  -->
@@ -670,20 +699,22 @@
             <ContentPresenter Content="{StaticResource DefaultTitleBar}" />
         </d:Border>
 
-        <TabControl Background="Transparent"
+        <TabControl x:Name="TabControl"
+                    Background="Transparent"
                     BorderThickness="0"
                     TabStripPlacement="Left"
                     Padding="30 5"
                     Margin="15 15 2 0"
-                    Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}">
+                    Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}"
+                    SelectionChanged="TabControl_SelectionChanged">
 
             <!--  GENERAL  -->
-            <TabItem>
+            <TabItem x:Name="GeneralTab">
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Setting}" Margin="0 0 8 0" />
+                    <pure:StackLayout Orientation="Horizontal" Spacing="8">
+                        <pure:SegoeIcon Glyph="Setting" />
                         <TextBlock Text="{lex:Loc Settings_General}" />
-                    </StackPanel>
+                    </pure:StackLayout>
                 </TabItem.Header>
 
                 <StackPanel>
@@ -692,8 +723,21 @@
                     <TextBlock Text="{lex:Loc Settings_Category_Window}" Style="{StaticResource CategoryHeader}" />
 
                     <!--  WINDOW HOTKEY  -->
-                    <controls:ContentSettingItem Header="{lex:Loc Settings_WindowOpenHotkey}" Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.KeyboardShortcut}, FontSize=20}">
-                        <Border BorderThickness="1"
+                    <pure:SettingItem Header="{lex:Loc Settings_WindowOpenHotkey}"
+                                      Icon="{pure:SegoeIconMarkup Glyph=KeyboardShortcut,
+                                                                  Size=20}"
+                                      Focusable="True"
+                                      KeyDown="HotkeySettingItem_KeyDown">
+                        <pure:SettingItem.Style>
+                            <Style TargetType="pure:SettingItem" BasedOn="{StaticResource {x:Type pure:SettingItem}}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource Brushes.Background.3}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </pure:SettingItem.Style>
+                        <Border BorderThickness="2"
                                 CornerRadius="3"
                                 Padding="0"
                                 VerticalAlignment="Center">
@@ -711,15 +755,10 @@
                             <Grid>
                                 <Border CornerRadius="2"
                                         Margin="0"
-                                        Background="{DynamicResource Brushes.Overlay.0}">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="10"
-                                                          ShadowDepth="1"
-                                                          Direction="-90"
-                                                          Opacity="1" />
-                                    </Border.Effect>
-                                </Border>
-                                <hotkeys:HotkeyPicker MinWidth="110"
+                                        Background="{DynamicResource Brushes.Background.4}"
+                                        Effect="{StaticResource SettingItemShadow}" />
+                                <hotkeys:HotkeyPicker x:Name="HotkeyPicker"
+                                                      MinWidth="110"
                                                       Padding="8 5"
                                                       FontSize="13"
                                                       Margin="-2"
@@ -728,32 +767,43 @@
                                                       ClearFocusOnClear="True"
                                                       CornerRadius="3"
                                                       IsTabStop="False"
+                                                      Focusable="False"
                                                       Background="{DynamicResource Brushes.Background.3}"
                                                       Hotkey="{Binding ShowHideWindowHotkey, UpdateSourceTrigger=LostFocus}"
-                                                      ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}" />
+                                                      ToolTip="{lex:Loc Settings_HotkeyPicker_Tooltip}">
+                                    <hotkeys:HotkeyPicker.Style>
+                                        <Style TargetType="hotkeys:HotkeyPicker">
+                                            <Style.Resources>
+                                                <Style TargetType="TextBox">
+                                                    <Setter Property="IsTabStop" Value="False" />
+                                                </Style>
+                                            </Style.Resources>
+                                        </Style>
+                                    </hotkeys:HotkeyPicker.Style>
+                                </hotkeys:HotkeyPicker>
                             </Grid>
                         </Border>
-                    </controls:ContentSettingItem>
+                    </pure:SettingItem>
 
                     <!--  ALWAYS ON TOP  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_AlwaysOnTop}"
-                                                Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}"
-                                                IsChecked="{Binding Config.AlwaysOnTop}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.LockscreenDesktop},
-                                                                             FontSize=18}" />
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_AlwaysOnTop}"
+                                            Description="{lex:Loc Settings_AlwaysOnTop_Tooltip}"
+                                            IsChecked="{Binding Config.AlwaysOnTop}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=LockscreenDesktop,
+                                                                        Size=18}" />
 
-                    <!--  HIDE WINDOW WHEN ADDING  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_HideWindowWhenAdding}"
-                                                IsChecked="{Binding Config.HideWindowWhenAddingAsset}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.TabletMode},
-                                                                             FontSize=18}" />
+                    <!--  HIDE WINDOW WHEN ADDING ASSET  -->
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_HideWindowWhenAdding}"
+                                            IsChecked="{Binding Config.HideWindowWhenAddingAsset}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=TabletMode,
+                                                                        Size=18}" />
 
                     <!--  HIDE FROM TASKBAR  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_HideFromTaskbar}"
-                                                Description="{lex:Loc Settings_HideFromTaskbar_Tooltip}"
-                                                IsChecked="{Binding Config.HideIconFromTaskbar}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.SwitchApps},
-                                                                             FontSize=18}" />
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_HideFromTaskbar}"
+                                            Description="{lex:Loc Settings_HideFromTaskbar_Tooltip}"
+                                            IsChecked="{Binding Config.HideIconFromTaskbar}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=SwitchApps,
+                                                                        Size=18}" />
 
 
                     <Separator Margin="6" Opacity="0" />
@@ -762,15 +812,15 @@
                     <!--  APPLICATION  -->
                     <TextBlock Text="{lex:Loc Settings_Category_Application}" Style="{StaticResource CategoryHeader}" />
 
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}"
-                                                IsChecked="{Binding Config.CheckUpdates}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.DevUpdate},
-                                                                             FontSize=18}" />
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_CheckUpdates}"
+                                            IsChecked="{Binding Config.CheckUpdates}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=DevUpdate,
+                                                                        Size=18}" />
 
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_DebugMode}"
-                                                IsChecked="{Binding Config.DebugMode}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.Processing},
-                                                                             FontSize=18}" />
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_DebugMode}"
+                                            IsChecked="{Binding Config.DebugMode}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=Processing,
+                                                                        Size=18}" />
                 </StackPanel>
 
             </TabItem>
@@ -778,19 +828,14 @@
             <!--  APPEARANCE  -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Personalize}" Margin="0 0 8 0" />
+                    <pure:StackLayout Orientation="Horizontal" Spacing="8">
+                        <pure:SegoeIcon Glyph="Personalize" />
                         <TextBlock Text="{lex:Loc Settings_Appearance}" />
-                    </StackPanel>
+                    </pure:StackLayout>
                 </TabItem.Header>
 
                 <!--  THEME  -->
-                <controls:ContentSettingItem Header="{lex:Loc Settings_Theme}">
-                    <controls:ContentSettingItem.Icon>
-                        <pureUI:FontIcon Glyph="&#xE243;"
-                                         FontSize="18"
-                                         FontFamily="{StaticResource MaterialIcons}" />
-                    </controls:ContentSettingItem.Icon>
+                <pure:SettingItem Header="{lex:Loc Settings_Theme}" Icon="{pure:MaterialIconMarkup Glyph=Format_paint, Size=18}">
 
                     <ComboBox Style="{StaticResource ProperComboBox}"
                               Padding="12 6"
@@ -801,25 +846,28 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <!--  DARK LIGHT ICON  -->
-                                    <TextBlock FontFamily="{StaticResource MaterialIcons}"
-                                               Foreground="{DynamicResource Brushes.Foreground.1}"
-                                               Margin="0 1 8 0"
-                                               VerticalAlignment="Center"
-                                               Visibility="{Binding Text.Length, RelativeSource={RelativeSource Self}, Converter={pureUI:ValueToVisibilityConverter Value=0}}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
+
+                                    <!--  DARK LIGHT ICONS  -->
+                                    <pure:MaterialIcon Margin="0 1 8 0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource Brushes.Foreground.1}">
+                                        <pure:MaterialIcon.Style>
+                                            <Style TargetType="pure:MaterialIcon" BasedOn="{StaticResource MaterialIconDefaultStyle}">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Setter Property="Glyph" Value="Brush" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Name}" Value="Dark">
-                                                        <Setter Property="Text" Value="&#xE3A7;" />
+                                                        <Setter Property="Glyph" Value="Brightness_2" />
+                                                        <Setter Property="Visibility" Value="Visible" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Name}" Value="Light">
-                                                        <Setter Property="Text" Value="&#xE430;" />
+                                                        <Setter Property="Glyph" Value="Wb_sunny" />
+                                                        <Setter Property="Visibility" Value="Visible" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                        </pure:MaterialIcon.Style>
+                                    </pure:MaterialIcon>
 
                                     <!--  THEME NAME  -->
                                     <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Brushes.Foreground.1}" />
@@ -827,17 +875,16 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                </controls:ContentSettingItem>
+                </pure:SettingItem>
             </TabItem>
 
             <!--  ASSETS  -->
             <TabItem>
                 <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Picture}"
-                                         Margin="0 0 8 0"/>
+                    <pure:StackLayout Orientation="Horizontal" Spacing="8">
+                        <pure:SegoeIcon Glyph="Picture" />
                         <TextBlock Text="{lex:Loc Settings_Assets}" />
-                    </StackPanel>
+                    </pure:StackLayout>
                 </TabItem.Header>
 
                 <StackPanel>
@@ -846,23 +893,16 @@
                     <TextBlock Text="{lex:Loc Settings_Category_Mask}" Style="{StaticResource CategoryHeader}" />
 
                     <!--  ADD MASK TO LAYER  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}" IsChecked="{Binding Config.AddMaskToAddedLayer}">
-                        <controls:ToggleSettingItem.Icon>
-                            <pureUI:FontIcon Glyph="&#xE3DB;"
-                                             FontFamily="{StaticResource MaterialIcons}"
-                                             FontSize="26" />
-                        </controls:ToggleSettingItem.Icon>
-                    </controls:ToggleSettingItem>
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_AddMaskToLayer}"
+                                            Icon="{pure:MaterialIconMarkup Glyph=Filter_b_and_w,
+                                                                           Size=24}"
+                                            IsChecked="{Binding Config.AddMaskToAddedLayer}" />
 
                     <!--  MASK MODE  -->
-                    <controls:ContentSettingItem Header="{lex:Loc Settings_MaskMode}"
-                                                 Margin="10 0 0 4"
-                                                 IsEnabled="{Binding Config.AddMaskToAddedLayer}">
-                        <controls:ContentSettingItem.Icon>
-                            <pureUI:FontIcon Glyph="&#xE3F1;"
-                                             FontSize="20"
-                                             FontFamily="{StaticResource MaterialIcons}" />
-                        </controls:ContentSettingItem.Icon>
+                    <pure:SettingItem Header="{lex:Loc Settings_MaskMode}"
+                                      Icon="{pure:MaterialIconMarkup Glyph=Hdr_strong,
+                                                                     Size=20}"
+                                      IsEnabled="{Binding Config.AddMaskToAddedLayer}">
                         <ComboBox Style="{StaticResource ProperComboBox}"
                                   Background="{DynamicResource Brushes.Background.3}"
                                   Foreground="{DynamicResource Brushes.Foreground.1}"
@@ -937,26 +977,25 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </controls:ContentSettingItem>
+                    </pure:SettingItem>
 
 
 
                     <!--  UNLINK MASK  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Settings_UnlinkMask}"
-                                                Description="{lex:Loc Settings_UnlinkMask_Tooltip}"
-                                                IsChecked="{Binding Config.UnlinkMask}"
-                                                Margin="10 0 0 4"
-                                                IsEnabled="{Binding Config.AddMaskToAddedLayer}">
-                        <controls:ToggleSettingItem.Icon>
-                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Link}"
-                                             FontSize="18"
-                                             RenderTransformOrigin="0.5,0.5">
-                                <pureUI:FontIcon.RenderTransform>
+                    <pure:ToggleSettingItem Header="{lex:Loc Settings_UnlinkMask}"
+                                            Description="{lex:Loc Settings_UnlinkMask_Tooltip}"
+                                            IsChecked="{Binding Config.UnlinkMask}"
+                                            IsEnabled="{Binding Config.AddMaskToAddedLayer}">
+                        <pure:ToggleSettingItem.Icon>
+                            <pure:MaterialIcon Glyph="Link"
+                                               FontSize="18"
+                                               RenderTransformOrigin="0.5,0.5">
+                                <pure:MaterialIcon.RenderTransform>
                                     <RotateTransform Angle="90" />
-                                </pureUI:FontIcon.RenderTransform>
-                            </pureUI:FontIcon>
-                        </controls:ToggleSettingItem.Icon>
-                    </controls:ToggleSettingItem>
+                                </pure:MaterialIcon.RenderTransform>
+                            </pure:MaterialIcon>
+                        </pure:ToggleSettingItem.Icon>
+                    </pure:ToggleSettingItem>
 
                     <Separator Margin="6" Opacity="0" />
 
@@ -964,18 +1003,15 @@
                     <TextBlock Text="{lex:Loc Settings_Category_Actions}" Style="{StaticResource CategoryHeader}" />
 
                     <!--  EXECUTE ON PLACE  -->
-                    <controls:ToggleSettingItem Header="{lex:Loc Setting_ExecuteActionsPostPlace}" 
-                                                IsChecked="{Binding Config.ExecuteActionsAfterAdding}"
-                                                Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.PlaySolid}}"/>
+                    <pure:ToggleSettingItem Header="{lex:Loc Setting_ExecuteActionsPostPlace}"
+                                            IsChecked="{Binding Config.ExecuteActionsAfterAdding}"
+                                            Icon="{pure:SegoeIconMarkup Glyph=PlaySolid,
+                                                                        Size=17}" />
 
-                    <!--  ACTIONS LIST  -->
-                    <controls:ContentSettingItem x:Name="PostActionsSetting"
-                                                 Header="{lex:Loc Settings_PostPlaceActions}"
-                                                 Margin="10 0 0 4"
-                                                 IsEnabled="{Binding Config.ExecuteActionsAfterAdding}"
-                                                 Icon="{pureUI:FontIconMarkup Glyph={x:Static pureUI:SegoeGlyph.BulletedList}}">
-
-                        <Grid DataContext="{Binding PhotoshopViewModel, Source={StaticResource ViewModelLocator}}">
+                    <pure:SettingItem HorizontalAlignment="Right"
+                                      Padding="0"
+                                      IsEnabled="{Binding Config.ExecuteActionsAfterAdding}">
+                        <Grid DataContext="{Binding PhotoshopViewModel, Source={StaticResource ViewModelLocator}}" Margin="16 14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />
@@ -988,11 +1024,11 @@
                                      dd:DragDrop.IsDropTarget="True"
                                      Grid.Column="0"
                                      MaxHeight="120"
-                                     MinWidth="120"
-                                     MaxWidth="360"
-                                     Margin="3"
+                                     MinWidth="150"
+                                     MaxWidth="400"
                                      Padding="2"
-                                     Visibility="{Binding PostActions.Count, Converter={pureUI:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}">
+                                     KeyboardNavigation.AcceptsReturn="True"
+                                     Visibility="{Binding PostActions.Count, Converter={pure:ValueToVisibilityConverter Value=0, VisibilityEqual=Collapsed, VisibilityNotEqual=Visible}}">
                                 <ListBox.InputBindings>
                                     <KeyBinding Key="Delete"
                                                 Command="{Binding PhotoshopViewModel.PostActionsViewModel.RemoveActionCommand, Source={StaticResource ViewModelLocator}}"
@@ -1000,17 +1036,30 @@
                                 </ListBox.InputBindings>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="BorderThickness" Value="1" />
                                         <Setter Property="Margin" Value="0" />
                                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                                         <Setter Property="Padding" Value="0" />
                                         <Style.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="3" />
                                                 <Setter Property="BorderThickness" Value="0" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource Brushes.Accent.Background.0}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
                                             </Style>
                                         </Style.Resources>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="True">
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource Brushes.Accent.Background.0}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </ListBox.ItemContainerStyle>
                                 <ListBox.Style>
@@ -1023,17 +1072,7 @@
                                                             Background="{TemplateBinding Background}"
                                                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
 
-                                                        <Border.Style>
-                                                            <Style TargetType="{x:Type Border}">
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsEnabled" Value="False">
-                                                                        <Setter Property="Opacity" Value="0.7" />
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Border.Style>
-
-                                                        <ScrollViewer Focusable="false"
+                                                        <ScrollViewer 
                                                                       HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                                                       Margin="{TemplateBinding Padding}">
                                                             <StackPanel Margin="2" IsItemsHost="True" />
@@ -1043,6 +1082,11 @@
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value="0.7" />
+                                            </Trigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </ListBox.Style>
                                 <d:ListBox.ItemsSource>
@@ -1063,18 +1107,18 @@
                                                               Command="{Binding PhotoshopViewModel.PostActionsViewModel.RemoveActionCommand, Source={StaticResource ViewModelLocator}}"
                                                               CommandParameter="{Binding}">
                                                         <MenuItem.Icon>
-                                                            <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.Delete}"
-                                                                             Foreground="{DynamicResource Brushes.Utility.Error}"
-                                                                             FontSize="18" />
+                                                            <pure:FontIcon Glyph="{x:Static pure:SegoeGlyph.Delete}"
+                                                                           Foreground="{DynamicResource Brushes.Utility.Error}"
+                                                                           FontSize="18" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                 </ContextMenu>
                                             </Grid.ContextMenu>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <TextBlock Text="{Binding Action}" Foreground="{DynamicResource Brushes.Accent.Background.0.Highlight}" />
-                                                <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.PaginationDotSolid10}"
-                                                                 FontSize="5"
-                                                                 Margin="6 0 6 -2" />
+                                                <pure:FontIcon Glyph="{x:Static pure:SegoeGlyph.PaginationDotSolid10}"
+                                                               FontSize="5"
+                                                               Margin="6 0 6 -2" />
                                                 <TextBlock Text="{Binding Set}" />
                                             </StackPanel>
                                         </Grid>
@@ -1084,21 +1128,20 @@
 
                             <!--  ADD ACTION  -->
                             <Button Grid.Column="1"
+                                    Margin="10 0 0 0"
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Center"
-                                    Padding="7"
-                                    Margin="3"
-                                    Command="{Binding PostActionsViewModel.EnterAddingModeCommand}"
-                                    ToolTip="{lex:Loc Actions_AddAction}">
-                                <Button.Content>
-                                    <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.AddBold}"
-                                                     FontSize="12"
-                                                     Focusable="False" />
-                                </Button.Content>
-                            </Button>
+                                    Padding="8"
+                                    Content="{pure:SegoeIconMarkup Glyph=AddBold,
+                                                                   Size=12}"
+                                    Command="{Binding PostActionsViewModel.ToggleAddingModeCommand}"
+                                    ToolTip="{lex:Loc Actions_AddAction}"
+                                    Style="{StaticResource GeneralButton}" />
 
                         </Grid>
-                    </controls:ContentSettingItem>
+                    </pure:SettingItem>
+
+
 
                     <!--  ADD ACTION POPUP  -->
                     <Popup x:Name="AddingActionPopup"
@@ -1164,12 +1207,10 @@
                                         Margin="8 0 0 0"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
+                                        Content="{pure:SegoeIconMarkup Glyph=CheckMark,
+                                                                       Size=15}"
                                         Style="{StaticResource AccentButton}"
-                                        Command="{Binding PostActionsViewModel.AddActionCommand}">
-                                    <Button.Content>
-                                        <pureUI:FontIcon Glyph="{x:Static pureUI:SegoeGlyph.CheckMark}" FontSize="15" />
-                                    </Button.Content>
-                                </Button>
+                                        Command="{Binding PostActionsViewModel.AddActionCommand}" />
                             </StackPanel>
                         </Grid>
                     </Popup>
@@ -1179,4 +1220,4 @@
         </TabControl>
     </Grid>
 
-</pureUI:PureWindow>
+</pure:PureWindow>

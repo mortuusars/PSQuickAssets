@@ -37,10 +37,10 @@ internal partial class PostActionsViewModel : ObservableObject
     }
 
     [ICommand]
-    private void EnterAddingMode()
+    private void ToggleAddingMode()
     {
         ClearInputFields();
-        AddingMode = true;
+        AddingMode = !AddingMode;
     }
 
     [ICommand]
