@@ -1,28 +1,26 @@
-### 1.2.0 - 2021-09-20
+## 1.2.0 alpha - 2022-06-03
 
-Added:
+### New UI, new features, new bugs.
+
+#### New Asset features:
 - Asset opens as a new document if none are open
-- Setting to add a mask to the layer if document had selection prior to adding asset
-- Setting to configure if window should be always on top of other windows
-- Thumbnail size can be changed with Ctrl+Scroll or Ctrl+Plus/Minus.
-- Close button turns red when CTRL is pressed
-- Window Show/Hide fading animations
-- Beautiful Update window
-- If PSQuickAssets crashes it will now create a crash report file that contains some info about an error, instead of ugly message box
+- Option to add mask to added asset
 
-Changed:
+#### Other:
+- Assets groups can collapse now
+- Assets and Groups can be moved around whe Edit Mode is active
+- Added shortcuts for common actions
+- Thumbnail size can be changed with Ctrl+Numpad Plus/Minus.
+- If PSQuickAssets crashes it will now create a crash report file that contains some info about an error
+- Better Drag&Drop experience
+
+#### Changed:
 - Error messages now displayed through Windows notification center
 - Default hotkey is now Ctrl + Alt + A
-- Slightly tweaked Hotkey Picker: it will now cancel and revert to previous key if ESC is pressed
 - App window will be shown on startup instead of splash screen
 - Settings now take effect immediatly after changing a setting
-- Settings window would be closed when settings button was clicked when it was open
 
-Fixed:
-- Tray icon tooltip is now consistent with windows tooltips
-
-Removed:
-- Splash screen
+Probably a lot of things is missing from a changelog - it's been a long time since last release. Many thinks were redone or scrapped.
 
 ---
 
