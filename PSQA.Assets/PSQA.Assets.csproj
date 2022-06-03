@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.11.0-dev-01380" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PSQA.Core\PSQA.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions_AddAction" xml:space="preserve">
+    <value>Add Action</value>
+  </data>
+  <data name="Actions_Name" xml:space="preserve">
+    <value>Action:</value>
+  </data>
+  <data name="Actions_Set" xml:space="preserve">
+    <value>Set:</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Assets_AddAsLayer" xml:space="preserve">
+    <value>Add as Layer</value>
+  </data>
+  <data name="Assets_AddEmptyGroup" xml:space="preserve">
+    <value>New Group</value>
+  </data>
+  <data name="Assets_AddFiles" xml:space="preserve">
+    <value>Add Files</value>
+  </data>
+  <data name="Assets_AddingToPhotoshopFailed" xml:space="preserve">
+    <value>Cannot add asset to Photoshop</value>
+  </data>
+  <data name="Assets_AssetNotFound_Tooltip" xml:space="preserve">
+    <value>File Not Found.
+Click to remove asset.</value>
+  </data>
+  <data name="Assets_CannotExecuteActionFromSet" xml:space="preserve">
+    <value>Cannot execute action '{0}' from set '{1}'</value>
+  </data>
+  <data name="Assets_CopyPath" xml:space="preserve">
+    <value>Copy Filepath</value>
+  </data>
+  <data name="Assets_CreateEmptyGroup" xml:space="preserve">
+    <value>Create Empty Group</value>
+  </data>
+  <data name="Assets_DisableEditMode" xml:space="preserve">
+    <value>Finish Editing</value>
+  </data>
+  <data name="Assets_EditMode" xml:space="preserve">
+    <value>Edit Mode</value>
+  </data>
+  <data name="Assets_EditMode_Tooltip" xml:space="preserve">
+    <value>Allows rearranging Assets and Groups</value>
+  </data>
+  <data name="Assets_GroupFromFiles" xml:space="preserve">
+    <value>Add Files</value>
+  </data>
+  <data name="Assets_GroupFromFolders" xml:space="preserve">
+    <value>Add Folders</value>
+  </data>
+  <data name="Assets_GroupFromFoldersWithSubfolders" xml:space="preserve">
+    <value>Add Folder Tree</value>
+  </data>
+  <data name="Assets_NothingAdded" xml:space="preserve">
+    <value>No Assets</value>
+  </data>
+  <data name="Assets_OpenAsNewDoc" xml:space="preserve">
+    <value>Open as New Document</value>
+  </data>
+  <data name="Assets_OpenWithShell" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Assets_ShowInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+  <data name="Assets_Warning_LargeAmountOfAssets" xml:space="preserve">
+    <value>Large amount of assets will be added ({0}). 
+Continue?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="DragDrop_DropAll" xml:space="preserve">
+    <value>Add Assets</value>
+  </data>
+  <data name="DragDrop_DropAllWithSubfolders" xml:space="preserve">
+    <value>Add Assets (including subfolders)</value>
+  </data>
+  <data name="DragDrop_DropFiles" xml:space="preserve">
+    <value>Add Assets</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="GroupAssetCount" xml:space="preserve">
+    <value>Asset(s)</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="MaskMode_HideAll" xml:space="preserve">
+    <value>Hide All</value>
+  </data>
+  <data name="MaskMode_HideSelection" xml:space="preserve">
+    <value>Hide Selection</value>
+  </data>
+  <data name="MaskMode_RevealAll" xml:space="preserve">
+    <value>Reveal All</value>
+  </data>
+  <data name="MaskMode_RevealSelection" xml:space="preserve">
+    <value>Reveal Selection</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Mouse_Click" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="Mouse_CtrlClick" xml:space="preserve">
+    <value>Ctrl+Click</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="RemoveGroup" xml:space="preserve">
+    <value>Remove Group</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="SelectFolders" xml:space="preserve">
+    <value>Select Folders</value>
+  </data>
+  <data name="SelectImages" xml:space="preserve">
+    <value>Select Images</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_AddMaskToLayer" xml:space="preserve">
+    <value>Add Mask to Added Layer</value>
+  </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>Always on Top</value>
+  </data>
+  <data name="Settings_AlwaysOnTop_Tooltip" xml:space="preserve">
+    <value>Keep window above all other windows</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="Settings_Category_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Settings_Category_Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="Settings_Category_Mask" xml:space="preserve">
+    <value>Mask</value>
+  </data>
+  <data name="Settings_Category_Window" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="Settings_CheckUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="Settings_DebugMode" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_HideFromTaskbar" xml:space="preserve">
+    <value>Hide from Taskbar</value>
+  </data>
+  <data name="Settings_HideFromTaskbar_Tooltip" xml:space="preserve">
+    <value>Icon will not be shown on the taskbar when window is hidden</value>
+  </data>
+  <data name="Settings_HideWindowWhenAdding" xml:space="preserve">
+    <value>Hide Window when Adding Asset</value>
+  </data>
+  <data name="Settings_HideWindowWhenAdding_Tooltip" xml:space="preserve">
+    <value>Window will hide after asset has been added to Photoshop</value>
+  </data>
+  <data name="Settings_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Settings_HotkeyPicker_Tooltip" xml:space="preserve">
+    <value>Press a key combination to assign.
+Delete or Backspace to clear.
+Esc to cancel.</value>
+  </data>
+  <data name="Settings_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Settings_MaskMode" xml:space="preserve">
+    <value>Mask Mode</value>
+  </data>
+  <data name="Settings_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Settings_PostPlaceActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings_ThumbnailQuality" xml:space="preserve">
+    <value>Thumbnail Quiality</value>
+  </data>
+  <data name="Settings_ThumbnailQuality_Tooltip" xml:space="preserve">
+    <value>Higher quality can consume more RAM</value>
+  </data>
+  <data name="Settings_UnlinkMask" xml:space="preserve">
+    <value>Unlink Mask</value>
+  </data>
+  <data name="Settings_UnlinkMask_Tooltip" xml:space="preserve">
+    <value>Created mask will be unlinked from the layer</value>
+  </data>
+  <data name="Settings_WindowOpenHotkey" xml:space="preserve">
+    <value>Window Show/Hide Hotkey</value>
+  </data>
+  <data name="Settings_WindowTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Setting_ExecuteActionsPostPlace" xml:space="preserve">
+    <value>Run Actions after adding Asset</value>
+  </data>
+  <data name="Status_Busy" xml:space="preserve">
+    <value>Photoshop is busy</value>
+  </data>
+  <data name="Status_Cancelled" xml:space="preserve">
+    <value>Operation was cancelled</value>
+  </data>
+  <data name="Status_COMError" xml:space="preserve">
+    <value>Unexpected error occured</value>
+  </data>
+  <data name="Status_Failed" xml:space="preserve">
+    <value>Failed to communicate with Photoshop</value>
+  </data>
+  <data name="Status_FileNotFound" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="Status_IllegalArgument" xml:space="preserve">
+    <value>Invalid path</value>
+  </data>
+  <data name="Status_InvalidFileFormat" xml:space="preserve">
+    <value>Invalid file format</value>
+  </data>
+  <data name="Status_InvalidFilePath" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
+  <data name="Status_NoDocumentsOpen" xml:space="preserve">
+    <value>No documents open</value>
+  </data>
+  <data name="Status_NoSelection" xml:space="preserve">
+    <value>Document has no selection</value>
+  </data>
+  <data name="Status_NotRunning" xml:space="preserve">
+    <value>Photoshop is not running</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Taskbar_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Taskbar_ShowMainWindow" xml:space="preserve">
+    <value>Show/Hide Window</value>
+  </data>
+  <data name="Taskbar_ShowTerminal" xml:space="preserve">
+    <value>Show Terminal</value>
+  </data>
+  <data name="Terminal" xml:space="preserve">
+    <value>Terminal</value>
+  </data>
+  <data name="Update_Current" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="Update_Download" xml:space="preserve">
+    <value>Download:</value>
+  </data>
+  <data name="Update_Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Update_New" xml:space="preserve">
+    <value>New Version:</value>
+  </data>
+  <data name="Update_OpenChangelog" xml:space="preserve">
+    <value>See Whats New</value>
+  </data>
+  <data name="Update_OpenDownloadPage" xml:space="preserve">
+    <value>Open Download Page</value>
+  </data>
+  <data name="Update_UpdateAvailable" xml:space="preserve">
+    <value>New Version of PSQuickAssets is Available!</value>
+  </data>
+  <data name="Update_WindowTitle" xml:space="preserve">
+    <value>PSQuickAssets Update</value>
+  </data>
+  <data name="Uses" xml:space="preserve">
+    <value>Times Used: {0}</value>
+  </data>
+</root>

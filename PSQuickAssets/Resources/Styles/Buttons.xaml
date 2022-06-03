@@ -1,105 +1,356 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <sys:Double x:Key="ButtonsRestOpacity">0.15</sys:Double>
-    <sys:Double x:Key="ButtonsActiveOpacity">0.6</sys:Double>
-
-    <Style x:Key="ImageButtons" TargetType="Image">
-        <Setter Property="Opacity" Value="0.2"/>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Duration="0:0:0.15"
-                                                 From="{StaticResource ButtonsRestOpacity}" 
-                                                 To="{StaticResource ButtonsActiveOpacity}"
-                                                 Storyboard.TargetProperty="Opacity"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Duration="0:0:0.3"
-                                                 From="{StaticResource ButtonsActiveOpacity}"
-                                                 To="{StaticResource ButtonsRestOpacity}" 
-                                                 Storyboard.TargetProperty="Opacity"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <!-- FocusVisual -->
-
-    <Style x:Key="ButtonFocusVisual">
-        <Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border>
-                        <Rectangle Margin="2"
-                                   StrokeThickness="2"
-                                   Stroke="#60000000"
-                                   StrokeDashArray="1 2"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- Button -->
-    <Style TargetType="Button">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="23" />
-        <Setter Property="MinWidth" Value="75" />
+    <Style x:Key="GeneralButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource Brushes.Foreground.1}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10 6"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border TextBlock.Foreground="{TemplateBinding Foreground}"
-                            x:Name="Border"
-                            CornerRadius="8"
-                            BorderThickness="1.5"
-                            BorderBrush="#777"
-                            Background="{DynamicResource MainBackground}">
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="RootBorder"
+                            Padding="{TemplateBinding Padding}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
+                        <Border.Background>
+                            <SolidColorBrush Color="{DynamicResource Colors.Background.3}"/>
+                        </Border.Background>
                         
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          RecognizesAccessKey="True" />
+
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.2" />
+                                    <VisualTransition GeneratedDuration="0:0:0" />
+                                    <VisualTransition GeneratedDuration="0:0:0.25" From="MouseOver" />
                                     <VisualTransition GeneratedDuration="0" To="Pressed" />
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#777" />
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Background.4}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Background.4}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#aaa" />
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                      Duration="0:0:0.1">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Foreground.4}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
-                                </VisualState>                                
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Margin="2"
-                                          HorizontalAlignment="Center" VerticalAlignment="Center"
-                                          RecognizesAccessKey="True" />
+
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.65"/>
+                        </Trigger>
+                        <!--<Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brushes.Background.4}"/>
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <Style x:Key="AccentButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{DynamicResource Brushes.Accent.Foreground.0.Inverse}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10 6"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="RootBorder"
+                            Padding="{TemplateBinding Padding}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
+                        <Border.Background>
+                            <SolidColorBrush Color="{DynamicResource Colors.Accent.Background.0}"/>
+                        </Border.Background>
+
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          RecognizesAccessKey="True" />
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0" />
+                                    <VisualTransition GeneratedDuration="0:0:0.25" From="MouseOver" />
+                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Accent.Background.0.Highlight}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Background.0.Highlight}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="RootBorder"
+                                                                      Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                      Duration="0:0:0.1">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Colors.Accent.Background.0.Highlight}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.65"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ToggleSwitch" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="auto" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+
+                    <ControlTemplate.Resources>
+                        <Duration x:Key="CheckBaseDuration">0:0:0.3</Duration>
+                        <Duration x:Key="CheckShorterDuration">0:0:0.2</Duration>
+                        <BackEase
+                            x:Key="SwitchBackEasing"
+                            Amplitude="0.4"
+                            EasingMode="EaseOut" />
+                        <SineEase x:Key="SwitchBasicEasing" EasingMode="EaseOut" />
+                    </ControlTemplate.Resources>
+
+                    <!--  LAYOUT ROOT  -->
+                    <Viewbox
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Stretch="Uniform">
+                        <Grid Background="Transparent">
+                            <!--  MAIN SHAPE  -->
+                            <Border
+                                x:Name="Border"
+                                Width="58"
+                                Height="36"
+                                Padding="3"
+                                BorderThickness="2"
+                                CornerRadius="18">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{DynamicResource Colors.Background.3}" />
+                                </Border.Background>
+                                <!--  TOGGLE ASSEMBLY  -->
+                                <Grid
+                                    x:Name="Toggle"
+                                    HorizontalAlignment="Left"
+                                    RenderTransformOrigin="0.5, 0.5">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform />
+                                    </Grid.RenderTransform>
+                                    <!--  CIRCLE  -->
+                                    <Border
+                                        x:Name="SwitchBorder"
+                                        Width="26"
+                                        Height="26"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="99"
+                                        RenderTransformOrigin="0.5, 0.5">
+                                        <Border.RenderTransform>
+                                            <ScaleTransform CenterX="0.5" CenterY="0.5" />
+                                        </Border.RenderTransform>
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{StaticResource Colors.Background.1}" />
+                                        </Border.Background>
+
+                                        <!--  SYMBOL  -->
+                                        <Viewbox Height="16" Stretch="Uniform">
+                                            <Grid>
+                                                <Path
+                                                    x:Name="Cross"
+                                                    Width="16"
+                                                    Height="16"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Data="M 4,4 L 12,12 M 12,4 L 4,12"
+                                                    Stroke="{StaticResource Brushes.Foreground.3}"
+                                                    StrokeEndLineCap="Round"
+                                                    StrokeStartLineCap="Round"
+                                                    StrokeThickness="3" />
+
+                                                <Path
+                                                    x:Name="Check"
+                                                    Width="16"
+                                                    Height="16"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Data="M 2,8 L 7,13 M 7,13 L 13,4"
+                                                    Stroke="{StaticResource Brushes.Accent.Background.0}"
+                                                    StrokeEndLineCap="Round"
+                                                    StrokeStartLineCap="Round"
+                                                    StrokeThickness="3" />
+                                            </Grid>
+                                        </Viewbox>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1"
+                                            Duration="0:0:0.4" />
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1"
+                                            Duration="0:0:0.4" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                            To="1.3"
+                                            Duration="0:0:0.04" />
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                            To="1.3"
+                                            Duration="0:0:0.04" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.5"
+                                            Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource Colors.Accent.Background.0}"
+                                            Duration="{StaticResource CheckShorterDuration}" />
+                                        <ColorAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource Colors.Accent.Foreground.0.Inverse}"
+                                            Duration="{StaticResource CheckShorterDuration}" />
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBackEasing}"
+                                            Storyboard.TargetName="Toggle"
+                                            Storyboard.TargetProperty="(Panel.RenderTransform).(TranslateTransform.X)"
+                                            To="22"
+                                            Duration="{StaticResource CheckBaseDuration}" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Cross"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0"
+                                            Duration="0:0:0.2" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Check"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource Colors.Background.0}"
+                                            Duration="{StaticResource CheckShorterDuration}" />
+                                        <ColorAnimation
+                                            EasingFunction="{StaticResource SwitchBasicEasing}"
+                                            Storyboard.TargetName="SwitchBorder"
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource Colors.Background.4}"
+                                            Duration="{StaticResource CheckShorterDuration}" />
+                                        <DoubleAnimation
+                                            EasingFunction="{StaticResource SwitchBackEasing}"
+                                            Storyboard.TargetName="Toggle"
+                                            Storyboard.TargetProperty="(Panel.RenderTransform).(TranslateTransform.X)"
+                                            To="0"
+                                            Duration="{StaticResource CheckBaseDuration}" />
+
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Check"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0"
+                                            Duration="0:0:0.2" />
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Cross"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

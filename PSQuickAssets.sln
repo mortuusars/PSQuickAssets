@@ -1,11 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets", "PSQuickAssets\PSQuickAssets.csproj", "{8BBF0016-C213-416B-AE86-EBD047080556}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.Tests", "PSQuickAssets.Tests\PSQuickAssets.Tests.csproj", "{CDBE8793-ECFF-4737-86A8-255A8E626A2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.PSInterop", "PSQuickAssets.PSInterop\PSQuickAssets.PSInterop.csproj", "{84EF055D-901A-48B8-97EE-FF17E631D507}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D3835A2-7A83-4480-83FC-D4D2DD14A177}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		changelog.md = changelog.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQuickAssets.AssetControl", "PSQuickAssets.AssetControl\PSQuickAssets.AssetControl.csproj", "{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQA.Core", "PSQA.Core\PSQA.Core.csproj", "{A05BC38C-8C37-4388-85C3-EBDD149A299D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSQA.Assets", "PSQA.Assets\PSQA.Assets.csproj", "{CC4D67CB-616D-4982-AB86-C5D674E05209}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +35,22 @@ Global
 		{CDBE8793-ECFF-4737-86A8-255A8E626A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDBE8793-ECFF-4737-86A8-255A8E626A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDBE8793-ECFF-4737-86A8-255A8E626A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84EF055D-901A-48B8-97EE-FF17E631D507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84EF055D-901A-48B8-97EE-FF17E631D507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84EF055D-901A-48B8-97EE-FF17E631D507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84EF055D-901A-48B8-97EE-FF17E631D507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA65133-A6B2-4265-98DB-CCCE783C5E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A05BC38C-8C37-4388-85C3-EBDD149A299D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4D67CB-616D-4982-AB86-C5D674E05209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

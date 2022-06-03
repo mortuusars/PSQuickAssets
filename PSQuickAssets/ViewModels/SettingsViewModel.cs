@@ -1,39 +1,56 @@
-﻿using System.Timers;
-using System.Windows.Input;
-using PropertyChanged;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MGlobalHotkeys.WPF;
+using Microsoft.Toolkit.Mvvm.Input;
+using PSQuickAssets.Services;
 using PSQuickAssets.WPF;
+using PureUI.Themes;
+using System.ComponentModel;
+using System.Windows.Input;
 
-namespace PSQuickAssets.ViewModels
+namespace PSQuickAssets.ViewModels;
+
+[INotifyPropertyChanged]
+internal partial class SettingsViewModel
 {
-    [AddINotifyPropertyChangedInterface]
-    public class SettingsViewModel
+    public IConfig Config { get; }
+    public Hotkey ShowHideWindowHotkey
     {
-        public Hotkey GlobalHotkey { get; set; }
-        public bool CheckUpdates { get; set; }
-
-        public string SavedMessage { get; set; }
-
-        public ICommand SaveCommand { get; set; }
-
-        public SettingsViewModel()
+        get => Hotkey.FromString(Config.ShowHideWindowHotkey);
+        set
         {
-            SaveCommand = new RelayCommand(_ => Apply());
-
-            GlobalHotkey = App.GlobalHotkey.HotkeyInfo;
-            CheckUpdates = ConfigManager.Config.CheckUpdates;
+            Config.ShowHideWindowHotkey = value.ToString();
+            _globalHotkeys.Register(value, HotkeyUse.ToggleMainWindow);
         }
+    }
 
-        public void Apply()
+    public ICollectionView Themes { get; }
+    public Theme CurrentTheme
+    {
+        get => _themeManager.CurrentTheme;
+        set
         {
-            ((App)App.Current).RegisterGlobalHotkey(GlobalHotkey.ToString());
-            ConfigManager.Config = ConfigManager.Config with { CheckUpdates = CheckUpdates};
-
-            ConfigManager.Save();
-
-            SavedMessage = "Saved";
-            Timer timer = new Timer(1000);
-            timer.Elapsed += (s, e) => { SavedMessage = ""; timer.Stop(); };
-            timer.Start();
+            _themeManager.CurrentTheme = value;
+            Config.Theme = value.Name;
         }
+    }
+
+    public IEnumerable<ThumbnailQuality> ThumbnailQualityValues { get; } = Enum.GetValues(typeof(ThumbnailQuality)).Cast<ThumbnailQuality>();
+
+    private readonly ThemeManager _themeManager;
+    private readonly Services.GlobalHotkeys _globalHotkeys;
+
+    public SettingsViewModel(IConfig config, ThemeManager themeManager, Services.GlobalHotkeys globalHotkeys)
+    {
+        Config = config;
+        _themeManager = themeManager;
+        _globalHotkeys = globalHotkeys;
+
+        //_themeManager.PropertyChanged += ThemeManager_PropertyChanged;
+        Themes = CollectionViewSource.GetDefaultView(_themeManager.Themes);
+    }
+
+    private void ThemeManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(CurrentTheme));
     }
 }

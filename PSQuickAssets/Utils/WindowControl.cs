@@ -1,38 +1,31 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows;
 
-namespace PSQuickAssets.Utils
+namespace PSQuickAssets.Utils;
+
+public static class WindowUtils
 {
-    public static class WindowControl
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    public static bool FocusWindow(string processName)
     {
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        Process[] processes = Process.GetProcessesByName(processName);
 
-        public static bool FocusWindow(string processName)
+        if (processes.Length > 0)
         {
-            Process[] processes = Process.GetProcessesByName(processName);
-
-            if (processes.Length > 0)
+            try
             {
-                try
-                {
-                    SetForegroundWindow(processes[0].MainWindowHandle);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                SetForegroundWindow(processes[0].MainWindowHandle);
+                return true;
             }
-            else
+            catch (Exception)
+            {
                 return false;
+            }
         }
-
-        public static bool IsProcessRunning(string processName)
-        {
-            return Process.GetProcessesByName(processName).Length > 0;
-        }
+        else
+            return false;
     }
 }

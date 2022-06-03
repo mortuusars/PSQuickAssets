@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:tb="http://www.hardcodet.net/taskbar"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:cmds="clr-namespace:PSQuickAssets.Commands"
+                    xmlns:local="clr-namespace:PSQuickAssets" 
+                    xmlns:pure="http://mortuusars.github.io/pureui"
+                    xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
+
+    
+    
+    <Style x:Key="TaskBarIconStyle" TargetType="{x:Type tb:TaskbarIcon}">
+        <Setter Property="IconSource" Value="../Images/psquickassets-size.ico" />
+        <Setter Property="LeftClickCommand" Value="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
+        <Setter Property="ToolTipText" Value="{x:Static local:App.AppName}"/>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu FontFamily="{StaticResource FontMedium}">
+                    
+                    <!--  SHOW/HIDE MAIN WINDOW  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowMainWindow}"
+                              Icon="{pure:MaterialIconMarkup Glyph=Open_in_new, Size=19}"
+                              Command="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}"
+                              InputGestureText="{Binding Config.ShowHideWindowHotkey, Source={StaticResource ServiceLocator}}"/>
+
+                    <!--  SHOW/HIDE TERMINAL  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_ShowTerminal}"
+                              Icon="{pure:MaterialIconMarkup Glyph=Terminal,Size=17}"
+                              Command="{x:Static cmds:GeneralCommands.ToggleTerminalWindow}"
+                              Visibility="{Binding Config.DebugMode, Source={StaticResource ServiceLocator}, Converter={StaticResource BoolToVisibility}}"/>
+
+                    <Separator />
+
+                    <!--  SHOW/HIDE SETTINGS  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Taskbar_Settings}" 
+                              Icon="{pure:SegoeIconMarkup Glyph=Setting,Size=17}"
+                              Command="{Binding WindowHandler.ShowSettingsCommand, Source={StaticResource ServiceLocator}}"/>
+
+                    <Separator />
+
+                    <!--  EXIT  -->
+                    <MenuItem Header="{lex:Loc PSQuickAssets:Lang:Exit}" 
+                              Icon="{pure:MaterialIconMarkup Glyph=Exit_to_app,Size=19}"
+                              Command="{x:Static cmds:GeneralCommands.Shutdown}"/>
+
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

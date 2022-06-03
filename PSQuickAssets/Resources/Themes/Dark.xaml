@@ -1,0 +1,65 @@
+﻿<themes:ThemeResourceDictionary xmlns:themes="clr-namespace:PureUI.Themes;assembly=PureUI.Themes"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <!--COLORS-->
+    <Color x:Key="Colors.Background.0">#232323</Color>
+    <Color x:Key="Colors.Background.1">#333333</Color>
+    <Color x:Key="Colors.Background.2">#3c3c3c</Color>
+    <Color x:Key="Colors.Background.3">#454545</Color>
+    <Color x:Key="Colors.Background.4">#5a5a5a</Color>
+
+    <Color x:Key="Colors.Border.0">#1b1b1b</Color>
+    <Color x:Key="Colors.Border.1">#1f1f1f</Color>
+    <Color x:Key="Colors.Border.2">#232323</Color>
+    
+    <Color x:Key="Colors.Foreground.0">#fafafa</Color>
+    <Color x:Key="Colors.Foreground.1">#eee</Color>
+    <Color x:Key="Colors.Foreground.2">#ccc</Color>
+    <Color x:Key="Colors.Foreground.3">#aaa</Color>
+    <Color x:Key="Colors.Foreground.4">#888</Color>
+
+    <Color x:Key="Colors.Accent.Background.0">#4C9CD9</Color>
+    <Color x:Key="Colors.Accent.Background.0.Highlight">#72C0FF</Color>
+
+    <Color x:Key="Colors.Accent.Foreground.0">#111</Color>
+    <Color x:Key="Colors.Accent.Foreground.0.Inverse">#fafafa</Color>
+
+    <Color x:Key="Colors.Overlay.0">#17EEEEEE</Color>
+    <Color x:Key="Colors.Overlay.Background.Heavy">#fa232323</Color>
+
+    <Color x:Key="Colors.Utility.Error">#E95959</Color>
+    <Color x:Key="Colors.Utility.Accent.0">#74B2F1</Color>
+    <Color x:Key="Colors.Utility.Accent.1">#AAA1DC</Color>
+    
+    <!--BRUSHES-->
+    <SolidColorBrush x:Key="Brushes.Background.0" Color="{StaticResource Colors.Background.0}"/>
+    <SolidColorBrush x:Key="Brushes.Background.1" Color="{StaticResource Colors.Background.1}"/>
+    <SolidColorBrush x:Key="Brushes.Background.2" Color="{StaticResource Colors.Background.2}"/>
+    <SolidColorBrush x:Key="Brushes.Background.3" Color="{StaticResource Colors.Background.3}"/>
+    <SolidColorBrush x:Key="Brushes.Background.4" Color="{StaticResource Colors.Background.4}"/>
+
+    <SolidColorBrush x:Key="Brushes.Border.0" Color="{StaticResource Colors.Border.0}"/>
+    <SolidColorBrush x:Key="Brushes.Border.1" Color="{StaticResource Colors.Border.1}"/>
+    <SolidColorBrush x:Key="Brushes.Border.2" Color="{StaticResource Colors.Border.2}"/>
+
+    <SolidColorBrush x:Key="Brushes.Foreground.0" Color="{StaticResource Colors.Foreground.0}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.1" Color="{StaticResource Colors.Foreground.1}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.2" Color="{StaticResource Colors.Foreground.2}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.3" Color="{StaticResource Colors.Foreground.3}"/>
+    <SolidColorBrush x:Key="Brushes.Foreground.4" Color="{StaticResource Colors.Foreground.4}"/>
+
+    <SolidColorBrush x:Key="Brushes.Accent.Background.0" Color="{StaticResource Colors.Accent.Background.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Background.0.Highlight" Color="{StaticResource Colors.Accent.Background.0.Highlight}"/>
+
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0" Color="{StaticResource Colors.Accent.Foreground.0}"/>
+    <SolidColorBrush x:Key="Brushes.Accent.Foreground.0.Inverse" Color="{StaticResource Colors.Accent.Foreground.0.Inverse}"/>
+
+    <SolidColorBrush x:Key="Brushes.Overlay.0" Color="{StaticResource Colors.Overlay.0}"/>
+    <SolidColorBrush x:Key="Brushes.Overlay.Background.Heavy" Color="{StaticResource Colors.Overlay.Background.Heavy}"/>
+
+    <SolidColorBrush x:Key="Brushes.Utility.Error" Color="{StaticResource Colors.Utility.Error}"/>
+    <SolidColorBrush x:Key="Brushes.Utility.Accent.0" Color="{StaticResource Colors.Utility.Accent.0}"/>
+    <SolidColorBrush x:Key="Brushes.Utility.Accent.1" Color="{StaticResource Colors.Utility.Accent.1}"/>
+
+</themes:ThemeResourceDictionary>
