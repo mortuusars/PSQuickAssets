@@ -6,13 +6,16 @@
                     xmlns:local="clr-namespace:PSQuickAssets" 
                     xmlns:pure="http://mortuusars.github.io/pureui"
                     xmlns:controls1="clr-namespace:PSQuickAssets.Controls">
-
-    
     
     <Style x:Key="TaskBarIconStyle" TargetType="{x:Type tb:TaskbarIcon}">
         <Setter Property="IconSource" Value="../Images/psquickassets-size.ico" />
         <Setter Property="LeftClickCommand" Value="{Binding WindowHandler.ShowHideMainWindowCommand, Source={StaticResource ServiceLocator}}" />
         <Setter Property="ToolTipText" Value="{x:Static local:App.AppName}"/>
+        <Setter Property="TrayToolTip">
+            <Setter.Value>
+                <TextBlock Text="{x:Static local:App.AppName}"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu FontFamily="{StaticResource FontMedium}">
